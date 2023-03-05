@@ -1,9 +1,10 @@
 import { StyleSheet, Text, View } from "react-native";
+import Input from "../components/ui/Input";
 
 const Server = () => {
   return (
     <View>
-      <Text>Server Screen</Text>
+      <Input label="Server URL" />
     </View>
   );
 };
