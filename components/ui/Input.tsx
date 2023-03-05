@@ -17,7 +17,7 @@ const Input = ({
   secure = false,
   onUpdateValue,
   value,
-  isError,
+  isError = false,
 }: InputProps) => {
   return (
     <View style={styles.inputContainer}>
