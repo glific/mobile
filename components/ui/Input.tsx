@@ -41,20 +41,21 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
   label: {
-    color: "white",
+    color: Colors.primary100,
     marginBottom: 4,
   },
   errorLabel: {
-    // color: Colors.error500,
+    color: Colors.error100,
   },
   input: {
     paddingVertical: 8,
     paddingHorizontal: 6,
-    backgroundColor: Colors.primary100,
+    backgroundColor: "white",
+    borderColor: Colors.primary100,
     borderRadius: 4,
     fontSize: 16,
   },
   error: {
-    // backgroundColor: Colors.error100,
+    backgroundColor: Colors.error100,
   },
 });
