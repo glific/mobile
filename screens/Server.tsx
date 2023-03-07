@@ -5,6 +5,7 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
 import { Colors } from "../constants/styles";
+import { validateUrl } from "../utils/helper";
 
 type RootStackParamList = {
   Server: undefined;
@@ -23,8 +24,8 @@ const Server = ({ navigation }: Props) => {
   };
 
   const onSubmitHandler = () => {
-    if (!serverURL) {
-      setErrorMessage("Please enter the server url");
+    if (!serverURL || !validateUrl(serverURL)) {
+      setErrorMessage("Please enter valid server url");
       return;
     }
 
@@ -39,13 +40,14 @@ const Server = ({ navigation }: Props) => {
 
   return (
     <View>
-      {errorDisplay}
       <Input
         label="Server URL"
         onUpdateValue={serverURLChanged}
         value={serverURL}
         isError={errorMessage ? true : false}
+        keyboardType="url"
       />
+      {errorDisplay}
       <Button onPress={onSubmitHandler}>
         <Text>Continue</Text>
       </Button>
