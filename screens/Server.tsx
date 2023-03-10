@@ -15,7 +15,7 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList, "Server">;
 
 const Server = ({ navigation }: Props) => {
-  const [serverURL, setServerURL] = useState("");
+  const [serverURL, setServerURL] = useState("https://glific.test");
   const [errorMessage, setErrorMessage] = useState("");
 
   const serverURLChanged = (value: string) => {
