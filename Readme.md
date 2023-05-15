@@ -22,22 +22,14 @@ You can also use https to clone the repository. To know more read this [document
 cd mobile
 ```
 
-3) Create an environment file in the project's home directory with the filename `.env` and add the following key-value pairs.
-```
-BACKEND_URL=
-```
+1) Create an environment file in the project's home directory with the filename `.env`, copy the contents from `.env.example` and update the key-value pairs based on the current environment the application is running in.
 
-You can access these variables in any component using the following:
-```js
-import { BACKEND_URL } from "@env";
-```
-
-4) Install the dependencies using yarn.
+2) Install the dependencies using yarn.
 ```sh
 yarn install
 ```
 
-5) Start the metro server.
+1) Start the metro server.
 ```sh
 yarn start
 ```
