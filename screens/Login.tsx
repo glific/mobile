@@ -5,7 +5,7 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import Input from "../components/ui/Input";
 import { Colors } from "../constants/styles";
-import createAxiosClient from "../constants/API";
+import createAxiosClient from "../config/axios";
 
 type RootStackParamList = {
   Login: undefined;
