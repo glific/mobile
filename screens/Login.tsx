@@ -21,7 +21,7 @@ const Login = () => {
     }
   }
 
-  const onSubmitHandler = () => {};
+  const onSubmitHandler = () => { };
 
   let errorDisplay;
   if (errorMessage) {
