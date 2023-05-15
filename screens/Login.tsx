@@ -6,6 +6,7 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import Input from "../components/ui/Input";
 import { Colors } from "../constants/styles";
 import createAxiosClient from "../config/axios";
+import Storage from '../utils/asyncStorage';
 
 type RootStackParamList = {
   Login: undefined;
@@ -44,7 +45,11 @@ const Login = ({ navigation }: Props) => {
         }
       })
 
-      console.log(response.data.data);
+      // console.log(response.data.data);
+      await Storage.storeData('token', response.data.data['access_token']);
+      await Storage.storeData('renewal_token', response.data.data['renewal_token']);
+      await Storage.storeData('token_expiry_time', response.data.data['token_expiry_time']);
+
       navigation.navigate("Chat");
     } catch (error: any) {
       setErrorMessage(error.message);
