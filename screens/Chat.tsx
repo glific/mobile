@@ -2,8 +2,15 @@ import { StyleSheet, Text, View } from "react-native";
 import Storage from "../utils/asyncStorage";
 import { useState, useEffect } from "react";
 import Button from "../components/ui/Button";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-const Chat = () => {
+type RootStackParamList = {
+  Login: undefined;
+  Chat: undefined;
+};
+type Props = NativeStackScreenProps<RootStackParamList, "Chat">;
+
+const Chat = ({ navigation }: Props) => {
   const [token, setToken] = useState<string | null>("");
 
   useEffect(() => {
@@ -21,7 +28,7 @@ const Chat = () => {
     await Storage.removeData("renewal_token");
     await Storage.removeData("token_expiry_time");
     setToken("");
-
+    navigation.navigate("Login");
     // const getToken = async () => {
     //   const tokenValue = await Storage.getData("token");
     //   setToken(tokenValue);
