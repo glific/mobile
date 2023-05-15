@@ -21,6 +21,7 @@ const AuthStack = () => {
     >
       <Stack.Screen name="Server" component={Server} />
       <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Chat" component={Chat} />
     </Stack.Navigator>
   );
 };
