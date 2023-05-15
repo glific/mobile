@@ -1,14 +1,24 @@
 import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Button from "../components/ui/Button";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import Input from "../components/ui/Input";
 import { Colors } from "../constants/styles";
+import createAxiosClient from "../config/axios";
 
-const Login = () => {
+type RootStackParamList = {
+  Login: undefined;
+  Chat: undefined;
+};
+
+type Props = NativeStackScreenProps<RootStackParamList, "Login">;
+
+const Login = ({ navigation }: Props) => {
   const [enteredMobile, setEnteredMobile] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const Client = createAxiosClient();
 
   function updateInputValueHandler(inputType: string, enteredValue: string) {
     switch (inputType) {
@@ -21,7 +31,25 @@ const Login = () => {
     }
   }
 
-  const onSubmitHandler = () => { };
+  const onSubmitHandler = async () => {
+    try {
+      if(enteredMobile == "" || enteredPassword == "") {
+        throw new Error("Please enter mobile number and password!");
+      }
+
+      const response = await Client.post('/v1/session', {
+        user: {
+          phone: enteredMobile,
+          password: enteredPassword
+        }
+      })
+
+      console.log(response.data.data);
+      navigation.navigate("Chat");
+    } catch (error: any) {
+      setErrorMessage(error.message);
+    }
+  };
 
   let errorDisplay;
   if (errorMessage) {

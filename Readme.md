@@ -9,7 +9,7 @@
 
 ### Installation steps
 - Run ``git clone https://github.com/glific/mobile.git`` 
-- Run ``cd moblie``
+- Run ``cd mobile``
 - Run ``yarn install``
 - Run ``yarn start``
 - Run ``npx expo install react-native`` (Incase if react-native version is not updated)
