@@ -2,7 +2,5 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
-    "allowUmdGlobalAccess": true,
-    "jsx": "react"
   }
 }

@@ -11,36 +11,31 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList, "Chat">;
 
 const Chat = ({ navigation }: Props) => {
-  const [token, setToken] = useState<string | null>("");
+  const [session, setSession] = useState<object | null>({});
 
   useEffect(() => {
-    // Retrieve the values from AsyncStorage
-    const getToken = async () => {
-      const tokenValue = await Storage.getData("token");
-      setToken(tokenValue);
+    // Retrieve the session from AsyncStorage
+    const getSession = async () => {
+      const sessionValue = await Storage.getData("session");
+      if (sessionValue !== null) {
+        const parsedSessionValue = JSON.parse(sessionValue);
+        setSession(parsedSessionValue);
+      }
     };
 
-    getToken();
+    getSession();
   }, []);
 
+
   const LogoutHandler = async () => {
-    await Storage.removeData("token");
-    await Storage.removeData("renewal_token");
-    await Storage.removeData("token_expiry_time");
-    setToken("");
+    await Storage.removeData("session");
+    setSession({});
     navigation.navigate("Login");
-    // const getToken = async () => {
-    //   const tokenValue = await Storage.getData("token");
-    //   setToken(tokenValue);
-    //   console.log("Token val-", tokenValue)
-    // };
-    // getToken();
   };
 
   return (
     <View>
       <Text>Chat Screen</Text>
-      <Text>{token}</Text>
       <Button onPress={LogoutHandler}>
         <Text>Logout</Text>
       </Button>
