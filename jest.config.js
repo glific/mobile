@@ -9,7 +9,7 @@ module.exports = {
       '!**/coverage/**',
       '!**/node_modules/**',
       '!**/babel.config.js',
-      '!**/jest.setup.js',
+      '!**/jest.config.js',
       '!**/helper.ts',
       '!**/App.tsx',
     ],
