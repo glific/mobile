@@ -6,6 +6,7 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import Input from "../components/ui/Input";
 import { Colors } from "../constants/styles";
 import createAxiosClient from "../config/axios";
+import Storage from '../utils/asyncStorage';
 
 type RootStackParamList = {
   Login: undefined;
@@ -43,6 +44,7 @@ const Login = ({ navigation }: Props) => {
         }
       })
 
+      await Storage.storeData('session', JSON.stringify(response.data.data));
       navigation.navigate("Chat");
     } catch (error: any) {
       setErrorMessage(error.message);
