@@ -43,7 +43,7 @@ const Login = ({ navigation }: Props) => {
         }
       })
 
-      console.log(response.data.data);
+      // console.log(response.data.data);
       navigation.navigate("Chat");
     } catch (error: any) {
       setErrorMessage(error.message);
