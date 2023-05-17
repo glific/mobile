@@ -1,9 +1,8 @@
 import { View, Text, TextInput, StyleSheet, KeyboardTypeOptions } from "react-native";
-
 import { Colors } from "../../constants/styles";
 
 interface InputProps {
-  label: String;
+  label: string;
   onUpdateValue: (text: string) => void;
   value: string;
   isError: boolean;
@@ -23,6 +22,7 @@ const Input = ({
     <View style={styles.inputContainer}>
       <Text style={[styles.label, isError && styles.errorLabel]}>{label}</Text>
       <TextInput
+        testID={label}
         style={[styles.input, isError && styles.errorLabel]}
         autoCapitalize="none"
         keyboardType={keyboardType}

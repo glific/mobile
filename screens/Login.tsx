@@ -36,7 +36,6 @@ const Login = ({ navigation }: Props) => {
       if(enteredMobile == "" || enteredPassword == "") {
         throw new Error("Please enter mobile number and password!");
       }
-
       const response = await Client.post('/v1/session', {
         user: {
           phone: enteredMobile,
@@ -59,7 +58,7 @@ const Login = ({ navigation }: Props) => {
   return (
     <View>
       <Input
-        label="Mobile number"
+        label="Mobile Number"
         onUpdateValue={updateInputValueHandler.bind(this, "mobile")}
         value={enteredMobile}
         keyboardType="numeric"
@@ -73,7 +72,7 @@ const Login = ({ navigation }: Props) => {
         isError={errorMessage ? true : false}
       />
       {errorDisplay}
-      <Button onPress={onSubmitHandler}>
+      <Button disable={!enteredMobile && !enteredPassword} onPress={onSubmitHandler}>
         <Text>Continue</Text>
       </Button>
     </View>
