@@ -54,19 +54,6 @@ describe("Login screen", () => {
     expect(errorMessage).toBeDefined();
   });
 
-  // test("displays error message when password empty", async () => {
-  //   const { getByTestId, getByText } = render(<Login />);
-
-  //   const mobileInput = getByTestId("Mobile Number");
-  //   fireEvent.changeText(mobileInput, "917834811114");
-
-  //   const continueButton = getByText("Continue");
-  //   fireEvent.press(continueButton);
-
-  //   const errorMessage = getByText("Please enter mobile number and password!");
-  //   expect(errorMessage).toBeDefined();
-  // });
-
   // test("navigates to Chat screen on successful submit", async () => {
   //   const navigationMock = { navigate: jest.fn() };
 
