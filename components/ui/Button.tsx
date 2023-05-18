@@ -6,10 +6,10 @@ import { Colors } from "../../constants/styles";
 interface ButtonProps {
   children: ReactElement;
   onPress: () => void;
-  disable: boolean;
+  disable?: boolean;
 }
 
-const Button = ({ children, onPress, disable }: ButtonProps) => {
+const Button = ({ children, onPress, disable = false }: ButtonProps) => {
   return (
     <Pressable
       style={({ pressed }) => [styles.button, pressed && styles.pressed]}
