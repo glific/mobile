@@ -6,6 +6,7 @@ import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
 import { Colors } from "../constants/styles";
 import { validateUrl } from "../utils/helper";
+import InstructionCard from "../components/screens/InstructionCard";
 
 type RootStackParamList = {
   Server: undefined;
@@ -39,18 +40,22 @@ const Server = ({ navigation }: Props) => {
   }
 
   return (
-    <View>
+    <View style={styles.mainContainer}>
       <Input
-        label="Server URL"
+        label="Enter or paste URL here"
         onUpdateValue={serverURLChanged}
         value={serverURL}
         isError={errorMessage ? true : false}
         keyboardType="url"
+        placeHolder="https://smilefoundation.org/..."
       />
-      {errorDisplay}
-      <Button onPress={onSubmitHandler}>
-        <Text>Continue</Text>
-      </Button>
+      <InstructionCard />
+      <View style={styles.buttonContainer}>
+        {errorDisplay}
+        <Button onPress={onSubmitHandler}>
+          <Text>CONTINUE</Text>
+        </Button>
+      </View>
     </View>
   );
 };
@@ -58,6 +63,17 @@ const Server = ({ navigation }: Props) => {
 export default Server;
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    paddingTop: 20,
+    backgroundColor: 'white'
+  },
+  buttonContainer: {
+    position: 'absolute',
+    bottom: 20,
+    width: '92%',
+    alignSelf: 'center',
+  },
   errorLabel: {
     color: Colors.error100,
   },

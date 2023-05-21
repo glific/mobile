@@ -17,9 +17,10 @@ const AuthStack = () => {
         headerStyle: { backgroundColor: Colors.primary400 },
         headerTintColor: "white",
         contentStyle: { backgroundColor: Colors.secondary100 },
+        headerTitleStyle: { fontSize: 18 }
       }}
     >
-      <Stack.Screen name="Server" component={Server} />
+      <Stack.Screen name="Server" component={Server} options={{title:"Add your organisation URL"}}/>
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Chat" component={Chat} />
     </Stack.Navigator>
