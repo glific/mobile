@@ -3,6 +3,7 @@ import { Colors } from "../../constants/styles";
 
 interface InputProps {
   label: string;
+  placeholder: string;
   onUpdateValue: (text: string) => void;
   value: string;
   isError: boolean;
@@ -12,6 +13,7 @@ interface InputProps {
 
 const Input = ({
   label,
+  placeholder,
   keyboardType = "default",
   secure = false,
   onUpdateValue,
@@ -29,6 +31,7 @@ const Input = ({
         secureTextEntry={secure}
         onChangeText={onUpdateValue}
         value={value}
+        placeholder={placeholder}
       />
     </View>
   );
@@ -38,21 +41,22 @@ export default Input;
 
 const styles = StyleSheet.create({
   inputContainer: {
-    marginVertical: 8,
+    marginVertical: 18,
   },
   label: {
-    color: Colors.primary100,
-    marginBottom: 4,
+    color: Colors.primaryText,
+    marginBottom: 8,
   },
   errorLabel: {
     color: Colors.error100,
   },
   input: {
     paddingVertical: 8,
-    paddingHorizontal: 6,
+    paddingHorizontal: 12,
     backgroundColor: "white",
-    borderColor: Colors.primary100,
-    borderRadius: 4,
+    borderColor: "#93a29b",
+    borderWidth: 1,
+    borderRadius: 11,
     fontSize: 16,
   },
   error: {

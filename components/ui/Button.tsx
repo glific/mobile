@@ -27,10 +27,10 @@ export default Button;
 
 const styles = StyleSheet.create({
   button: {
-    borderRadius: 6,
+    borderRadius: 24,
     paddingVertical: 6,
     paddingHorizontal: 12,
-    backgroundColor: Colors.primary400,
+    backgroundColor: Colors.primary100,
     elevation: 2,
     shadowColor: "black",
     shadowOffset: { width: 1, height: 1 },
