@@ -10,8 +10,13 @@
     "test": "jest"
   },
   "dependencies": {
+    "@expo/vector-icons": "^13.0.0",
     "@react-native-async-storage/async-storage": "1.17.11",
+
     "@react-native-community/hooks": "^2.8.1",
+
+    "@react-navigation/drawer": "^6.6.2",
+
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
     "@types/axios": "^0.14.0",

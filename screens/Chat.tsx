@@ -3,6 +3,7 @@ import Storage from "../utils/asyncStorage";
 import { useState, useEffect } from "react";
 import Button from "../components/ui/Button";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import SearchBar from "../components/ui/SearchBar";
 
 type RootStackParamList = {
   Login: undefined;
@@ -81,6 +82,7 @@ const Chat = ({ navigation }: Props) => {
   };
 
   return (
+
     
       <SafeAreaView style={styles.container}>
       <FlatList
@@ -90,6 +92,7 @@ const Chat = ({ navigation }: Props) => {
       />
     </SafeAreaView>
      
+
   );
 };
 
