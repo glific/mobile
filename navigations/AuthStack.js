@@ -17,8 +17,8 @@ const AuthStack = () => {
           contentStyle: { backgroundColor: Colors.secondary100 },
         }}
       >
-        {/* <Stack.Screen name="Server" component={Server} />
-        <Stack.Screen name="Login" component={Login} /> */}
+        <Stack.Screen name="Server" component={Server} />
+        <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Chat" component={AppDrawer} />
         <Stack.Screen name="ChatScreen" component={ChatScreen} options={{headerShown: false}} />
       </Stack.Navigator>
