@@ -16,9 +16,7 @@ const Button = ({ children, onPress, disable = false }: ButtonProps) => {
       onPress={onPress}
       disabled={disable}
     >
-      <View>
-        <Text style={styles.buttonText}>{children}</Text>
-      </View>
+      <Text style={styles.buttonText}>{children}</Text>
     </Pressable>
   );
 };
@@ -27,10 +25,12 @@ export default Button;
 
 const styles = StyleSheet.create({
   button: {
-    borderRadius: 6,
+    borderRadius: 20,
+    height: 40,
     paddingVertical: 6,
     paddingHorizontal: 12,
-    backgroundColor: Colors.primary400,
+    justifyContent: 'center',
+    backgroundColor: Colors.primary100,
     elevation: 2,
     shadowColor: "black",
     shadowOffset: { width: 1, height: 1 },
@@ -45,5 +45,6 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 16,
     fontWeight: "bold",
+    includeFontPadding: false,
   },
 });
