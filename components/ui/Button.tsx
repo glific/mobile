@@ -1,7 +1,7 @@
-import { ReactElement } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { ReactElement } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { Colors } from "../../constants/styles";
+import { Colors } from '../../constants/styles';
 
 interface ButtonProps {
   children: ReactElement;
@@ -16,9 +16,7 @@ const Button = ({ children, onPress, disable = false }: ButtonProps) => {
       onPress={onPress}
       disabled={disable}
     >
-      <View>
-        <Text style={styles.buttonText}>{children}</Text>
-      </View>
+      <Text style={styles.buttonText}>{children}</Text>
     </Pressable>
   );
 };
@@ -27,12 +25,14 @@ export default Button;
 
 const styles = StyleSheet.create({
   button: {
-    borderRadius: 6,
+    borderRadius: 20,
+    height: 40,
     paddingVertical: 6,
     paddingHorizontal: 12,
-    backgroundColor: Colors.primary400,
+    justifyContent: 'center',
+    backgroundColor: Colors.primary100,
     elevation: 2,
-    shadowColor: "black",
+    shadowColor: 'black',
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
@@ -41,9 +41,10 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   buttonText: {
-    textAlign: "center",
-    color: "white",
+    textAlign: 'center',
+    color: 'white',
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: 'bold',
+    includeFontPadding: false,
   },
 });
