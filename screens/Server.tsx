@@ -6,7 +6,7 @@ import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
 import { Colors } from "../constants/styles";
 import { validateUrl } from "../utils/helper";
-import InstructionCard from "../components/screens/InstructionCard";
+import InstructionCard from "../components/InstructionCard";
 
 type RootStackParamList = {
   Server: undefined;
