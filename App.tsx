@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View,  SafeAreaView,FlatList,} from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -7,6 +7,7 @@ import { Colors } from "./constants/styles";
 import Login from "./screens/Login";
 import Server from "./screens/Server";
 import Chat from "./screens/Chat";
+import ChatScreen from "./screens/ChatScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -19,9 +20,12 @@ const AuthStack = () => {
         contentStyle: { backgroundColor: Colors.secondary100 },
       }}
     >
-      <Stack.Screen name="Server" component={Server} />
-      <Stack.Screen name="Login" component={Login} />
+      {/* <Stack.Screen name="Server" component={Server} />
+      <Stack.Screen name="Login" component={Login} /> */}
       <Stack.Screen name="Chat" component={Chat} />
+      <Stack.Screen name="ChatScreen" component={ChatScreen} options={{
+				headerShown: false}} />
+
     </Stack.Navigator>
   );
 };
@@ -63,3 +67,5 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+
+export {}
