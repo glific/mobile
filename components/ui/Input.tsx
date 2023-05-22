@@ -1,14 +1,6 @@
-import { View, Text, TextInput, StyleSheet, KeyboardTypeOptions } from "react-native";
+import { View, Text, TextInput, StyleSheet } from "react-native";
 import { Colors } from "../../constants/styles";
-
-interface InputProps {
-  label: string;
-  onUpdateValue: (text: string) => void;
-  value: string;
-  isError: boolean;
-  secure?: boolean;
-  keyboardType?: KeyboardTypeOptions;
-}
+import { InputProps } from "../../constants/interfaces";
 
 const Input = ({
   label,

@@ -1,13 +1,8 @@
-import { ReactElement } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { ButtonProps } from "../../constants/interfaces";
 
 import { Colors } from "../../constants/styles";
 
-interface ButtonProps {
-  children: ReactElement;
-  onPress: () => void;
-  disable: boolean;
-}
 
 const Button = ({ children, onPress, disable }: ButtonProps) => {
   return (

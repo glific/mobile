@@ -1,15 +1,26 @@
-export interface Contact {
+import { ReactElement } from "react";
+import { KeyboardTypeOptions } from "react-native";
+
+export interface Contacts {
     index: number,
     name: string|null;
 };
 
-export interface Conversation {
-    __typename: string;
-    contact: Contact[];
-};
+export interface ContactProp {
+    name: string | null
+}
 
-export interface SearchResponse {
-    search: Conversation[];
-};
+export interface ButtonProps {
+    children: ReactElement;
+    onPress: () => void;
+    disable: boolean;
+  }
 
-
+  export interface InputProps {
+    label: string;
+    onUpdateValue: (text: string) => void;
+    value: string;
+    isError: boolean;
+    secure?: boolean;
+    keyboardType?: KeyboardTypeOptions;
+  }
