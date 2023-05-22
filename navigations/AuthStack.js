@@ -4,6 +4,7 @@ import { Colors } from "../constants/styles";
 import Login from "../screens/Login";
 import Server from "../screens/Server";
 import AppDrawer from "./Drawer";
+import ChatScreen from "../screens/ChatScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -16,9 +17,10 @@ const AuthStack = () => {
           contentStyle: { backgroundColor: Colors.secondary100 },
         }}
       >
-        <Stack.Screen name="Server" component={Server} />
-        <Stack.Screen name="Login" component={Login} />
+        {/* <Stack.Screen name="Server" component={Server} />
+        <Stack.Screen name="Login" component={Login} /> */}
         <Stack.Screen name="Chat" component={AppDrawer} />
+        <Stack.Screen name="ChatScreen" component={ChatScreen} options={{headerShown: false}} />
       </Stack.Navigator>
     );
 };
