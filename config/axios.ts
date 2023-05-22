@@ -1,5 +1,5 @@
-import axios, { AxiosInstance } from "axios";
-import { API_BASE_URL } from "@env"
+import axios, { AxiosInstance } from 'axios';
+import { API_BASE_URL } from '@env';
 
 function createAxiosClient(): AxiosInstance {
   return axios.create({
@@ -7,4 +7,4 @@ function createAxiosClient(): AxiosInstance {
   });
 }
 
-export default createAxiosClient
+export default createAxiosClient;
