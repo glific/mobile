@@ -6,6 +6,7 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { ApolloClient, ApolloLink, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { client } from "../config/apollo.config";
 import ContactList from "../components/ui/ContactList";
+import SearchBar from "../components/ui/SearchBar";
 
 type RootStackParamList = {
   Login: undefined;
@@ -51,12 +52,11 @@ const Chat = ({ navigation }: Props) => {
 
   return (
     <View>
+      <SearchBar />
       <ApolloProvider client={newClient}>
         <ContactList />
       </ApolloProvider>
       <Button onPress={LogoutHandler} disable={false}>
-        <Text>Logout</Text>
-      </Button>
     </View>
   );
 };

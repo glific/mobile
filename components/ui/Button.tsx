@@ -3,8 +3,7 @@ import { ButtonProps } from "../../constants/interfaces";
 
 import { Colors } from "../../constants/styles";
 
-
-const Button = ({ children, onPress, disable }: ButtonProps) => {
+const Button = ({ children, onPress, disable = false }: ButtonProps) => {
   return (
     <Pressable
       style={({ pressed }) => [styles.button, pressed && styles.pressed]}
