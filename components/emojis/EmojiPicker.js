@@ -1,5 +1,5 @@
 import React, { useState, memo } from 'react'
-import { View, Text, useWindowDimensions } from 'react-native';
+import {useWindowDimensions } from 'react-native';
 import { TabView } from 'react-native-tab-view';
 import categories from '../data/categories';
 import EmojiCategory from './EmojiCategory';

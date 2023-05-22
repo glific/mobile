@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React from 'react'
 import { TouchableOpacity, Text, StyleSheet } from 'react-native'
 
 import shortnameToUnicode from '../helpers/shortnameToUnicode';

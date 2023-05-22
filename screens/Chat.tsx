@@ -12,6 +12,8 @@ type RootStackParamList = {
 };
 type Props = NativeStackScreenProps<RootStackParamList, "Chat">;
 type ItemProps = {name: string};
+
+//Dummy data
 const DATA = [
   {
     id: '1',

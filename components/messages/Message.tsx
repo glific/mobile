@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import { View, Text, StyleSheet, Alert } from "react-native";
+import React from "react";
+import { View, Text, StyleSheet} from "react-native";
 import {FlingGestureHandler,Directions,State,} from "react-native-gesture-handler";
 import Animated, {withSpring,useAnimatedStyle,useAnimatedGestureHandler,useSharedValue} from "react-native-reanimated";
 import { theme } from "../../theme";

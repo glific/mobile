@@ -1,6 +1,5 @@
 import React, { memo } from 'react'
-import { FlatList, Dimensions } from 'react-native'
-
+import { FlatList } from 'react-native'
 import Emoji from './Emoji';
 import { emojisByCategory } from '../data/emojis';
 

@@ -1,7 +1,5 @@
-import { StyleSheet, Text, View,SafeAreaView,FlatList,StatusBar, Pressable,Modal} from "react-native";
-import Storage from "../utils/asyncStorage";
-import { useState, useEffect } from "react";
-import Button from "../components/ui/Button";
+import { StyleSheet, Text, View, Pressable,Modal} from "react-native";
+import { useState} from "react";
 import ChatHeader from "../components/messages/ChatHeader";
 import MessagesList from "../components/messages/MessageList";
 import ChatInput from "../components/messages/ChatInput";
@@ -155,21 +153,15 @@ const styles = StyleSheet.create({
     marginTop:10,
     
   },
-  warning_title: {
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-   
-    borderTopRightRadius: 20,
-    borderTopLeftRadius: 20,
-  },
+
   warning_body: {
     padding:4,
     flexDirection:'row'
     
   },
   warning_button:{
-  
+  justifyContent:'center',
+  alignItems:'center'
    
   }
 });

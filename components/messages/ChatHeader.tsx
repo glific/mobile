@@ -1,5 +1,5 @@
-import React,{useState}from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image,Modal } from "react-native";
+import React from "react";
+import { View, Text, StyleSheet, TouchableOpacity} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "@expo/vector-icons/FontAwesome";
 import {AntDesign} from "@expo/vector-icons"
@@ -73,14 +73,14 @@ const styles = StyleSheet.create({
 		flexDirection: 'row', alignItems:'center',
 		height:60,
 	  },
-	  Name: {
+	Name: {
 		fontSize: 24,
 		marginLeft:18,
 		color:'white',
 		fontWeight:'600',
 		letterSpacing:1
 	  },
-	  avatar:{
+	avatar:{
 		height: 50,
 			width: 50,
 			borderRadius: 25.5,

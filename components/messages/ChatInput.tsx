@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef, memo } from "react";
+import React, { useState, useEffect} from "react";
 import {View,Text,StyleSheet,TextInput,Platform,TouchableOpacity,} from "react-native";
-import Animated, {useSharedValue,withSpring,withTiming,useAnimatedStyle,RotateOutUpLeft,} from "react-native-reanimated";
+import Animated, {useSharedValue,withSpring,withTiming,useAnimatedStyle} from "react-native-reanimated";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';

@@ -1,11 +1,5 @@
 import React from "react";
-import {
-	View,
-	TouchableOpacity,
-	StyleSheet,
-	Animated,
-	Dimensions,
-} from "react-native";
+import {View,TouchableOpacity,StyleSheet,Animated,} from "react-native";
 
 const TabBar = ({ navigationState, position, setIndex }) => {
 	const inputRange = navigationState.routes.map((x, i) => i);
