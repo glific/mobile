@@ -1,3 +1,4 @@
+
 import { StyleSheet, Text, View,Pressable,FlatList } from "react-native";
 import Storage from "../utils/asyncStorage";
 import { useState, useEffect } from "react";
@@ -5,11 +6,13 @@ import Button from "../components/ui/Button";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import SearchBar from "../components/ui/SearchBar";
 
+
 type RootStackParamList = {
   Login: undefined;
   Chat: undefined;
   ChatScreen: undefined;
 };
+
 type Props = NativeStackScreenProps<RootStackParamList, "Chat">;
 type ItemProps = {name: string};
 
@@ -41,13 +44,14 @@ const DATA = [
   },
 ];
 
+
 const Chat = ({ navigation }: Props) => {
   const [session, setSession] = useState<object | null>({});
 
   useEffect(() => {
     // Retrieve the session from AsyncStorage
     const getSession = async () => {
-      const sessionValue = await Storage.getData("session");
+      const sessionValue = await Storage.getData('session');
       if (sessionValue !== null) {
         const parsedSessionValue = JSON.parse(sessionValue);
         setSession(parsedSessionValue);
@@ -57,11 +61,10 @@ const Chat = ({ navigation }: Props) => {
     getSession();
   }, []);
 
-
   const LogoutHandler = async () => {
-    await Storage.removeData("session");
+    await Storage.removeData('session');
     setSession({});
-    navigation.navigate("Login");
+    navigation.navigate('Login');
   };
   const Item = ({name}: ItemProps) => (
     <Pressable onPress={()=>

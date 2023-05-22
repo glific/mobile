@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import Button from "../components/ui/Button";
-import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import Button from '../components/ui/Button';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-import Input from "../components/ui/Input";
-import { Colors } from "../constants/styles";
-import createAxiosClient from "../config/axios";
+import Input from '../components/ui/Input';
+import { Colors } from '../constants/styles';
+import createAxiosClient from '../config/axios';
 import Storage from '../utils/asyncStorage';
 
 type RootStackParamList = {
@@ -13,20 +13,20 @@ type RootStackParamList = {
   Chat: undefined;
 };
 
-type Props = NativeStackScreenProps<RootStackParamList, "Login">;
+type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
 const Login = ({ navigation }: Props) => {
-  const [enteredMobile, setEnteredMobile] = useState("");
-  const [enteredPassword, setEnteredPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [enteredMobile, setEnteredMobile] = useState('');
+  const [enteredPassword, setEnteredPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const Client = createAxiosClient();
 
   function updateInputValueHandler(inputType: string, enteredValue: string) {
     switch (inputType) {
-      case "mobile":
+      case 'mobile':
         setEnteredMobile(enteredValue);
         break;
-      case "password":
+      case 'password':
         setEnteredPassword(enteredValue);
         break;
     }
@@ -34,18 +34,18 @@ const Login = ({ navigation }: Props) => {
 
   const onSubmitHandler = async () => {
     try {
-      if(enteredMobile == "" || enteredPassword == "") {
-        throw new Error("Please enter mobile number and password!");
+      if (enteredMobile == '' || enteredPassword == '') {
+        throw new Error('Please enter mobile number and password!');
       }
       const response = await Client.post('/v1/session', {
         user: {
           phone: enteredMobile,
-          password: enteredPassword
-        }
-      })
+          password: enteredPassword,
+        },
+      });
 
       await Storage.storeData('session', JSON.stringify(response.data.data));
-      navigation.navigate("Chat");
+      navigation.navigate('Chat');
     } catch (error: any) {
       setErrorMessage(error.message);
     }
@@ -60,14 +60,14 @@ const Login = ({ navigation }: Props) => {
     <View>
       <Input
         label="Mobile Number"
-        onUpdateValue={updateInputValueHandler.bind(this, "mobile")}
+        onUpdateValue={updateInputValueHandler.bind(this, 'mobile')}
         value={enteredMobile}
         keyboardType="numeric"
         isError={errorMessage ? true : false}
       />
       <Input
         label="Password"
-        onUpdateValue={updateInputValueHandler.bind(this, "password")}
+        onUpdateValue={updateInputValueHandler.bind(this, 'password')}
         secure
         value={enteredPassword}
         isError={errorMessage ? true : false}
