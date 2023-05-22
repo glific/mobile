@@ -4,4 +4,5 @@ export const Colors = {
   secondary100: "#ffffff",
   error100: "#f44336",
   primaryText: "#000000",
+  darkGray: "#93A29B"
 };
