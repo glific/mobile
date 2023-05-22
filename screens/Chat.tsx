@@ -51,11 +51,10 @@ const Chat = ({ navigation }: Props) => {
 
   return (
     <View>
-      <Text>Chat Screen</Text>
       <ApolloProvider client={newClient}>
         <ContactList />
       </ApolloProvider>
-      <Button onPress={LogoutHandler}>
+      <Button onPress={LogoutHandler} disable={false}>
         <Text>Logout</Text>
       </Button>
     </View>

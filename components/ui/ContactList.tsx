@@ -1,30 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, Text, View , StyleSheet} from "react-native";
 import { GET_CONTACTS } from "../../graphql/queries/getContacts";
 import { useQuery } from "@apollo/client";
-import { Contact } from "../../constants/interfaces";
+import { Contacts } from "../../constants/interfaces";
+import Contact from "./Contact";
+import { CONTACT_LIST_VARIABLE } from "../../constants/graphql_variables";
+import Loading from "./Loading";
 
 const ContactList: React.FC = () => {
 
-    const [contacts, setContacts] = useState<Contact[]>([]);
+    const [contacts, setContacts] = useState<Contacts[]>([]);
 
-    const { loading, error, data } = useQuery(GET_CONTACTS, {
-        variables: {
-            searchFilter: {
-                includeTags: [],
-                includeGroups: [],
-                includeUsers: [],
-            },
-            messageOpts: {
-                limit: 3,
-                order: "ASC",
-            },
-            contactOpts: {
-                order: "DESC",
-                limit: 10,
-            },
-        }
-    });
+    const { loading, error, data } = useQuery(GET_CONTACTS, { variables: CONTACT_LIST_VARIABLE });
 
     useEffect(() => {
         if (data) {
@@ -40,18 +27,16 @@ const ContactList: React.FC = () => {
 
 
     if (loading) {
-        return <Text>Loading...</Text>; // Display a loading indicator while the query is in progress
+        return <Loading />; // Display a loading indicator while the query is in progress
     }
 
+    const contactItem = ({ item }: { item: Contacts; }) => <Contact name={item.name} />;
+
     return (
-        <View style={styles.container}>
+        <View style={styles.contactList}>
             <FlatList
                 data={contacts}
-                renderItem={({ item }: { item: Contact }) => (
-                    <View style={styles.contactItem}>
-                        <Text style={styles.contactName}>{item.index} {item.name}</Text>
-                    </View>
-                )}
+                renderItem={contactItem}
                 keyExtractor={(item) => item.index.toString()}
             />
         </View>
@@ -59,23 +44,9 @@ const ContactList: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 16,
-        height: 50,
-        width: 200,
-    },
-    contactItem: {
-        backgroundColor: "red",
-        marginBottom: 16,
-    },
-    contactName: {
-        fontSize: 18,
-        fontWeight: "bold",
-    },
-    contactEmail: {
-        fontSize: 14,
-        color: "gray",
+    contactList: {
+        marginTop: 20,
+        marginBottom:20,
     },
 });
 
