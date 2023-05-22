@@ -56,7 +56,7 @@ const Chat = ({ navigation }: Props) => {
       <ApolloProvider client={newClient}>
         <ContactList />
       </ApolloProvider>
-      <Button onPress={LogoutHandler} disable={false}>
+      <Button onPress={LogoutHandler} disable={false} />
     </View>
   );
 };
