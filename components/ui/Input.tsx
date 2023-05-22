@@ -1,17 +1,16 @@
-import { View, Text, TextInput, StyleSheet } from "react-native";
-import { Colors } from "../../constants/styles";
-import { InputProps } from "../../constants/interfaces";
+import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { Colors } from '../../constants/styles';
+import { InputProps } from '../../constants/interfaces';
 import { AntDesign } from '@expo/vector-icons';
-
 
 const Input = ({
   label,
-  keyboardType = "default",
+  keyboardType = 'default',
   secure = false,
   onUpdateValue,
   value,
   isError = false,
-  placeHolder = "type..."
+  placeHolder = 'type...',
 }: InputProps) => {
   return (
     <View style={styles.inputContainer}>
@@ -30,14 +29,14 @@ const Input = ({
           selectionColor={Colors.darkGray}
           underlineColorAndroid="transparent"
         />
-        {value && 
+        {value && (
           <AntDesign
-            testID="close" 
-            name="close" 
-            style={styles.clearIcon} 
-            onPress={() => onUpdateValue("")} 
+            testID="close"
+            name="close"
+            style={styles.clearIcon}
+            onPress={() => onUpdateValue('')}
           />
-        }
+        )}
       </View>
     </View>
   );
@@ -49,7 +48,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     width: '100%',
     paddingHorizontal: '4%',
-    marginVertical: 8
+    marginVertical: 8,
   },
   label: {
     fontSize: 16,
@@ -60,7 +59,7 @@ const styles = StyleSheet.create({
     color: Colors.error100,
   },
   inputBox: {
-    width: "100%",
+    width: '100%',
     height: 48,
     marginVertical: 8,
     borderWidth: 0.75,
@@ -69,15 +68,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderColor: Colors.darkGray,
     borderRadius: 10,
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   input: {
     flex: 1,
-    fontSize: 16
+    fontSize: 16,
   },
   clearIcon: {
     fontSize: 16,
-    color: Colors.darkGray
+    color: Colors.darkGray,
   },
   error: {
     backgroundColor: Colors.error100,
