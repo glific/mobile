@@ -3,7 +3,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Colors } from '../constants/styles';
 import Login from '../screens/Login';
 import Server from '../screens/Server';
-import AppDrawer from './Drawer';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,7 +21,6 @@ const AuthStack = () => {
         options={{ title: 'Add your organisation URL' }}
       />
       <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="Home" component={AppDrawer} options={{headerShown: false}}/>
     </Stack.Navigator>
   );
 };

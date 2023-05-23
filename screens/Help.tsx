@@ -13,6 +13,6 @@ export default Help;
 
 const styles = StyleSheet.create({
   mainContainer: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });

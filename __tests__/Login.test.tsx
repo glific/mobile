@@ -1,10 +1,15 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import Login from '../screens/Login';
+import AuthContext from '../config/AuthContext';
 
 describe('Login screen', () => {
   test('renders correctly', () => {
-    const { getByTestId, getByText } = render(<Login />);
+    const { getByTestId, getByText } = render(
+      <AuthContext.Provider value={{ token: 'existing_token', setToken: jest.fn() }}>
+        <Login />
+      </AuthContext.Provider>
+    );
 
     const mobileInput = getByTestId('Mobile Number');
     const passwordInput = getByTestId('Password');
@@ -16,7 +21,11 @@ describe('Login screen', () => {
   });
 
   test('updates input values correctly', () => {
-    const { getByTestId } = render(<Login />);
+    const { getByTestId } = render(
+      <AuthContext.Provider value={{ token: 'existing_token', setToken: jest.fn() }}>
+        <Login />
+      </AuthContext.Provider>
+    );
 
     const mobileInput = getByTestId('Mobile Number');
     const passwordInput = getByTestId('Password');
@@ -29,7 +38,11 @@ describe('Login screen', () => {
   });
 
   test('error message when empty mobile number input', async () => {
-    const { getByTestId, getByText } = render(<Login />);
+    const { getByTestId, getByText } = render(
+      <AuthContext.Provider value={{ token: 'existing_token', setToken: jest.fn() }}>
+        <Login />
+      </AuthContext.Provider>
+    );
 
     const passwordInput = getByTestId('Password');
     fireEvent.changeText(passwordInput, 'secret1234');
@@ -42,7 +55,11 @@ describe('Login screen', () => {
   });
 
   test('error message when empty password input', async () => {
-    const { getByTestId, getByText } = render(<Login />);
+    const { getByTestId, getByText } = render(
+      <AuthContext.Provider value={{ token: 'existing_token', setToken: jest.fn() }}>
+        <Login />
+      </AuthContext.Provider>
+    );
 
     const mobileInput = getByTestId('Mobile Number');
     fireEvent.changeText(mobileInput, '917834811114');

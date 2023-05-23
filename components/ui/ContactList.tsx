@@ -26,14 +26,15 @@ const variables = {
 const ContactList: React.FC = () => {
   const { loading, error, data } = useQuery(GET_CONTACTS, { variables });
 
+  // Display a loading indicator while the query is in progress
   if (loading) {
-    return <Loading />; // Display a loading indicator while the query is in progress
+    return <Loading />;
+  }
+  // Handle the error
+  if (error) {
+    console.log(error);
   }
 
-  if (error) {
-    console.log(error); // Handle the error
-  }
-  const contactItem = ({ item }: { item: Contacts }) => <Contact name={item.name} />;
   let contacts = [];
   if (data) {
     contacts = data.search.map((element: any, idx: number) => {
@@ -44,7 +45,9 @@ const ContactList: React.FC = () => {
     <View style={styles.contactList}>
       <FlatList
         data={contacts}
-        renderItem={contactItem}
+        renderItem={({ item }: { item: Contacts }) => 
+          <Contact name={item.name} />
+        }
         keyExtractor={(item) => item.index.toString()}
       />
     </View>

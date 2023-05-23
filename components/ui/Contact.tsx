@@ -5,7 +5,7 @@ export interface ContactProps {
 
 const Contact: React.FC<ContactProps> = (props): JSX.Element => {
   return (
-    <View style={styles.contactItem}>
+    <View testID='Contact Card' style={styles.contactItem}>
       <Text style={styles.contactName}>{props.name}</Text>
     </View>
   );

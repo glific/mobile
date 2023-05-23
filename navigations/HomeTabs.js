@@ -16,14 +16,18 @@ const HomeTabs = () => {
         tabBarActiveTintColor: Colors.primary400,
         tabBarInactiveTintColor: Colors.primary70,
         tabBarIndicatorStyle: { backgroundColor: Colors.primary400 },
-        tabBarAndroidRipple: { borderless: true, color: Colors.primary70 }
+        tabBarAndroidRipple: { borderless: true, color: Colors.primary70 },
       }}
     >
       <Tab.Screen name="Contacts" component={Chat} />
       <Tab.Screen name="Collections" component={Collections} />
-      <Tab.Screen name="SavedSearches" component={SavedSearches} options={{title: "Saved Searches"}}/>
+      <Tab.Screen
+        name="SavedSearches"
+        component={SavedSearches}
+        options={{ title: 'Saved Searches' }}
+      />
     </Tab.Navigator>
   );
-}
+};
 
-export default HomeTabs
+export default HomeTabs;

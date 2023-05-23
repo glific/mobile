@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Button from '../components/ui/Button';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -7,6 +7,7 @@ import Input from '../components/ui/Input';
 import { Colors } from '../constants/styles';
 import createAxiosClient from '../config/axios';
 import Storage from '../utils/asyncStorage';
+import AuthContext from '../config/AuthContext';
 
 type RootStackParamList = {
   Login: undefined;
@@ -16,6 +17,7 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
 const Login = ({ navigation }: Props) => {
+  const { setToken } = useContext(AuthContext);
   const [enteredMobile, setEnteredMobile] = useState('');
   const [enteredPassword, setEnteredPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -45,7 +47,7 @@ const Login = ({ navigation }: Props) => {
       });
 
       await Storage.storeData('session', JSON.stringify(response.data.data));
-      navigation.navigate('Home');
+      setToken(response.data.data.access_token);
     } catch (error: any) {
       setErrorMessage(error.message);
     }

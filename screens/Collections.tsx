@@ -1,20 +1,20 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import SearchBar from '../components/ui/SearchBar'
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import SearchBar from '../components/ui/SearchBar';
 
 const Collections = () => {
   return (
     <View style={styles.mainContainer}>
-        <SearchBar />
-        <Text>Collections</Text>
+      <SearchBar />
+      <Text>Collections</Text>
     </View>
-  )
-}
+  );
+};
 
-export default Collections
+export default Collections;
 
 const styles = StyleSheet.create({
   mainContainer: {
-    flex: 1
-  }
-})
+    flex: 1,
+  },
+});

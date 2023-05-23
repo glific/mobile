@@ -14,7 +14,8 @@ const AppStack = () => {
       }}
     >
       <Stack.Screen name="Home" component={AppDrawer} />
-      <Stack.Screen name="Chat Page" component={ChatPage} />
+      {/* <Stack.Screen name="ChatScreen" component={ChatScreen} /> */}
+      {/* <Stack.Screen name="Filter" component={Filter} /> */}
     </Stack.Navigator>
   );
 };

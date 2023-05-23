@@ -2,15 +2,27 @@ import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import AuthStack from './AuthStack';
 import AppStack from './AppStack';
+import Storage from '../utils/asyncStorage';
+import AuthContext from '../config/AuthContext';
 
 const Navigation = () => {
-  const [token, setToken] = useState(null); //TODO: can be implemented when global state is available
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    const getToken = async () => {
+      const sessionValue = await Storage.getData('session');
+      if (sessionValue !== null) {
+        const parsedSessionValue = JSON.parse(sessionValue);
+        setToken(parsedSessionValue.access_token);
+      }
+    };
+    getToken();
+  }, []);
 
   return (
-    <NavigationContainer>
-      <AuthStack />
-      {/* {token ? <AppStack /> : <AuthStack  />} */}
-    </NavigationContainer>
+    <AuthContext.Provider value={{ token, setToken }}>
+      <NavigationContainer>{token ? <AppStack /> : <AuthStack />}</NavigationContainer>
+    </AuthContext.Provider>
   );
 };
 
