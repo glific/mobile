@@ -5,8 +5,7 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import Input from '../components/ui/Input';
 import { Colors } from '../constants/styles';
-import createAxiosClient from '../config/axios';
-import Storage from '../utils/asyncStorage';
+// import createAxiosClient from '../config/axios';
 
 type RootStackParamList = {
   Login: undefined;
@@ -19,7 +18,7 @@ const Login = ({ navigation }: Props) => {
   const [enteredMobile, setEnteredMobile] = useState('');
   const [enteredPassword, setEnteredPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const Client = createAxiosClient();
+  // const Client = createAxiosClient();
 
   function updateInputValueHandler(inputType: string, enteredValue: string) {
     switch (inputType) {

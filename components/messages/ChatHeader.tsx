@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from '@expo/vector-icons/FontAwesome';
 import { AntDesign } from '@expo/vector-icons';
 
-const ChatHeader = (props): any => {
+const ChatHeader = (props: any) => {
   const navigation = useNavigation();
   const tap: boolean = false;
   const name: String = 'Alok';
