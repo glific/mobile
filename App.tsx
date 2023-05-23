@@ -1,14 +1,14 @@
 import 'react-native-gesture-handler';
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, SafeAreaView, StatusBar } from "react-native";
 import Navigation from "./navigations";
+import { Colors } from './constants/styles';
 
 export default function App() {
   return (
-    <>
-      <StatusBar style="light" />
+    <SafeAreaView style={{ flex: 1 }}>
+      <StatusBar backgroundColor={Colors.primary400} />
       <Navigation />
-    </>
+    </SafeAreaView>
   );
 }
 

@@ -9,6 +9,7 @@ import MyAccount from '../screens/MyAccount';
 import Setting from '../screens/Setting';
 import Help from '../screens/Help';
 import CustomDrawer from '../components/navigation/CustomDrawer';
+import HomeTabs from './HomeTabs';
 
 const Drawer = createDrawerNavigator();
 
@@ -17,18 +18,20 @@ const AppDrawer = () => {
     <Drawer.Navigator
       initialRouteName="Home"
       screenOptions={{
-        headerShown: false,
         drawerActiveBackgroundColor: Colors.primary400,
         drawerActiveTintColor: '#fff',
         drawerLabelStyle: {
           marginLeft: -15,
         },
+        headerStyle: { backgroundColor: Colors.primary400 },
+        headerTintColor: 'white',
+        contentStyle: { backgroundColor: Colors.secondary100 },
       }}
       drawerContent={(props) => <CustomDrawer {...props} />}
     >
       <Drawer.Screen
-        name="Home"
-        component={Chat}
+        name="Chat"
+        component={HomeTabs}
         options={{
           drawerIcon: ({ color }) => <Entypo name="chat" size={20} color={color} />,
         }}

@@ -9,12 +9,12 @@ const AppStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerStyle: { backgroundColor: Colors.primary400 },
-        headerTintColor: 'white',
+        headerShown: false,
         contentStyle: { backgroundColor: Colors.secondary100 },
       }}
     >
       <Stack.Screen name="Home" component={AppDrawer} />
+      <Stack.Screen name="Chat Page" component={ChatPage} />
     </Stack.Navigator>
   );
 };
