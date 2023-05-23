@@ -1,7 +1,17 @@
-import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { View, Text, TextInput, StyleSheet, KeyboardTypeOptions } from 'react-native';
 import { Colors } from '../../constants/styles';
-import { InputProps } from '../../constants/interfaces';
+
 import { AntDesign } from '@expo/vector-icons';
+
+export interface InputProps {
+  label: string;
+  onUpdateValue: (text: string) => void;
+  value: string;
+  isError: boolean;
+  secure?: boolean;
+  keyboardType?: KeyboardTypeOptions;
+  placeHolder: string;
+}
 
 const Input = ({
   label,

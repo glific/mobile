@@ -1,7 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { ContactProp } from '../../constants/interfaces';
+export interface ContactProps {
+  name: string | null;
+}
 
-const Contact: React.FC<ContactProp> = (props): JSX.Element => {
+const Contact: React.FC<ContactProps> = (props): JSX.Element => {
   return (
     <View style={styles.contactItem}>
       <Text style={styles.contactName}>{props.name}</Text>

@@ -2,10 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, Text, View, StyleSheet } from 'react-native';
 import { GET_CONTACTS } from '../../graphql/queries/Contact';
 import { useQuery } from '@apollo/client';
-import { Contacts } from '../../constants/interfaces';
-import Contact from './Contact';
 
+import Contact from './Contact';
 import Loading from './Loading';
+
+export interface Contacts {
+  index: number;
+  name: string | null;
+}
 
 const variables = {
   filter: {},
