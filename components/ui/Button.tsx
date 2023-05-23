@@ -1,10 +1,9 @@
-import { ReactElement } from 'react';
 import { Pressable, StyleSheet, Text } from 'react-native';
-
 import { Colors } from '../../constants/styles';
+import { ReactElement } from 'react';
 
-interface ButtonProps {
-  children: ReactElement;
+export interface ButtonProps {
+  children: ReactElement | string;
   onPress: () => void;
   disable?: boolean;
 }

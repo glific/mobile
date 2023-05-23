@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, render, fireEvent } from '@testing-library/react-native';
+import { act, render, fireEvent, waitFor } from '@testing-library/react-native';
 import Chat from '../screens/Chat';
 import Storage from '../utils/asyncStorage';
 
@@ -23,13 +23,15 @@ describe('Chat screen', () => {
     expect(searchInput.props.value).toBe('test search');
   });
 
-  test('should test when search and filter icon pressed', () => {
+  test('should test when search and filter icon pressed', async () => {
     const mockOnSearchHandler = jest.fn();
     const mockOnFilter = jest.fn();
 
     const { getByTestId } = render(<Chat />);
-    fireEvent.press(getByTestId('search1'));
-    fireEvent.press(getByTestId('filter-outline'));
+    await waitFor(() => {
+      fireEvent.press(getByTestId('search1'));
+      fireEvent.press(getByTestId('filter-outline'));
+    });
 
     expect(mockOnSearchHandler).toBeTruthy();
     expect(mockOnFilter).toBeTruthy();

@@ -1,9 +1,16 @@
+
 import { StyleSheet, Text, View, Pressable, FlatList } from 'react-native';
+
+import { ApolloProvider } from '@apollo/client';
+
+import ContactList from '../components/ui/ContactList';
+import SearchBar from '../components/ui/SearchBar';
+
 import Storage from '../utils/asyncStorage';
 import { useState, useEffect } from 'react';
 import Button from '../components/ui/Button';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import SearchBar from '../components/ui/SearchBar';
+import { client } from '../config/apollo';
 
 type RootStackParamList = {
   Login: undefined;
@@ -43,7 +50,7 @@ const DATA = [
 ];
 
 const Chat = ({ navigation }: Props) => {
-  const [session, setSession] = useState<object | null>({});
+  const [session, setSession] = useState<object | null>();
 
   useEffect(() => {
     // Retrieve the session from AsyncStorage
@@ -54,7 +61,6 @@ const Chat = ({ navigation }: Props) => {
         setSession(parsedSessionValue);
       }
     };
-
     getSession();
   }, []);
 
@@ -86,7 +92,10 @@ const Chat = ({ navigation }: Props) => {
 
   return (
     <View style={styles.mainContainer}>
-      <SearchBar />
+       <ApolloProvider client={client}>
+        <SearchBar />
+        <ContactList />
+      </ApolloProvider>
       <FlatList
         data={DATA}
         renderItem={({ item }) => <Item name={item.name} />}
@@ -100,6 +109,8 @@ const Chat = ({ navigation }: Props) => {
     </View>
   );
 };
+
+
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
@@ -127,6 +138,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
   },
+
 });
 
 export default Chat;

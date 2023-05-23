@@ -10,6 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.14",
     "@expo/vector-icons": "^13.0.0",
     "@react-native-async-storage/async-storage": "1.17.11",
     "@react-navigation/drawer": "^6.6.2",
@@ -19,6 +20,8 @@
     "@types/axios": "^0.14.0",
     "axios": "^1.4.0",
     "expo": "~48.0.5",
+    "expo-status-bar": "~1.4.4",
+    "graphql": "^15.8.0",
     "react": "18.2.0",
     "react-native": "0.71.8",
     "react-native-dotenv": "^3.4.8",
