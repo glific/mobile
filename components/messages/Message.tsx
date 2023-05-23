@@ -7,7 +7,6 @@ import Animated, {
   useAnimatedGestureHandler,
   useSharedValue,
 } from 'react-native-reanimated';
-import { Colors } from '../../constants/styles';
 
 const Message = ({ time, isLeft, message, onSwipe }: any) => {
   const startingPosition = 0;
@@ -20,17 +19,21 @@ const Message = ({ time, isLeft, message, onSwipe }: any) => {
         backgroundColor: '#073F24',
         borderTopLeftRadius: 0,
       };
-    } else if (!isLeft && type === 'message') {
-      return {
-        color: '#E1E8E5',
-      };
     } else if (isLeft && type === 'time') {
       return {
-        color: 'darkgray',
+        color: 'white',
+      };
+    } else if (!isLeft && type === 'time') {
+      return {
+        color: 'black',
       };
     } else if (isLeft && type === 'message') {
       return {
         color: 'white',
+      };
+    } else if (!isLeft && type === 'message') {
+      return {
+        color: 'black',
       };
     } else {
       return {
@@ -86,7 +89,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   messageContainer: {
-    backgroundColor: Colors.messageBackground,
+    backgroundColor: '#E1E8E5',
     maxWidth: '80%',
     alignSelf: 'flex-end',
     flexDirection: 'row',
@@ -95,6 +98,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     paddingTop: 5,
     paddingBottom: 10,
+    textDecorationStyle: 'solid',
   },
   messageView: {
     backgroundColor: 'transparent',

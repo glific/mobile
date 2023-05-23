@@ -16,9 +16,9 @@ type RootStackParamList = {
   ChatScreen: undefined;
 };
 
-type Props = NativeStackScreenProps<RootStackParamList, 'ChatScreen'>;
+// type Props = NativeStackScreenProps<RootStackParamList, 'ChatScreen'>;
 
-const ChatScreen = ({ navigation }: Props) => {
+const ChatScreen = (props) => {
   const [reply, setReply] = useState('');
   const [isLeft, setIsLeft] = useState(false);
   const [showModal, setshowModal] = useState(false);

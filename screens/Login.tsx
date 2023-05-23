@@ -33,22 +33,22 @@ const Login = ({ navigation }: Props) => {
   }
 
   const onSubmitHandler = async () => {
-    try {
-      if (enteredMobile == '' || enteredPassword == '') {
-        throw new Error('Please enter mobile number and password!');
-      }
-      const response = await Client.post('/v1/session', {
-        user: {
-          phone: enteredMobile,
-          password: enteredPassword,
-        },
-      });
+    // try {
+    //   if (enteredMobile == '' || enteredPassword == '') {
+    //     throw new Error('Please enter mobile number and password!');
+    //   }
+    //   const response = await Client.post('/v1/session', {
+    //     user: {
+    //       phone: enteredMobile,
+    //       password: enteredPassword,
+    //     },
+    //   });
 
-      await Storage.storeData('session', JSON.stringify(response.data.data));
-      navigation.navigate('Home');
-    } catch (error: any) {
-      setErrorMessage(error.message);
-    }
+    //   await Storage.storeData('session', JSON.stringify(response.data.data));
+    navigation.navigate('Home');
+    // } catch (error: any) {
+    //   setErrorMessage(error.message);
+    // }
   };
 
   let errorDisplay;

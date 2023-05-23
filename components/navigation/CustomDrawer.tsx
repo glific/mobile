@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, Image, Pressable, StyleSheet } from 'react-native';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { Colors } from '../../constants/styles';
+import Wallet from '../ui/Wallet';
 import { Feather } from '@expo/vector-icons';
 import Storage from '../../utils/asyncStorage';
 
@@ -25,11 +26,12 @@ const CustomDrawer: React.FC<DrawerContentProps> = (props: any) => {
             <Text style={styles.profileText}>Aman</Text>
           </View>
         </View>
+        <Wallet />
         <DrawerItemList {...props} contentContainerStyle={{ paddingHorizontal: 6 }} />
       </DrawerContentScrollView>
       <View style={styles.bottomContainer}>
         <Pressable onPress={LogoutHandler} style={styles.logoutButton}>
-          <Feather name="log-out" size={20} color="#4e4e4e" />
+          <Feather name="log-out" size={20} color="#DD1F1F" />
           <Text style={styles.logoutText}>Logout</Text>
         </Pressable>
       </View>
@@ -57,7 +59,7 @@ const styles = StyleSheet.create({
     height: 120,
     padding: 10,
     justifyContent: 'space-between',
-    marginBottom: 20,
+    marginBottom: 0,
   },
   logo: {
     width: 58,
@@ -91,6 +93,6 @@ const styles = StyleSheet.create({
   },
   logoutText: {
     marginLeft: 10,
-    color: '#4e4e4e',
+    color: '#DD1F1F',
   },
 });
