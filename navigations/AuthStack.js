@@ -1,5 +1,4 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
 import { Colors } from '../constants/styles';
 import Login from '../screens/Login';
 import Server from '../screens/Server';
