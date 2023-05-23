@@ -3,7 +3,7 @@ import React from 'react';
 
 const Setting = () => {
   return (
-    <View>
+    <View style={styles.mainContainer}>
       <Text>Setting</Text>
     </View>
   );
@@ -11,4 +11,8 @@ const Setting = () => {
 
 export default Setting;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1
+  }
+});

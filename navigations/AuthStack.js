@@ -22,7 +22,7 @@ const AuthStack = () => {
         options={{ title: 'Add your organisation URL' }}
       />
       <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="Chat" component={AppDrawer} />
+      <Stack.Screen name="Home" component={AppDrawer} options={{headerShown: false}}/>
     </Stack.Navigator>
   );
 };

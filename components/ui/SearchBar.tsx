@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { View, TextInput, StyleSheet } from 'react-native';
 import { Colors } from '../../constants/styles';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 
@@ -34,33 +34,35 @@ const SearchBar = () => {
   }
 
   return (
-    <View style={styles.inputContainer}>
-      <AntDesign
-        testID="search1"
-        name="search1"
-        size={20}
-        style={styles.icon}
-        onPress={onSearchHandler}
-      />
-      <TextInput
-        testID="Search Input"
-        style={styles.input}
-        autoCapitalize="none"
-        keyboardType="default"
-        placeholder="Search"
-        onChangeText={onSearch}
-        value={searchValue}
-        cursorColor={Colors.darkGray}
-        selectionColor={Colors.darkGray}
-        underlineColorAndroid="transparent"
-      />
-      <Ionicons
-        testID="filter-outline"
-        name="filter-outline"
-        size={20}
-        style={styles.icon}
-        onPress={onFilter}
-      />
+    <View style={styles.mainContainer}>
+      <View style={styles.inputContainer}>
+        <AntDesign
+          testID="search1"
+          name="search1"
+          size={20}
+          style={styles.icon}
+          onPress={onSearchHandler}
+        />
+        <TextInput
+          testID="Search Input"
+          style={styles.input}
+          autoCapitalize="none"
+          keyboardType="default"
+          placeholder="Search"
+          onChangeText={onSearch}
+          value={searchValue}
+          cursorColor={Colors.darkGray}
+          selectionColor={Colors.darkGray}
+          underlineColorAndroid="transparent"
+        />
+        <Ionicons
+          testID="filter-outline"
+          name="filter-outline"
+          size={20}
+          style={styles.icon}
+          onPress={onFilter}
+        />
+      </View>
     </View>
   );
 };
@@ -68,9 +70,15 @@ const SearchBar = () => {
 export default SearchBar;
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    paddingVertical: 12,
+    backgroundColor: 'white',
+    borderTopWidth: 0.2,
+    borderBottomWidth: 0.2,
+    borderColor: Colors.darkGray
+  },
   inputContainer: {
     width: '95%',
-    marginVertical: 8,
     flexDirection: 'row',
     backgroundColor: 'white',
     alignSelf: 'center',

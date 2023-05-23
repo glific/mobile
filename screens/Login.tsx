@@ -45,7 +45,7 @@ const Login = ({ navigation }: Props) => {
       });
 
       await Storage.storeData('session', JSON.stringify(response.data.data));
-      navigation.navigate('Chat');
+      navigation.navigate('Home');
     } catch (error: any) {
       setErrorMessage(error.message);
     }
