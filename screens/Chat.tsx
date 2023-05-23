@@ -1,4 +1,3 @@
-
 import { StyleSheet, Text, View, Pressable, FlatList } from 'react-native';
 
 import { ApolloProvider } from '@apollo/client';
@@ -82,7 +81,7 @@ const Chat = ({ navigation }: Props) => {
 
   return (
     <View style={styles.mainContainer}>
-       <ApolloProvider client={client}>
+      <ApolloProvider client={client}>
         <SearchBar />
         <ContactList />
       </ApolloProvider>
@@ -99,7 +98,6 @@ const Chat = ({ navigation }: Props) => {
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -128,7 +126,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
   },
-<<<<<<< HEAD
   avatartext: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -136,9 +133,6 @@ const styles = StyleSheet.create({
     paddingTop: 12,
     fontSize: 18,
   },
-=======
-
->>>>>>> c87941f02fb95c6363484c72e595949b609b190b
 });
 
 export default Chat;
