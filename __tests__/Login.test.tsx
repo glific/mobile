@@ -2,13 +2,20 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import Login from '../screens/Login';
 
+jest.mock('react-native-phone-number-input', () => {
+  const { TextInput } = jest.requireActual('react-native');
+  return jest.fn().mockImplementation((props) => {
+    return <TextInput onChange={props.onChangeText} value={props.value} testID="Mobile Number" />;
+  });
+});
+
 describe('Login screen', () => {
   test('renders correctly', () => {
     const { getByTestId, getByText } = render(<Login />);
 
     const mobileInput = getByTestId('Mobile Number');
-    const passwordInput = getByTestId('Password');
-    const continueButton = getByText('Continue');
+    const passwordInput = getByTestId('password');
+    const continueButton = getByText('LOG IN');
 
     expect(mobileInput).toBeDefined();
     expect(passwordInput).toBeDefined();
@@ -19,7 +26,7 @@ describe('Login screen', () => {
     const { getByTestId } = render(<Login />);
 
     const mobileInput = getByTestId('Mobile Number');
-    const passwordInput = getByTestId('Password');
+    const passwordInput = getByTestId('password');
 
     fireEvent.changeText(mobileInput, '917834811114');
     fireEvent.changeText(passwordInput, 'secret1234');
@@ -31,10 +38,10 @@ describe('Login screen', () => {
   test('error message when empty mobile number input', async () => {
     const { getByTestId, getByText } = render(<Login />);
 
-    const passwordInput = getByTestId('Password');
+    const passwordInput = getByTestId('password');
     fireEvent.changeText(passwordInput, 'secret1234');
 
-    const continueButton = getByText('Continue');
+    const continueButton = getByText('LOG IN');
     fireEvent.press(continueButton);
 
     const errorMessage = getByText('Please enter mobile number and password!');
@@ -47,7 +54,7 @@ describe('Login screen', () => {
     const mobileInput = getByTestId('Mobile Number');
     fireEvent.changeText(mobileInput, '917834811114');
 
-    const continueButton = getByText('Continue');
+    const continueButton = getByText('LOG IN');
     fireEvent.press(continueButton);
 
     const errorMessage = getByText('Please enter mobile number and password!');
@@ -60,7 +67,7 @@ describe('Login screen', () => {
   //   const { getByTestId, getByText } = render(<Login navigation={navigationMock} />);
 
   //   const mobileInput = getByTestId("Mobile Number");
-  //   const passwordInput = getByTestId("Password");
+  //   const passwordInput = getByTestId("password");
   //   const continueButton = getByText("Continue");
 
   //   fireEvent.changeText(mobileInput, "1234567890");

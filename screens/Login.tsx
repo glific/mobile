@@ -95,6 +95,7 @@ const Login = ({ navigation }: Props) => {
 
         <View style={styles.passwordContainer}>
           <Input
+            testID="password"
             label="Enter your password"
             onUpdateValue={updateInputValueHandler.bind(this, 'password')}
             secure={showPassword ? false : true}

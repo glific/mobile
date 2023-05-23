@@ -43,6 +43,7 @@ const Server = ({ navigation }: Props) => {
     <View style={styles.mainContainer}>
       <View style={styles.inputContainer}>
         <Input
+          testID="server"
           label="Enter or paste URL here"
           onUpdateValue={serverURLChanged}
           value={serverURL}

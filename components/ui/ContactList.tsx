@@ -5,7 +5,6 @@ import { useQuery } from '@apollo/client';
 
 import Contact from './Contact';
 import Loading from './Loading';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 export interface Contacts {
   index: number;

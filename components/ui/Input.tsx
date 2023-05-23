@@ -11,6 +11,7 @@ export interface InputProps {
   secure?: boolean;
   keyboardType?: KeyboardTypeOptions;
   placeholder: string;
+  testID?: string;
 }
 
 const Input = ({
@@ -21,13 +22,14 @@ const Input = ({
   onUpdateValue,
   value,
   isError = false,
+  testID,
 }: InputProps) => {
   return (
     <View style={styles.inputContainer}>
       <Text style={[styles.label, isError && styles.errorLabel]}>{label}</Text>
       <View style={styles.inputBox}>
         <TextInput
-          testID={label}
+          testID={testID}
           style={[styles.input, isError && styles.errorLabel]}
           autoCapitalize="none"
           keyboardType={keyboardType}
