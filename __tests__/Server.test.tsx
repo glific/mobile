@@ -13,11 +13,12 @@ describe('Server screen', () => {
     expect(continueButton).toBeDefined();
   });
 
-  test('updates server URL correctly', () => {
-    const { getByTestId } = render(<Server />);
+  test('updates server URL correctly', async () => {
+    const { findByTestId, getByTestId } = render(<Server />);
 
     const serverUrlInput = getByTestId('Enter or paste URL here');
-    const clearInput = getByTestId('close');
+
+    const clearInput = await findByTestId('close');
 
     fireEvent.changeText(serverUrlInput, 'https://example.com');
     expect(serverUrlInput.props.value).toBe('https://example.com');

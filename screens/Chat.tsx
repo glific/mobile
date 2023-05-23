@@ -1,9 +1,13 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { ApolloProvider } from '@apollo/client';
+
+import ContactList from '../components/ui/ContactList';
+import SearchBar from '../components/ui/SearchBar';
+import { StyleSheet, View } from 'react-native';
 import Storage from '../utils/asyncStorage';
 import { useState, useEffect } from 'react';
 import Button from '../components/ui/Button';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import SearchBar from '../components/ui/SearchBar';
+import { client } from '../config/apollo';
 
 type RootStackParamList = {
   Login: undefined;
@@ -12,7 +16,7 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList, 'Chat'>;
 
 const Chat = ({ navigation }: Props) => {
-  const [session, setSession] = useState<object | null>({});
+  const [session, setSession] = useState<object | null>();
 
   useEffect(() => {
     // Retrieve the session from AsyncStorage
@@ -23,7 +27,6 @@ const Chat = ({ navigation }: Props) => {
         setSession(parsedSessionValue);
       }
     };
-
     getSession();
   }, []);
 
@@ -35,19 +38,21 @@ const Chat = ({ navigation }: Props) => {
 
   return (
     <View style={styles.mainContainer}>
-      <SearchBar />
-      <Text>Chat Screen</Text>
-      <Button onPress={LogoutHandler}>
-        <Text>Logout</Text>
+      <ApolloProvider client={client}>
+        <SearchBar />
+        <ContactList />
+      </ApolloProvider>
+      <Button onPress={LogoutHandler} disable={false}>
+        Logout
       </Button>
     </View>
   );
 };
 
-export default Chat;
-
 const styles = StyleSheet.create({
   mainContainer: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
+
+export default Chat;
