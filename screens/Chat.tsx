@@ -51,7 +51,7 @@ const Chat = ({ navigation }: Props) => {
   };
 
   return (
-    <View>
+    <View style={styles.mainContainer}>
       <SearchBar />
       <ApolloProvider client={newClient}>
         <ContactList />
@@ -62,3 +62,9 @@ const Chat = ({ navigation }: Props) => {
 };
 
 export default Chat;
+
+const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1
+  }
+});

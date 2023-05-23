@@ -3,9 +3,9 @@ import { View, ActivityIndicator, StyleSheet, Dimensions } from 'react-native';
 import { Colors } from '../../constants/styles';
 
 const screenDimensions = {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height
-}
+  width: Dimensions.get('window').width,
+  height: Dimensions.get('window').height,
+};
 
 const LoadingPage = () => {
   return (
@@ -15,11 +15,11 @@ const LoadingPage = () => {
   );
 };
 
-const margin = 0.5*screenDimensions.height;
+const margin = 0.5 * screenDimensions.height;
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical:margin,
+    marginVertical: margin,
   },
 });
 
