@@ -6,6 +6,7 @@ export interface ButtonProps {
   children: ReactElement | string;
   onPress: () => void;
   disable?: boolean;
+  testID?: string;
 }
 
 const Button = ({ children, onPress, disable = false }: ButtonProps) => {

@@ -6,9 +6,9 @@ describe('Login screen', () => {
   test('renders correctly', () => {
     const { getByTestId, getByText } = render(<Login />);
 
-    const mobileInput = getByTestId('Mobile Number');
+    const mobileInput = getByTestId('mobile');
     const passwordInput = getByTestId('Password');
-    const continueButton = getByText('Continue');
+    const continueButton = getByText('LOG IN');
 
     expect(mobileInput).toBeDefined();
     expect(passwordInput).toBeDefined();
@@ -18,7 +18,7 @@ describe('Login screen', () => {
   test('updates input values correctly', () => {
     const { getByTestId } = render(<Login />);
 
-    const mobileInput = getByTestId('Mobile Number');
+    const mobileInput = getByTestId('mobile');
     const passwordInput = getByTestId('Password');
 
     fireEvent.changeText(mobileInput, '917834811114');
@@ -34,7 +34,7 @@ describe('Login screen', () => {
     const passwordInput = getByTestId('Password');
     fireEvent.changeText(passwordInput, 'secret1234');
 
-    const continueButton = getByText('Continue');
+    const continueButton = getByText('LOG IN');
     fireEvent.press(continueButton);
 
     const errorMessage = getByText('Please enter mobile number and password!');
@@ -44,10 +44,10 @@ describe('Login screen', () => {
   test('error message when empty password input', async () => {
     const { getByTestId, getByText } = render(<Login />);
 
-    const mobileInput = getByTestId('Mobile Number');
+    const mobileInput = getByTestId('mobile');
     fireEvent.changeText(mobileInput, '917834811114');
 
-    const continueButton = getByText('Continue');
+    const continueButton = getByText('LOG IN');
     fireEvent.press(continueButton);
 
     const errorMessage = getByText('Please enter mobile number and password!');

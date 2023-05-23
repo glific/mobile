@@ -67,6 +67,7 @@ const Login = ({ navigation }: Props) => {
             defaultCode="IN"
             onChangeText={updateInputValueHandler.bind(this, 'mobile')}
             layout="first"
+            textInputProps={{ testID: 'mobile' }}
             value={enteredMobile}
             placeholder="Enter 10 digit phone number"
             containerStyle={{backgroundColor: "white",
@@ -94,6 +95,7 @@ const Login = ({ navigation }: Props) => {
             value={enteredPassword}
             isError={errorMessage ? true : false}
             placeholder="Password"
+            testID="Password"
           />
           <TouchableOpacity
             style={styles.iconContainer}
@@ -113,6 +115,7 @@ const Login = ({ navigation }: Props) => {
         <Button
           disable={!enteredMobile && !enteredPassword}
           onPress={onSubmitHandler}
+          testID='Continue'
         >
           <Text>LOG IN</Text>
         </Button>
