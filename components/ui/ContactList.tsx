@@ -45,9 +45,7 @@ const ContactList: React.FC = () => {
     <View style={styles.contactList}>
       <FlatList
         data={contacts}
-        renderItem={({ item }: { item: Contacts }) => 
-          <Contact name={item.name} />
-        }
+        renderItem={({ item }: { item: Contacts }) => <Contact name={item.name} />}
         keyExtractor={(item) => item.index.toString()}
       />
     </View>

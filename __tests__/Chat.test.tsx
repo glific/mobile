@@ -5,17 +5,16 @@ import Storage from '../utils/asyncStorage';
 import AuthContext from '../config/AuthContext';
 
 describe('Chat screen', () => {
-
   test('renders correctly', () => {
     const { getByTestId, getByText } = render(
       <AuthContext.Provider value={{ token: 'existing_token', setToken: jest.fn() }}>
-          <Chat />
+        <Chat />
       </AuthContext.Provider>
     );
 
     const searchInput = getByTestId('Search Input');
     const logoutButton = getByText('Logout');
-    
+
     expect(searchInput).toBeDefined();
     expect(logoutButton).toBeDefined();
   });

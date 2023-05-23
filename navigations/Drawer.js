@@ -9,6 +9,7 @@ import Setting from '../screens/Setting';
 import Help from '../screens/Help';
 import CustomDrawer from '../components/navigation/CustomDrawer';
 import HomeTabs from './HomeTabs';
+import HomeHeaderRight from '../components/HomeHeaderRight';
 
 const Drawer = createDrawerNavigator();
 
@@ -31,8 +32,11 @@ const AppDrawer = () => {
       <Drawer.Screen
         name="Chat"
         component={HomeTabs}
-        options={{
-          drawerIcon: ({ color }) => <Entypo name="chat" size={20} color={color} />,
+        options={({ navigation }) => {
+          return {
+            drawerIcon: ({ color }) => <Entypo name="chat" size={20} color={color} />,
+            headerRight: () => <HomeHeaderRight navigation={navigation} />,
+          };
         }}
       />
       <Drawer.Screen
