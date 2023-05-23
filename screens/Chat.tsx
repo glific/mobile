@@ -38,12 +38,12 @@ const Chat = ({ navigation }: Props) => {
 
   return (
     <View style={styles.mainContainer}>
-      <SearchBar />
       <ApolloProvider client={client}>
+        <SearchBar />
         <ContactList />
       </ApolloProvider>
       <Button onPress={LogoutHandler} disable={false}>
-        Log out
+        Logout
       </Button>
     </View>
   );
