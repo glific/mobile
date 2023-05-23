@@ -5,7 +5,8 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import Input from '../components/ui/Input';
 import { Colors } from '../constants/styles';
-// import createAxiosClient from '../config/axios';
+import createAxiosClient from '../config/axios';
+import Storage from '../utils/asyncStorage';
 
 type RootStackParamList = {
   Login: undefined;
@@ -18,7 +19,7 @@ const Login = ({ navigation }: Props) => {
   const [enteredMobile, setEnteredMobile] = useState('');
   const [enteredPassword, setEnteredPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  // const Client = createAxiosClient();
+  const Client = createAxiosClient();
 
   function updateInputValueHandler(inputType: string, enteredValue: string) {
     switch (inputType) {
@@ -32,22 +33,22 @@ const Login = ({ navigation }: Props) => {
   }
 
   const onSubmitHandler = async () => {
-    // try {
-    //   if (enteredMobile == '' || enteredPassword == '') {
-    //     throw new Error('Please enter mobile number and password!');
-    //   }
-    //   const response = await Client.post('/v1/session', {
-    //     user: {
-    //       phone: enteredMobile,
-    //       password: enteredPassword,
-    //     },
-    //   });
+    try {
+      if (enteredMobile == '' || enteredPassword == '') {
+        throw new Error('Please enter mobile number and password!');
+      }
+      const response = await Client.post('/v1/session', {
+        user: {
+          phone: enteredMobile,
+          password: enteredPassword,
+        },
+      });
 
-    //   await Storage.storeData('session', JSON.stringify(response.data.data));
-    navigation.navigate('Home');
-    // } catch (error: any) {
-    //   setErrorMessage(error.message);
-    // }
+      await Storage.storeData('session', JSON.stringify(response.data.data));
+      navigation.navigate('Home');
+    } catch (error: any) {
+      setErrorMessage(error.message);
+    }
   };
 
   let errorDisplay;
@@ -58,6 +59,7 @@ const Login = ({ navigation }: Props) => {
   return (
     <View>
       <Input
+        placeHolder="type phone no"
         label="Mobile Number"
         onUpdateValue={updateInputValueHandler.bind(this, 'mobile')}
         value={enteredMobile}
@@ -65,6 +67,7 @@ const Login = ({ navigation }: Props) => {
         isError={errorMessage ? true : false}
       />
       <Input
+        placeHolder="type pas.."
         label="Password"
         onUpdateValue={updateInputValueHandler.bind(this, 'password')}
         secure
