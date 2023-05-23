@@ -1,7 +1,9 @@
-import { View, Text, TextInput, StyleSheet, KeyboardTypeOptions } from "react-native";
-import { Colors } from "../../constants/styles";
+import { View, Text, TextInput, StyleSheet, KeyboardTypeOptions } from 'react-native';
+import { Colors } from '../../constants/styles';
 
-interface InputProps {
+import { AntDesign } from '@expo/vector-icons';
+
+export interface InputProps {
   label: string;
   placeholder: string;
   onUpdateValue: (text: string) => void;
@@ -9,12 +11,13 @@ interface InputProps {
   isError: boolean;
   secure?: boolean;
   keyboardType?: KeyboardTypeOptions;
+  placeHolder: string;
 }
 
 const Input = ({
   label,
   placeholder,
-  keyboardType = "default",
+  keyboardType = 'default',
   secure = false,
   onUpdateValue,
   value,
@@ -31,7 +34,6 @@ const Input = ({
         secureTextEntry={secure}
         onChangeText={onUpdateValue}
         value={value}
-        placeholder={placeholder}
       />
     </View>
   );
@@ -41,23 +43,38 @@ export default Input;
 
 const styles = StyleSheet.create({
   inputContainer: {
-    marginVertical: 18,
+    marginVertical: 8,
   },
   label: {
-    color: Colors.primaryText,
-    marginBottom: 8,
+    color: Colors.primary100,
+    marginBottom: 4,
   },
   errorLabel: {
     color: Colors.error100,
   },
+  inputBox: {
+    width: '100%',
+    height: 48,
+    marginVertical: 8,
+    borderWidth: 0.75,
+    paddingHorizontal: 10,
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderColor: Colors.darkGray,
+    borderRadius: 10,
+    flexDirection: 'row',
+  },
   input: {
     paddingVertical: 8,
-    paddingHorizontal: 12,
+    paddingHorizontal: 6,
     backgroundColor: "white",
-    borderColor: "#93a29b",
-    borderWidth: 1,
-    borderRadius: 11,
+    borderColor: Colors.primary100,
+    borderRadius: 4,
     fontSize: 16,
+  },
+  clearIcon: {
+    fontSize: 16,
+    color: Colors.darkGray,
   },
   error: {
     backgroundColor: Colors.error100,
