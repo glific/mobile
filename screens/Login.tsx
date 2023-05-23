@@ -48,7 +48,7 @@ const Login = ({ navigation }: Props) => {
       });
 
       await Storage.storeData('session', JSON.stringify(response.data.data));
-      navigation.navigate('Chat');
+      navigation.navigate('Home');
     } catch (error: any) {
       setErrorMessage(error.message);
     }
@@ -90,7 +90,7 @@ const Login = ({ navigation }: Props) => {
           />
         </View>
 
-        <View>
+        <View style={styles.passwordContainer}>
           <Input
             label="Enter your password"
             onUpdateValue={updateInputValueHandler.bind(this, 'password')}
@@ -124,8 +124,12 @@ const styles = StyleSheet.create({
   errorLabel: {
     color: Colors.error100,
   },
+  passwordContainer: {
+    marginTop: 20,
+  },
   numberLabel: {
     paddingBottom: 10,
+    fontSize: 16,
   },
   container: {
     flex: 1,

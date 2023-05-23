@@ -57,13 +57,12 @@ export default Input;
 const styles = StyleSheet.create({
   inputContainer: {
     width: '100%',
-    paddingHorizontal: '4%',
-    marginVertical: 18,
+    marginVertical: 4,
   },
   label: {
     fontSize: 16,
     color: Colors.black,
-    marginBottom: 8,
+    marginBottom: 4,
   },
   errorLabel: {
     color: Colors.error100,
@@ -81,12 +80,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   input: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    backgroundColor: 'white',
-    borderColor: '#93a29b',
-    borderWidth: 1,
-    borderRadius: 11,
     flex: 1,
     fontSize: 16,
   },
