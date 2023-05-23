@@ -12,7 +12,7 @@ const TabBar = ({ navigationState, position, setIndex }) => {
         });
         return (
           <TouchableOpacity key={index} style={styles.tab} onPress={() => setIndex(index)}>
-            <Animated.Text style={styles.animatedtext}>{route.title}</Animated.Text>
+            <Animated.Text style={{ opacity, fontSize: 18 }}>{route.title}</Animated.Text>
           </TouchableOpacity>
         );
       })}
@@ -36,10 +36,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingBottom: 5,
-  },
-  animatedtext: {
-    opacity: 0.9,
-    fontSize: 18,
   },
 });
 
