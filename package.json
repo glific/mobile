@@ -7,7 +7,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "test": "jest --watch"
+    "test": "jest"
   },
   "dependencies": {
     "@apollo/client": "^3.7.14",
