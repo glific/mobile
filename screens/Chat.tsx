@@ -1,8 +1,8 @@
 import { ApolloClient, ApolloLink, ApolloProvider, InMemoryCache } from '@apollo/client';
-import { client } from '../config/apollo.config';
+import { client } from '../config/apollo';
 import ContactList from '../components/ui/ContactList';
 import SearchBar from '../components/ui/SearchBar';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Storage from '../utils/asyncStorage';
 import { useState, useEffect } from 'react';
 import Button from '../components/ui/Button';
@@ -56,15 +56,17 @@ const Chat = ({ navigation }: Props) => {
       <ApolloProvider client={newClient}>
         <ContactList />
       </ApolloProvider>
-      <Button onPress={LogoutHandler} disable={false} />
+      <Button onPress={LogoutHandler} disable={false}>
+        Log out
+      </Button>
     </View>
   );
 };
 
-export default Chat;
-
 const styles = StyleSheet.create({
   mainContainer: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
+
+export default Chat;

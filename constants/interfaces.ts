@@ -11,7 +11,7 @@ export interface ContactProp {
 }
 
 export interface ButtonProps {
-  children: ReactElement;
+  children: ReactElement | string;
   onPress: () => void;
   disable?: boolean;
 }
