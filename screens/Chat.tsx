@@ -85,7 +85,7 @@ const Chat = ({ navigation }: Props) => {
   );
 
   return (
-    <View>
+    <View style={styles.mainContainer}>
       <SearchBar />
       <FlatList
         data={DATA}
@@ -127,3 +127,9 @@ const styles = StyleSheet.create({
 });
 
 export default Chat;
+
+const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1
+  }
+});
