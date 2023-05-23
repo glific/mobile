@@ -27,7 +27,7 @@ const ContactList: React.FC = () => {
   }
 
   if (error) {
-    console.error(error); // Handle the error
+    console.log(error); // Handle the error
   }
   const contactItem = ({ item }: { item: Contacts }) => <Contact name={item.name} />;
   let contacts = [];
