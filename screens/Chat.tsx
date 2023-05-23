@@ -1,11 +1,9 @@
-
-import { StyleSheet, Text, View,Pressable,FlatList } from "react-native";
-import Storage from "../utils/asyncStorage";
-import { useState, useEffect } from "react";
-import Button from "../components/ui/Button";
-import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import SearchBar from "../components/ui/SearchBar";
-
+import { StyleSheet, Text, View, Pressable, FlatList } from 'react-native';
+import Storage from '../utils/asyncStorage';
+import { useState, useEffect } from 'react';
+import Button from '../components/ui/Button';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import SearchBar from '../components/ui/SearchBar';
 
 type RootStackParamList = {
   Login: undefined;
@@ -13,8 +11,8 @@ type RootStackParamList = {
   ChatScreen: undefined;
 };
 
-type Props = NativeStackScreenProps<RootStackParamList, "Chat">;
-type ItemProps = {name: string};
+type Props = NativeStackScreenProps<RootStackParamList, 'Chat'>;
+type ItemProps = { name: string };
 
 //Dummy data
 const DATA = [
@@ -44,7 +42,6 @@ const DATA = [
   },
 ];
 
-
 const Chat = ({ navigation }: Props) => {
   const [session, setSession] = useState<object | null>({});
 
@@ -66,31 +63,39 @@ const Chat = ({ navigation }: Props) => {
     setSession({});
     navigation.navigate('Login');
   };
-  const Item = ({name}: ItemProps) => (
-    <Pressable onPress={()=>
-      navigation.navigate("ChatScreen")
-    }>
-    <View style={styles.item}>
-      <View style={styles.avatar}>
-         <Text style={{justifyContent:"center",alignItems:"center",paddingLeft:19,paddingTop:12,fontSize:18}}>{name.charAt(0)}</Text>
+  const Item = ({ name }: ItemProps) => (
+    <Pressable onPress={() => navigation.navigate('ChatScreen')}>
+      <View style={styles.item}>
+        <View style={styles.avatar}>
+          <Text
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              paddingLeft: 19,
+              paddingTop: 12,
+              fontSize: 18,
+            }}
+          >
+            {name.charAt(0)}
+          </Text>
+        </View>
+        <Text style={styles.name}>{name}</Text>
       </View>
-      <Text style={styles.name}>{name}</Text>
-    </View>
     </Pressable>
   );
-  
+
   return (
     <View>
       <SearchBar />
       <FlatList
         data={DATA}
-        renderItem={({item}) => <Item name={item.name} />}
-        keyExtractor={item => item.id}
+        renderItem={({ item }) => <Item name={item.name} />}
+        keyExtractor={(item) => item.id}
       />
-      <View style={{marginTop:15}}>
-      <Button onPress={LogoutHandler}>
-        <Text>Logout</Text>
-      </Button>
+      <View style={{ marginTop: 15 }}>
+        <Button onPress={LogoutHandler}>
+          <Text>Logout</Text>
+        </Button>
       </View>
     </View>
   );
@@ -101,24 +106,24 @@ const styles = StyleSheet.create({
     padding: 5,
     marginVertical: 1,
     marginHorizontal: 2,
-    flexDirection: 'row', alignItems:'center',
-    height:60,
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 60,
     borderBottomColor: 'black',
     borderBottomWidth: 1,
   },
   name: {
     fontSize: 22,
-    marginLeft:18
+    marginLeft: 18,
   },
-  avatar:{
+  avatar: {
     height: 50,
-		width: 50,
-		borderRadius: 25.5,
-    backgroundColor:'#a8ee90',
-    flexDirection:'row',
-    alignItems:'flex-start'
-
-  }
+    width: 50,
+    borderRadius: 25.5,
+    backgroundColor: '#a8ee90',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
 });
 
 export default Chat;
