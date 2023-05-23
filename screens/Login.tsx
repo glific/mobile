@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import Button from '../components/ui/Button';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -8,10 +8,11 @@ import { Colors } from '../constants/styles';
 import createAxiosClient from '../config/axios';
 import Storage from '../utils/asyncStorage';
 import PhoneNumberInput from 'react-native-phone-number-input';
+import PhoneInput from 'react-native-phone-number-input';
 
 type RootStackParamList = {
   Login: undefined;
-  Chat: undefined;
+  Home: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
@@ -21,7 +22,7 @@ const Login = ({ navigation }: Props) => {
   const [enteredPassword, setEnteredPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState('');
+  const phoneInput = useRef<PhoneInput>(null);
   const Client = createAxiosClient();
 
   function updateInputValueHandler(inputType: string, enteredValue: string) {
@@ -40,9 +41,10 @@ const Login = ({ navigation }: Props) => {
       if (enteredMobile == '' || enteredPassword == '') {
         throw new Error('Please enter mobile number and password!');
       }
+      const countryCode = phoneInput.current?.getCallingCode();
       const response = await Client.post('/v1/session', {
         user: {
-          phone: enteredMobile,
+          phone: countryCode + enteredMobile,
           password: enteredPassword,
         },
       });
@@ -65,6 +67,7 @@ const Login = ({ navigation }: Props) => {
         <View>
           <Text style={styles.numberLabel}>Enter your WhatsApp number</Text>
           <PhoneNumberInput
+            ref={phoneInput}
             defaultCode="IN"
             onChangeText={updateInputValueHandler.bind(this, 'mobile')}
             layout="first"

@@ -9,30 +9,12 @@ import Animated, {
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
-import EmojiPicker from '../emojis/EmojiPicker';
 import { AntDesign } from '@expo/vector-icons';
 import { Colors } from '../../constants/styles';
 
 const ChatInput = ({ reply, closeReply, isLeft, username }: any) => {
   const [message, setMessage] = useState('');
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const height = useSharedValue(70);
-
-  useEffect(() => {
-    if (showEmojiPicker) {
-      height.value = withTiming(400);
-    } else {
-      height.value = reply ? withSpring(130) : withSpring(70);
-    }
-  }, [showEmojiPicker]);
-
-  useEffect(() => {
-    if (reply) {
-      height.value = showEmojiPicker ? withTiming(450) : withTiming(130);
-    } else {
-      height.value = showEmojiPicker ? withSpring(400) : withSpring(70);
-    }
-  }, [reply]);
 
   const heightAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -54,15 +36,8 @@ const ChatInput = ({ reply, closeReply, isLeft, username }: any) => {
       <View style={styles.innerContainer}>
         <AntDesign name="up" size={18} color="black" style={styles.upicon} />
         <View style={styles.inputAndMicrophone}>
-          <TouchableOpacity
-            style={styles.emoticonButton}
-            onPress={() => setShowEmojiPicker((value) => !value)}
-          >
-            <Icon
-              name={showEmojiPicker ? 'close' : 'emoticon-outline'}
-              size={23}
-              color={Colors.description}
-            />
+          <TouchableOpacity style={styles.emoticonButton}>
+            <Icon name={'emoticon-outline'} size={23} color={Colors.description} />
           </TouchableOpacity>
           <TextInput
             multiline
@@ -87,7 +62,6 @@ const ChatInput = ({ reply, closeReply, isLeft, username }: any) => {
           </View>
         </TouchableOpacity>
       </View>
-      <EmojiPicker />
     </Animated.View>
   );
 };

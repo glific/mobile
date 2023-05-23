@@ -5,6 +5,7 @@ import { useQuery } from '@apollo/client';
 
 import Contact from './Contact';
 import Loading from './Loading';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 export interface Contacts {
   index: number;
@@ -23,7 +24,7 @@ const variables = {
   },
 };
 
-const ContactList: React.FC = () => {
+const ContactList: React.FC<any> = ({ navigation }: any) => {
   const { loading, error, data } = useQuery(GET_CONTACTS, { variables });
 
   if (loading) {
@@ -33,7 +34,9 @@ const ContactList: React.FC = () => {
   if (error) {
     console.log(error); // Handle the error
   }
-  const contactItem = ({ item }: { item: Contacts }) => <Contact name={item.name} />;
+  const contactItem = ({ item }: { item: Contacts }) => (
+    <Contact name={item.name} navigation={navigation} />
+  );
   let contacts = [];
   if (data) {
     contacts = data.search.map((element: any, idx: number) => {
