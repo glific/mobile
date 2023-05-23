@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, Text, View, StyleSheet } from 'react-native';
+import React from 'react';
+import { FlatList, View, StyleSheet } from 'react-native';
 import { GET_CONTACTS } from '../../graphql/queries/Contact';
 import { useQuery } from '@apollo/client';
 
