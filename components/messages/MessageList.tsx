@@ -1,70 +1,18 @@
 import React, { useState, useRef } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 
+import { FakeMessage } from './Fakemessages';
 import Message from './Message';
 
-import { theme } from '../../theme';
-
 const MessagesList = ({ onSwipeToReply }: any) => {
-  const [messages, setMessages] = useState([
-    {
-      user: 0,
-      time: '12:00',
-      content: 'Hey',
-    },
-    {
-      user: 1,
-      time: '12:05',
-      content: "What's up",
-    },
-    {
-      user: 1,
-      time: '12:07',
-      content: 'How is it going?',
-    },
-    {
-      user: 0,
-      time: '12:09',
-      content: 'things are going great',
-    },
-    {
-      user: 0,
-      time: '12:00',
-      content: 'Good :)',
-    },
-    {
-      user: 1,
-      time: '12:05',
-      content: 'Should we hang out tomorrow? I was thinking of going somewhere which has drinks',
-    },
-    {
-      user: 0,
-      time: '12:07',
-      content: 'Sure',
-    },
-    {
-      user: 1,
-      time: '12:09',
-      content: 'Great',
-    },
-    {
-      user: 0,
-      time: '12:07',
-      content: "7 o'clock?",
-    },
-    {
-      user: 1,
-      time: '12:09',
-      content: 'Sounds good',
-    },
-  ]);
+  const [messages, setMessages] = useState(FakeMessage);
 
   const user = useRef(0);
   const scrollView = useRef();
 
   return (
     <ScrollView
-      style={{ backgroundColor: theme.colors.white, flex: 1 }}
+      style={styles.container}
       ref={(ref) => (scrollView.current = ref)}
       onContentChange={() => {
         scrollView.current.scrollToEnd({ animated: true });
@@ -82,5 +30,12 @@ const MessagesList = ({ onSwipeToReply }: any) => {
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    flex: 1,
+  },
+});
 
 export default MessagesList;

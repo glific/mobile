@@ -6,7 +6,7 @@ import ChatInput from '../components/messages/ChatInput';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import Icon from '@expo/vector-icons/FontAwesome';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { theme } from '../theme';
+import { Colors } from '../constants/styles';
 import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 
@@ -50,14 +50,9 @@ const ChatScreen = ({ navigation }: Props) => {
           <Pressable
             onPress={() => setshowModal(false)}
             style={styles.warning_button}
-            android_ripple={{ color: '#fff' }}
+            android_ripple={styles.ripplecolor}
           >
-            <Icon
-              name="ellipsis-v"
-              size={25}
-              color={theme.colors.white}
-              style={{ marginLeft: 225 }}
-            />
+            <Icon name="ellipsis-v" size={25} color={Colors.white} style={styles.ellipseicon} />
           </Pressable>
           <View style={styles.warning_modal}>
             <View style={styles.warning_body}>
@@ -65,7 +60,7 @@ const ChatScreen = ({ navigation }: Props) => {
                 name="person-add-sharp"
                 size={22}
                 color="#119656"
-                style={{ padding: 4, marginTop: 6 }}
+                style={styles.personadd}
               />
               <Text style={styles.text}>Add to Collection</Text>
             </View>
@@ -74,7 +69,7 @@ const ChatScreen = ({ navigation }: Props) => {
                 name="message-bulleted-off"
                 size={22}
                 color="#119656"
-                style={{ padding: 4, marginTop: 8 }}
+                style={styles.messageoff}
               />
               <Text style={styles.text}>Clear Conversation</Text>
             </View>
@@ -83,15 +78,13 @@ const ChatScreen = ({ navigation }: Props) => {
                 name="hand-back-right-off"
                 size={22}
                 color="#119656"
-                style={{ padding: 4, marginTop: 8 }}
+                style={styles.handoff}
               />
               <Text style={styles.text}>Terminate Flows</Text>
             </View>
             <View style={styles.warning_body}>
-              <Entypo name="block" size={22} color="red" style={{ padding: 4, marginTop: 8 }} />
-              <Text style={{ color: 'red', fontSize: 20, margin: 10, textAlign: 'center' }}>
-                Block Contact{' '}
-              </Text>
+              <Entypo name="block" size={22} color="red" style={styles.handoff} />
+              <Text style={styles.handofftext}>Block Contact </Text>
             </View>
           </View>
         </View>
@@ -130,11 +123,36 @@ const styles = StyleSheet.create({
     margin: 10,
     textAlign: 'center',
   },
+  ripplecolor: {
+    color: '#9a9a9a',
+  },
 
   button: {
     width: 150,
     height: 50,
     alignItems: 'center',
+  },
+  ellipseicon: {
+    marginLeft: 195,
+    marginTop: 5,
+  },
+  messageoff: {
+    padding: 4,
+    marginTop: 8,
+  },
+  personadd: {
+    padding: 4,
+    marginTop: 6,
+  },
+  handoff: {
+    padding: 4,
+    marginTop: 8,
+  },
+  handofftext: {
+    color: 'red',
+    fontSize: 20,
+    margin: 10,
+    textAlign: 'center',
   },
   upright_view: {
     flex: 1,

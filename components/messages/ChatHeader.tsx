@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from '@expo/vector-icons/FontAwesome';
 import { AntDesign } from '@expo/vector-icons';
-import { theme } from '../../theme';
 
 const ChatHeader = (props: any) => {
   const navigation = useNavigation();
@@ -16,42 +15,19 @@ const ChatHeader = (props: any) => {
         style={styles.backButton}
         onPress={(): void => navigation.navigate('Contacts')}
       >
-        <AntDesign name="arrowleft" size={24} color={theme.colors.white} />
+        <AntDesign name="arrowleft" size={24} color={'white'} />
       </TouchableOpacity>
       <View style={styles.profileOptions}>
         <View style={styles.item}>
           <View style={styles.avatar}>
-            <Text
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingLeft: 16,
-                paddingTop: 8,
-                fontSize: 25,
-                fontWeight: 'bold',
-                color: '#073F24',
-              }}
-            >
-              {name.charAt(0)}
-            </Text>
+            <Text style={styles.firstletter}>{name.charAt(0)}</Text>
           </View>
-          <View
-            style={{
-              height: 15,
-              width: 15,
-              borderRadius: 7.5,
-              backgroundColor: '#FFF0DE',
-              marginTop: 28,
-              marginLeft: -10,
-              borderColor: '#073F24',
-              borderWidth: 2,
-            }}
-          ></View>
+          <View style={styles.bgfirstletter}></View>
           <Text style={styles.Name}>{name}</Text>
         </View>
         <View style={styles.options}>
-          <TouchableOpacity style={{ paddingHorizontal: 20 }} onPress={() => props.data(!tap)}>
-            <Icon name="ellipsis-v" size={25} color={theme.colors.white} />
+          <TouchableOpacity style={styles.righticon} onPress={() => props.data(!tap)}>
+            <Icon name="ellipsis-v" size={25} color={'white'} />
           </TouchableOpacity>
         </View>
       </View>
@@ -63,7 +39,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     backgroundColor: '#073F24',
-    paddingTop: 40,
+    paddingTop: 10,
     paddingBottom: 5,
   },
   backButton: {
@@ -104,7 +80,6 @@ const styles = StyleSheet.create({
     borderRadius: 25.5,
     backgroundColor: '#FFF0DE',
     flexDirection: 'row',
-
     alignItems: 'flex-start',
   },
   image: {
@@ -112,18 +87,40 @@ const styles = StyleSheet.create({
     width: 65,
     borderRadius: 32.5,
   },
+  firstletter: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingLeft: 16,
+    paddingTop: 8,
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: '#073F24',
+  },
+  bgfirstletter: {
+    height: 15,
+    width: 15,
+    borderRadius: 7.5,
+    backgroundColor: '#FFF0DE',
+    marginTop: 28,
+    marginLeft: -10,
+    borderColor: '#073F24',
+    borderWidth: 2,
+  },
   usernameAndOnlineStatus: {
     flexDirection: 'column',
     justifyContent: 'center',
     paddingHorizontal: 10,
   },
   username: {
-    color: theme.colors.white,
+    color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
   },
+  righticon: {
+    paddingHorizontal: 20,
+  },
   onlineStatus: {
-    color: theme.colors.white,
+    color: 'white',
     fontSize: 16,
   },
   options: {

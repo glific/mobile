@@ -7,7 +7,7 @@ import Animated, {
   useAnimatedGestureHandler,
   useSharedValue,
 } from 'react-native-reanimated';
-import { theme } from '../../theme';
+import { Colors } from '../../constants/styles';
 
 const Message = ({ time, isLeft, message, onSwipe }: any) => {
   const startingPosition = 0;
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   messageContainer: {
-    backgroundColor: theme.colors.messageBackground,
+    backgroundColor: Colors.messageBackground,
     maxWidth: '80%',
     alignSelf: 'flex-end',
     flexDirection: 'row',
@@ -99,6 +99,7 @@ const styles = StyleSheet.create({
   messageView: {
     backgroundColor: 'transparent',
     maxWidth: '80%',
+    color: 'black',
   },
   timeView: {
     backgroundColor: 'transparent',
@@ -106,7 +107,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   message: {
-    color: 'white',
+    color: 'black',
     alignSelf: 'flex-start',
     fontSize: 15,
   },

@@ -11,7 +11,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import EmojiPicker from '../emojis/EmojiPicker';
 import { AntDesign } from '@expo/vector-icons';
-import { theme } from '../../theme';
+import { Colors } from '../../constants/styles';
 
 const ChatInput = ({ reply, closeReply, isLeft, username }: any) => {
   const [message, setMessage] = useState('');
@@ -52,7 +52,7 @@ const ChatInput = ({ reply, closeReply, isLeft, username }: any) => {
         </View>
       ) : null}
       <View style={styles.innerContainer}>
-        <AntDesign name="up" size={18} color="black" style={{ marginRight: 10 }} />
+        <AntDesign name="up" size={18} color="black" style={styles.upicon} />
         <View style={styles.inputAndMicrophone}>
           <TouchableOpacity
             style={styles.emoticonButton}
@@ -61,7 +61,7 @@ const ChatInput = ({ reply, closeReply, isLeft, username }: any) => {
             <Icon
               name={showEmojiPicker ? 'close' : 'emoticon-outline'}
               size={23}
-              color={theme.colors.description}
+              color={Colors.description}
             />
           </TouchableOpacity>
           <TextInput
@@ -75,30 +75,15 @@ const ChatInput = ({ reply, closeReply, isLeft, username }: any) => {
             <Icon
               name="paperclip"
               size={23}
-              color={theme.colors.description}
-              style={{ transform: [{ rotate: '50deg' }] }}
+              color={Colors.description}
+              style={styles.paperclipicon}
             />
           </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.sendButton}>
-          <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
-            <Ionicons
-              name="chatbox-sharp"
-              size={32}
-              color="white"
-              style={{ alignItems: 'center', justifyContent: 'center', position: 'absolute' }}
-            />
-            <FontAwesome
-              name="send"
-              size={16}
-              color="green"
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                position: 'relative',
-                marginBottom: 5,
-              }}
-            />
+          <View style={styles.firsticonview}>
+            <Ionicons name="chatbox-sharp" size={32} color="white" style={styles.iconchatbox} />
+            <FontAwesome name="send" size={16} color="green" style={styles.sendicon} />
           </View>
         </TouchableOpacity>
       </View>
@@ -110,7 +95,7 @@ const ChatInput = ({ reply, closeReply, isLeft, username }: any) => {
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
-    backgroundColor: theme.colors.white,
+    backgroundColor: 'white',
   },
   replyContainer: {
     paddingHorizontal: 10,
@@ -127,8 +112,12 @@ const styles = StyleSheet.create({
     right: 10,
     top: 5,
   },
+  upicon: { marginRight: 10 },
   reply: {
     marginTop: 5,
+  },
+  paperclipicon: {
+    transform: [{ rotate: '50deg' }],
   },
   innerContainer: {
     paddingHorizontal: 10,
@@ -140,7 +129,7 @@ const styles = StyleSheet.create({
   },
   inputAndMicrophone: {
     flexDirection: 'row',
-    backgroundColor: theme.colors.inputBackground,
+    backgroundColor: Colors.inputBackground,
     flex: 3,
     marginRight: 10,
     paddingVertical: Platform.OS === 'ios' ? 10 : 0,
@@ -151,11 +140,21 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: 'transparent',
     paddingLeft: 20,
-    color: theme.colors.inputText,
+    color: Colors.inputText,
     flex: 3,
     fontSize: 15,
     height: 50,
     alignSelf: 'center',
+  },
+  firsticonview: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  iconchatbox: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
   },
   rightIconButtonStyle: {
     justifyContent: 'center',
@@ -171,7 +170,7 @@ const styles = StyleSheet.create({
     marginRight: 30,
   },
   swipeText: {
-    color: theme.colors.description,
+    color: Colors.description,
     fontSize: 15,
   },
   emoticonButton: {
@@ -186,7 +185,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   recordingTime: {
-    color: theme.colors.description,
+    color: Colors.description,
     fontSize: 20,
     marginLeft: 5,
   },
@@ -202,6 +201,12 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 30,
     height: 130,
     paddingTop: 20,
+  },
+  sendicon: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+    marginBottom: 5,
   },
   sendButton: {
     backgroundColor: '#119656',

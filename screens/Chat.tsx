@@ -67,17 +67,7 @@ const Chat = ({ navigation }: Props) => {
     <Pressable onPress={() => navigation.navigate('ChatScreen')}>
       <View style={styles.item}>
         <View style={styles.avatar}>
-          <Text
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              paddingLeft: 19,
-              paddingTop: 12,
-              fontSize: 18,
-            }}
-          >
-            {name.charAt(0)}
-          </Text>
+          <Text style={styles.avatartext}>{name.charAt(0)}</Text>
         </View>
         <Text style={styles.name}>{name}</Text>
       </View>
@@ -126,6 +116,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#a8ee90',
     flexDirection: 'row',
     alignItems: 'flex-start',
+  },
+  avatartext: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingLeft: 19,
+    paddingTop: 12,
+    fontSize: 18,
   },
 });
 
