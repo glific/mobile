@@ -4,7 +4,7 @@ import SearchBar from '../components/ui/SearchBar'
 
 const SavedSearches = () => {
   return (
-    <View>
+    <View style={styles.mainContainer}>
         <SearchBar />
         <Text>SavedSearches</Text>
     </View>
@@ -13,4 +13,8 @@ const SavedSearches = () => {
 
 export default SavedSearches
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1
+  }
+})

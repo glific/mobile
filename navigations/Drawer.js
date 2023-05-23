@@ -3,7 +3,6 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Colors } from '../constants/styles';
 import { Entypo, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
-import Chat from '../screens/Chat';
 import Notifications from '../screens/Notifications';
 import MyAccount from '../screens/MyAccount';
 import Setting from '../screens/Setting';

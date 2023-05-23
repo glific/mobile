@@ -3753,11 +3753,6 @@ expo-modules-core@1.2.7:
     compare-versions "^3.4.0"
     invariant "^2.2.4"
 
-expo-status-bar@~1.4.4:
-  version "1.4.4"
-  resolved "https://registry.yarnpkg.com/expo-status-bar/-/expo-status-bar-1.4.4.tgz#6874ccfda5a270d66f123a9f220735a76692d114"
-  integrity sha512-5DV0hIEWgatSC3UgQuAZBoQeaS9CqeWRZ3vzBR9R/+IUD87Adbi4FGhU10nymRqFXOizGsureButGZIXPs7zEA==
-
 expo@~48.0.5:
   version "48.0.16"
   resolved "https://registry.yarnpkg.com/expo/-/expo-48.0.16.tgz#afce3906eba8d0faa72f6e0e1c8aed4f1b046326"
