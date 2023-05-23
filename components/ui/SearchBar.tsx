@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { View, TextInput, StyleSheet } from 'react-native';
 import { Colors } from '../../constants/styles';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 

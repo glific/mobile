@@ -5,7 +5,7 @@ import { Colors } from './constants/styles';
 
 export default function App() {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={Colors.primary400} />
       <Navigation />
     </SafeAreaView>
@@ -14,6 +14,6 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   },
 });

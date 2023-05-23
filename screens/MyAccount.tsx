@@ -3,7 +3,7 @@ import React from 'react';
 
 const MyAccount = () => {
   return (
-    <View>
+    <View style={styles.mainContainer}>
       <Text>MyAccount</Text>
     </View>
   );
@@ -11,4 +11,8 @@ const MyAccount = () => {
 
 export default MyAccount;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1
+  }
+});
