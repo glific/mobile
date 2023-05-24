@@ -1,6 +1,6 @@
 import React from 'react';
 import MyAccount from '../screens/MyAccount';
-import renderWithAuth from '../config/AuthProvider';
+import renderWithAuth from '../utils/authProvider';
 
 describe('MyAccount Screen', () => {
   test('renders the MyAccount screen', () => {

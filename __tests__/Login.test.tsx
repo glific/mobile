@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent } from '@testing-library/react-native';
 import Login from '../screens/Login';
-import renderWithAuth from '../config/AuthProvider';
+import renderWithAuth from '../utils/authProvider';
 
 jest.mock('react-native-phone-number-input', () => {
   const { TextInput } = jest.requireActual('react-native');
