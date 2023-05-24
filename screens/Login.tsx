@@ -1,7 +1,6 @@
-import { useState, useContext, forwardRef } from 'react';
+import { useState, useContext, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import PhoneNumberInput from 'react-native-phone-number-input';
 import PhoneInput from 'react-native-phone-number-input';
 
 import { Colors } from '../constants/styles';
@@ -18,13 +17,13 @@ type RootStackParamList = {
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
-const Login = forwardRef<PhoneInput, Props>(({ navigation }, ref) => {
+const Login = ({ navigation }:Props) => {
   const { setToken } = useContext(AuthContext);
   const [enteredMobile, setEnteredMobile] = useState('');
   const [enteredPassword, setEnteredPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  // const phoneInput = useRef<PhoneInput>(null);
+  const phoneInput = useRef<PhoneInput>(null);
   const Client = createAxiosClient();
 
   const updateInputValueHandler = (inputType: string, enteredValue: string) => {
@@ -38,9 +37,6 @@ const Login = forwardRef<PhoneInput, Props>(({ navigation }, ref) => {
     }
   };
 
-  // useImperativeHandle(ref, () => ({
-  //   getCallingCode: () => phoneInput.current?.getCallingCode()
-  // }));
   
   const onSubmitHandler = async () => {
     try {
@@ -74,9 +70,9 @@ const Login = forwardRef<PhoneInput, Props>(({ navigation }, ref) => {
           <Text style={[styles.numberLabel, errorMessage && styles.errorLabel]}>
             Enter your WhatsApp number
           </Text>
-          <PhoneNumberInput
+          <PhoneInput
             testID="mobileNumber"
-            ref={ref}
+            ref={phoneInput}
             defaultCode="IN"
             onChangeText={(text) => updateInputValueHandler('mobile', text)}
             layout="first"
@@ -106,7 +102,7 @@ const Login = forwardRef<PhoneInput, Props>(({ navigation }, ref) => {
       </View>
     </View>
   );
-});
+};
 
 export default Login;
 
