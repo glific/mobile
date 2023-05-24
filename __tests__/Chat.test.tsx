@@ -5,17 +5,16 @@ import Storage from '../utils/asyncStorage';
 import AuthContext from '../config/AuthContext';
 
 describe('Chat screen', () => {
-
   test('renders correctly', () => {
     const { getByTestId, getByText } = render(
       <AuthContext.Provider value={{ token: 'existing_token', setToken: jest.fn() }}>
-          <Chat />
+        <Chat />
       </AuthContext.Provider>
     );
 
-    const searchInput = getByTestId('Search Input');
+    const searchInput = getByTestId('searchInput');
     const logoutButton = getByText('Logout');
-    
+
     expect(searchInput).toBeDefined();
     expect(logoutButton).toBeDefined();
   });
@@ -27,7 +26,7 @@ describe('Chat screen', () => {
       </AuthContext.Provider>
     );
 
-    const searchInput = getByTestId('Search Input');
+    const searchInput = getByTestId('searchInput');
     fireEvent.changeText(searchInput, 'test search');
 
     expect(searchInput.props.value).toBe('test search');
@@ -43,8 +42,8 @@ describe('Chat screen', () => {
       </AuthContext.Provider>
     );
     await waitFor(() => {
-      fireEvent.press(getByTestId('search1'));
-      fireEvent.press(getByTestId('filter-outline'));
+      fireEvent.press(getByTestId('searchIcon'));
+      fireEvent.press(getByTestId('filterOutline'));
     });
 
     expect(mockOnSearchHandler).toBeTruthy();
