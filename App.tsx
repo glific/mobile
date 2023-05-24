@@ -13,6 +13,7 @@ export default function App() {
         <Navigation />
       </ApolloProvider>
     </SafeAreaView>
+
   );
 }
 

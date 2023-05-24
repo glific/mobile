@@ -13,6 +13,6 @@ export default MyAccount;
 
 const styles = StyleSheet.create({
   mainContainer: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });

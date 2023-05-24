@@ -1,20 +1,31 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import SearchBar from '../components/ui/SearchBar'
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-const Collections = () => {
+import SearchBar from '../components/ui/SearchBar';
+import CollectionList from '../components/ui/CollectionList';
+
+type RootStackParamList = {
+  Login: undefined;
+  Contacts: undefined;
+  ChatScreen: undefined;
+};
+
+type Props = NativeStackScreenProps<RootStackParamList, 'Contacts'>;
+
+const Collections = ({ navigation }: Props) => {
   return (
     <View style={styles.mainContainer}>
-        <SearchBar />
-        <Text>Collections</Text>
+      <SearchBar />
+      <CollectionList navigation={navigation} />
     </View>
-  )
-}
+  );
+};
 
-export default Collections
+export default Collections;
 
 const styles = StyleSheet.create({
   mainContainer: {
-    flex: 1
-  }
-})
+    flex: 1,
+  },
+});

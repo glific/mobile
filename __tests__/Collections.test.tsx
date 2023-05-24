@@ -1,11 +1,11 @@
 import React from 'react';
-import { render } from '@testing-library/react-native';
 import Collections from '../screens/Collections';
+import renderWithAuth from '../utils/authProvider';
 
 describe('Collections Screen', () => {
   test('renders the Collections screen', () => {
-    const { getByText } = render(<Collections />);
-    const collectionsText = getByText('Collections');
-    expect(collectionsText).toBeDefined();
+    const { getByTestId } = renderWithAuth(<Collections />);
+    const loadingIndicator = getByTestId('loadingIndicator');
+    expect(loadingIndicator).toBeTruthy();
   });
 });

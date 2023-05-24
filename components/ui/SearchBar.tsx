@@ -37,14 +37,14 @@ const SearchBar = () => {
     <View style={styles.mainContainer}>
       <View style={styles.inputContainer}>
         <AntDesign
-          testID="search1"
+          testID="searchIcon"
           name="search1"
           size={20}
           style={styles.icon}
           onPress={onSearchHandler}
         />
         <TextInput
-          testID="Search Input"
+          testID="searchInput"
           style={styles.input}
           autoCapitalize="none"
           keyboardType="default"
@@ -56,7 +56,7 @@ const SearchBar = () => {
           underlineColorAndroid="transparent"
         />
         <Ionicons
-          testID="filter-outline"
+          testID="filterOutline"
           name="filter-outline"
           size={20}
           style={styles.icon}
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderTopWidth: 0.2,
     borderBottomWidth: 0.2,
-    borderColor: Colors.darkGray
+    borderColor: Colors.darkGray,
   },
   inputContainer: {
     width: '95%',

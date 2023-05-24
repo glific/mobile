@@ -1,19 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, Image, Pressable, StyleSheet } from 'react-native';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { Colors } from '../../constants/styles';
 import Wallet from '../ui/Wallet';
 import { Feather } from '@expo/vector-icons';
 import Storage from '../../utils/asyncStorage';
+import AuthContext from '../../config/AuthContext';
 
 type DrawerContentProps = {
   navigation: any;
 };
 
 const CustomDrawer: React.FC<DrawerContentProps> = (props: any) => {
+  const { setToken } = useContext(AuthContext);
+
   const LogoutHandler = async () => {
     await Storage.removeData('session');
-    props.navigation.navigate('Login');
+    setToken(null);
   };
 
   return (

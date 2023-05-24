@@ -1,7 +1,10 @@
+import React from 'react';
 import { View, Text, TextInput, StyleSheet, KeyboardTypeOptions } from 'react-native';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
+
 import { Colors } from '../../constants/styles';
 
-import { AntDesign } from '@expo/vector-icons';
+type InputType = 'text' | 'password' | 'number';
 
 export interface InputProps {
   label: string;
@@ -10,42 +13,56 @@ export interface InputProps {
   isError: boolean;
   secure?: boolean;
   keyboardType?: KeyboardTypeOptions;
-  placeHolder: string;
+  placeholder: string;
+  testID?: string;
+  onShowPassword?: () => void;
+  type?: InputType
 }
 
 const Input = ({
   label,
+  placeholder = 'type...',
   keyboardType = 'default',
   secure = false,
   onUpdateValue,
   value,
   isError = false,
-  placeHolder = 'type...',
+  testID,
+  onShowPassword,
+  type = 'text'
 }: InputProps) => {
   return (
     <View style={styles.inputContainer}>
       <Text style={[styles.label, isError && styles.errorLabel]}>{label}</Text>
       <View style={styles.inputBox}>
         <TextInput
-          testID={label}
+          testID={testID}
           style={[styles.input, isError && styles.errorLabel]}
           autoCapitalize="none"
           keyboardType={keyboardType}
           secureTextEntry={secure}
           onChangeText={onUpdateValue}
           value={value}
-          placeholder={placeHolder}
+          placeholder={placeholder}
           cursorColor={Colors.darkGray}
           selectionColor={Colors.darkGray}
           underlineColorAndroid="transparent"
         />
-        {value && (
-          <AntDesign
-            testID="close"
-            name="close"
+        {type == 'password' ? (
+          <Ionicons
+            name={secure ? 'eye' : 'eye-off'}
             style={styles.clearIcon}
-            onPress={() => onUpdateValue('')}
+            onPress={onShowPassword}
           />
+        ) : (
+          value && (
+            <AntDesign
+              testID="close"
+              name="close"
+              style={styles.clearIcon}
+              onPress={() => onUpdateValue('')}
+            />
+          )
         )}
       </View>
     </View>
@@ -57,8 +74,7 @@ export default Input;
 const styles = StyleSheet.create({
   inputContainer: {
     width: '100%',
-    paddingHorizontal: '4%',
-    marginVertical: 8,
+    marginVertical: 4,
   },
   label: {
     fontSize: 16,

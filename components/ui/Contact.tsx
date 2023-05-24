@@ -1,26 +1,54 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Colors } from '../../constants/styles';
 export interface ContactProps {
   name: string | null;
+  navigation: any;
 }
 
-const Contact: React.FC<ContactProps> = (props): JSX.Element => {
+const Contact: React.FC<ContactProps> = ({ name, navigation }): JSX.Element => {
   return (
-    <View style={styles.contactItem}>
-      <Text style={styles.contactName}>{props.name}</Text>
-    </View>
+    <Pressable 
+      testID="contactCard" 
+      onPress={() => navigation.navigate('ChatScreen')} 
+      style={styles.item}
+      android_ripple={{color: Colors.primary10}}
+    >
+        <View style={styles.avatar}>
+          <Text style={styles.avatartext}>{name.charAt(0)}</Text>
+        </View>
+        <Text style={styles.name}>{name}</Text>
+    </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
-  contactItem: {
-    borderTopWidth: 1,
-    borderTopColor: '#CCCCCC',
-    paddingVertical: 10,
-    paddingHorizontal: 10,
+  item: {
+    width: '100%',
+    height: 70,
+    paddingHorizontal: '4%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderBottomWidth: 0.5,
+    borderColor: Colors.darkGray,
   },
-  contactName: {
+  name: {
+    fontSize: 16,
+    marginLeft: 18,
+  },
+  avatar: {
+    height: 44,
+    width: 44,
+    borderRadius: 22,
+    backgroundColor: Colors.primary10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  avatartext: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: '500',
+    color: Colors.primary400
   },
 });
 
