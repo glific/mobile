@@ -25,6 +25,7 @@ const Contact: React.FC<ContactProps> = ({
       <View style={styles.avatar}>
         <Text style={styles.avatartext}>{name.charAt(0)}</Text>
       </View>
+
       <View style={styles.mainbody}>
         <Text style={styles.name}>{name}</Text>
 
@@ -36,6 +37,7 @@ const Contact: React.FC<ContactProps> = ({
           <Text style={styles.lastSession}>{last_session}</Text>
         </View>
       </View>
+
     </Pressable>
   );
 };
@@ -48,7 +50,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'white',
-    borderBottomWidth: 0.5,
+    borderWidth: 0.5,
     borderColor: Colors.darkGray,
   },
   name: {
@@ -70,6 +72,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '500',
     color: Colors.primary400,
+
   },
   mainbody: {
     flexDirection: 'column',
@@ -100,6 +103,7 @@ const styles = StyleSheet.create({
     fontWeight: 500,
 
     backgroundColor: '#ECF7F1',
+
   },
 });
 
