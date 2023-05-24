@@ -18,6 +18,18 @@ type RootStackParamList = {
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Contacts'>;
 
+const variables = {
+  filter: {},
+  messageOpts: {
+    limit: 3,
+    offset: 0,
+  },
+  contactOpts: {
+    limit: 10,
+    offset: 0,
+  },
+};
+
 const Chat = ({ navigation }: Props) => {
   const { setToken } = useContext(AuthContext);
   const [session, setSession] = useState<object | null>();
@@ -44,7 +56,7 @@ const Chat = ({ navigation }: Props) => {
     <View style={styles.mainContainer}>
       <ApolloProvider client={client}>
         <SearchBar />
-        <ContactList navigation={navigation} />
+        <ContactList navigation={navigation} variables={variables} />
       </ApolloProvider>
       <View style={{ marginTop: 15 }}>
         <Button onPress={LogoutHandler}>

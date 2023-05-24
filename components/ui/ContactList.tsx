@@ -11,19 +11,8 @@ export interface Contacts {
   name: string | null;
 }
 
-const variables = {
-  filter: {},
-  messageOpts: {
-    limit: 3,
-    offset: 0,
-  },
-  contactOpts: {
-    limit: 10,
-    offset: 0,
-  },
-};
 
-const ContactList: React.FC<any> = ({ navigation }: any) => {
+const ContactList: React.FC<any> = ({ navigation, variables }: any) => {
   const { loading, error, data } = useQuery(GET_CONTACTS, { variables });
 
   if (error) {
