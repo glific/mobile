@@ -2,15 +2,8 @@ import 'react-native-gesture-handler';
 import { StyleSheet, SafeAreaView, StatusBar } from 'react-native';
 import Navigation from './navigations';
 import { Colors } from './constants/styles';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-import { API_BASE_URL } from '@env';
-
-// import { client } from './config/apollo';
-
-const client = new ApolloClient({
-  uri: API_BASE_URL,
-  cache: new InMemoryCache(),
-});
+import { ApolloProvider } from '@apollo/client';
+import { client } from './config/apollo';
 
 export default function App() {
   return (

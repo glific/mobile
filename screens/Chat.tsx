@@ -9,7 +9,6 @@ import Storage from '../utils/asyncStorage';
 import { useState, useEffect } from 'react';
 import Button from '../components/ui/Button';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { client } from '../config/apollo';
 
 type RootStackParamList = {
   Login: undefined;
@@ -81,10 +80,9 @@ const Chat = ({ navigation }: Props) => {
 
   return (
     <View style={styles.mainContainer}>
-      <ApolloProvider client={client}>
-        <SearchBar />
-        <ContactList />
-      </ApolloProvider>
+      <SearchBar />
+      <ContactList />
+
       <FlatList
         data={DATA}
         renderItem={({ item }) => <Item name={item.name} />}
