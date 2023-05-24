@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
-import AuthContext from './AuthContext';
+import AuthContext from '../config/AuthContext';
 
 const renderWithAuth = (component) =>
   render(
