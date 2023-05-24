@@ -25,6 +25,7 @@
     "react": "18.2.0",
     "react-native": "0.71.8",
     "react-native-dotenv": "^3.4.8",
+    "react-native-phone-number-input": "^2.1.0",
     "react-native-gesture-handler": "~2.9.0",
     "react-native-pager-view": "6.1.2",
     "react-native-reanimated": "~2.14.4",

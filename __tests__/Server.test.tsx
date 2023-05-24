@@ -6,7 +6,7 @@ describe('Server screen', () => {
   test('renders correctly', () => {
     const { getByTestId, getByText } = render(<Server />);
 
-    const serverUrlInput = getByTestId('Enter or paste URL here');
+    const serverUrlInput = getByTestId('server');
     const continueButton = getByText('CONTINUE');
 
     expect(serverUrlInput).toBeDefined();
@@ -16,7 +16,7 @@ describe('Server screen', () => {
   test('updates server URL correctly', async () => {
     const { findByTestId, getByTestId } = render(<Server />);
 
-    const serverUrlInput = getByTestId('Enter or paste URL here');
+    const serverUrlInput = getByTestId('server');
 
     const clearInput = await findByTestId('close');
 
@@ -30,7 +30,7 @@ describe('Server screen', () => {
   test('displays error message for invalid server URL', () => {
     const { getByTestId, getByText } = render(<Server />);
 
-    const serverUrlInput = getByTestId('Enter or paste URL here');
+    const serverUrlInput = getByTestId('server');
     const continueButton = getByText('CONTINUE');
 
     fireEvent.changeText(serverUrlInput, 'invalid-url');
@@ -44,7 +44,7 @@ describe('Server screen', () => {
     const navigateMock = jest.fn();
     const { getByTestId, getByText } = render(<Server navigation={{ navigate: navigateMock }} />);
 
-    const serverUrlInput = getByTestId('Enter or paste URL here');
+    const serverUrlInput = getByTestId('server');
     const continueButton = getByText('CONTINUE');
 
     fireEvent.changeText(serverUrlInput, 'https://example.com');
