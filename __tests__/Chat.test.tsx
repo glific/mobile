@@ -1,7 +1,6 @@
 import React from 'react';
-import { act, fireEvent, waitFor } from '@testing-library/react-native';
+import { fireEvent, waitFor } from '@testing-library/react-native';
 import Chat from '../screens/Chat';
-import Storage from '../utils/asyncStorage';
 import renderWithAuth from '../config/AuthProvider';
 
 describe('Chat screen', () => {
