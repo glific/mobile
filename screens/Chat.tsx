@@ -1,7 +1,5 @@
 import { StyleSheet, Text, View, Pressable, FlatList } from 'react-native';
 
-import { ApolloProvider } from '@apollo/client';
-
 import ContactList from '../components/ui/ContactList';
 import SearchBar from '../components/ui/SearchBar';
 
