@@ -9,7 +9,6 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Colors } from '../constants/styles';
 import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
-import { add } from 'react-native-reanimated';
 
 type RootStackParamList = {
   Login: undefined;
