@@ -9,6 +9,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Colors } from '../constants/styles';
 import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
+import { add } from 'react-native-reanimated';
 
 type RootStackParamList = {
   Login: undefined;
@@ -22,6 +23,30 @@ const ChatScreen = ({ navigation }: Props) => {
   const [reply, setReply] = useState('');
   const [isLeft, setIsLeft] = useState(false);
   const [showModal, setshowModal] = useState(false);
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  const addCollection = () => {
+    setshowModal(false);
+    setModalVisible(!isModalVisible);
+  };
+
+  const ModalCollection = () => {
+    return (
+      <View style={{ backgroundColor: '#000000aa', flex: 1 }}>
+        <View style={{ backgroundColor: '#ffffff', margin: 20, padding: 30 }}>
+          <Modal
+            visible={isModalVisible}
+            transparent={false}
+            onRequestClose={() => setshowModal(false)}
+            animationType="slide"
+            hardwareAccelerated
+          >
+            <Text>hello</Text>
+          </Modal>
+        </View>
+      </View>
+    );
+  };
 
   const swipeToReply = (message: string, isLeft: boolean) => {
     setReply(message.length > 50 ? message.slice(0, 50) + '...' : message);
@@ -55,15 +80,18 @@ const ChatScreen = ({ navigation }: Props) => {
             <Icon name="ellipsis-v" size={25} color={Colors.white} style={styles.ellipseicon} />
           </Pressable>
           <View style={styles.warning_modal}>
-            <View style={styles.warning_body}>
-              <Ionicons
-                name="person-add-sharp"
-                size={22}
-                color="#119656"
-                style={styles.personadd}
-              />
-              <Text style={styles.text}>Add to Collection</Text>
-            </View>
+            <Pressable onPress={addCollection}>
+              <View style={styles.warning_body}>
+                <Ionicons
+                  name="person-add-sharp"
+                  size={22}
+                  color="#119656"
+                  style={styles.personadd}
+                />
+                <Text style={styles.text}>Add to Collection</Text>
+              </View>
+            </Pressable>
+            <ModalCollection />
             <View style={styles.warning_body}>
               <MaterialCommunityIcons
                 name="message-bulleted-off"

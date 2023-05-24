@@ -13,33 +13,28 @@ const Message = ({ time, isLeft, message, onSwipe }: any) => {
   const x = useSharedValue(startingPosition);
 
   const isOnLeft = (type: any) => {
-    if (isLeft && type === 'messageContainer') {
-      return {
-        alignSelf: 'flex-start',
-        backgroundColor: '#073F24',
-        borderTopLeftRadius: 0,
-      };
-    } else if (isLeft && type === 'time') {
-      return {
-        color: 'white',
-      };
-    } else if (!isLeft && type === 'time') {
-      return {
-        color: 'black',
-      };
-    } else if (isLeft && type === 'message') {
-      return {
-        color: 'white',
-      };
-    } else if (!isLeft && type === 'message') {
-      return {
-        color: 'black',
-      };
-    } else {
-      return {
-        borderTopRightRadius: 0,
-        color: '#E1E8E5',
-      };
+    switch (type) {
+      case 'time':
+      case 'message':
+        return isLeft ? { color: 'white' } : { color: 'black' };
+
+      case 'messageContainer':
+        return isLeft
+          ? {
+              alignSelf: 'flex-start',
+              backgroundColor: '#073F24',
+              borderTopLeftRadius: 0,
+            }
+          : {
+              borderTopRightRadius: 0,
+              color: '#E1E8E5',
+            };
+
+      default:
+        return {
+          borderTopRightRadius: 0,
+          color: '#E1E8E5',
+        };
     }
   };
 

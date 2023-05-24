@@ -1,10 +1,16 @@
 import { StyleSheet, Text, View } from 'react-native';
-//import { gql } from '@apollo/client';
-
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-//const balance = gql`query bspbalance {bspbalance}`;
+import { gql, useQuery } from '@apollo/client';
+
+const BSPBALANCE = gql`
+  query bspbalance {
+    bspbalance
+  }
+`;
 
 const Wallet = () => {
+  const { data } = useQuery(BSPBALANCE);
+
   return (
     <View style={styles.walletcontainer}>
       <View style={styles.innercontainer}>
@@ -16,7 +22,7 @@ const Wallet = () => {
         />
         <Text style={styles.walletText}>Your Wallet Balance</Text>
         <View>
-          <Text style={styles.dollarText}>$10</Text>
+          <Text style={styles.dollarText}>{data}</Text>
         </View>
       </View>
     </View>

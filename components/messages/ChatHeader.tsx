@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     backgroundColor: '#073F24',
-    paddingTop: 10,
+    paddingTop: 12,
     paddingBottom: 5,
   },
   backButton: {

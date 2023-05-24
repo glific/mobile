@@ -1,4 +1,4 @@
-module.exports = function(api) {
+module.exports = function (api) {
   api.cache(true);
   return {
     presets: ['babel-preset-expo'],
@@ -6,6 +6,7 @@ module.exports = function(api) {
       [
         'module:react-native-dotenv',
         {
+          envName: 'APP_ENV',
           moduleName: '@env',
           path: '.env',
           blacklist: null,
@@ -14,10 +15,7 @@ module.exports = function(api) {
           allowUndefined: true,
         },
       ],
-      [
-        'react-native-reanimated/plugin'
-      ]
+      ['react-native-reanimated/plugin'],
     ],
   };
 };
-
