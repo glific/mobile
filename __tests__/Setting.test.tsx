@@ -1,10 +1,10 @@
 import React from 'react';
-import { render } from '@testing-library/react-native';
 import Setting from '../screens/Setting';
+import renderWithAuth from '../config/AuthProvider';
 
 describe('Setting Screen', () => {
   test('renders the Setting screen', () => {
-    const { getByText } = render(<Setting />);
+    const { getByText } = renderWithAuth(<Setting />);
     const settingText = getByText('Setting');
     expect(settingText).toBeDefined();
   });

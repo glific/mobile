@@ -9,7 +9,7 @@ const screenDimensions = {
 
 const LoadingPage = () => {
   return (
-    <View testID="Loading Indicator" style={styles.container}>
+    <View testID="loadingIndicator" style={styles.container}>
       <ActivityIndicator size="large" color={Colors.primary400} />
     </View>
   );
