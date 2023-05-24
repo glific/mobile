@@ -25,7 +25,7 @@ const Input = ({
   value,
   isError = false,
   testID,
-  onShowPassword
+  onShowPassword,
 }: InputProps) => {
   return (
     <View style={styles.inputContainer}>
@@ -44,16 +44,22 @@ const Input = ({
           selectionColor={Colors.darkGray}
           underlineColorAndroid="transparent"
         />
-        {testID == "password"? 
-          <Ionicons name={secure ? 'eye' : 'eye-off'} style={styles.clearIcon} onPress={onShowPassword}/>
-        :(value && (
-          <AntDesign
-            testID="close"
-            name="close"
+        {testID == 'password' ? (
+          <Ionicons
+            name={secure ? 'eye' : 'eye-off'}
             style={styles.clearIcon}
-            onPress={() => onUpdateValue('')}
+            onPress={onShowPassword}
           />
-        ))}
+        ) : (
+          value && (
+            <AntDesign
+              testID="close"
+              name="close"
+              style={styles.clearIcon}
+              onPress={() => onUpdateValue('')}
+            />
+          )
+        )}
       </View>
     </View>
   );

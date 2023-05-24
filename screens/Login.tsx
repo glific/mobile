@@ -67,7 +67,9 @@ const Login = ({ navigation }: Props) => {
     <View style={styles.container}>
       <View>
         <View>
-          <Text style={[styles.numberLabel, errorMessage && styles.errorLabel]}>Enter your WhatsApp number</Text>
+          <Text style={[styles.numberLabel, errorMessage && styles.errorLabel]}>
+            Enter your WhatsApp number
+          </Text>
           <PhoneNumberInput
             testID="mobileNumber"
             ref={phoneInput}
@@ -80,16 +82,16 @@ const Login = ({ navigation }: Props) => {
             textContainerStyle={styles.phoneInput}
           />
         </View>
-          <Input
-            testID="password"
-            label="Enter your password"
-            placeholder="Password"
-            value={enteredPassword}
-            onUpdateValue={(text) => updateInputValueHandler('password', text)}
-            secure={showPassword ? false : true}
-            onShowPassword={() => setShowPassword(!showPassword)}
-            isError={errorMessage ? true : false}
-          />
+        <Input
+          testID="password"
+          label="Enter your password"
+          placeholder="Password"
+          value={enteredPassword}
+          onUpdateValue={(text) => updateInputValueHandler('password', text)}
+          secure={showPassword ? false : true}
+          onShowPassword={() => setShowPassword(!showPassword)}
+          isError={errorMessage ? true : false}
+        />
         <Text style={styles.forgotPassword}>Forgot password?</Text>
         {errorDisplay}
       </View>

@@ -12,7 +12,7 @@ const AuthStack = () => {
         headerStyle: { backgroundColor: Colors.primary400 },
         headerTintColor: 'white',
         contentStyle: { backgroundColor: Colors.secondary100 },
-        animation: 'slide_from_right'
+        animation: 'slide_from_right',
       }}
     >
       <Stack.Screen
