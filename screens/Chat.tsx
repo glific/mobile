@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Pressable, FlatList } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { ApolloProvider } from '@apollo/client';
 

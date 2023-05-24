@@ -25,7 +25,7 @@ const Login = ({ navigation }: Props) => {
   const phoneInput = useRef<PhoneInput>(null);
   const Client = createAxiosClient();
 
-  function updateInputValueHandler(inputType: string, enteredValue: string) {
+  const updateInputValueHandler = (inputType: string, enteredValue: string) => {
     switch (inputType) {
       case 'mobile':
         setEnteredMobile(enteredValue);
@@ -34,7 +34,7 @@ const Login = ({ navigation }: Props) => {
         setEnteredPassword(enteredValue);
         break;
     }
-  }
+  };
 
   const onSubmitHandler = async () => {
     try {
@@ -69,7 +69,7 @@ const Login = ({ navigation }: Props) => {
           <PhoneNumberInput
             ref={phoneInput}
             defaultCode="IN"
-            onChangeText={updateInputValueHandler.bind(this, 'mobile')}
+            onChangeText={(text) => updateInputValueHandler('mobile', text)}
             layout="first"
             value={enteredMobile}
             placeholder="Enter 10 digit phone number"
@@ -97,7 +97,7 @@ const Login = ({ navigation }: Props) => {
           <Input
             testID="password"
             label="Enter your password"
-            onUpdateValue={updateInputValueHandler.bind(this, 'password')}
+            onUpdateValue={(text) => updateInputValueHandler('password', text)}
             secure={showPassword ? false : true}
             value={enteredPassword}
             isError={errorMessage ? true : false}
