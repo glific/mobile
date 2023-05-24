@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { ApolloProvider } from '@apollo/client';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import ContactList from '../components/ui/ContactList';
 import SearchBar from '../components/ui/SearchBar';
 import Storage from '../utils/asyncStorage';
-import { client } from '../config/apollo';
 
 type RootStackParamList = {
   Login: undefined;
@@ -33,10 +31,8 @@ const Chat = ({ navigation }: Props) => {
 
   return (
     <View style={styles.mainContainer}>
-      <ApolloProvider client={client}>
-        <SearchBar />
-        <ContactList navigation={navigation} />
-      </ApolloProvider>
+      <SearchBar />
+      <ContactList navigation={navigation} />
     </View>
   );
 };

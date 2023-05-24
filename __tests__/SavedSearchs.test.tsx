@@ -1,6 +1,6 @@
 import React from 'react';
 import SavedSearches from '../screens/SavedSearches';
-import renderWithAuth from '../config/AuthProvider';
+import renderWithAuth from '../utils/authProvider';
 
 describe('SavedSearches Screen', () => {
   test('renders the SavedSearches screen', () => {

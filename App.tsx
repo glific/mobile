@@ -1,14 +1,19 @@
 import 'react-native-gesture-handler';
 import { StyleSheet, SafeAreaView, StatusBar } from "react-native";
-import Navigation from "./navigations";
+import { ApolloProvider } from '@apollo/client';
+
 import { Colors } from './constants/styles';
+import { client } from './config/apollo';
+import Navigation from "./navigations";
 
 export default function App() {
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor={Colors.primary400} />
-      <Navigation />
-    </SafeAreaView>
+    <ApolloProvider client={client}>
+      <SafeAreaView style={styles.container}>
+        <StatusBar backgroundColor={Colors.primary400} />
+        <Navigation />
+      </SafeAreaView>
+    </ApolloProvider>
   );
 }
 

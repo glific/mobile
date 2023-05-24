@@ -1,6 +1,6 @@
 import React from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
-import { GET_COLLECTIONS } from '../../graphql/queries/Contact';
+import { GET_COLLECTIONS } from '../../graphql/queries/Collection';
 import { useQuery } from '@apollo/client';
 
 import Contact from './Contact';
@@ -61,7 +61,6 @@ const CollectionList: React.FC<CollectionListProps> = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   collectionList: {
-    marginTop: 20,
     marginBottom: 20,
   },
 });

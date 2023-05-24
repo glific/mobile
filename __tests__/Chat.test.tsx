@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, waitFor } from '@testing-library/react-native';
 import Chat from '../screens/Chat';
-import renderWithAuth from '../config/AuthProvider';
+import renderWithAuth from '../utils/authProvider';
 
 describe('Chat screen', () => {
   test('renders correctly', () => {
@@ -9,7 +9,7 @@ describe('Chat screen', () => {
 
     const searchInput = getByTestId('searchInput');
     const loadingIndicator = getByTestId('loadingIndicator');
-    
+
     expect(searchInput).toBeDefined();
     expect(loadingIndicator).toBeTruthy();
   });

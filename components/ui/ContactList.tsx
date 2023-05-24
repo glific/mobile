@@ -41,7 +41,6 @@ const ContactList: React.FC<ContactListProps> = ({ navigation }) => {
   let contacts = [];
   if (data) {
     contacts = data.search.map((element: any, idx: number) => {
-      console.log(element)
       return { index: idx, name: element.contact?.name || 'Unknown Name' };
     });
   }
@@ -62,7 +61,6 @@ const ContactList: React.FC<ContactListProps> = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   contactList: {
-    marginTop: 20,
     marginBottom: 20,
   },
 });
