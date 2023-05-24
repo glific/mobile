@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
+import { FlatList, View, StyleSheet, ScrollView } from 'react-native';
 import { GET_CONTACTS } from '../../graphql/queries/Contact';
 import { useQuery } from '@apollo/client';
 
@@ -35,14 +35,15 @@ const ContactList: React.FC<ContactListProps> = ({ navigation }) => {
   }
 
   const contactItem = ({ item }: { item: Contacts }) => (
-    <Contact name={item.name} navigation={navigation} />
+    <Contact name={item.name} navigation={navigation} key={item.name} />
   );
 
   let contacts = [];
   if (data) {
-    contacts = data.search.map((element: any, idx: number) => {
-      return { index: idx, name: element.contact?.name || 'Unknown Name' };
-    });
+    contacts = data.search.map((element: any, index: number) => ({
+      index,
+      name: element.contact?.name || element.contact?.maskedPhone,
+    }));
   }
   return (
     <View style={styles.contactList}>
@@ -61,6 +62,7 @@ const ContactList: React.FC<ContactListProps> = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   contactList: {
+    flex: 1,
     marginBottom: 20,
   },
 });
