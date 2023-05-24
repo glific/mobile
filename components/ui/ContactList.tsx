@@ -30,10 +30,13 @@ const ContactList: React.FC<any> = ({ navigation }: any) => {
     console.log(error);
   }
 
+<<<<<<< HEAD
   const contactItem = ({ item }: { item: Contacts }) => (
     <Contact name={item.name} navigation={navigation} />
   );
 
+=======
+>>>>>>> 66a3b99daa1b9775295c354b7aeb965a12e740d4
   let contacts = [];
   if (data) {
     contacts = data.search.map((element: any, idx: number) => {
@@ -42,6 +45,7 @@ const ContactList: React.FC<any> = ({ navigation }: any) => {
   }
   return (
     <View style={styles.contactList}>
+<<<<<<< HEAD
       {loading ? (
         <Loading />
       ) : (
@@ -51,6 +55,13 @@ const ContactList: React.FC<any> = ({ navigation }: any) => {
           keyExtractor={(item) => item.index.toString()}
         />
       )}
+=======
+      <FlatList
+        data={contacts}
+        renderItem={({ item }: { item: Contacts }) => <Contact name={item.name} navigation={navigation} />}
+        keyExtractor={(item) => item.index.toString()}
+      />
+>>>>>>> 66a3b99daa1b9775295c354b7aeb965a12e740d4
     </View>
   );
 };
