@@ -41,14 +41,17 @@ const Server = ({ navigation }: Props) => {
 
   return (
     <View style={styles.mainContainer}>
-      <Input
-        label="Enter or paste URL here"
-        onUpdateValue={serverURLChanged}
-        value={serverURL}
-        isError={errorMessage ? true : false}
-        keyboardType="url"
-        placeHolder="https://smilefoundation.org/..."
-      />
+      <View style={styles.inputContainer}>
+        <Input
+          testID="server"
+          label="Enter or paste URL here"
+          onUpdateValue={serverURLChanged}
+          value={serverURL}
+          isError={errorMessage ? true : false}
+          keyboardType="url"
+          placeholder="https://smilefoundation.org/..."
+        />
+      </View>
       <InstructionCard />
       <View style={styles.buttonContainer}>
         {errorDisplay}
@@ -63,6 +66,7 @@ const Server = ({ navigation }: Props) => {
 export default Server;
 
 const styles = StyleSheet.create({
+  inputContainer: { paddingHorizontal: 20 },
   mainContainer: {
     flex: 1,
     paddingTop: 20,
