@@ -9,6 +9,9 @@ import Loading from './Loading';
 export interface Contacts {
   index: number;
   name: string | null;
+  last_msg: string;
+  last_time: string;
+  last_session: string;
 }
 
 interface ContactListProps {
@@ -35,13 +38,62 @@ const ContactList: React.FC<ContactListProps> = ({ navigation }) => {
   }
 
   const contactItem = ({ item }: { item: Contacts }) => (
-    <Contact name={item.name} navigation={navigation} />
+    <Contact
+      name={item.name}
+      last_msg={item.last_msg}
+      last_time={item.last_time}
+      last_session={item.last_session}
+      navigation={navigation}
+    />
   );
 
-  let contacts = [];
+  let contacts = [
+    {
+      index: '1',
+      name: 'Chandra',
+      last_msg: 'khbjvhckhjgvhc',
+      last_time: 'Yesterday',
+      last_session: '14hrs',
+    },
+    {
+      index: '2',
+      name: 'Abhishek',
+      last_msg: 'kjhjbghvfgciugfy',
+      last_time: '3:53 PM',
+      last_session: '24hrs',
+    },
+    {
+      index: '3',
+      name: 'Kunal',
+      last_msg: 'hiugfggufh',
+      last_time: 'Yesterday',
+      last_session: '18hrs',
+    },
+    {
+      index: '4',
+      name: 'Rahul',
+      last_msg: 'pioulikugjfhdt',
+      last_time: 'JAN 1',
+      last_session: '14hrs',
+    },
+    {
+      index: '5',
+      name: 'Khemu',
+      last_msg: 'uoiyujyfhdtug',
+      last_time: 'Yesterday',
+      last_session: '14hrs',
+    },
+    {
+      index: '6',
+      name: 'Michael',
+      last_msg: 'ikgjfhgd',
+      last_time: '5:45 AM',
+      last_session: '14hrs',
+    },
+  ];
   if (data) {
-    contacts = data.search.map((element: any, idx: number) => {
-      return { index: idx, name: element.contact?.name || 'Unknown Name' };
+    contacts = data.search.map((element: any, indexx: number) => {
+      return { index: indexx, name: element.contact?.name || 'Unknown Name' };
     });
   }
   return (
