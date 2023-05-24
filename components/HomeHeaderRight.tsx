@@ -3,21 +3,27 @@ import { StyleSheet, Text, View, Pressable } from 'react-native';
 import { Entypo, Ionicons } from '@expo/vector-icons';
 import { Colors } from '../constants/styles';
 
+interface FilterButtonProps {
+  label: string;
+  count: number;
+}
+
+const FilterButton: React.FC<FilterButtonProps> = ({ label, count }) => {
+  return (
+    <Pressable
+      onPress={() => console.log('')}
+      style={styles.filter}
+      android_ripple={{ color: Colors.primary10 }}
+    >
+      <Text style={styles.filterText}>{label}</Text>
+      <Text style={styles.filterText}>{`(${count})`}</Text>
+    </Pressable>
+  );
+};
+
 const HomeHeaderRight: React.FC = ({ navigation }: any) => {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
 
-  const FilterButton: React.FC = ({ label, count }: { string; number }) => {
-    return (
-      <Pressable
-        onPress={() => console.log('')}
-        style={styles.filter}
-        android_ripple={{ color: Colors.primary10 }}
-      >
-        <Text style={styles.filterText}>{label}</Text>
-        <Text style={styles.filterText}>{`(${count})`}</Text>
-      </Pressable>
-    );
-  };
   return (
     <View style={styles.mainContainer}>
       <Pressable
