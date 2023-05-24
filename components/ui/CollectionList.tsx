@@ -1,6 +1,6 @@
 import React from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
-import { GET_CONTACTS } from '../../graphql/queries/Contact';
+import { GET_COLLECTIONS } from '../../graphql/queries/Contact';
 import { useQuery } from '@apollo/client';
 
 import Contact from './Contact';
@@ -11,12 +11,12 @@ export interface Contacts {
   name: string | null;
 }
 
-interface ContactListProps {
+interface CollectionListProps {
   navigation: any;
 }
 
 const variables = {
-  filter: {},
+  filter: { searchGroup: true },
   messageOpts: {
     limit: 3,
     offset: 0,
@@ -27,8 +27,8 @@ const variables = {
   },
 };
 
-const ContactList: React.FC<ContactListProps> = ({ navigation }) => {
-  const { loading, error, data } = useQuery(GET_CONTACTS, { variables });
+const CollectionList: React.FC<CollectionListProps> = ({ navigation }) => {
+  const { loading, error, data } = useQuery(GET_COLLECTIONS, { variables });
 
   if (error) {
     console.log(error);
@@ -38,20 +38,19 @@ const ContactList: React.FC<ContactListProps> = ({ navigation }) => {
     <Contact name={item.name} navigation={navigation} />
   );
 
-  let contacts = [];
+  let collections = [];
   if (data) {
-    contacts = data.search.map((element: any, idx: number) => {
-      console.log(element)
-      return { index: idx, name: element.contact?.name || 'Unknown Name' };
+    collections = data.search.map((element: any, idx: number) => {
+      return { index: idx, name: element.group?.label || 'Unknown Name' };
     });
   }
   return (
-    <View style={styles.contactList}>
+    <View style={styles.collectionList}>
       {loading ? (
         <Loading />
       ) : (
         <FlatList
-          data={contacts}
+          data={collections}
           renderItem={contactItem}
           keyExtractor={(item) => item.index.toString()}
         />
@@ -61,10 +60,10 @@ const ContactList: React.FC<ContactListProps> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  contactList: {
+  collectionList: {
     marginTop: 20,
     marginBottom: 20,
   },
 });
 
-export default ContactList;
+export default CollectionList;
