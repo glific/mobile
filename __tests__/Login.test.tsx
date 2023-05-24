@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent } from '@testing-library/react-native';
 import Login from '../screens/Login';
-import renderWithAuth from './AuthProvider';
+import renderWithAuth from '../config/AuthProvider';
 
 jest.mock('react-native-phone-number-input', () => {
   const { TextInput } = jest.requireActual('react-native');
@@ -16,11 +16,19 @@ describe('Login screen', () => {
 
     const mobileInput = getByTestId('mobileNumber');
     const passwordInput = getByTestId('password');
-    const continueButton = getByText('LOG IN');
+    const loginButton = getByText('LOG IN');
 
     expect(mobileInput).toBeDefined();
     expect(passwordInput).toBeDefined();
-    expect(continueButton).toBeDefined();
+    expect(loginButton).toBeDefined();
+    // const { getByTestId, getByPlaceholderText, getByText } = renderWithAuth(<Login />);
+    
+    // // Check if important components are rendered
+    // expect(getByTestId('mobileNumber')).toBeDefined();
+    // expect(getByTestId('password')).toBeDefined();
+    // expect(getByPlaceholderText('Enter 10 digit phone number')).toBeDefined();
+    // expect(getByPlaceholderText('Password')).toBeDefined();
+    // expect(getByText('LOG IN')).toBeDefined();
   });
 
   test('updates input values correctly', () => {
@@ -29,10 +37,10 @@ describe('Login screen', () => {
     const mobileInput = getByTestId('mobileNumber');
     const passwordInput = getByTestId('password');
 
-    fireEvent.changeText(mobileInput, '917834811114');
+    fireEvent.changeText(mobileInput, '7834811114');
     fireEvent.changeText(passwordInput, 'secret1234');
 
-    expect(mobileInput.props.value).toBe('917834811114');
+    expect(mobileInput.props.value).toBe('7834811114');
     expect(passwordInput.props.value).toBe('secret1234');
   });
 

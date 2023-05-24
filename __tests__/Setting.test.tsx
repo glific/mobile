@@ -1,6 +1,6 @@
 import React from 'react';
 import Setting from '../screens/Setting';
-import renderWithAuth from './AuthProvider';
+import renderWithAuth from '../config/AuthProvider';
 
 describe('Setting Screen', () => {
   test('renders the Setting screen', () => {

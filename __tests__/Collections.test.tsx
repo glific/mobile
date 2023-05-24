@@ -1,6 +1,6 @@
 import React from 'react';
 import Collections from '../screens/Collections';
-import renderWithAuth from './AuthProvider';
+import renderWithAuth from '../config/AuthProvider';
 
 describe('Collections Screen', () => {
   test('renders the Collections screen', () => {

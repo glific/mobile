@@ -1,6 +1,6 @@
 import React from 'react';
 import Help from '../screens/Help';
-import renderWithAuth from './AuthProvider';
+import renderWithAuth from '../config/AuthProvider';
 
 describe('Help Screen', () => {
   test('renders the Help screen', () => {

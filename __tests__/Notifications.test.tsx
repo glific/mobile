@@ -1,6 +1,6 @@
 import React from 'react';
 import Notifications from '../screens/Notifications';
-import renderWithAuth from './AuthProvider';
+import renderWithAuth from '../config/AuthProvider';
 
 describe('Notifications Screen', () => {
   test('renders the Notifications screen', () => {

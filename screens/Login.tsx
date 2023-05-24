@@ -1,5 +1,5 @@
-import { useState, useContext, useRef } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { useState, useContext, useRef, forwardRef } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import PhoneNumberInput from 'react-native-phone-number-input';
 import PhoneInput from 'react-native-phone-number-input';
@@ -18,13 +18,13 @@ type RootStackParamList = {
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
-const Login = ({ navigation }: Props) => {
+const Login = forwardRef<PhoneInput, Props>(({ navigation }, ref) => {
   const { setToken } = useContext(AuthContext);
   const [enteredMobile, setEnteredMobile] = useState('');
   const [enteredPassword, setEnteredPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const phoneInput = useRef<PhoneInput>(null);
+  // const phoneInput = useRef<PhoneInput>(null);
   const Client = createAxiosClient();
 
   const updateInputValueHandler = (inputType: string, enteredValue: string) => {
@@ -38,6 +38,10 @@ const Login = ({ navigation }: Props) => {
     }
   };
 
+  // useImperativeHandle(ref, () => ({
+  //   getCallingCode: () => phoneInput.current?.getCallingCode()
+  // }));
+  
   const onSubmitHandler = async () => {
     try {
       if (enteredMobile == '' || enteredPassword == '') {
@@ -72,7 +76,7 @@ const Login = ({ navigation }: Props) => {
           </Text>
           <PhoneNumberInput
             testID="mobileNumber"
-            ref={phoneInput}
+            ref={ref}
             defaultCode="IN"
             onChangeText={(text) => updateInputValueHandler('mobile', text)}
             layout="first"
@@ -102,7 +106,7 @@ const Login = ({ navigation }: Props) => {
       </View>
     </View>
   );
-};
+});
 
 export default Login;
 

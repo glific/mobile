@@ -2,7 +2,7 @@ import React from 'react';
 import { act, fireEvent, waitFor } from '@testing-library/react-native';
 import Chat from '../screens/Chat';
 import Storage from '../utils/asyncStorage';
-import renderWithAuth from './AuthProvider';
+import renderWithAuth from '../config/AuthProvider';
 
 describe('Chat screen', () => {
   test('renders correctly', () => {
