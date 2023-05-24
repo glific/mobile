@@ -90,6 +90,7 @@ const Login = ({ navigation }: Props) => {
           secure={showPassword ? false : true}
           onShowPassword={() => setShowPassword(!showPassword)}
           isError={errorMessage ? true : false}
+          type='password'
         />
         <Text style={styles.forgotPassword}>Forgot password?</Text>
         {errorDisplay}

@@ -4,6 +4,8 @@ import { AntDesign, Ionicons } from '@expo/vector-icons';
 
 import { Colors } from '../../constants/styles';
 
+type InputType = 'text' | 'password' | 'number';
+
 export interface InputProps {
   label: string;
   onUpdateValue: (text: string) => void;
@@ -14,6 +16,7 @@ export interface InputProps {
   placeholder: string;
   testID?: string;
   onShowPassword?: () => void;
+  type?: InputType
 }
 
 const Input = ({
@@ -26,6 +29,7 @@ const Input = ({
   isError = false,
   testID,
   onShowPassword,
+  type = 'text'
 }: InputProps) => {
   return (
     <View style={styles.inputContainer}>
@@ -44,7 +48,7 @@ const Input = ({
           selectionColor={Colors.darkGray}
           underlineColorAndroid="transparent"
         />
-        {testID == 'password' ? (
+        {type == 'password' ? (
           <Ionicons
             name={secure ? 'eye' : 'eye-off'}
             style={styles.clearIcon}
