@@ -17,7 +17,7 @@ type RootStackParamList = {
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
-const Login = ({ navigation }:Props) => {
+const Login = ({ navigation }: Props) => {
   const { setToken } = useContext(AuthContext);
   const [enteredMobile, setEnteredMobile] = useState('');
   const [enteredPassword, setEnteredPassword] = useState('');
@@ -37,7 +37,6 @@ const Login = ({ navigation }:Props) => {
     }
   };
 
-  
   const onSubmitHandler = async () => {
     try {
       if (enteredMobile == '' || enteredPassword == '') {
