@@ -1,10 +1,11 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
+import { fireEvent } from '@testing-library/react-native';
 import Server from '../screens/Server';
+import renderWithAuth from './AuthProvider';
 
 describe('Server screen', () => {
   test('renders correctly', () => {
-    const { getByTestId, getByText } = render(<Server />);
+    const { getByTestId, getByText } = renderWithAuth(<Server />);
 
     const serverUrlInput = getByTestId('server');
     const continueButton = getByText('CONTINUE');
@@ -14,7 +15,7 @@ describe('Server screen', () => {
   });
 
   test('updates server URL correctly', async () => {
-    const { findByTestId, getByTestId } = render(<Server />);
+    const { findByTestId, getByTestId } = renderWithAuth(<Server />);
 
     const serverUrlInput = getByTestId('server');
 
@@ -28,7 +29,7 @@ describe('Server screen', () => {
   });
 
   test('displays error message for invalid server URL', () => {
-    const { getByTestId, getByText } = render(<Server />);
+    const { getByTestId, getByText } = renderWithAuth(<Server />);
 
     const serverUrlInput = getByTestId('server');
     const continueButton = getByText('CONTINUE');
@@ -42,7 +43,9 @@ describe('Server screen', () => {
 
   test('navigates to Login screen on successful submit', () => {
     const navigateMock = jest.fn();
-    const { getByTestId, getByText } = render(<Server navigation={{ navigate: navigateMock }} />);
+    const { getByTestId, getByText } = renderWithAuth(
+      <Server navigation={{ navigate: navigateMock }} />
+    );
 
     const serverUrlInput = getByTestId('server');
     const continueButton = getByText('CONTINUE');

@@ -1,16 +1,12 @@
 import React from 'react';
-import { act, render, fireEvent, waitFor } from '@testing-library/react-native';
+import { act, fireEvent, waitFor } from '@testing-library/react-native';
 import Chat from '../screens/Chat';
 import Storage from '../utils/asyncStorage';
-import AuthContext from '../config/AuthContext';
+import renderWithAuth from './AuthProvider';
 
 describe('Chat screen', () => {
   test('renders correctly', () => {
-    const { getByTestId, getByText } = render(
-      <AuthContext.Provider value={{ token: 'existing_token', setToken: jest.fn() }}>
-        <Chat />
-      </AuthContext.Provider>
-    );
+    const { getByTestId, getByText } = renderWithAuth(<Chat />);
 
     const searchInput = getByTestId('searchInput');
     const logoutButton = getByText('Logout');
@@ -20,11 +16,7 @@ describe('Chat screen', () => {
   });
 
   test('updates search correctly', () => {
-    const { getByTestId } = render(
-      <AuthContext.Provider value={{ token: 'existing_token', setToken: jest.fn() }}>
-        <Chat />
-      </AuthContext.Provider>
-    );
+    const { getByTestId } = renderWithAuth(<Chat />);
 
     const searchInput = getByTestId('searchInput');
     fireEvent.changeText(searchInput, 'test search');
@@ -36,11 +28,7 @@ describe('Chat screen', () => {
     const mockOnSearchHandler = jest.fn();
     const mockOnFilter = jest.fn();
 
-    const { getByTestId } = render(
-      <AuthContext.Provider value={{ token: 'existing_token', setToken: jest.fn() }}>
-        <Chat />
-      </AuthContext.Provider>
-    );
+    const { getByTestId } = renderWithAuth(<Chat />);
     await waitFor(() => {
       fireEvent.press(getByTestId('searchIcon'));
       fireEvent.press(getByTestId('filterOutline'));
@@ -57,11 +45,8 @@ describe('Chat screen', () => {
     const mockRemoveData = jest.spyOn(Storage, 'removeData');
     const navigateMock = jest.fn();
 
-    const { getByText } = render(
-      <AuthContext.Provider value={{ token: 'existing_token', setToken: jest.fn() }}>
-        <Chat navigation={{ navigate: navigateMock }} />
-      </AuthContext.Provider>
-    );
+    const { getByText } = renderWithAuth(<Chat navigation={{ navigate: navigateMock }} />);
+
     await act(async () => {
       const logoutButton = getByText('Logout');
       fireEvent.press(logoutButton);

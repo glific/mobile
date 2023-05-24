@@ -1,7 +1,7 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
+import { fireEvent } from '@testing-library/react-native';
 import Login from '../screens/Login';
-import AuthContext from '../config/AuthContext';
+import renderWithAuth from './AuthProvider';
 
 jest.mock('react-native-phone-number-input', () => {
   const { TextInput } = jest.requireActual('react-native');
@@ -12,11 +12,7 @@ jest.mock('react-native-phone-number-input', () => {
 
 describe('Login screen', () => {
   test('renders correctly', () => {
-    const { getByTestId, getByText } = render(
-      <AuthContext.Provider value={{ token: 'existing_token', setToken: jest.fn() }}>
-        <Login />
-      </AuthContext.Provider>
-    );
+    const { getByTestId, getByText } = renderWithAuth(<Login />);
 
     const mobileInput = getByTestId('mobileNumber');
     const passwordInput = getByTestId('password');
@@ -28,11 +24,7 @@ describe('Login screen', () => {
   });
 
   test('updates input values correctly', () => {
-    const { getByTestId } = render(
-      <AuthContext.Provider value={{ token: 'existing_token', setToken: jest.fn() }}>
-        <Login />
-      </AuthContext.Provider>
-    );
+    const { getByTestId } = renderWithAuth(<Login />);
 
     const mobileInput = getByTestId('mobileNumber');
     const passwordInput = getByTestId('password');
@@ -45,11 +37,7 @@ describe('Login screen', () => {
   });
 
   test('error message when empty mobile number input', async () => {
-    const { getByTestId, getByText } = render(
-      <AuthContext.Provider value={{ token: 'existing_token', setToken: jest.fn() }}>
-        <Login />
-      </AuthContext.Provider>
-    );
+    const { getByTestId, getByText } = renderWithAuth(<Login />);
 
     const passwordInput = getByTestId('password');
     fireEvent.changeText(passwordInput, 'secret1234');
@@ -62,11 +50,7 @@ describe('Login screen', () => {
   });
 
   test('error message when empty password input', async () => {
-    const { getByTestId, getByText } = render(
-      <AuthContext.Provider value={{ token: 'existing_token', setToken: jest.fn() }}>
-        <Login />
-      </AuthContext.Provider>
-    );
+    const { getByTestId, getByText } = renderWithAuth(<Login />);
 
     const mobileInput = getByTestId('mobileNumber');
     fireEvent.changeText(mobileInput, '917834811114');
@@ -81,7 +65,7 @@ describe('Login screen', () => {
   // test("navigates to Chat screen on successful submit", async () => {
   //   const navigationMock = { navigate: jest.fn() };
 
-  //   const { getByTestId, getByText } = render(<Login navigation={navigationMock} />);
+  //   const { getByTestId, getByText } = renderWithAuth(<Login />);
 
   //   const mobileInput = getByTestId("mobileNumber");
   //   const passwordInput = getByTestId("password");
