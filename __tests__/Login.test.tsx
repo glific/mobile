@@ -22,7 +22,7 @@ describe('Login screen', () => {
     expect(passwordInput).toBeDefined();
     expect(loginButton).toBeDefined();
     // const { getByTestId, getByPlaceholderText, getByText } = renderWithAuth(<Login />);
-    
+
     // // Check if important components are rendered
     // expect(getByTestId('mobileNumber')).toBeDefined();
     // expect(getByTestId('password')).toBeDefined();

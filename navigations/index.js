@@ -5,18 +5,19 @@ import AppStack from './AppStack';
 import Storage from '../utils/asyncStorage';
 import AuthContext from '../config/AuthContext';
 
+const getToken = async (setToken) => {
+  const sessionValue = await Storage.getData('session');
+  if (sessionValue !== null) {
+    const parsedSessionValue = JSON.parse(sessionValue);
+    setToken(parsedSessionValue.access_token);
+  }
+};
+
 const Navigation = () => {
   const [token, setToken] = useState(null);
 
   useEffect(() => {
-    const getToken = async () => {
-      const sessionValue = await Storage.getData('session');
-      if (sessionValue !== null) {
-        const parsedSessionValue = JSON.parse(sessionValue);
-        setToken(parsedSessionValue.access_token);
-      }
-    };
-    getToken();
+    getToken(setToken);
   }, []);
 
   return (
