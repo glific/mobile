@@ -1,4 +1,4 @@
-import { useState, useContext, useRef, forwardRef } from 'react';
+import { useState, useContext, forwardRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import PhoneNumberInput from 'react-native-phone-number-input';
