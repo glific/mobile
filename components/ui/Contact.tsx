@@ -6,7 +6,7 @@ export interface ContactProps {
 
 const Contact: React.FC<ContactProps> = ({ name, navigation }): JSX.Element => {
   return (
-    <Pressable onPress={() => navigation.navigate('ChatScreen')}>
+    <Pressable testID="contactCard" onPress={() => navigation.navigate('ChatScreen')}>
       <View style={styles.item}>
         <View style={styles.avatar}>
           <Text style={styles.avatartext}>{name.charAt(0)}</Text>

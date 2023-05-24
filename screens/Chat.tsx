@@ -1,15 +1,14 @@
+import { useState, useEffect, useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-
 import { ApolloProvider } from '@apollo/client';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import ContactList from '../components/ui/ContactList';
 import SearchBar from '../components/ui/SearchBar';
-
 import Storage from '../utils/asyncStorage';
-import { useState, useEffect } from 'react';
 import Button from '../components/ui/Button';
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { client } from '../config/apollo';
+import AuthContext from '../config/AuthContext';
 
 type RootStackParamList = {
   Login: undefined;
@@ -20,6 +19,7 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList, 'Contacts'>;
 
 const Chat = ({ navigation }: Props) => {
+  const { setToken } = useContext(AuthContext);
   const [session, setSession] = useState<object | null>();
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const Chat = ({ navigation }: Props) => {
   const LogoutHandler = async () => {
     await Storage.removeData('session');
     setSession({});
-    navigation.navigate('Login');
+    setToken(null);
   };
 
   return (

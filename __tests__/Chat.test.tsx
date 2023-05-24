@@ -1,13 +1,14 @@
 import React from 'react';
-import { act, render, fireEvent, waitFor } from '@testing-library/react-native';
+import { act, fireEvent, waitFor } from '@testing-library/react-native';
 import Chat from '../screens/Chat';
 import Storage from '../utils/asyncStorage';
+import renderWithAuth from '../utils/authProvider';
 
 describe('Chat screen', () => {
   test('renders correctly', () => {
-    const { getByTestId, getByText } = render(<Chat />);
+    const { getByTestId, getByText } = renderWithAuth(<Chat />);
 
-    const searchInput = getByTestId('Search Input');
+    const searchInput = getByTestId('searchInput');
     const logoutButton = getByText('Logout');
 
     expect(searchInput).toBeDefined();
@@ -15,9 +16,9 @@ describe('Chat screen', () => {
   });
 
   test('updates search correctly', () => {
-    const { getByTestId } = render(<Chat />);
+    const { getByTestId } = renderWithAuth(<Chat />);
 
-    const searchInput = getByTestId('Search Input');
+    const searchInput = getByTestId('searchInput');
     fireEvent.changeText(searchInput, 'test search');
 
     expect(searchInput.props.value).toBe('test search');
@@ -27,10 +28,10 @@ describe('Chat screen', () => {
     const mockOnSearchHandler = jest.fn();
     const mockOnFilter = jest.fn();
 
-    const { getByTestId } = render(<Chat />);
+    const { getByTestId } = renderWithAuth(<Chat />);
     await waitFor(() => {
-      fireEvent.press(getByTestId('search1'));
-      fireEvent.press(getByTestId('filter-outline'));
+      fireEvent.press(getByTestId('searchIcon'));
+      fireEvent.press(getByTestId('filterOutline'));
     });
 
     expect(mockOnSearchHandler).toBeTruthy();
@@ -44,12 +45,16 @@ describe('Chat screen', () => {
     const mockRemoveData = jest.spyOn(Storage, 'removeData');
     const navigateMock = jest.fn();
 
-    const { getByText } = render(<Chat navigation={{ navigate: navigateMock }} />);
+    const { getByText } = renderWithAuth(<Chat navigation={{ navigate: navigateMock }} />);
+
     await act(async () => {
       const logoutButton = getByText('Logout');
       fireEvent.press(logoutButton);
     });
 
+    mockRemoveData.mockResolvedValueOnce();
+
+    expect(mockRemoveData).toHaveBeenCalledTimes(1);
     expect(mockRemoveData).toHaveBeenCalledWith('session');
   });
 });

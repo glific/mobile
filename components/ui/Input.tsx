@@ -1,7 +1,10 @@
+import React from 'react';
 import { View, Text, TextInput, StyleSheet, KeyboardTypeOptions } from 'react-native';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
+
 import { Colors } from '../../constants/styles';
 
-import { AntDesign } from '@expo/vector-icons';
+type InputType = 'text' | 'password' | 'number';
 
 export interface InputProps {
   label: string;
@@ -12,6 +15,8 @@ export interface InputProps {
   keyboardType?: KeyboardTypeOptions;
   placeholder: string;
   testID?: string;
+  onShowPassword?: () => void;
+  type?: InputType
 }
 
 const Input = ({
@@ -23,6 +28,8 @@ const Input = ({
   value,
   isError = false,
   testID,
+  onShowPassword,
+  type = 'text'
 }: InputProps) => {
   return (
     <View style={styles.inputContainer}>
@@ -41,13 +48,21 @@ const Input = ({
           selectionColor={Colors.darkGray}
           underlineColorAndroid="transparent"
         />
-        {value && (
-          <AntDesign
-            testID="close"
-            name="close"
+        {type == 'password' ? (
+          <Ionicons
+            name={secure ? 'eye' : 'eye-off'}
             style={styles.clearIcon}
-            onPress={() => onUpdateValue('')}
+            onPress={onShowPassword}
           />
+        ) : (
+          value && (
+            <AntDesign
+              testID="close"
+              name="close"
+              style={styles.clearIcon}
+              onPress={() => onUpdateValue('')}
+            />
+          )
         )}
       </View>
     </View>

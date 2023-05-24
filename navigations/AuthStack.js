@@ -2,8 +2,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Colors } from '../constants/styles';
 import Login from '../screens/Login';
 import Server from '../screens/Server';
-import AppDrawer from './Drawer';
-import ChatScreen from '../screens/ChatScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -14,6 +12,7 @@ const AuthStack = () => {
         headerStyle: { backgroundColor: Colors.primary400 },
         headerTintColor: 'white',
         contentStyle: { backgroundColor: Colors.secondary100 },
+        animation: 'slide_from_right',
       }}
     >
       <Stack.Screen
@@ -22,8 +21,6 @@ const AuthStack = () => {
         options={{ title: 'Add your organisation URL' }}
       />
       <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="Home" component={AppDrawer} options={{ headerShown: false }} />
-      <Stack.Screen name="ChatScreen" component={ChatScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };

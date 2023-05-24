@@ -1,14 +1,14 @@
-import { useRef, useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import Button from '../components/ui/Button';
+import { useState, useContext, useRef } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Ionicons } from '@expo/vector-icons';
-import Input from '../components/ui/Input';
-import { Colors } from '../constants/styles';
-import createAxiosClient from '../config/axios';
-import Storage from '../utils/asyncStorage';
-import PhoneNumberInput from 'react-native-phone-number-input';
 import PhoneInput from 'react-native-phone-number-input';
+
+import { Colors } from '../constants/styles';
+import Input from '../components/ui/Input';
+import Button from '../components/ui/Button';
+import Storage from '../utils/asyncStorage';
+import AuthContext from '../config/AuthContext';
+import createAxiosClient from '../config/axios';
 
 type RootStackParamList = {
   Login: undefined;
@@ -18,6 +18,7 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
 const Login = ({ navigation }: Props) => {
+  const { setToken } = useContext(AuthContext);
   const [enteredMobile, setEnteredMobile] = useState('');
   const [enteredPassword, setEnteredPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -50,7 +51,7 @@ const Login = ({ navigation }: Props) => {
       });
 
       await Storage.storeData('session', JSON.stringify(response.data.data));
-      navigation.navigate('Home');
+      setToken(response.data.data.access_token);
     } catch (error: any) {
       setErrorMessage(error.message);
     }
@@ -65,51 +66,32 @@ const Login = ({ navigation }: Props) => {
     <View style={styles.container}>
       <View>
         <View>
-          <Text style={styles.numberLabel}>Enter your WhatsApp number</Text>
-          <PhoneNumberInput
+          <Text style={[styles.numberLabel, errorMessage && styles.errorLabel]}>
+            Enter your WhatsApp number
+          </Text>
+          <PhoneInput
+            testID="mobileNumber"
             ref={phoneInput}
             defaultCode="IN"
             onChangeText={(text) => updateInputValueHandler('mobile', text)}
             layout="first"
             value={enteredMobile}
             placeholder="Enter 10 digit phone number"
-            containerStyle={{
-              backgroundColor: 'white',
-              borderColor: '#93a29b',
-              borderWidth: 1,
-              borderRadius: 11,
-              width: '100%',
-            }}
-            textContainerStyle={{
-              backgroundColor: 'white',
-              height: 50,
-              borderColor: '#93a29b',
-              borderRightWidth: 0.5,
-              borderRadius: 11,
-              marginLeft: -12,
-              paddingVertical: 8,
-              paddingHorizontal: 6,
-            }}
+            containerStyle={styles.phoneInputContainer}
+            textContainerStyle={styles.phoneInput}
           />
         </View>
-
-        <View style={styles.passwordContainer}>
-          <Input
-            testID="password"
-            label="Enter your password"
-            onUpdateValue={(text) => updateInputValueHandler('password', text)}
-            secure={showPassword ? false : true}
-            value={enteredPassword}
-            isError={errorMessage ? true : false}
-            placeholder="Password"
-          />
-          <TouchableOpacity
-            style={styles.iconContainer}
-            onPress={() => setShowPassword(!showPassword)}
-          >
-            <Ionicons name={showPassword ? 'eye' : 'eye-off'} size={24} color="gray" />
-          </TouchableOpacity>
-        </View>
+        <Input
+          testID="password"
+          label="Enter your password"
+          placeholder="Password"
+          value={enteredPassword}
+          onUpdateValue={(text) => updateInputValueHandler('password', text)}
+          secure={showPassword ? false : true}
+          onShowPassword={() => setShowPassword(!showPassword)}
+          isError={errorMessage ? true : false}
+          type='password'
+        />
         <Text style={styles.forgotPassword}>Forgot password?</Text>
         {errorDisplay}
       </View>
@@ -128,8 +110,23 @@ const styles = StyleSheet.create({
   errorLabel: {
     color: Colors.error100,
   },
-  passwordContainer: {
-    marginTop: 20,
+  phoneInputContainer: {
+    width: '100%',
+    backgroundColor: 'white',
+    borderWidth: 0.75,
+    borderRadius: 10,
+    marginBottom: 20,
+    borderColor: Colors.darkGray,
+    height: 48,
+  },
+  phoneInput: {
+    width: '80%',
+    fontSize: 16,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    marginLeft: -12,
+    paddingVertical: 8,
+    paddingHorizontal: 6,
   },
   numberLabel: {
     paddingBottom: 10,
