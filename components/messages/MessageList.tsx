@@ -26,8 +26,6 @@ const MessagesList = ({ onSwipeToReply, userData }: any) => {
     }
   }, [error, data])
   
-
-  const user = useRef(0);
   const scrollView = useRef();
 
   return (
