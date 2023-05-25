@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, ActivityIndicator, StyleSheet, Dimensions } from 'react-native';
-import { Colors } from '../../constants/styles';
+import { COLORS } from '../../constants';
 
 const screenDimensions = {
   width: Dimensions.get('window').width,
@@ -10,7 +10,7 @@ const screenDimensions = {
 const LoadingPage = () => {
   return (
     <View testID="loadingIndicator" style={styles.container}>
-      <ActivityIndicator size="large" color={Colors.primary400} />
+      <ActivityIndicator size="large" color={COLORS.primary400} />
     </View>
   );
 };

@@ -1,14 +1,12 @@
 import { StyleSheet, Text, View, Pressable, Modal } from 'react-native';
 import { useState } from 'react';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { Ionicons, Entypo, MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
+
 import ChatHeader from '../components/messages/ChatHeader';
 import MessagesList from '../components/messages/MessageList';
 import ChatInput from '../components/messages/ChatInput';
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import Icon from '@expo/vector-icons/FontAwesome';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Colors } from '../constants/styles';
-import { Ionicons } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
+import { COLORS } from '../constants';
 
 type RootStackParamList = {
   Login: undefined;
@@ -52,7 +50,12 @@ const ChatScreen = ({ navigation }: Props) => {
             style={styles.warning_button}
             android_ripple={styles.ripplecolor}
           >
-            <Icon name="ellipsis-v" size={25} color={Colors.white} style={styles.ellipseicon} />
+            <FontAwesome
+              name="ellipsis-v"
+              size={25}
+              color={COLORS.white}
+              style={styles.ellipseicon}
+            />
           </Pressable>
           <View style={styles.warning_modal}>
             <View style={styles.warning_body}>

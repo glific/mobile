@@ -7,7 +7,7 @@ import Animated, {
   useAnimatedGestureHandler,
   useSharedValue,
 } from 'react-native-reanimated';
-import { Colors } from '../../constants/styles';
+import { COLORS } from '../../constants';
 
 const Message = ({ time, isLeft, message, onSwipe }: any) => {
   const startingPosition = 0;
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   messageContainer: {
-    backgroundColor: Colors.messageBackground,
+    backgroundColor: COLORS.primary400,
     maxWidth: '80%',
     alignSelf: 'flex-end',
     flexDirection: 'row',
