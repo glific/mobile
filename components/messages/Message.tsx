@@ -10,13 +10,12 @@ import Animated, {
 import { COLORS } from '../../constants';
 
 const Message = ({ time, isLeft, message, onSwipe }: any) => {
-
   const dateObj = new Date(time);
   const formattedTime = dateObj.toLocaleString('en-US', {
     hour: 'numeric',
     minute: 'numeric',
     hour12: true,
-  })
+  });
 
   const startingPosition = 0;
   const x = useSharedValue(startingPosition);
@@ -97,10 +96,9 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
   },
   message: {
-    
     fontSize: 14,
     letterSpacing: 0.2,
-    color: Colors.black,
+    color: COLORS.black,
     includeFontPadding: false,
   },
   time: {

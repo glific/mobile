@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     flexDirection: 'row',
     padding: SIZES.m10,
-    backgroundColor: COLORS.primary400
+    backgroundColor: COLORS.primary400,
   },
   iconContainer: {
     width: SIZES.s30,

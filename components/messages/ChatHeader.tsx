@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Pressable, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Entypo, Ionicons, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 
-import { Colors } from '../../constants/styles';
+import { COLORS } from '../../constants';
 
 interface DataProps {
   userData: {
@@ -28,7 +28,7 @@ const ChatHeader: React.FC<DataProps> = ({ userData }) => {
         style={styles.backButton}
         onPress={(): void => navigation.goBack()}
       />
-      <Pressable style={styles.innerContainer} android_ripple={{ color: Colors.primary70 }}>
+      <Pressable style={styles.innerContainer} android_ripple={{ color: COLORS.primary70 }}>
         <View>
           <Image
             testID="userProfile"
@@ -38,7 +38,7 @@ const ChatHeader: React.FC<DataProps> = ({ userData }) => {
           <View
             style={[
               styles.circle,
-              { backgroundColor: true ? Colors.primary100 : Colors.darkGray }, // TODO: for online status
+              { backgroundColor: true ? COLORS.primary100 : COLORS.darkGray }, // TODO: for online status
             ]}
           />
         </View>
@@ -57,21 +57,21 @@ const ChatHeader: React.FC<DataProps> = ({ userData }) => {
         <>
           <Pressable onPress={handleMenu} style={styles.menuBackground} />
           <View style={styles.menuContainer}>
-            <Pressable style={styles.menuButton} android_ripple={{ color: Colors.primary10 }}>
+            <Pressable style={styles.menuButton} android_ripple={{ color: COLORS.primary10 }}>
               <Ionicons name="person-add-sharp" style={styles.menuIcon} />
               <Text style={styles.menuText}>Add to Collection</Text>
             </Pressable>
-            <Pressable style={styles.menuButton} android_ripple={{ color: Colors.primary10 }}>
+            <Pressable style={styles.menuButton} android_ripple={{ color: COLORS.primary10 }}>
               <MaterialCommunityIcons name="message-bulleted-off" style={styles.menuIcon} />
               <Text style={styles.menuText}>Clear Conversation</Text>
             </Pressable>
-            <Pressable style={styles.menuButton} android_ripple={{ color: Colors.primary10 }}>
+            <Pressable style={styles.menuButton} android_ripple={{ color: COLORS.primary10 }}>
               <MaterialCommunityIcons name="hand-back-right-off" style={styles.menuIcon} />
               <Text style={styles.menuText}>Terminate Flows</Text>
             </Pressable>
-            <Pressable style={styles.menuButton} android_ripple={{ color: Colors.primary10 }}>
-              <Entypo name="block" style={[styles.menuIcon, { color: Colors.error100 }]} />
-              <Text style={[styles.menuText, { color: Colors.error100 }]}>Block Contact </Text>
+            <Pressable style={styles.menuButton} android_ripple={{ color: COLORS.primary10 }}>
+              <Entypo name="block" style={[styles.menuIcon, { color: COLORS.error100 }]} />
+              <Text style={[styles.menuText, { color: COLORS.error100 }]}>Block Contact </Text>
             </Pressable>
           </View>
         </>
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: '2%',
-    backgroundColor: Colors.primary400,
+    backgroundColor: COLORS.primary400,
   },
   backButton: {
     alignSelf: 'center',
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     width: 15,
     borderRadius: 7.5,
     borderWidth: 2,
-    borderColor: Colors.primary400,
+    borderColor: COLORS.primary400,
   },
   nameText: {
     fontSize: 18,
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     bottom: -180,
     borderRadius: 4,
     elevation: 4,
-    shadowColor: Colors.black,
+    shadowColor: COLORS.black,
     shadowOffset: { height: 4, width: 0 },
     shadowRadius: 4,
     paddingVertical: 10,
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
   menuIcon: {
     marginRight: 10,
     fontSize: 22,
-    color: Colors.primary100,
+    color: COLORS.primary100,
   },
   menuButton: {
     width: '100%',
@@ -167,6 +167,6 @@ const styles = StyleSheet.create({
   },
   menuText: {
     fontSize: 16,
-    color: Colors.black,
+    color: COLORS.black,
   },
 });
