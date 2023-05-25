@@ -10,6 +10,7 @@ const BSPBALANCE = gql`
 
 const Wallet = () => {
   const { data } = useQuery(BSPBALANCE);
+  console.log(data);
 
   return (
     <View style={styles.walletcontainer}>

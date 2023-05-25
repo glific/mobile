@@ -7,13 +7,13 @@ import { client } from './config/apollo';
 
 export default function App() {
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor={Colors.primary400} />
-      <ApolloProvider client={client}>
-        <Navigation />
-      </ApolloProvider>
-    </SafeAreaView>
+    <ApolloProvider client={client}>
+      <SafeAreaView style={styles.container}>
+        <StatusBar backgroundColor={Colors.primary400} />
 
+        <Navigation />
+      </SafeAreaView>
+    </ApolloProvider>
   );
 }
 
