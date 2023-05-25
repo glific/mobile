@@ -50,6 +50,7 @@ const ContactList: React.FC<ContactListProps> = () => {
 
 const styles = StyleSheet.create({
   contactList: {
+    flex: 1,
     marginBottom: 20,
   },
 });
