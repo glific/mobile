@@ -34,6 +34,9 @@ export const GET_CONTACT_MESSAGES = gql`
         id
         body
         insertedAt
+        sender {
+          id
+        }
       }
     }
   }

@@ -1,113 +1,120 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { FlingGestureHandler, Directions, State } from 'react-native-gesture-handler';
-import Animated, {
-  withSpring,
-  useAnimatedStyle,
-  useAnimatedGestureHandler,
-  useSharedValue,
-} from 'react-native-reanimated';
-import { COLORS } from '../../constants';
+import { Text, StyleSheet } from 'react-native';
+import { PanGestureHandler, State } from 'react-native-gesture-handler';
+import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 
-const Message = ({ time, isLeft, message, onSwipe }: any) => {
-  const dateObj = new Date(time);
+import { COLORS, SIZES } from '../../constants';
+
+
+type MessageProps = {
+  isLeft: boolean;
+  message: {
+    id: number,
+    body: string,
+    insertedAt: string,
+    sender: {
+      id: number,
+    }
+  };
+  onSwipe: (message: any, isLeft: boolean) => void;
+};
+
+const Message: React.FC<MessageProps> = ({ isLeft, message, onSwipe }: any) => {
+  const dateObj = new Date(message.insertedAt);
   const formattedTime = dateObj.toLocaleString('en-US', {
     hour: 'numeric',
     minute: 'numeric',
     hour12: true,
   });
 
-  const startingPosition = 0;
-  const x = useSharedValue(startingPosition);
-
-  const isOnLeft = (type: any) => {
-    if (isLeft && type === 'messageContainer') {
-      return {
-        alignSelf: 'flex-start',
-        backgroundColor: '#073F24',
-        borderTopLeftRadius: 0,
-      };
-    } else if (!isLeft && type === 'message') {
-      return {
-        color: '#E1E8E5',
-      };
-    } else if (isLeft && type === 'time') {
-      return {
-        color: 'darkgray',
-      };
-    } else if (isLeft && type === 'message') {
-      return {
-        color: 'white',
-      };
-    } else {
-      return {
-        borderTopRightRadius: 0,
-        color: '#E1E8E5',
-      };
+  const onRight = (type: string) => {
+    if (isLeft) return {};
+    else {
+      switch (type) {
+        case 'message':
+          return {
+            alignSelf: 'flex-end',
+            borderTopRightRadius: 0,
+            borderTopLeftRadius: SIZES.r10,
+            backgroundColor: COLORS.lightGray,
+          };
+        case 'body':
+          return {
+            color: COLORS.black,
+          };
+        case 'time':
+          return {
+            color: 'darkgray',
+          };
+      }
     }
   };
 
-  const eventHandler = useAnimatedGestureHandler({
-    onStart: (event, ctx) => {},
-    onActive: (event, ctx) => {
-      x.value = isLeft ? 50 : -50;
-    },
-    onEnd: (event, ctx) => {
-      x.value = withSpring(startingPosition);
-    },
-  });
+  const translateX = useSharedValue(0);
+  const containerWidth = SIZES.width * 0.7;
 
-  const uas = useAnimatedStyle(() => {
+  const gestureHandler = (event: any) => {
+    translateX.value = event.nativeEvent.translationX;
+  };
+
+  const gestureStateHandler = (event: any) => {
+    if (event.nativeEvent.state === State.END) {
+      const translationThreshold = containerWidth * 0.5;
+      const isOpen = translateX.value > translationThreshold;
+
+      if (isOpen) {
+        translateX.value = withSpring(containerWidth);
+      } else {
+        translateX.value = withSpring(0, {}, () => {
+          translateX.value = 0;
+        });
+      }
+    }
+    if(event.nativeEvent.state === State.ACTIVE) {
+          onSwipe(message, isLeft);
+    }
+  };
+
+  const animatedStyle = useAnimatedStyle(() => {
     return {
-      transform: [{ translateX: x.value }],
+      transform: [{ translateX: translateX.value }],
     };
   });
 
   return (
-    <FlingGestureHandler
-      direction={isLeft ? Directions.RIGHT : Directions.LEFT}
-      onGestureEvent={eventHandler}
-      onHandlerStateChange={({ nativeEvent }) => {
-        if (nativeEvent.state === State.ACTIVE) {
-          onSwipe(message, isLeft);
-        }
-      }}
-    >
-      <Animated.View style={[styles.container, uas]}>
-        <View style={[styles.messageContainer, isOnLeft('messageContainer')]}>
-          <Text style={[styles.message, isOnLeft('message')]}>{message}</Text>
-          <Text style={[styles.time, isOnLeft('time')]}>{formattedTime}</Text>
-        </View>
+    <PanGestureHandler onGestureEvent={gestureHandler} onHandlerStateChange={gestureStateHandler}>
+      <Animated.View style={[styles.messageContainer, onRight('message'), animatedStyle]}>
+        <Text style={[styles.message, onRight('body')]}>{message.body}</Text>
+        <Text style={[styles.time, onRight('time')]}>{formattedTime}</Text>
       </Animated.View>
-    </FlingGestureHandler>
+    </PanGestureHandler>
   );
 };
 
+export default Message;
+
 const styles = StyleSheet.create({
-  container: {
-    marginVertical: 12,
-  },
   messageContainer: {
-    backgroundColor: COLORS.primary400,
     maxWidth: '70%',
-    borderRadius: 15,
-    paddingHorizontal: 10,
-    marginHorizontal: 10,
-    paddingVertical: 14,
+    margin: SIZES.m10,
+    padding: SIZES.m10,
+    borderTopLeftRadius: 0,
+    borderRadius: SIZES.r10,
+    backgroundColor: COLORS.primary400,
   },
   message: {
-    fontSize: 14,
+    fontSize: SIZES.f14,
     letterSpacing: 0.2,
-    color: COLORS.black,
+    color: COLORS.white,
     includeFontPadding: false,
+    // backgroundColor: COLORS.primary100,
   },
   time: {
-    fontSize: 10,
+    fontSize: SIZES.f10,
     color: 'lightgray',
     position: 'relative',
     alignSelf: 'flex-end',
-    bottom: -6,
+    bottom: -SIZES.m6,
   },
 });
 
-export default Message;

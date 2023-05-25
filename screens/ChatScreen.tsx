@@ -21,7 +21,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ChatScreen'>;
 const ChatScreen = ({ navigation, route }: Props) => {
   const { contact } = route.params;
   const [reply, setReply] = useState('');
-  const [isLeft, setIsLeft] = useState(false);
+  // const [isLeft, setIsLeft] = useState(false);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -29,9 +29,8 @@ const ChatScreen = ({ navigation, route }: Props) => {
     });
   }, [navigation]);
 
-  const swipeToReply = (message: string, isLeft: boolean) => {
-    setReply(message.length > 50 ? message.slice(0, 50) + '...' : message);
-    setIsLeft(isLeft);
+  const swipeToReply = (message: any, isLeft: boolean) => {
+    setReply(message?.body.length > 50 ? message?.body.slice(0, 40) + '...' : message?.body);
   };
 
   const closeReply = () => {
@@ -44,7 +43,7 @@ const ChatScreen = ({ navigation, route }: Props) => {
         <Text style={styles.time}>Time left: 24</Text>
       </View>
       <MessagesList onSwipeToReply={swipeToReply} userData={contact} />
-      <ChatInput reply={reply} isLeft={isLeft} closeReply={closeReply} username="username" />
+      <ChatInput reply={reply} closeReply={closeReply} username="username" />
     </View>
   );
 };
