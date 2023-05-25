@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { View, Text, Image, Pressable, StyleSheet } from 'react-native';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
-import { Colors } from '../../constants/styles';
+import { COLORS } from '../../constants';
 import { Feather } from '@expo/vector-icons';
 import Storage from '../../utils/asyncStorage';
 import AuthContext from '../../config/AuthContext';
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     borderTopColor: '#9e9e9e',
   },
   headerConatiner: {
-    backgroundColor: Colors.secondary100,
+    backgroundColor: COLORS.secondary100,
     width: '100%',
     height: 120,
     padding: 10,

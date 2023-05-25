@@ -1,13 +1,13 @@
 import React from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
-import { Colors } from '../../constants/styles';
+import { COLORS } from '../../constants';
 
 const LoadingPage = () => {
   return (
     <ActivityIndicator
       testID="loadingIndicator"
       size="large"
-      color={Colors.primary400}
+      color={COLORS.primary400}
       style={styles.container}
     />
   );

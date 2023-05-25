@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TextInput, StyleSheet, KeyboardTypeOptions } from 'react-native';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 
-import { Colors } from '../../constants/styles';
+import { COLORS } from '../../constants';
 
 type InputType = 'text' | 'password' | 'number';
 
@@ -44,8 +44,8 @@ const Input = ({
           onChangeText={onUpdateValue}
           value={value}
           placeholder={placeholder}
-          cursorColor={Colors.darkGray}
-          selectionColor={Colors.darkGray}
+          cursorColor={COLORS.darkGray}
+          selectionColor={COLORS.darkGray}
           underlineColorAndroid="transparent"
         />
         {type == 'password' ? (
@@ -78,11 +78,11 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 16,
-    color: Colors.black,
+    color: COLORS.black,
     marginBottom: 4,
   },
   errorLabel: {
-    color: Colors.error100,
+    color: COLORS.error100,
   },
   inputBox: {
     width: '100%',
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     alignItems: 'center',
     backgroundColor: 'white',
-    borderColor: Colors.darkGray,
+    borderColor: COLORS.darkGray,
     borderRadius: 10,
     flexDirection: 'row',
   },
@@ -102,9 +102,9 @@ const styles = StyleSheet.create({
   },
   clearIcon: {
     fontSize: 16,
-    color: Colors.darkGray,
+    color: COLORS.darkGray,
   },
   error: {
-    backgroundColor: Colors.error100,
+    backgroundColor: COLORS.error100,
   },
 });

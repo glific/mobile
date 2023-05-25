@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Colors } from '../constants/styles';
+import { COLORS } from '../constants';
 import Login from '../screens/Login';
 import Server from '../screens/Server';
 
@@ -9,9 +9,9 @@ const AuthStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerStyle: { backgroundColor: Colors.primary400 },
+        headerStyle: { backgroundColor: COLORS.primary400 },
         headerTintColor: 'white',
-        contentStyle: { backgroundColor: Colors.secondary100 },
+        contentStyle: { backgroundColor: COLORS.secondary100 },
         animation: 'slide_from_right',
       }}
     >

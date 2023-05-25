@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, Text } from 'react-native';
-import { Colors } from '../../constants/styles';
+import { COLORS } from '../../constants';
 import { ReactElement } from 'react';
 
 export interface ButtonProps {
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     paddingHorizontal: 12,
     justifyContent: 'center',
-    backgroundColor: Colors.primary100,
+    backgroundColor: COLORS.primary100,
     elevation: 2,
     shadowColor: 'black',
     shadowOffset: { width: 1, height: 1 },

@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, Platform, TouchableOpacity } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle } from 'react-native-reanimated';
-import Icon from '@expo/vector-icons/MaterialCommunityIcons';
-import { Ionicons } from '@expo/vector-icons';
-import { FontAwesome } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
-import { Colors } from '../../constants/styles';
+import { FontAwesome, AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { COLORS } from '../../constants';
 
 const ChatInput = ({ reply, closeReply, isLeft, username }: any) => {
   const [message, setMessage] = useState('');
@@ -22,7 +19,7 @@ const ChatInput = ({ reply, closeReply, isLeft, username }: any) => {
       {reply ? (
         <View style={styles.replyContainer}>
           <TouchableOpacity onPress={closeReply} style={styles.closeReply}>
-            <Icon name="close" color="#000" size={20} />
+            <MaterialCommunityIcons name="close" color="#000" size={20} />
           </TouchableOpacity>
           <Text style={styles.title}>Response to {isLeft ? username : 'Me'}</Text>
           <Text style={styles.reply}>{reply}</Text>
@@ -32,7 +29,7 @@ const ChatInput = ({ reply, closeReply, isLeft, username }: any) => {
         <AntDesign name="up" size={18} color="black" style={styles.upicon} />
         <View style={styles.inputAndMicrophone}>
           <TouchableOpacity style={styles.emoticonButton}>
-            <Icon name={'emoticon-outline'} size={23} color={Colors.description} />
+            <MaterialCommunityIcons name={'emoticon-outline'} size={23} color={COLORS.black} />
           </TouchableOpacity>
           <TextInput
             multiline
@@ -42,10 +39,10 @@ const ChatInput = ({ reply, closeReply, isLeft, username }: any) => {
             onChangeText={(text) => setMessage(text)}
           />
           <TouchableOpacity style={styles.rightIconButtonStyle}>
-            <Icon
+            <MaterialCommunityIcons
               name="paperclip"
               size={23}
-              color={Colors.description}
+              color={COLORS.black}
               style={styles.paperclipicon}
             />
           </TouchableOpacity>
@@ -101,7 +98,7 @@ const styles = StyleSheet.create({
   },
   inputAndMicrophone: {
     flexDirection: 'row',
-    backgroundColor: Colors.inputBackground,
+    backgroundColor: COLORS.lightGray,
     flex: 3,
     marginRight: 10,
     paddingVertical: Platform.OS === 'ios' ? 10 : 0,
@@ -112,7 +109,7 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: 'transparent',
     paddingLeft: 20,
-    color: Colors.inputText,
+    color: COLORS.white,
     flex: 3,
     fontSize: 15,
     height: 50,
@@ -142,7 +139,7 @@ const styles = StyleSheet.create({
     marginRight: 30,
   },
   swipeText: {
-    color: Colors.description,
+    color: COLORS.black,
     fontSize: 15,
   },
   emoticonButton: {
@@ -157,7 +154,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   recordingTime: {
-    color: Colors.description,
+    color: COLORS.black,
     fontSize: 20,
     marginLeft: 5,
   },
