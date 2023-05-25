@@ -1,6 +1,6 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Colors } from '../constants/styles';
+import { COLORS } from '../constants';
 import { Entypo, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import Notifications from '../screens/Notifications';
@@ -18,14 +18,14 @@ const AppDrawer = () => {
     <Drawer.Navigator
       initialRouteName="Home"
       screenOptions={{
-        drawerActiveBackgroundColor: Colors.primary400,
+        drawerActiveBackgroundColor: COLORS.primary400,
         drawerActiveTintColor: '#fff',
         drawerLabelStyle: {
           marginLeft: -15,
         },
-        headerStyle: { backgroundColor: Colors.primary400 },
+        headerStyle: { backgroundColor: COLORS.primary400 },
         headerTintColor: 'white',
-        contentStyle: { backgroundColor: Colors.secondary100 },
+        contentStyle: { backgroundColor: COLORS.secondary100 },
       }}
       drawerContent={(props) => <CustomDrawer {...props} />}
     >

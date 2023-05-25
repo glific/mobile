@@ -1,7 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
-import { Colors } from '../../constants/styles';
+import { COLORS } from '../../constants';
 
 export interface ContactProps {
   index: number;
@@ -16,7 +15,7 @@ const Contact: React.FC<ContactProps> = ({ index, name }) => {
       testID="contactCard"
       onPress={() => navigation.navigate('ChatScreen', { contact: { id: index, name } })}
       style={styles.item}
-      android_ripple={{ color: Colors.primary10 }}
+      android_ripple={{ color: COLORS.primary10 }}
     >
       <View style={styles.avatar}>
         <Text style={styles.avatartext}>{name.charAt(0)}</Text>
@@ -35,7 +34,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'white',
     borderWidth: 0.5,
-    borderColor: Colors.darkGray,
+    borderColor: COLORS.darkGray,
   },
   name: {
     fontSize: 16,
@@ -45,7 +44,7 @@ const styles = StyleSheet.create({
     height: 44,
     width: 44,
     borderRadius: 22,
-    backgroundColor: Colors.primary10,
+    backgroundColor: COLORS.primary10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -53,7 +52,7 @@ const styles = StyleSheet.create({
   avatartext: {
     fontSize: 18,
     fontWeight: '500',
-    color: Colors.primary400,
+    color: COLORS.primary400,
   },
 });
 

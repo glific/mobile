@@ -1,6 +1,6 @@
 import React from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
-import { Colors } from '../../constants/styles';
+import { COLORS } from '../../constants';
 
 const LoadingPage = () => {
   return (

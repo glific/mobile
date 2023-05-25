@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useLayoutEffect, useState } from 'react';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -5,6 +6,7 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import ChatHeader from '../components/messages/ChatHeader';
 import MessagesList from '../components/messages/MessageList';
 import ChatInput from '../components/messages/ChatInput';
+import { COLORS } from '../constants';
 
 type RootStackParamList = {
   Chat: undefined;
@@ -39,7 +41,6 @@ const ChatScreen = ({ navigation, route }: Props) => {
   };
 
   return (
-    <>
       <View style={{ flex: 1 }}>
         <View style={styles.item}>
           <Text style={styles.time}>Time left: 24</Text>
@@ -47,7 +48,6 @@ const ChatScreen = ({ navigation, route }: Props) => {
         <MessagesList onSwipeToReply={swipeToReply} userData={contact} />
         <ChatInput reply={reply} isLeft={isLeft} closeReply={closeReply} username="username" />
       </View>
-    </>
   );
 };
 

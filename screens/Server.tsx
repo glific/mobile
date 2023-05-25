@@ -4,7 +4,7 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
-import { Colors } from '../constants/styles';
+import { COLORS } from '../constants';
 import { validateUrl } from '../utils/helper';
 import InstructionCard from '../components/InstructionCard';
 
@@ -79,6 +79,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   errorLabel: {
-    color: Colors.error100,
+    color: COLORS.error100,
   },
 });
