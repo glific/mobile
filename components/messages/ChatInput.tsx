@@ -63,6 +63,9 @@ const ChatInput = ({ reply, closeReply, isLeft, username }: any) => {
 
 const styles = StyleSheet.create({
   container: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
     justifyContent: 'center',
     backgroundColor: 'white',
   },

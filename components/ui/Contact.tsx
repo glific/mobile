@@ -1,15 +1,20 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 import { Colors } from '../../constants/styles';
+
 export interface ContactProps {
+  index: number;
   name: string | null;
-  navigation: any;
 }
 
-const Contact: React.FC<ContactProps> = ({ name, navigation }): JSX.Element => {
+const Contact: React.FC<ContactProps> = ({ index, name }) => {
+  const navigation = useNavigation();
+
   return (
     <Pressable
       testID="contactCard"
-      onPress={() => navigation.navigate('ChatScreen')}
+      onPress={() => navigation.navigate('ChatScreen', { contact: { id: index, name } })}
       style={styles.item}
       android_ripple={{ color: Colors.primary10 }}
     >

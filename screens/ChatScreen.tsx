@@ -1,47 +1,33 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { useLayoutEffect, useState, useEffect } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useQuery } from '@apollo/client';
 
 import ChatHeader from '../components/messages/ChatHeader';
 import MessagesList from '../components/messages/MessageList';
 import ChatInput from '../components/messages/ChatInput';
-import { GET_CONTACTS } from '../graphql/queries/Contact';
-import LoadingPage from '../components/ui/Loading';
 
 type RootStackParamList = {
   Chat: undefined;
-  ChatScreen: undefined;
+  ChatScreen: {
+    contact: {
+      id: number;
+      contactName: string;
+    };
+  };
 };
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ChatScreen'>;
 
-const ChatScreen = ({ navigation }: Props) => {
-  const [userData, setUserData] = useState({ name: '', online: true });
+const ChatScreen = ({ navigation, route }: Props) => {
+  const { contact } = route.params;
   const [reply, setReply] = useState('');
   const [isLeft, setIsLeft] = useState(false);
 
-  const variables = {
-    filter: { id: '21' },
-    contactOpts: { limit: 1 },
-    messageOpts: { limit: 20, offset: 1 },
-  };
-
-  const { loading, error, data } = useQuery(GET_CONTACTS, { variables });
-
-  useEffect(() => {
-    if (error) {
-      console.log(error);
-    } else if (data) {
-      setUserData((prev) => ({ ...prev, name: data?.search[0].contact.name }));
-    }
-  }, [data, error]);
-
   useLayoutEffect(() => {
     navigation.setOptions({
-      header: () => <ChatHeader userData={userData} />,
+      header: () => <ChatHeader userData={contact} />,
     });
-  }, [navigation, userData]);
+  }, [navigation]);
 
   const swipeToReply = (message: string, isLeft: boolean) => {
     setReply(message.length > 50 ? message.slice(0, 50) + '...' : message);
@@ -58,10 +44,9 @@ const ChatScreen = ({ navigation }: Props) => {
         <View style={styles.item}>
           <Text style={styles.time}>Time left: 24</Text>
         </View>
-        <MessagesList onSwipeToReply={swipeToReply} />
+        <MessagesList onSwipeToReply={swipeToReply} userData={contact} />
         <ChatInput reply={reply} isLeft={isLeft} closeReply={closeReply} username="username" />
       </View>
-      {loading && <LoadingPage />}
     </>
   );
 };

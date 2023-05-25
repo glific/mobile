@@ -7,8 +7,8 @@ import { Colors } from '../../constants/styles';
 
 interface DataProps {
   userData: {
+    id: number;
     name: string;
-    online: boolean;
   };
 }
 
@@ -38,7 +38,7 @@ const ChatHeader: React.FC<DataProps> = ({ userData }) => {
           <View
             style={[
               styles.circle,
-              { backgroundColor: userData.online ? Colors.primary100 : Colors.darkGray },
+              { backgroundColor: true ? Colors.primary100 : Colors.darkGray }, // TODO: for online status
             ]}
           />
         </View>
