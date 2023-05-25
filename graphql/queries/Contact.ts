@@ -5,6 +5,7 @@ export const GET_CONTACTS = gql`
     search(filter: $filter, contactOpts: $contactOpts, messageOpts: $messageOpts) {
       contact {
         name
+        maskedPhone
       }
     }
   }
