@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Colors } from '../constants/styles';
+import { COLORS, SCALE, SIZES } from '../constants';
 
 const InstructionCard = () => {
   return (
@@ -19,41 +19,41 @@ export default InstructionCard;
 
 const styles = StyleSheet.create({
   cardContainer: {
-    width: '92%',
+    width: SIZES.s328,
     alignSelf: 'center',
-    marginTop: 12,
+    marginTop: SIZES.m12,
   },
   shadowCard: {
     position: 'absolute',
-    bottom: -4,
+    bottom: -SIZES.m4,
     width: '98.6%',
-    height: 112,
-    backgroundColor: Colors.primary10,
-    borderWidth: 0.75,
-    borderRadius: 10,
-    borderColor: Colors.primary50,
+    height: SCALE(112),
+    backgroundColor: COLORS.primary10,
+    borderWidth: SCALE(0.75),
+    borderRadius: SIZES.r10,
+    borderColor: COLORS.primary50,
   },
   frontCard: {
     width: '98.6%',
-    height: 112,
+    height: SCALE(112),
     alignSelf: 'flex-end',
     backgroundColor: 'white',
-    borderWidth: 0.75,
-    borderRadius: 10,
-    borderColor: Colors.primary50,
-    paddingHorizontal: 20,
+    borderWidth: SCALE(0.75),
+    borderRadius: SIZES.r10,
+    borderColor: COLORS.primary50,
+    paddingHorizontal: SIZES.m20,
     justifyContent: 'center',
   },
   titleText: {
-    fontSize: 16,
-    fontWeight: 500,
-    marginBottom: 8,
-    color: Colors.black,
+    fontSize: SIZES.f16,
+    fontWeight: '500',
+    marginBottom: SCALE(8),
+    color: COLORS.black,
   },
   bodyText: {
-    fontSize: 13,
+    fontSize: SIZES.f12,
     textAlignVertical: 'center',
-    color: Colors.black,
-    marginBottom: 6,
+    color: COLORS.black,
+    marginBottom: SIZES.m6,
   },
 });

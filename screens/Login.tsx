@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import PhoneInput from 'react-native-phone-number-input';
 
-import { Colors } from '../constants/styles';
+import { COLORS } from '../constants';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import Storage from '../utils/asyncStorage';
@@ -90,7 +90,7 @@ const Login = ({ navigation }: Props) => {
           secure={showPassword ? false : true}
           onShowPassword={() => setShowPassword(!showPassword)}
           isError={errorMessage ? true : false}
-          type='password'
+          type="password"
         />
         <Text style={styles.forgotPassword}>Forgot password?</Text>
         {errorDisplay}
@@ -108,7 +108,7 @@ export default Login;
 
 const styles = StyleSheet.create({
   errorLabel: {
-    color: Colors.error100,
+    color: COLORS.error100,
   },
   phoneInputContainer: {
     width: '100%',
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.75,
     borderRadius: 10,
     marginBottom: 20,
-    borderColor: Colors.darkGray,
+    borderColor: COLORS.darkGray,
     height: 48,
   },
   phoneInput: {
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
 
   forgotPassword: {
     alignSelf: 'flex-end',
-    color: Colors.primary100,
+    color: COLORS.primary100,
     marginTop: 5,
   },
   buttonContainer: {

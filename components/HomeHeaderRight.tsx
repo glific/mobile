@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Pressable } from 'react-native';
 import { Entypo, Ionicons } from '@expo/vector-icons';
-import { Colors } from '../constants/styles';
+import { COLORS, SCALE, SIZES } from '../constants';
 
 interface FilterButtonProps {
   label: string;
@@ -13,7 +13,7 @@ const FilterButton: React.FC<FilterButtonProps> = ({ label, count }) => {
     <Pressable
       onPress={() => console.log('')}
       style={styles.filter}
-      android_ripple={{ color: Colors.primary10 }}
+      android_ripple={{ color: COLORS.primary10 }}
     >
       <Text style={styles.filterText}>{label}</Text>
       <Text style={styles.filterText}>{`(${count})`}</Text>
@@ -61,46 +61,51 @@ export default HomeHeaderRight;
 const styles = StyleSheet.create({
   mainContainer: {
     flexDirection: 'row',
-    padding: 10,
+    padding: SIZES.m10,
+    backgroundColor: COLORS.primary400
   },
   iconContainer: {
-    paddingHorizontal: 6,
+    width: SIZES.s30,
+    height: SIZES.s30,
+    borderRadius: SIZES.m20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: SIZES.m4,
   },
   icon: {
-    fontSize: 20,
-    color: '#fff',
+    fontSize: SIZES.f20,
+    color: COLORS.white,
   },
   filterBackground: {
     position: 'absolute',
     top: 0,
     right: 0,
-    width: 500,
-    height: 800,
+    width: SIZES.width,
+    height: SIZES.height,
   },
   filtersContainer: {
-    width: 200,
-    height: 230,
+    width: SIZES.s200,
     position: 'absolute',
     backgroundColor: 'white',
-    right: 16,
-    bottom: -230,
-    borderRadius: 4,
-    elevation: 4,
-    shadowColor: Colors.black,
-    shadowOffset: { height: 4, width: 0 },
-    shadowRadius: 4,
-    paddingVertical: 14,
+    right: SIZES.m16,
+    bottom: -SCALE(220),
+    borderRadius: SIZES.r4,
+    elevation: SIZES.r4,
+    shadowColor: COLORS.black,
+    shadowOffset: { height: SIZES.r4, width: 0 },
+    shadowRadius: SIZES.r4,
+    paddingVertical: SIZES.m12,
   },
   filter: {
-    width: 200,
-    height: 40,
-    paddingHorizontal: 12,
+    width: SIZES.s200,
+    height: SIZES.s40,
+    paddingHorizontal: SIZES.m12,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   filterText: {
-    fontSize: 14,
-    color: Colors.black,
+    fontSize: SIZES.f16,
+    color: COLORS.black,
   },
 });
