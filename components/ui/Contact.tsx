@@ -7,16 +7,16 @@ export interface ContactProps {
 
 const Contact: React.FC<ContactProps> = ({ name, navigation }): JSX.Element => {
   return (
-    <Pressable 
-      testID="contactCard" 
-      onPress={() => navigation.navigate('ChatScreen')} 
+    <Pressable
+      testID="contactCard"
+      onPress={() => navigation.navigate('ChatScreen')}
       style={styles.item}
-      android_ripple={{color: Colors.primary10}}
+      android_ripple={{ color: Colors.primary10 }}
     >
-        <View style={styles.avatar}>
-          <Text style={styles.avatartext}>{name.charAt(0)}</Text>
-        </View>
-        <Text style={styles.name}>{name}</Text>
+      <View style={styles.avatar}>
+        <Text style={styles.avatartext}>{name.charAt(0)}</Text>
+      </View>
+      <Text style={styles.name}>{name}</Text>
     </Pressable>
   );
 };
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   avatartext: {
     fontSize: 18,
     fontWeight: '500',
-    color: Colors.primary400
+    color: Colors.primary400,
   },
 });
 

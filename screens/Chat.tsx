@@ -7,8 +7,9 @@ import SearchBar from '../components/ui/SearchBar';
 import Storage from '../utils/asyncStorage';
 
 type RootStackParamList = {
-  Login: undefined;
   Contacts: undefined;
+  Collections: undefined;
+  SavedSearches: undefined;
   ChatScreen: undefined;
 };
 

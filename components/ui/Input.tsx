@@ -16,7 +16,7 @@ export interface InputProps {
   placeholder: string;
   testID?: string;
   onShowPassword?: () => void;
-  type?: InputType
+  type?: InputType;
 }
 
 const Input = ({
@@ -29,7 +29,7 @@ const Input = ({
   isError = false,
   testID,
   onShowPassword,
-  type = 'text'
+  type = 'text',
 }: InputProps) => {
   return (
     <View style={styles.inputContainer}>
