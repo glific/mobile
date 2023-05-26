@@ -1,36 +1,47 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Platform, TouchableOpacity } from 'react-native';
-import Animated, { useSharedValue, useAnimatedStyle } from 'react-native-reanimated';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TextInput, Pressable } from 'react-native';
 import { FontAwesome, AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { COLORS } from '../../constants';
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
-const ChatInput = ({ reply, closeReply, isLeft, username }: any) => {
+import { COLORS, SCALE, SIZES } from '../../constants';
+
+const ChatInput = ({ reply, closeReply }: any) => {
   const [message, setMessage] = useState('');
-  const height = useSharedValue(70);
+  const [showOptions, setShowOptions] = useState(true);
 
-  const heightAnimatedStyle = useAnimatedStyle(() => {
+  const translateY = useSharedValue(0);
+
+  useEffect(() => {
+    if (showOptions) {
+      translateY.value = withTiming(SCALE(170));
+    } else {
+      translateY.value = withTiming(0);
+    }
+  }, [showOptions]);
+
+  const animatedStyle = useAnimatedStyle(() => {
     return {
-      height: height.value,
+      transform: [{ translateY: translateY.value }],
     };
   });
 
   return (
-    <Animated.View style={[styles.container, heightAnimatedStyle]}>
-      {reply ? (
+    <Animated.View style={[styles.mainContainer, animatedStyle]}>
+      {reply && (
         <View style={styles.replyContainer}>
-          <TouchableOpacity onPress={closeReply} style={styles.closeReply}>
-            <MaterialCommunityIcons name="close" color="#000" size={20} />
-          </TouchableOpacity>
-          <Text style={styles.title}>Response to {isLeft ? username : 'Me'}</Text>
-          <Text style={styles.reply}>{reply}</Text>
+          <MaterialCommunityIcons name="close" style={styles.closeReply} onPress={closeReply} />
+          <Text style={styles.title}>Response to {reply.isLeft ? reply?.sender.id : 'Me'}</Text>
+          <Text style={styles.reply}>{reply?.body.length > 50 ? reply?.body.slice(0, 40) + '...' : reply?.body}</Text>
         </View>
-      ) : null}
-      <View style={styles.innerContainer}>
-        <AntDesign name="up" size={18} color="black" style={styles.upicon} />
-        <View style={styles.inputAndMicrophone}>
-          <TouchableOpacity style={styles.emoticonButton}>
-            <MaterialCommunityIcons name={'emoticon-outline'} size={23} color={COLORS.black} />
-          </TouchableOpacity>
+      )}
+      <View style={styles.inputContainer}>
+        <AntDesign
+          name="up"
+          style={[styles.showIcon, !showOptions && { transform: [{ rotate: '180deg' }] }]}
+          onPress={() => setShowOptions(!showOptions)}
+        />
+        <View style={styles.inputAndEmoji}>
+          <MaterialCommunityIcons name={'emoticon-outline'} style={styles.emoticonButton} />
           <TextInput
             multiline
             placeholder={'Start Typing...'}
@@ -38,150 +49,146 @@ const ChatInput = ({ reply, closeReply, isLeft, username }: any) => {
             value={message}
             onChangeText={(text) => setMessage(text)}
           />
-          <TouchableOpacity style={styles.rightIconButtonStyle}>
-            <MaterialCommunityIcons
-              name="paperclip"
-              size={23}
-              color={COLORS.black}
-              style={styles.paperclipicon}
-            />
-          </TouchableOpacity>
+          <MaterialCommunityIcons
+            name="paperclip"
+            size={23}
+            color={COLORS.black}
+            style={styles.paperclipicon}
+          />
         </View>
-        <TouchableOpacity style={styles.sendButton}>
-          <View style={styles.firsticonview}>
-            <Ionicons name="chatbox-sharp" size={32} color="white" style={styles.iconchatbox} />
-            <FontAwesome name="send" size={16} color="green" style={styles.sendicon} />
-          </View>
-        </TouchableOpacity>
+
+        <Pressable style={styles.sendButton}>
+          <Ionicons name="chatbox-sharp" style={styles.iconchatbox} />
+          <FontAwesome name="send" style={styles.sendicon} />
+        </Pressable>
       </View>
+      <Pressable style={styles.optionsContainer} android_ripple={{ borderless: false }}>
+        <MaterialCommunityIcons name="message-flash" style={styles.optionIcon} />
+        <Text style={styles.optionsText}>Speed sends</Text>
+      </Pressable>
+      <Pressable style={styles.optionsContainer} android_ripple={{ borderless: false }}>
+        <MaterialCommunityIcons name="message-star" style={styles.optionIcon} />
+        <Text style={styles.optionsText}>Templates</Text>
+      </Pressable>
+      <Pressable style={styles.optionsContainer} android_ripple={{ borderless: false }}>
+        <MaterialCommunityIcons name="gesture-tap-button" style={styles.optionIcon} />
+        <Text style={styles.optionsText}>Interactive message</Text>
+      </Pressable>
     </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  mainContainer: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
     justifyContent: 'center',
     backgroundColor: 'white',
+    elevation: 14,
   },
   replyContainer: {
-    paddingHorizontal: 10,
-    marginHorizontal: 10,
+    borderRadius: 10,
+    margin: 10,
+    padding: 10,
     justifyContent: 'center',
     alignItems: 'flex-start',
-  },
-  title: {
-    marginTop: 5,
-    fontWeight: 'bold',
+    backgroundColor: COLORS.primary10,
   },
   closeReply: {
+    fontSize: SIZES.f20,
+    color: COLORS.black,
     position: 'absolute',
-    right: 10,
-    top: 5,
+    right: SIZES.m10,
+    top: SIZES.m4,
   },
-  upicon: { marginRight: 10 },
+  title: {
+    fontSize: SIZES.f14,
+    fontWeight: 'bold',
+  },
   reply: {
+    fontSize: SIZES.f14,
     marginTop: 5,
   },
-  paperclipicon: {
-    transform: [{ rotate: '50deg' }],
-  },
-  innerContainer: {
-    paddingHorizontal: 10,
-    marginHorizontal: 10,
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  inputContainer: {
     flexDirection: 'row',
-    paddingVertical: 10,
-  },
-  inputAndMicrophone: {
-    flexDirection: 'row',
-    backgroundColor: COLORS.lightGray,
-    flex: 3,
-    marginRight: 10,
-    paddingVertical: Platform.OS === 'ios' ? 10 : 0,
-    borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'space-between',
+    paddingVertical: SIZES.m10,
+    paddingHorizontal: SIZES.m4,
   },
-  input: {
-    backgroundColor: 'transparent',
-    paddingLeft: 20,
-    color: COLORS.white,
-    flex: 3,
-    fontSize: 15,
-    height: 50,
-    alignSelf: 'center',
-  },
-  firsticonview: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  iconchatbox: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-  },
-  rightIconButtonStyle: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingRight: 15,
-    paddingLeft: 10,
-    borderLeftWidth: 1,
-    borderLeftColor: '#fff',
-  },
-  swipeToCancelView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginRight: 30,
-  },
-  swipeText: {
+  showIcon: {
+    fontSize: SIZES.f16,
     color: COLORS.black,
-    fontSize: 15,
+    padding: SIZES.m6,
+  },
+  inputAndEmoji: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: SCALE(30),
+    justifyContent: 'space-between',
+    backgroundColor: COLORS.lightGray,
   },
   emoticonButton: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingLeft: 10,
-  },
-  recordingActive: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingLeft: 10,
-  },
-  recordingTime: {
+    fontSize: SIZES.s24,
     color: COLORS.black,
-    fontSize: 20,
-    marginLeft: 5,
+    padding: SIZES.m6,
+    marginLeft: SCALE(2),
   },
-  microphoneAndLock: {
-    alignItems: 'center',
-    justifyContent: 'flex-end',
+  input: {
+    flex: 1,
+    fontSize: SIZES.f16,
+    minHeight: SIZES.s48,
+    color: COLORS.black,
+    paddingHorizontal: SIZES.m6,
+    paddingVertical: SIZES.m4,
   },
-  lockView: {
-    backgroundColor: '#eee',
-    width: 60,
-    alignItems: 'center',
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    height: 130,
-    paddingTop: 20,
+  paperclipicon: {
+    fontSize: SIZES.s24,
+    color: COLORS.black,
+    padding: SIZES.m6,
+    marginRight: SCALE(2),
+    transform: [{ rotate: '50deg' }],
+  },
+  iconchatbox: {
+    fontSize: SIZES.s30,
+    color: COLORS.white,
+    position: 'absolute',
   },
   sendicon: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
-    marginBottom: 5,
+    fontSize: SIZES.f16,
+    color: COLORS.primary100,
+    marginBottom: SIZES.m4,
   },
   sendButton: {
-    backgroundColor: '#119656',
-    borderRadius: 50,
-    height: 50,
-    width: 50,
+    height: SIZES.s48,
+    width: SIZES.s48,
+    borderRadius: SIZES.m24,
+    backgroundColor: COLORS.primary100,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
+    marginLeft: SCALE(2),
+  },
+  optionsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    paddingHorizontal: SIZES.m24,
+    paddingVertical: SIZES.m16,
+    borderBottomWidth: 0.2,
+    borderColor: COLORS.darkGray,
+  },
+  optionIcon: {
+    fontSize: SIZES.m24,
+    color: COLORS.primary400,
+  },
+  optionsText: {
+    marginLeft: SIZES.m16,
+    fontSize: SIZES.f14,
+    fontWeight: '500',
+    includeFontPadding: false,
   },
 });
 

@@ -6,12 +6,12 @@ import SearchBar from '../components/ui/SearchBar';
 import CollectionList from '../components/ui/CollectionList';
 
 type RootStackParamList = {
-  Login: undefined;
   Contacts: undefined;
-  ChatScreen: undefined;
+  Collections: undefined;
+  SavedSearches: undefined;
 };
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Contacts'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'Collections'>;
 
 const Collections = ({ navigation }: Props) => {
   return (

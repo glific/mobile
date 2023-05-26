@@ -1,186 +1,65 @@
-import { StyleSheet, Text, View, Pressable, Modal } from 'react-native';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Ionicons, Entypo, MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
 
 import ChatHeader from '../components/messages/ChatHeader';
 import MessagesList from '../components/messages/MessageList';
 import ChatInput from '../components/messages/ChatInput';
-import { COLORS } from '../constants';
+import { COLORS, SIZES } from '../constants';
 
 type RootStackParamList = {
-  Login: undefined;
   Chat: undefined;
-  ChatScreen: undefined;
+  ChatScreen: {
+    contact: {
+      id: number;
+      name: string;
+    };
+  };
 };
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ChatScreen'>;
 
-const ChatScreen = ({ navigation }: Props) => {
-  const [reply, setReply] = useState('');
-  const [isLeft, setIsLeft] = useState(false);
-  const [showModal, setshowModal] = useState(false);
+const ChatScreen = ({ navigation, route }: Props) => {
+  const { contact } = route.params;
+  const [reply, setReply] = useState(null);
 
-  const swipeToReply = (message: string, isLeft: boolean) => {
-    setReply(message.length > 50 ? message.slice(0, 50) + '...' : message);
-    setIsLeft(isLeft);
+  const swipeToReply = (message: any) => {
+    setReply(message);
   };
 
   const closeReply = () => {
-    setReply('');
-  };
-
-  const handleModal = (Data: boolean) => {
-    setshowModal(Data);
+    setReply(null);
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      <ChatHeader data={handleModal} />
-      <Modal
-        visible={showModal}
-        transparent
-        onRequestClose={() => setshowModal(false)}
-        animationType="slide"
-        hardwareAccelerated
-      >
-        <View style={styles.upright_view}>
-          <Pressable
-            onPress={() => setshowModal(false)}
-            style={styles.warning_button}
-            android_ripple={styles.ripplecolor}
-          >
-            <FontAwesome
-              name="ellipsis-v"
-              size={25}
-              color={COLORS.white}
-              style={styles.ellipseicon}
-            />
-          </Pressable>
-          <View style={styles.warning_modal}>
-            <View style={styles.warning_body}>
-              <Ionicons
-                name="person-add-sharp"
-                size={22}
-                color="#119656"
-                style={styles.personadd}
-              />
-              <Text style={styles.text}>Add to Collection</Text>
-            </View>
-            <View style={styles.warning_body}>
-              <MaterialCommunityIcons
-                name="message-bulleted-off"
-                size={22}
-                color="#119656"
-                style={styles.messageoff}
-              />
-              <Text style={styles.text}>Clear Conversation</Text>
-            </View>
-            <View style={styles.warning_body}>
-              <MaterialCommunityIcons
-                name="hand-back-right-off"
-                size={22}
-                color="#119656"
-                style={styles.handoff}
-              />
-              <Text style={styles.text}>Terminate Flows</Text>
-            </View>
-            <View style={styles.warning_body}>
-              <Entypo name="block" size={22} color="red" style={styles.handoff} />
-              <Text style={styles.handofftext}>Block Contact </Text>
-            </View>
-          </View>
+    <>
+      <ChatHeader contact={contact} />
+      <View style={styles.mainContainer}>
+        <View style={styles.item}>
+          <Text style={styles.time}>Time left: 24</Text>
         </View>
-      </Modal>
-      <View style={styles.item}>
-        <Text style={styles.time}>Time left: 24</Text>
+        <MessagesList contact={contact} onSwipeToReply={swipeToReply} />
+        <ChatInput reply={reply} closeReply={closeReply} />
       </View>
-      <MessagesList onSwipeToReply={swipeToReply} />
-
-      <ChatInput reply={reply} isLeft={isLeft} closeReply={closeReply} username="username" />
-    </View>
+    </>
   );
 };
 
+export default ChatScreen;
+
 const styles = StyleSheet.create({
-  item: {
-    backgroundColor: '#F2F2F2',
-    padding: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+  mainContainer: {
+    flex: 1,
+    backgroundColor: COLORS.white,
   },
-  name: {
-    fontSize: 22,
+  item: {
+    padding: SIZES.m6,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: COLORS.lightGray,
   },
   time: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  text: {
-    color: '#000000',
-    fontSize: 20,
-    margin: 10,
-    textAlign: 'center',
-  },
-  ripplecolor: {
-    color: '#9a9a9a',
-  },
-
-  button: {
-    width: 150,
-    height: 50,
-    alignItems: 'center',
-  },
-  ellipseicon: {
-    marginLeft: 195,
-    marginTop: 5,
-  },
-  messageoff: {
-    padding: 4,
-    marginTop: 8,
-  },
-  personadd: {
-    padding: 4,
-    marginTop: 6,
-  },
-  handoff: {
-    padding: 4,
-    marginTop: 8,
-  },
-  handofftext: {
-    color: 'red',
-    fontSize: 20,
-    margin: 10,
-    textAlign: 'center',
-  },
-  upright_view: {
-    flex: 1,
-    marginLeft: 100,
-
-    marginTop: 23,
-  },
-  warning_modal: {
-    width: 240,
-    height: 220,
-    backgroundColor: '#ffffff',
-    borderWidth: 1,
-    borderColor: '#F2F2F2',
-    borderRadius: 8,
-    marginTop: 10,
-  },
-
-  warning_body: {
-    padding: 4,
-    flexDirection: 'row',
-  },
-  warning_button: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    fontSize: SIZES.f14,
   },
 });
-
-export default ChatScreen;
