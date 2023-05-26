@@ -1,7 +1,8 @@
 import React from 'react';
-import { fireEvent } from '@testing-library/react-native';
+import { fireEvent, waitFor } from '@testing-library/react-native';
 import Server from '../screens/Server';
 import renderWithAuth from '../utils/authProvider';
+import AxiosService from '../config/axios';
 
 describe('Server screen', () => {
   test('renders correctly', () => {
@@ -41,8 +42,10 @@ describe('Server screen', () => {
     expect(errorMessage).toBeDefined();
   });
 
-  test('navigates to Login screen on successful submit', () => {
+  test('navigates to Login screen on successful submit', async () => {
     const navigateMock = jest.fn();
+    AxiosService.updateServerURL = jest.fn();
+
     const { getByTestId, getByText } = renderWithAuth(
       <Server navigation={{ navigate: navigateMock }} />
     );
@@ -53,6 +56,9 @@ describe('Server screen', () => {
     fireEvent.changeText(serverUrlInput, 'https://example.com');
     fireEvent.press(continueButton);
 
+    await waitFor(() => {
+      expect(AxiosService.updateServerURL).toHaveBeenCalledWith('https://example.com');
+    });
     expect(navigateMock).toHaveBeenCalledWith('Login');
   });
 });
