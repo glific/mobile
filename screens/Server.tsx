@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
@@ -67,19 +67,19 @@ const Server = ({ navigation }: Props) => {
 export default Server;
 
 const styles = StyleSheet.create({
-  inputContainer: { paddingHorizontal: 20 },
-  mainContainer: {
-    flex: 1,
-    paddingTop: 20,
-    backgroundColor: 'white',
-  },
   buttonContainer: {
-    position: 'absolute',
-    bottom: 20,
-    width: '92%',
     alignSelf: 'center',
+    bottom: 20,
+    position: 'absolute',
+    width: '92%',
   },
   errorLabel: {
     color: COLORS.error100,
+  },
+  inputContainer: { paddingHorizontal: 20 },
+  mainContainer: {
+    backgroundColor: COLORS.white,
+    flex: 1,
+    paddingTop: 20,
   },
 });

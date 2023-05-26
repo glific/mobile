@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import { COLORS } from '../../constants';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
@@ -70,33 +70,33 @@ const SearchBar = () => {
 export default SearchBar;
 
 const styles = StyleSheet.create({
-  mainContainer: {
-    paddingVertical: 12,
-    backgroundColor: 'white',
-    borderTopWidth: 0.2,
-    borderBottomWidth: 0.2,
-    borderColor: COLORS.darkGray,
-  },
-  inputContainer: {
-    width: '95%',
-    flexDirection: 'row',
-    backgroundColor: 'white',
-    alignSelf: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-    borderWidth: 0.75,
-    borderColor: COLORS.darkGray,
-    paddingHorizontal: 10,
-  },
   icon: {
     color: COLORS.darkGray,
     marginHorizontal: 2,
   },
   input: {
-    width: '85%',
-    paddingVertical: 8,
-    paddingHorizontal: 6,
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
     fontSize: 16,
+    paddingHorizontal: 6,
+    paddingVertical: 8,
+    width: '85%',
+  },
+  inputContainer: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: COLORS.white,
+    borderColor: COLORS.darkGray,
+    borderRadius: 10,
+    borderWidth: 0.75,
+    flexDirection: 'row',
+    paddingHorizontal: 10,
+    width: '95%',
+  },
+  mainContainer: {
+    backgroundColor: COLORS.white,
+    borderBottomWidth: 0.2,
+    borderColor: COLORS.darkGray,
+    borderTopWidth: 0.2,
+    paddingVertical: 12,
   },
 });

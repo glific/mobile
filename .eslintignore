@@ -1,0 +1,6 @@
+node_modules/
+coverage/
+.eslintrc.js
+jest.config.js
+babel.config.js
+__mocks__/

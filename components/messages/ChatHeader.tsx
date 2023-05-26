@@ -81,22 +81,30 @@ const ChatHeader: React.FC<DataProps> = ({ contact }) => {
             <MenuButton
               text="Add to Collection"
               icon={<Ionicons name="person-add-sharp" style={styles.menuIcon} />}
-              onPress={() => {}}
+              onPress={() => {
+                console.log('1');
+              }}
             />
             <MenuButton
               text="Clear Conversation"
               icon={<MaterialCommunityIcons name="message-bulleted-off" style={styles.menuIcon} />}
-              onPress={() => {}}
+              onPress={() => {
+                console.log('2');
+              }}
             />
             <MenuButton
               text="Terminate Flows"
               icon={<MaterialCommunityIcons name="hand-back-right-off" style={styles.menuIcon} />}
-              onPress={() => {}}
+              onPress={() => {
+                console.log('3');
+              }}
             />
             <MenuButton
               text="Block Contact"
               icon={<Entypo name="block" style={[styles.menuIcon, { color: COLORS.error100 }]} />}
-              onPress={() => {}}
+              onPress={() => {
+                console.log('4');
+              }}
             />
           </View>
         </>
@@ -108,91 +116,91 @@ const ChatHeader: React.FC<DataProps> = ({ contact }) => {
 export default ChatHeader;
 
 const styles = StyleSheet.create({
-  mainContainer: {
-    width: '100%',
-    height: 60,
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: '2%',
-    backgroundColor: COLORS.primary400,
-    zIndex: 50,
+  avatar: {
+    borderRadius: 20,
+    height: 40,
+    width: 40,
   },
   backButton: {
     alignSelf: 'center',
-    paddingHorizontal: 10,
+    color: COLORS.white,
     fontSize: 22,
-    color: 'white',
-  },
-  innerContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  avatar: {
-    height: 40,
-    width: 40,
-    borderRadius: 20,
+    paddingHorizontal: 10,
   },
   circle: {
-    position: 'absolute',
-    right: -4,
-    bottom: -4,
-    height: 15,
-    width: 15,
+    borderColor: COLORS.primary400,
     borderRadius: 7.5,
     borderWidth: 2,
-    borderColor: COLORS.primary400,
+    bottom: -4,
+    height: 15,
+    position: 'absolute',
+    right: -4,
+    width: 15,
   },
-  nameText: {
-    fontSize: 18,
-    marginLeft: 10,
-    color: 'white',
-    fontWeight: '500',
-    letterSpacing: 1,
+  innerContainer: {
+    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'row',
   },
-  threeDotIconContainer: {
-    paddingHorizontal: 6,
-  },
-  threeDotIcon: {
-    fontSize: 20,
-    color: '#fff',
+  mainContainer: {
+    alignItems: 'center',
+    backgroundColor: COLORS.primary400,
+    flexDirection: 'row',
+    height: 60,
+    padding: '2%',
+    width: '100%',
+    zIndex: 50,
   },
   menuBackground: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    width: 500,
     height: 800,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    width: 500,
+  },
+  menuButton: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    height: 40,
+    paddingHorizontal: 12,
+    width: '100%',
   },
   menuContainer: {
-    width: 220,
-    height: 190,
-    position: 'absolute',
-    backgroundColor: 'white',
-    justifyContent: 'space-around',
-    right: 16,
-    bottom: -180,
+    backgroundColor: COLORS.white,
     borderRadius: 4,
+    bottom: -180,
     elevation: 4,
+    height: 190,
+    justifyContent: 'space-around',
+    paddingVertical: 10,
+    position: 'absolute',
+    right: 16,
     shadowColor: COLORS.black,
     shadowOffset: { height: 4, width: 0 },
     shadowRadius: 4,
-    paddingVertical: 10,
+    width: 220,
   },
   menuIcon: {
-    marginRight: 10,
-    fontSize: 22,
     color: COLORS.primary100,
-  },
-  menuButton: {
-    width: '100%',
-    height: 40,
-    paddingHorizontal: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
+    fontSize: 22,
+    marginRight: 10,
   },
   menuText: {
-    fontSize: 16,
     color: COLORS.black,
+    fontSize: 16,
+  },
+  nameText: {
+    color: COLORS.white,
+    fontSize: 18,
+    fontWeight: '500',
+    letterSpacing: 1,
+    marginLeft: 10,
+  },
+  threeDotIcon: {
+    color: COLORS.white,
+    fontSize: 20,
+  },
+  threeDotIconContainer: {
+    paddingHorizontal: 6,
   },
 });

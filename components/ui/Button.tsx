@@ -1,3 +1,4 @@
+import React from 'react';
 import { Pressable, StyleSheet, Text } from 'react-native';
 import { COLORS } from '../../constants';
 import { ReactElement } from 'react';
@@ -24,26 +25,26 @@ export default Button;
 
 const styles = StyleSheet.create({
   button: {
-    borderRadius: 24,
-    height: 40,
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    justifyContent: 'center',
     backgroundColor: COLORS.primary100,
+    borderRadius: 24,
     elevation: 2,
-    shadowColor: 'black',
+    height: 40,
+    justifyContent: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    shadowColor: COLORS.black,
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
   },
-  pressed: {
-    opacity: 0.7,
-  },
   buttonText: {
-    textAlign: 'center',
-    color: 'white',
+    color: COLORS.white,
     fontSize: 16,
     fontWeight: 'bold',
     includeFontPadding: false,
+    textAlign: 'center',
+  },
+  pressed: {
+    opacity: 0.7,
   },
 });
