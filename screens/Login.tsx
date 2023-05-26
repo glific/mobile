@@ -8,7 +8,7 @@ import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import Storage from '../utils/asyncStorage';
 import AuthContext from '../config/AuthContext';
-import createAxiosClient from '../config/axios';
+import AxiosService from '../config/axios';
 
 type RootStackParamList = {
   Login: undefined;
@@ -24,7 +24,6 @@ const Login = ({ navigation }: Props) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const phoneInput = useRef<PhoneInput>(null);
-  const Client = createAxiosClient();
 
   const updateInputValueHandler = (inputType: string, enteredValue: string) => {
     switch (inputType) {
@@ -42,7 +41,9 @@ const Login = ({ navigation }: Props) => {
       if (enteredMobile == '' || enteredPassword == '') {
         throw new Error('Please enter mobile number and password!');
       }
+      const Client = await AxiosService.createAxiosInstance();
       const countryCode = phoneInput.current?.getCallingCode();
+
       const response = await Client.post('/v1/session', {
         user: {
           phone: countryCode + enteredMobile,

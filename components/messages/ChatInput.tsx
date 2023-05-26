@@ -31,7 +31,9 @@ const ChatInput = ({ reply, closeReply }: any) => {
         <View style={styles.replyContainer}>
           <MaterialCommunityIcons name="close" style={styles.closeReply} onPress={closeReply} />
           <Text style={styles.title}>Response to {reply.isLeft ? reply?.sender.id : 'Me'}</Text>
-          <Text style={styles.reply}>{reply?.body.length > 50 ? reply?.body.slice(0, 40) + '...' : reply?.body}</Text>
+          <Text style={styles.reply}>
+            {reply?.body.length > 50 ? reply?.body.slice(0, 40) + '...' : reply?.body}
+          </Text>
         </View>
       )}
       <View style={styles.inputContainer}>

@@ -7,6 +7,7 @@ import Input from '../components/ui/Input';
 import { COLORS } from '../constants';
 import { validateUrl } from '../utils/helper';
 import InstructionCard from '../components/InstructionCard';
+import AxiosService from '../config/axios';
 
 type RootStackParamList = {
   Server: undefined;
@@ -24,13 +25,13 @@ const Server = ({ navigation }: Props) => {
     setErrorMessage('');
   };
 
-  const onSubmitHandler = () => {
+  const onSubmitHandler = async () => {
     if (!serverURL || !validateUrl(serverURL)) {
       setErrorMessage('Please enter valid server url');
       return;
     }
 
-    // navigate to next page
+    await AxiosService.updateServerURL(serverURL);
     navigation.navigate('Login');
   };
 

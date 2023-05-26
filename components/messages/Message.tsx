@@ -64,9 +64,11 @@ const Message: React.FC<MessageProps> = ({ isLeft, message, onSwipe }) => {
   const gestureStateHandler = (event: any) => {
     if (event.nativeEvent.state === State.END) {
       const translationThreshold = 40;
-  
-      if ((isLeft && translateX.value >= translationThreshold) 
-      || (!isLeft && translateX.value <= -translationThreshold)) {
+
+      if (
+        (isLeft && translateX.value >= translationThreshold) ||
+        (!isLeft && translateX.value <= -translationThreshold)
+      ) {
         onSwipe({ ...message, isLeft });
         translateX.value = withSpring(0);
       } else {

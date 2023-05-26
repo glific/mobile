@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: '2%',
     backgroundColor: COLORS.primary400,
-    zIndex: 50
+    zIndex: 50,
   },
   backButton: {
     alignSelf: 'center',

@@ -8,9 +8,7 @@ const renderWithAuth = (component, mocks) =>
   render(
     <MockedProvider mocks={mocks}>
       <AuthContext.Provider value={{ token: 'existing_token', setToken: jest.fn() }}>
-        <NavigationContainer>
-          {component}
-        </NavigationContainer>
+        <NavigationContainer>{component}</NavigationContainer>
       </AuthContext.Provider>
     </MockedProvider>
   );

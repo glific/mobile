@@ -1,10 +1,25 @@
 import axios, { AxiosInstance } from 'axios';
-import { API_BASE_URL } from '@env';
+import Storage from '../utils/asyncStorage';
 
-function createAxiosClient(): AxiosInstance {
-  return axios.create({
-    baseURL: API_BASE_URL,
-  });
+class AxiosService {
+  private static instance: AxiosInstance | null = null;
+  private static baseURL: string | null = null;
+
+  static async createAxiosInstance(): Promise<AxiosInstance> {
+    AxiosService.instance = axios.create({
+      baseURL: AxiosService.baseURL,
+    });
+    return AxiosService.instance!;
+  }
+
+  static async updateServerURL(url: string): Promise<void> {
+    AxiosService.baseURL = url;
+    await Storage.storeData('serverURL', url);
+  }
+
+  static getServerURL() {
+    return AxiosService.baseURL;
+  }
 }
 
-export default createAxiosClient;
+export default AxiosService;
