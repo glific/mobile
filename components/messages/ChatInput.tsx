@@ -1,24 +1,22 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, Platform, TouchableOpacity } from 'react-native';
-import Animated, { useSharedValue, useAnimatedStyle } from 'react-native-reanimated';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Colors } from '../../constants/styles';
+import EmojiSelector from 'react-native-emoji-selector';
 
 const ChatInput = ({ reply, closeReply, isLeft, username }: any) => {
   const [message, setMessage] = useState('');
-  const height = useSharedValue(70);
+  const [show, setShow] = useState(false);
 
-  const heightAnimatedStyle = useAnimatedStyle(() => {
-    return {
-      height: height.value,
-    };
-  });
+  function addEmoji(emoji: string): void {
+    setMessage(message + emoji);
+  }
 
   return (
-    <Animated.View style={[styles.container, heightAnimatedStyle]}>
+    <View style={[styles.container]}>
       {reply ? (
         <View style={styles.replyContainer}>
           <TouchableOpacity onPress={closeReply} style={styles.closeReply}>
@@ -31,7 +29,12 @@ const ChatInput = ({ reply, closeReply, isLeft, username }: any) => {
       <View style={styles.innerContainer}>
         <AntDesign name="up" size={18} color="black" style={styles.upicon} />
         <View style={styles.inputAndMicrophone}>
-          <TouchableOpacity style={styles.emoticonButton}>
+          <TouchableOpacity
+            style={styles.emoticonButton}
+            onPress={() => {
+              show ? setShow(false) : setShow(true);
+            }}
+          >
             <Icon name={'emoticon-outline'} size={23} color={Colors.description} />
           </TouchableOpacity>
           <TextInput
@@ -57,7 +60,16 @@ const ChatInput = ({ reply, closeReply, isLeft, username }: any) => {
           </View>
         </TouchableOpacity>
       </View>
-    </Animated.View>
+      {show ? (
+        <View style={styles.emojiDrawer}>
+          <EmojiSelector
+            onEmojiSelected={(emoji) => addEmoji(emoji)}
+            columns={10}
+            showSearchBar={false}
+          />
+        </View>
+      ) : null}
+    </View>
   );
 };
 
@@ -185,6 +197,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
+  },
+  emojiDrawer: {
+    height: 300,
+    backgroundColor: 'white',
   },
 });
 

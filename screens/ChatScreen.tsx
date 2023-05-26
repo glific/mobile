@@ -93,8 +93,9 @@ const ChatScreen = ({ navigation }: Props) => {
         <Text style={styles.time}>Time left: 24</Text>
       </View>
       <MessagesList onSwipeToReply={swipeToReply} />
-
+      <View>
       <ChatInput reply={reply} isLeft={isLeft} closeReply={closeReply} username="username" />
+      </View>
     </View>
   );
 };
