@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { useQuery } from '@apollo/client';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
