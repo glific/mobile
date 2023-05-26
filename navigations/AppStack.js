@@ -16,7 +16,7 @@ const AppStack = () => {
       }}
     >
       <Stack.Screen name="Home" component={AppDrawer} />
-      <Stack.Screen name="ChatScreen" component={ChatScreen} options={{ headerShown: true }} />
+      <Stack.Screen name="ChatScreen" component={ChatScreen} />
       {/* <Stack.Screen name="Filter" component={Filter} /> */}
     </Stack.Navigator>
   );

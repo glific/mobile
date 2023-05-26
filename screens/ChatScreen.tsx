@@ -5,13 +5,14 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import ChatHeader from '../components/messages/ChatHeader';
 import MessagesList from '../components/messages/MessageList';
 import ChatInput from '../components/messages/ChatInput';
+import { COLORS, SIZES } from '../constants';
 
 type RootStackParamList = {
   Chat: undefined;
   ChatScreen: {
     contact: {
       id: number;
-      contactName: string;
+      name: string;
     };
   };
 };
@@ -20,46 +21,45 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ChatScreen'>;
 
 const ChatScreen = ({ navigation, route }: Props) => {
   const { contact } = route.params;
-  const [reply, setReply] = useState('');
-  // const [isLeft, setIsLeft] = useState(false);
+  const [reply, setReply] = useState(null);
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      header: () => <ChatHeader userData={contact} />,
-    });
-  }, [navigation]);
-
-  const swipeToReply = (message: any, isLeft: boolean) => {
-    setReply(message?.body.length > 50 ? message?.body.slice(0, 40) + '...' : message?.body);
+  const swipeToReply = (message: any) => {
+    setReply(message);
   };
 
   const closeReply = () => {
-    setReply('');
+    setReply(null);
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      <View style={styles.item}>
-        <Text style={styles.time}>Time left: 24</Text>
+    <>
+      <ChatHeader contact={contact} />
+      <View style={styles.mainContainer}>
+        <View style={styles.item}>
+          <Text style={styles.time}>Time left: 24</Text>
+        </View>
+        <MessagesList contact={contact} onSwipeToReply={swipeToReply} />
+        <ChatInput reply={reply} closeReply={closeReply} />
       </View>
-      <MessagesList onSwipeToReply={swipeToReply} userData={contact} />
-      <ChatInput reply={reply} closeReply={closeReply} username="username" />
-    </View>
+    </>
   );
 };
 
+export default ChatScreen;
+
 const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    backgroundColor: COLORS.white,
+  },
   item: {
-    backgroundColor: '#F2F2F2',
-    padding: 8,
+    padding: SIZES.m6,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: COLORS.lightGray,
   },
   time: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: SIZES.f14,
   },
 });
-
-export default ChatScreen;

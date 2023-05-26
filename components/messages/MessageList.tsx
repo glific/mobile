@@ -8,51 +8,53 @@ import { COLORS } from '../../constants';
 import LoadingPage from '../ui/Loading';
 import Message from './Message';
 
-const MessagesList = ({ onSwipeToReply, userData }: any) => {
-  const [messages, setMessages] = useState([]);
+type MessageListProps = {
+  contact: {
+    id: number;
+    name: string;
+  };
+  onSwipeToReply: (message: any) => void;
+};
+
+const MessagesList: React.FC<MessageListProps> = ({ contact, onSwipeToReply }: any) => {
   const scrollView = useRef();
 
   const variables = {
-    filter: { id: userData.id },
+    filter: { id: contact.id },
     contactOpts: { limit: 1 },
     messageOpts: { limit: 10, offset: 1 },
   };
   const { loading, error, data } = useQuery(GET_CONTACT_MESSAGES, { variables });
 
-  useEffect(() => {
-    if (error) {
-      console.log(error);
-    } else if (data) {
-      setMessages(data.search[0].messages);
-    }
-  }, [error, data]);
+  if (error) {
+    console.log(error);
+  }
 
   return loading ? (
     <LoadingPage />
   ) : (
-    
     <ScrollView
-    style={styles.container}
-    ref={(ref) => (scrollView.current = ref)}
-    onContentChange={() => {
-      scrollView.current.scrollToEnd({ animated: true });
-        }}
-        >
-        <GestureHandlerRootView>
-        {messages.length ? (
-          messages.map((message, index) => (
+      style={styles.container}
+      ref={(ref) => (scrollView.current = ref)}
+      onContentChange={() => {
+        scrollView.current.scrollToEnd({ animated: true });
+      }}
+    >
+      <GestureHandlerRootView>
+        {data?.search[0]?.messages.length ? (
+          data.search[0].messages.map((message, index) => (
             <Message
               key={index}
               message={message}
-              isLeft={message?.sender?.id != userData.id}
+              isLeft={message?.sender?.id != contact.id}
               onSwipe={onSwipeToReply}
             />
           ))
         ) : (
           <Text>No messages</Text>
         )}
-        </GestureHandlerRootView>
-      </ScrollView>
+      </GestureHandlerRootView>
+    </ScrollView>
   );
 };
 

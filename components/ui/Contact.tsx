@@ -4,16 +4,16 @@ import { COLORS } from '../../constants';
 
 export interface ContactProps {
   index: number;
-  name: string | null;
+  name: string;
 }
 
-const Contact: React.FC<ContactProps> = ({ index, name }) => {
+const Contact: React.FC<ContactProps> = ({ id, name }) => {
   const navigation = useNavigation();
 
   return (
     <Pressable
       testID="contactCard"
-      onPress={() => navigation.navigate('ChatScreen', { contact: { id: index, name } })}
+      onPress={() => navigation.navigate('ChatScreen', { contact: { id, name } })}
       style={styles.item}
       android_ripple={{ color: COLORS.primary10 }}
     >

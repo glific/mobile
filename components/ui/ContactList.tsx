@@ -25,9 +25,9 @@ const ContactList: React.FC<ContactListProps> = () => {
 
   let contacts = [];
   if (data) {
-    contacts = data.search.map((element: any, idx: number) => {
+    contacts = data.search.map((element: any) => {
       return {
-        index: element.contact?.id,
+        id: element.contact?.id,
         name: element.contact?.name || element.contact?.maskedPhone,
       };
     });
@@ -40,7 +40,7 @@ const ContactList: React.FC<ContactListProps> = () => {
       ) : (
         <FlatList
           data={contacts}
-          keyExtractor={(item) => item.index.toString()}
+          keyExtractor={(item) => item.id}
           renderItem={({ item }) => <Contact {...item} />}
         />
       )}

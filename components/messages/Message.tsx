@@ -5,21 +5,20 @@ import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-na
 
 import { COLORS, SIZES } from '../../constants';
 
-
 type MessageProps = {
   isLeft: boolean;
   message: {
-    id: number,
-    body: string,
-    insertedAt: string,
+    id: number;
+    body: string;
+    insertedAt: string;
     sender: {
-      id: number,
-    }
+      id: number;
+    };
   };
-  onSwipe: (message: any, isLeft: boolean) => void;
+  onSwipe: (message: any) => void;
 };
 
-const Message: React.FC<MessageProps> = ({ isLeft, message, onSwipe }: any) => {
+const Message: React.FC<MessageProps> = ({ isLeft, message, onSwipe }) => {
   const dateObj = new Date(message.insertedAt);
   const formattedTime = dateObj.toLocaleString('en-US', {
     hour: 'numeric',
@@ -51,27 +50,28 @@ const Message: React.FC<MessageProps> = ({ isLeft, message, onSwipe }: any) => {
   };
 
   const translateX = useSharedValue(0);
-  const containerWidth = SIZES.width * 0.7;
 
   const gestureHandler = (event: any) => {
-    translateX.value = event.nativeEvent.translationX;
+    const translationX = event.nativeEvent.translationX;
+
+    if (isLeft && translationX > 0) {
+      translateX.value = Math.min(translationX, 50);
+    } else if (!isLeft && translationX < 0) {
+      translateX.value = Math.max(translationX, -50);
+    }
   };
 
   const gestureStateHandler = (event: any) => {
     if (event.nativeEvent.state === State.END) {
-      const translationThreshold = containerWidth * 0.5;
-      const isOpen = translateX.value > translationThreshold;
-
-      if (isOpen) {
-        translateX.value = withSpring(containerWidth);
+      const translationThreshold = 40;
+  
+      if ((isLeft && translateX.value >= translationThreshold) 
+      || (!isLeft && translateX.value <= -translationThreshold)) {
+        onSwipe({ ...message, isLeft });
+        translateX.value = withSpring(0);
       } else {
-        translateX.value = withSpring(0, {}, () => {
-          translateX.value = 0;
-        });
+        translateX.value = withSpring(0);
       }
-    }
-    if(event.nativeEvent.state === State.ACTIVE) {
-          onSwipe(message, isLeft);
     }
   };
 
@@ -107,7 +107,6 @@ const styles = StyleSheet.create({
     letterSpacing: 0.2,
     color: COLORS.white,
     includeFontPadding: false,
-    // backgroundColor: COLORS.primary100,
   },
   time: {
     fontSize: SIZES.f10,
@@ -117,4 +116,3 @@ const styles = StyleSheet.create({
     bottom: -SIZES.m6,
   },
 });
-

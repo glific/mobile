@@ -6,11 +6,6 @@ import { useQuery } from '@apollo/client';
 import Contact from './Contact';
 import Loading from './Loading';
 
-export interface Contacts {
-  index: number;
-  name: string | null;
-}
-
 interface CollectionListProps {
   navigation: any;
 }
@@ -27,21 +22,17 @@ const variables = {
   },
 };
 
-const CollectionList: React.FC<CollectionListProps> = ({ navigation }) => {
+const CollectionList: React.FC<CollectionListProps> = () => {
   const { loading, error, data } = useQuery(GET_COLLECTIONS, { variables });
 
   if (error) {
     console.log(error);
   }
 
-  const contactItem = ({ item }: { item: Contacts }) => (
-    <Contact name={item.name} navigation={navigation} />
-  );
-
   let collections = [];
   if (data) {
-    collections = data.search.map((element: any, idx: number) => {
-      return { index: idx, name: element.group?.label || 'Unknown Name' };
+    collections = data.search.map((element: any) => {
+      return { id: element.group?.id, name: element.group?.label || 'Unknown Name' };
     });
   }
   return (
@@ -51,8 +42,10 @@ const CollectionList: React.FC<CollectionListProps> = ({ navigation }) => {
       ) : (
         <FlatList
           data={collections}
-          renderItem={contactItem}
-          keyExtractor={(item) => item.index.toString()}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <Contact {...item} />
+          )}
         />
       )}
     </View>

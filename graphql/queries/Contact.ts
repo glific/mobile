@@ -12,24 +12,9 @@ export const GET_CONTACTS = gql`
   }
 `;
 
-export const GET_CONTACT = gql`
-  query search($filter: SearchFilter!, $contactOpts: Opts!, $messageOpts: Opts!) {
-    search(filter: $filter, contactOpts: $contactOpts, messageOpts: $messageOpts) {
-      contact {
-        name
-        maskedPhone
-      }
-    }
-  }
-`;
-
 export const GET_CONTACT_MESSAGES = gql`
   query search($filter: SearchFilter!, $contactOpts: Opts!, $messageOpts: Opts!) {
     search(filter: $filter, contactOpts: $contactOpts, messageOpts: $messageOpts) {
-      contact {
-        name
-        maskedPhone
-      }
       messages {
         id
         body

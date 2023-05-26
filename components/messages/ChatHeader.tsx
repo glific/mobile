@@ -6,13 +6,34 @@ import { Entypo, Ionicons, MaterialCommunityIcons, AntDesign } from '@expo/vecto
 import { COLORS } from '../../constants';
 
 interface DataProps {
-  userData: {
+  contact: {
     id: number;
     name: string;
   };
 }
 
-const ChatHeader: React.FC<DataProps> = ({ userData }) => {
+interface MenuProps {
+  icon: JSX.Element;
+  text: string;
+  onPress: () => void;
+}
+
+const MenuButton: React.FC<MenuProps> = ({ icon, text, onPress }: any) => {
+  return (
+    <Pressable
+      onPress={onPress}
+      style={styles.menuButton}
+      android_ripple={{ color: COLORS.primary10 }}
+    >
+      {icon}
+      <Text style={[styles.menuText, text === 'Block Contact' && { color: COLORS.error100 }]}>
+        {text}
+      </Text>
+    </Pressable>
+  );
+};
+
+const ChatHeader: React.FC<DataProps> = ({ contact }) => {
   const navigation = useNavigation();
   const [showMenu, setShowMenu] = useState(false);
 
@@ -43,7 +64,7 @@ const ChatHeader: React.FC<DataProps> = ({ userData }) => {
           />
         </View>
         <Text testID="userName" style={styles.nameText}>
-          {userData.name}
+          {contact.name}
         </Text>
       </Pressable>
       <Pressable
@@ -57,22 +78,26 @@ const ChatHeader: React.FC<DataProps> = ({ userData }) => {
         <>
           <Pressable onPress={handleMenu} style={styles.menuBackground} />
           <View style={styles.menuContainer}>
-            <Pressable style={styles.menuButton} android_ripple={{ color: COLORS.primary10 }}>
-              <Ionicons name="person-add-sharp" style={styles.menuIcon} />
-              <Text style={styles.menuText}>Add to Collection</Text>
-            </Pressable>
-            <Pressable style={styles.menuButton} android_ripple={{ color: COLORS.primary10 }}>
-              <MaterialCommunityIcons name="message-bulleted-off" style={styles.menuIcon} />
-              <Text style={styles.menuText}>Clear Conversation</Text>
-            </Pressable>
-            <Pressable style={styles.menuButton} android_ripple={{ color: COLORS.primary10 }}>
-              <MaterialCommunityIcons name="hand-back-right-off" style={styles.menuIcon} />
-              <Text style={styles.menuText}>Terminate Flows</Text>
-            </Pressable>
-            <Pressable style={styles.menuButton} android_ripple={{ color: COLORS.primary10 }}>
-              <Entypo name="block" style={[styles.menuIcon, { color: COLORS.error100 }]} />
-              <Text style={[styles.menuText, { color: COLORS.error100 }]}>Block Contact </Text>
-            </Pressable>
+            <MenuButton
+              text="Add to Collection"
+              icon={<Ionicons name="person-add-sharp" style={styles.menuIcon} />}
+              onPress={() => {}}
+            />
+            <MenuButton
+              text="Clear Conversation"
+              icon={<MaterialCommunityIcons name="message-bulleted-off" style={styles.menuIcon} />}
+              onPress={() => {}}
+            />
+            <MenuButton
+              text="Terminate Flows"
+              icon={<MaterialCommunityIcons name="hand-back-right-off" style={styles.menuIcon} />}
+              onPress={() => {}}
+            />
+            <MenuButton
+              text="Block Contact"
+              icon={<Entypo name="block" style={[styles.menuIcon, { color: COLORS.error100 }]} />}
+              onPress={() => {}}
+            />
           </View>
         </>
       )}
@@ -90,6 +115,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: '2%',
     backgroundColor: COLORS.primary400,
+    zIndex: 50
   },
   backButton: {
     alignSelf: 'center',
