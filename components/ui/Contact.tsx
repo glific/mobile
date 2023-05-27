@@ -1,52 +1,58 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { COLORS } from '../../constants';
+
 export interface ContactProps {
-  name: string | null;
-  navigation: any;
+  index: number;
+  name: string;
 }
 
-const Contact: React.FC<ContactProps> = ({ name, navigation }): JSX.Element => {
+const Contact: React.FC<ContactProps> = ({ id, name }) => {
+  const navigation = useNavigation();
+
   return (
-    <Pressable onPress={() => navigation.navigate('ChatScreen')}>
-      <View style={styles.item}>
-        <View style={styles.avatar}>
-          <Text style={styles.avatartext}>{name.charAt(0)}</Text>
-        </View>
-        <Text style={styles.name}>{name}</Text>
+    <Pressable
+      testID="contactCard"
+      onPress={() => navigation.navigate('ChatScreen', { contact: { id, name } })}
+      style={styles.item}
+      android_ripple={{ color: COLORS.primary10 }}
+    >
+      <View style={styles.avatar}>
+        <Text style={styles.avatartext}>{name.charAt(0)}</Text>
       </View>
+      <Text style={styles.name}>{name}</Text>
     </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
   item: {
-    backgroundColor: '#F2F2F2',
-    padding: 5,
-    marginVertical: 1,
-    marginHorizontal: 2,
+    width: '100%',
+    height: 70,
+    paddingHorizontal: '4%',
     flexDirection: 'row',
     alignItems: 'center',
-    height: 60,
-    borderBottomColor: 'black',
-    borderBottomWidth: 1,
+    backgroundColor: 'white',
+    borderWidth: 0.5,
+    borderColor: COLORS.darkGray,
   },
   name: {
-    fontSize: 22,
+    fontSize: 16,
     marginLeft: 18,
   },
   avatar: {
-    height: 50,
-    width: 50,
-    borderRadius: 25.5,
-    backgroundColor: '#a8ee90',
+    height: 44,
+    width: 44,
+    borderRadius: 22,
+    backgroundColor: COLORS.primary10,
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   avatartext: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingLeft: 19,
-    paddingTop: 12,
     fontSize: 18,
+    fontWeight: '500',
+    color: COLORS.primary400,
   },
 });
 

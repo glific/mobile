@@ -1,23 +1,53 @@
 import React from 'react';
-import { act, render, fireEvent, waitFor } from '@testing-library/react-native';
+import { fireEvent, waitFor } from '@testing-library/react-native';
 import Chat from '../screens/Chat';
-import Storage from '../utils/asyncStorage';
+import renderWithAuth from '../utils/authProvider';
+import { GET_CONTACTS } from '../graphql/queries/Contact';
 
-describe('Chat screen', () => {
+describe('Contacts screen', () => {
+  const mockContacts = [
+    {
+      id: '1',
+      name: 'test',
+      maskedPhone: '12*****90',
+    },
+  ];
+
+  const mocks = [
+    {
+      request: {
+        query: GET_CONTACTS,
+        variables: {
+          filter: {},
+          messageOpts: { limit: 3, offset: 0 },
+          contactOpts: { limit: 10, offset: 0 },
+        },
+      },
+      response: {
+        data: {
+          search: [
+            {
+              contact: mockContacts,
+            },
+          ],
+        },
+      },
+    },
+  ];
   test('renders correctly', () => {
-    const { getByTestId, getByText } = render(<Chat />);
+    const { getByTestId } = renderWithAuth(<Chat />, mocks);
 
-    const searchInput = getByTestId('Search Input');
-    const logoutButton = getByText('Logout');
+    const searchInput = getByTestId('searchInput');
+    const loadingIndicator = getByTestId('loadingIndicator');
 
     expect(searchInput).toBeDefined();
-    expect(logoutButton).toBeDefined();
+    expect(loadingIndicator).toBeTruthy();
   });
 
   test('updates search correctly', () => {
-    const { getByTestId } = render(<Chat />);
+    const { getByTestId } = renderWithAuth(<Chat />, mocks);
 
-    const searchInput = getByTestId('Search Input');
+    const searchInput = getByTestId('searchInput');
     fireEvent.changeText(searchInput, 'test search');
 
     expect(searchInput.props.value).toBe('test search');
@@ -27,29 +57,13 @@ describe('Chat screen', () => {
     const mockOnSearchHandler = jest.fn();
     const mockOnFilter = jest.fn();
 
-    const { getByTestId } = render(<Chat />);
+    const { getByTestId } = renderWithAuth(<Chat />, mocks);
     await waitFor(() => {
-      fireEvent.press(getByTestId('search1'));
-      fireEvent.press(getByTestId('filter-outline'));
+      fireEvent.press(getByTestId('searchIcon'));
+      fireEvent.press(getByTestId('filterOutline'));
     });
 
     expect(mockOnSearchHandler).toBeTruthy();
     expect(mockOnFilter).toBeTruthy();
-  });
-
-  test('should call on logout, clear session from storage and navigates to Login screen', async () => {
-    jest.mock('../utils/asyncStorage', () => ({
-      removeData: jest.fn(),
-    }));
-    const mockRemoveData = jest.spyOn(Storage, 'removeData');
-    const navigateMock = jest.fn();
-
-    const { getByText } = render(<Chat navigation={{ navigate: navigateMock }} />);
-    await act(async () => {
-      const logoutButton = getByText('Logout');
-      fireEvent.press(logoutButton);
-    });
-
-    expect(mockRemoveData).toHaveBeenCalledWith('session');
   });
 });

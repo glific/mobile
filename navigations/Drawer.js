@@ -1,6 +1,6 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Colors } from '../constants/styles';
+import { COLORS } from '../constants';
 import { Entypo, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import Notifications from '../screens/Notifications';
@@ -9,6 +9,7 @@ import Setting from '../screens/Setting';
 import Help from '../screens/Help';
 import CustomDrawer from '../components/navigation/CustomDrawer';
 import HomeTabs from './HomeTabs';
+import HomeHeaderRight from '../components/HomeHeaderRight';
 
 const Drawer = createDrawerNavigator();
 
@@ -17,22 +18,25 @@ const AppDrawer = () => {
     <Drawer.Navigator
       initialRouteName="Home"
       screenOptions={{
-        drawerActiveBackgroundColor: Colors.primary400,
+        drawerActiveBackgroundColor: COLORS.primary400,
         drawerActiveTintColor: '#fff',
         drawerLabelStyle: {
           marginLeft: -15,
         },
-        headerStyle: { backgroundColor: Colors.primary400 },
+        headerStyle: { backgroundColor: COLORS.primary400 },
         headerTintColor: 'white',
-        contentStyle: { backgroundColor: Colors.secondary100 },
+        contentStyle: { backgroundColor: COLORS.secondary100 },
       }}
       drawerContent={(props) => <CustomDrawer {...props} />}
     >
       <Drawer.Screen
         name="Chat"
         component={HomeTabs}
-        options={{
-          drawerIcon: ({ color }) => <Entypo name="chat" size={20} color={color} />,
+        options={({ navigation }) => {
+          return {
+            drawerIcon: ({ color }) => <Entypo name="chat" size={20} color={color} />,
+            headerRight: () => <HomeHeaderRight navigation={navigation} />,
+          };
         }}
       />
       <Drawer.Screen

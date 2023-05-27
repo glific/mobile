@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
-import { Colors } from '../../constants/styles';
+import { COLORS } from '../../constants';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 
 const SearchBar = () => {
@@ -37,26 +37,26 @@ const SearchBar = () => {
     <View style={styles.mainContainer}>
       <View style={styles.inputContainer}>
         <AntDesign
-          testID="search1"
+          testID="searchIcon"
           name="search1"
           size={20}
           style={styles.icon}
           onPress={onSearchHandler}
         />
         <TextInput
-          testID="Search Input"
+          testID="searchInput"
           style={styles.input}
           autoCapitalize="none"
           keyboardType="default"
           placeholder="Search"
           onChangeText={onSearch}
           value={searchValue}
-          cursorColor={Colors.darkGray}
-          selectionColor={Colors.darkGray}
+          cursorColor={COLORS.darkGray}
+          selectionColor={COLORS.darkGray}
           underlineColorAndroid="transparent"
         />
         <Ionicons
-          testID="filter-outline"
+          testID="filterOutline"
           name="filter-outline"
           size={20}
           style={styles.icon}
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderTopWidth: 0.2,
     borderBottomWidth: 0.2,
-    borderColor: Colors.darkGray
+    borderColor: COLORS.darkGray,
   },
   inputContainer: {
     width: '95%',
@@ -85,11 +85,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 10,
     borderWidth: 0.75,
-    borderColor: Colors.darkGray,
+    borderColor: COLORS.darkGray,
     paddingHorizontal: 10,
   },
   icon: {
-    color: Colors.darkGray,
+    color: COLORS.darkGray,
     marginHorizontal: 2,
   },
   input: {

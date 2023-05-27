@@ -1,61 +1,56 @@
 import React from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
-import { GET_CONTACTS } from '../../graphql/queries/Contact';
 import { useQuery } from '@apollo/client';
 
 import Contact from './Contact';
 import Loading from './Loading';
+import { GET_CONTACTS } from '../../graphql/queries/Contact';
 
-export interface Contacts {
-  index: number;
-  name: string | null;
+interface ContactListProps {
+  navigation: any;
 }
 
 const variables = {
   filter: {},
-  messageOpts: {
-    limit: 3,
-    offset: 0,
-  },
-  contactOpts: {
-    limit: 10,
-    offset: 0,
-  },
+  messageOpts: { limit: 3, offset: 0 },
+  contactOpts: { limit: 10, offset: 0 },
 };
 
-const ContactList: React.FC<any> = ({ navigation }: any) => {
+const ContactList: React.FC<ContactListProps> = () => {
   const { loading, error, data } = useQuery(GET_CONTACTS, { variables });
 
-  if (loading) {
-    return <Loading />; // Display a loading indicator while the query is in progress
+  if (error) {
+    console.log(error);
   }
 
-  if (error) {
-    console.log(error); // Handle the error
-  }
-  const contactItem = ({ item }: { item: Contacts }) => (
-    <Contact name={item.name} navigation={navigation} />
-  );
   let contacts = [];
   if (data) {
-    contacts = data.search.map((element: any, idx: number) => {
-      return { index: idx, name: element.contact?.name || 'Unknown Name' };
+    contacts = data.search.map((element: any) => {
+      return {
+        id: element.contact?.id,
+        name: element.contact?.name || element.contact?.maskedPhone,
+      };
     });
   }
+
   return (
     <View style={styles.contactList}>
-      <FlatList
-        data={contacts}
-        renderItem={contactItem}
-        keyExtractor={(item) => item.index.toString()}
-      />
+      {loading ? (
+        <Loading />
+      ) : (
+        <FlatList
+          data={contacts}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => <Contact {...item} />}
+        />
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   contactList: {
-    marginTop: 20,
+    flex: 1,
     marginBottom: 20,
   },
 });
