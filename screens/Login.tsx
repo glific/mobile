@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import PhoneInput from 'react-native-phone-number-input';
 
-import { COLORS } from '../constants';
+import { COLORS, SCALE, SIZES } from '../constants';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import Storage from '../utils/asyncStorage';
@@ -64,24 +64,23 @@ const Login = ({ navigation }: Props) => {
   }
 
   return (
-    <View style={styles.container}>
-      <View>
-        <View>
-          <Text style={[styles.numberLabel, errorMessage && styles.errorLabel]}>
-            Enter your WhatsApp number
-          </Text>
-          <PhoneInput
-            testID="mobileNumber"
-            ref={phoneInput}
-            defaultCode="IN"
-            onChangeText={(text) => updateInputValueHandler('mobile', text)}
-            layout="first"
-            value={enteredMobile}
-            placeholder="Enter 10 digit phone number"
-            containerStyle={styles.phoneInputContainer}
-            textContainerStyle={styles.phoneInput}
-          />
-        </View>
+    <View style={styles.mainContainer}>
+      <View style={styles.inputContainer}>
+        <Text style={[styles.numberLabel, errorMessage && styles.errorLabel]}>
+          Enter your WhatsApp number
+        </Text>
+        <PhoneInput
+          testID="mobileNumber"
+          ref={phoneInput}
+          defaultCode="IN"
+          onChangeText={(text) => updateInputValueHandler('mobile', text)}
+          layout="first"
+          value={enteredMobile}
+          placeholder="Enter 10 digit phone number"
+          containerStyle={styles.phoneInputContainer}
+          textContainerStyle={styles.phoneInput}
+          flagButtonStyle={styles.flagButtonStyle}
+        />
         <Input
           testID="password"
           label="Enter your password"
@@ -109,43 +108,49 @@ export default Login;
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    alignSelf: 'stretch',
-    marginBottom: 20,
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingTop: 32,
+    alignSelf: 'center',
+    bottom: SIZES.m20,
+    position: 'absolute',
+    width: SIZES.s328,
   },
   errorLabel: {
     color: COLORS.error100,
   },
+  flagButtonStyle: {
+    justifyContent: 'flex-start',
+    paddingLeft: SCALE(2),
+  },
   forgotPassword: {
     alignSelf: 'flex-end',
     color: COLORS.primary100,
-    marginTop: 5,
+    marginTop: SIZES.m6,
+  },
+  inputContainer: { paddingHorizontal: SIZES.m20 },
+  mainContainer: {
+    backgroundColor: COLORS.white,
+    flex: 1,
+    paddingTop: SIZES.m24,
   },
   numberLabel: {
-    fontSize: 16,
-    paddingBottom: 10,
+    fontSize: SIZES.f16,
+    paddingBottom: SIZES.m10,
   },
   phoneInput: {
     backgroundColor: COLORS.white,
-    borderRadius: 10,
-    fontSize: 16,
-    marginLeft: -12,
-    paddingHorizontal: 6,
-    paddingVertical: 8,
-    width: '80%',
+    borderRadius: SIZES.r10,
+    flex: 1,
+    fontSize: SIZES.f16,
+    marginLeft: -SIZES.m16,
+    paddingHorizontal: SIZES.m6,
+    paddingVertical: SIZES.m6,
   },
   phoneInputContainer: {
     backgroundColor: COLORS.white,
     borderColor: COLORS.darkGray,
-    borderRadius: 10,
-    borderWidth: 0.75,
-    height: 48,
-    marginBottom: 20,
+    borderRadius: SIZES.m10,
+    borderWidth: SCALE(0.75),
+    height: SIZES.s48,
+    marginBottom: SIZES.m20,
     width: '100%',
   },
 });

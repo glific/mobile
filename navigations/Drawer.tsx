@@ -1,31 +1,45 @@
 import React from 'react';
+import { StyleSheet } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Entypo, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import HomeTabs from './HomeTabs';
-import Notifications from '../screens/Notifications';
-import MyAccount from '../screens/MyAccount';
-import Setting from '../screens/Setting';
 import Help from '../screens/Help';
-import { COLORS } from '../constants';
+import Setting from '../screens/Setting';
+import MyAccount from '../screens/MyAccount';
+import Notifications from '../screens/Notifications';
 import HomeHeaderRight from '../components/HomeHeaderRight';
 import CustomDrawer from '../components/navigation/CustomDrawer';
+import { COLORS, SCALE, SIZES } from '../constants';
 
 const Drawer = createDrawerNavigator();
 
 const AppDrawer = () => {
   return (
     <Drawer.Navigator
-      initialRouteName="Home"
+      initialRouteName="Chat"
       screenOptions={{
-        drawerActiveBackgroundColor: COLORS.primary400,
-        drawerActiveTintColor: '#fff',
-        drawerLabelStyle: {
-          marginLeft: -15,
+        drawerStyle: {
+          width: SCALE(308),
         },
-
-        headerStyle: { backgroundColor: COLORS.primary400 },
+        drawerLabelStyle: {
+          fontSize: SIZES.f16,
+          fontWeight: '400',
+          marginLeft: -SIZES.f14,
+        },
+        drawerItemStyle: {
+          borderRadius: 0,
+          width: '100%',
+          height: SCALE(56),
+          justifyContent: 'center',
+          marginHorizontal: 0,
+          marginVertical: 0,
+        },
         headerTintColor: COLORS.white,
+        drawerActiveTintColor: COLORS.primary400,
+        drawerInactiveTintColor: COLORS.black,
+        drawerActiveBackgroundColor: COLORS.primary10,
+        headerStyle: { backgroundColor: COLORS.primary400 },
       }}
       drawerContent={(props) => <CustomDrawer {...props} />}
     >
@@ -34,7 +48,9 @@ const AppDrawer = () => {
         component={HomeTabs}
         options={({ navigation }) => {
           return {
-            drawerIcon: ({ color }) => <Entypo name="chat" size={20} color={color} />,
+            drawerIcon: ({ color }) => (
+              <Ionicons name="md-chatbox-outline" style={styles.drawerItemIcon} color={color} />
+            ),
             headerRight: () => <HomeHeaderRight navigation={navigation} />,
           };
         }}
@@ -43,7 +59,13 @@ const AppDrawer = () => {
         name="Notifications"
         component={Notifications}
         options={{
-          drawerIcon: ({ color }) => <Ionicons name="notifications" size={20} color={color} />,
+          drawerIcon: ({ color }) => (
+            <Ionicons
+              name="ios-notifications-outline"
+              style={styles.drawerItemIcon}
+              color={color}
+            />
+          ),
         }}
       />
       <Drawer.Screen
@@ -51,22 +73,31 @@ const AppDrawer = () => {
         component={MyAccount}
         options={{
           drawerIcon: ({ color }) => (
-            <MaterialCommunityIcons name="account-circle" size={20} color={color} />
+            <MaterialCommunityIcons
+              name="account-circle-outline"
+              style={styles.drawerItemIcon}
+              color={color}
+            />
           ),
+          title: 'My Account',
         }}
       />
       <Drawer.Screen
         name="Setting"
         component={Setting}
         options={{
-          drawerIcon: ({ color }) => <Ionicons name="ios-settings" size={20} color={color} />,
+          drawerIcon: ({ color }) => (
+            <Ionicons name="ios-settings-outline" style={styles.drawerItemIcon} color={color} />
+          ),
         }}
       />
       <Drawer.Screen
         name="Help"
         component={Help}
         options={{
-          drawerIcon: ({ color }) => <Ionicons name="help-circle" size={20} color={color} />,
+          drawerIcon: ({ color }) => (
+            <Ionicons name="help-circle-outline" style={styles.drawerItemIcon} color={color} />
+          ),
         }}
       />
     </Drawer.Navigator>
@@ -74,3 +105,10 @@ const AppDrawer = () => {
 };
 
 export default AppDrawer;
+
+const styles = StyleSheet.create({
+  drawerItemIcon: {
+    fontSize: SIZES.s24,
+    marginLeft: SIZES.m12,
+  },
+});

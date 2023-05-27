@@ -10,7 +10,6 @@ module.exports = {
     '!**/node_modules/**',
     '!**/babel.config.js',
     '!**/jest.config.js',
-    '!**/navigations/**',
     '!**/utils/**',
     '!**/helper.ts',
     '!**/App.tsx',
