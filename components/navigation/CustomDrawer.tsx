@@ -5,6 +5,7 @@ import { COLORS } from '../../constants';
 import { Feather } from '@expo/vector-icons';
 import Storage from '../../utils/asyncStorage';
 import AuthContext from '../../config/AuthContext';
+import Wallet from './Wallet';
 
 type DrawerContentProps = {
   navigation: any;
@@ -20,14 +21,15 @@ const CustomDrawer: React.FC<DrawerContentProps> = (props: any) => {
 
   return (
     <View style={styles.mainConatiner}>
-      <DrawerContentScrollView {...props} contentContainerStyle={styles.topConatiner}>
-        <View style={styles.headerConatiner}>
+      <DrawerContentScrollView {...props} contentContainerStyle={styles.topContainer}>
+        <View style={styles.headerContainer}>
           <Image source={require('../../assets/glific-logo.png')} style={styles.logo} />
-          <View style={styles.profileConatiner}>
+          <View style={styles.profileContainer}>
             <Image source={require('../../assets/icon.png')} style={styles.profile} />
             <Text style={styles.profileText}>Aman</Text>
           </View>
         </View>
+        <Wallet />
         <DrawerItemList {...props} contentContainerStyle={{ paddingHorizontal: 6 }} />
       </DrawerContentScrollView>
       <View style={styles.bottomContainer}>
@@ -46,7 +48,7 @@ const styles = StyleSheet.create({
   mainConatiner: {
     flex: 1,
   },
-  topConatiner: {
+  topContainer: {
     paddingTop: 0,
   },
   bottomContainer: {
@@ -54,19 +56,18 @@ const styles = StyleSheet.create({
     borderTopWidth: 0.75,
     borderTopColor: '#9e9e9e',
   },
-  headerConatiner: {
+  headerContainer: {
     backgroundColor: COLORS.secondary100,
     width: '100%',
-    height: 120,
+    height: 160,
     padding: 10,
     justifyContent: 'space-between',
-    marginBottom: 20,
   },
   logo: {
     width: 58,
     height: 35,
   },
-  profileConatiner: {
+  profileContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 6,
@@ -81,7 +82,7 @@ const styles = StyleSheet.create({
   },
   profileText: {
     fontSize: 18,
-    fontWeight: 500,
+    fontWeight: '500',
     color: '#4e4e4e',
     marginLeft: 10,
   },

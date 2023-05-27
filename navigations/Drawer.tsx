@@ -23,9 +23,9 @@ const AppDrawer = () => {
         drawerLabelStyle: {
           marginLeft: -15,
         },
+
         headerStyle: { backgroundColor: COLORS.primary400 },
         headerTintColor: 'white',
-        contentStyle: { backgroundColor: COLORS.secondary100 },
       }}
       drawerContent={(props) => <CustomDrawer {...props} />}
     >
