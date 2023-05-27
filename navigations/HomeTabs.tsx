@@ -11,10 +11,10 @@ const Tab = createMaterialTopTabNavigator();
 const HomeTabs = () => {
   return (
     <Tab.Navigator
+      initialRouteName="Contacts"
       screenOptions={{
-        swipeEnabled: false,
         tabBarStyle: { backgroundColor: COLORS.primary10, elevation: 0, shadowOpacity: 0 },
-        tabBarLabelStyle: { fontSize: 12, fontWeight: 700 },
+        tabBarLabelStyle: { fontSize: 12, fontWeight: '700' },
         tabBarActiveTintColor: COLORS.primary400,
         tabBarInactiveTintColor: COLORS.primary70,
         tabBarIndicatorStyle: { backgroundColor: COLORS.primary400 },

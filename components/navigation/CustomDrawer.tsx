@@ -1,8 +1,10 @@
 import React, { useContext } from 'react';
 import { View, Text, Image, Pressable, StyleSheet } from 'react-native';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
-import { COLORS } from '../../constants';
 import { Feather } from '@expo/vector-icons';
+
+import Wallet from './Wallet';
+import { COLORS } from '../../constants';
 import Storage from '../../utils/asyncStorage';
 import AuthContext from '../../config/AuthContext';
 
@@ -20,15 +22,16 @@ const CustomDrawer: React.FC<DrawerContentProps> = (props: any) => {
 
   return (
     <View style={styles.mainConatiner}>
-      <DrawerContentScrollView {...props} contentContainerStyle={styles.topConatiner}>
-        <View style={styles.headerConatiner}>
+      <DrawerContentScrollView {...props} contentContainerStyle={styles.topContainer}>
+        <View style={styles.headerContainer}>
           <Image source={require('../../assets/glific-logo.png')} style={styles.logo} />
-          <View style={styles.profileConatiner}>
+          <View style={styles.profileContainer}>
             <Image source={require('../../assets/icon.png')} style={styles.profile} />
             <Text style={styles.profileText}>Aman</Text>
           </View>
         </View>
-        <DrawerItemList {...props} contentContainerStyle={styles.drawerItem} />
+        <Wallet />
+        <DrawerItemList {...props} />
       </DrawerContentScrollView>
       <View style={styles.bottomContainer}>
         <Pressable
@@ -52,10 +55,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 0.75,
     height: 70,
   },
-  drawerItem: {
-    paddingHorizontal: 6,
-  },
-  headerConatiner: {
+  headerContainer: {
     backgroundColor: COLORS.primary400,
     height: 120,
     justifyContent: 'space-between',
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     width: 36,
   },
-  profileConatiner: {
+  profileContainer: {
     alignItems: 'center',
     flexDirection: 'row',
     marginBottom: 6,
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     fontWeight: 500,
     marginLeft: 10,
   },
-  topConatiner: {
+  topContainer: {
     paddingTop: 0,
   },
 });
