@@ -60,8 +60,8 @@ const MessagesList: React.FC<MessageListProps> = ({ contact, onSwipeToReply }: a
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: COLORS.white,
+    flex: 1,
   },
 });
 

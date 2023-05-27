@@ -1,10 +1,11 @@
 import 'react-native-gesture-handler';
-import { StyleSheet, SafeAreaView, StatusBar } from "react-native";
+import React from 'react';
+import { StyleSheet, SafeAreaView, StatusBar } from 'react-native';
 import { ApolloProvider } from '@apollo/client';
 
 import { COLORS } from './constants';
 import { client } from './config/apollo';
-import Navigation from "./navigations";
+import Navigation from './navigations';
 
 export default function App() {
   return (
@@ -19,6 +20,6 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
 });

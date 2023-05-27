@@ -1,15 +1,15 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { COLORS } from '../constants';
 import { Entypo, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
+import HomeTabs from './HomeTabs';
 import Notifications from '../screens/Notifications';
 import MyAccount from '../screens/MyAccount';
 import Setting from '../screens/Setting';
 import Help from '../screens/Help';
-import CustomDrawer from '../components/navigation/CustomDrawer';
-import HomeTabs from './HomeTabs';
+import { COLORS } from '../constants';
 import HomeHeaderRight from '../components/HomeHeaderRight';
+import CustomDrawer from '../components/navigation/CustomDrawer';
 
 const Drawer = createDrawerNavigator();
 
@@ -23,9 +23,9 @@ const AppDrawer = () => {
         drawerLabelStyle: {
           marginLeft: -15,
         },
+
         headerStyle: { backgroundColor: COLORS.primary400 },
-        headerTintColor: 'white',
-        contentStyle: { backgroundColor: COLORS.secondary100 },
+        headerTintColor: COLORS.white,
       }}
       drawerContent={(props) => <CustomDrawer {...props} />}
     >

@@ -72,39 +72,36 @@ const Input = ({
 export default Input;
 
 const styles = StyleSheet.create({
-  inputContainer: {
-    width: '100%',
-    marginVertical: 4,
-  },
-  label: {
+  clearIcon: {
+    color: COLORS.darkGray,
     fontSize: 16,
-    color: COLORS.black,
-    marginBottom: 4,
   },
   errorLabel: {
     color: COLORS.error100,
-  },
-  inputBox: {
-    width: '100%',
-    height: 48,
-    marginVertical: 8,
-    borderWidth: 0.75,
-    paddingHorizontal: 10,
-    alignItems: 'center',
-    backgroundColor: 'white',
-    borderColor: COLORS.darkGray,
-    borderRadius: 10,
-    flexDirection: 'row',
   },
   input: {
     flex: 1,
     fontSize: 16,
   },
-  clearIcon: {
-    fontSize: 16,
-    color: COLORS.darkGray,
+  inputBox: {
+    alignItems: 'center',
+    backgroundColor: COLORS.white,
+    borderColor: COLORS.darkGray,
+    borderRadius: 10,
+    borderWidth: 0.75,
+    flexDirection: 'row',
+    height: 48,
+    marginVertical: 8,
+    paddingHorizontal: 10,
+    width: '100%',
   },
-  error: {
-    backgroundColor: COLORS.error100,
+  inputContainer: {
+    marginVertical: 4,
+    width: '100%',
+  },
+  label: {
+    color: COLORS.black,
+    fontSize: 16,
+    marginBottom: 4,
   },
 });

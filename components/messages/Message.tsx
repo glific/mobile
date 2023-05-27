@@ -64,9 +64,11 @@ const Message: React.FC<MessageProps> = ({ isLeft, message, onSwipe }) => {
   const gestureStateHandler = (event: any) => {
     if (event.nativeEvent.state === State.END) {
       const translationThreshold = 40;
-  
-      if ((isLeft && translateX.value >= translationThreshold) 
-      || (!isLeft && translateX.value <= -translationThreshold)) {
+
+      if (
+        (isLeft && translateX.value >= translationThreshold) ||
+        (!isLeft && translateX.value <= -translationThreshold)
+      ) {
         onSwipe({ ...message, isLeft });
         translateX.value = withSpring(0);
       } else {
@@ -94,25 +96,25 @@ const Message: React.FC<MessageProps> = ({ isLeft, message, onSwipe }) => {
 export default Message;
 
 const styles = StyleSheet.create({
-  messageContainer: {
-    maxWidth: '70%',
-    margin: SIZES.m10,
-    padding: SIZES.m10,
-    borderTopLeftRadius: 0,
-    borderRadius: SIZES.r10,
-    backgroundColor: COLORS.primary400,
-  },
   message: {
-    fontSize: SIZES.f14,
-    letterSpacing: 0.2,
     color: COLORS.white,
+    fontSize: SIZES.f14,
     includeFontPadding: false,
+    letterSpacing: 0.2,
+  },
+  messageContainer: {
+    backgroundColor: COLORS.primary400,
+    borderRadius: SIZES.r10,
+    borderTopLeftRadius: 0,
+    margin: SIZES.m10,
+    maxWidth: '70%',
+    padding: SIZES.m10,
   },
   time: {
-    fontSize: SIZES.f10,
-    color: 'lightgray',
-    position: 'relative',
     alignSelf: 'flex-end',
     bottom: -SIZES.m6,
+    color: COLORS.lightGray,
+    fontSize: SIZES.f10,
+    position: 'relative',
   },
 });

@@ -31,7 +31,9 @@ const ChatInput = ({ reply, closeReply }: any) => {
         <View style={styles.replyContainer}>
           <MaterialCommunityIcons name="close" style={styles.closeReply} onPress={closeReply} />
           <Text style={styles.title}>Response to {reply.isLeft ? reply?.sender.id : 'Me'}</Text>
-          <Text style={styles.reply}>{reply?.body.length > 50 ? reply?.body.slice(0, 40) + '...' : reply?.body}</Text>
+          <Text style={styles.reply}>
+            {reply?.body.length > 50 ? reply?.body.slice(0, 40) + '...' : reply?.body}
+          </Text>
         </View>
       )}
       <View style={styles.inputContainer}>
@@ -79,116 +81,116 @@ const ChatInput = ({ reply, closeReply }: any) => {
 };
 
 const styles = StyleSheet.create({
-  mainContainer: {
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
-    justifyContent: 'center',
-    backgroundColor: 'white',
-    elevation: 14,
-  },
-  replyContainer: {
-    borderRadius: 10,
-    margin: 10,
-    padding: 10,
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-    backgroundColor: COLORS.primary10,
-  },
   closeReply: {
-    fontSize: SIZES.f20,
     color: COLORS.black,
+    fontSize: SIZES.f20,
     position: 'absolute',
     right: SIZES.m10,
     top: SIZES.m4,
   },
-  title: {
+  emoticonButton: {
+    color: COLORS.black,
+    fontSize: SIZES.s24,
+    marginLeft: SCALE(2),
+    padding: SIZES.m6,
+  },
+  iconchatbox: {
+    color: COLORS.white,
+    fontSize: SIZES.s30,
+    position: 'absolute',
+  },
+  input: {
+    color: COLORS.black,
+    flex: 1,
+    fontSize: SIZES.f16,
+    minHeight: SIZES.s48,
+    paddingHorizontal: SIZES.m6,
+    paddingVertical: SIZES.m4,
+  },
+  inputAndEmoji: {
+    alignItems: 'center',
+    backgroundColor: COLORS.lightGray,
+    borderRadius: SCALE(30),
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  inputContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: SIZES.m4,
+    paddingVertical: SIZES.m10,
+  },
+  mainContainer: {
+    backgroundColor: COLORS.white,
+    bottom: 0,
+    elevation: 14,
+    justifyContent: 'center',
+    position: 'absolute',
+    width: '100%',
+  },
+  optionIcon: {
+    color: COLORS.primary400,
+    fontSize: SIZES.m24,
+  },
+  optionsContainer: {
+    alignItems: 'center',
+    borderBottomWidth: 0.2,
+    borderColor: COLORS.darkGray,
+    flexDirection: 'row',
+    paddingHorizontal: SIZES.m24,
+    paddingVertical: SIZES.m16,
+    width: '100%',
+  },
+  optionsText: {
     fontSize: SIZES.f14,
-    fontWeight: 'bold',
+    fontWeight: '500',
+    includeFontPadding: false,
+    marginLeft: SIZES.m16,
+  },
+  paperclipicon: {
+    color: COLORS.black,
+    fontSize: SIZES.s24,
+    marginRight: SCALE(2),
+    padding: SIZES.m6,
+    transform: [{ rotate: '50deg' }],
   },
   reply: {
     fontSize: SIZES.f14,
     marginTop: 5,
   },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: SIZES.m10,
-    paddingHorizontal: SIZES.m4,
-  },
-  showIcon: {
-    fontSize: SIZES.f16,
-    color: COLORS.black,
-    padding: SIZES.m6,
-  },
-  inputAndEmoji: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderRadius: SCALE(30),
-    justifyContent: 'space-between',
-    backgroundColor: COLORS.lightGray,
-  },
-  emoticonButton: {
-    fontSize: SIZES.s24,
-    color: COLORS.black,
-    padding: SIZES.m6,
-    marginLeft: SCALE(2),
-  },
-  input: {
-    flex: 1,
-    fontSize: SIZES.f16,
-    minHeight: SIZES.s48,
-    color: COLORS.black,
-    paddingHorizontal: SIZES.m6,
-    paddingVertical: SIZES.m4,
-  },
-  paperclipicon: {
-    fontSize: SIZES.s24,
-    color: COLORS.black,
-    padding: SIZES.m6,
-    marginRight: SCALE(2),
-    transform: [{ rotate: '50deg' }],
-  },
-  iconchatbox: {
-    fontSize: SIZES.s30,
-    color: COLORS.white,
-    position: 'absolute',
-  },
-  sendicon: {
-    fontSize: SIZES.f16,
-    color: COLORS.primary100,
-    marginBottom: SIZES.m4,
+  replyContainer: {
+    alignItems: 'flex-start',
+    backgroundColor: COLORS.primary10,
+    borderRadius: 10,
+    justifyContent: 'center',
+    margin: 10,
+    padding: 10,
   },
   sendButton: {
-    height: SIZES.s48,
-    width: SIZES.s48,
-    borderRadius: SIZES.m24,
+    alignItems: 'center',
     backgroundColor: COLORS.primary100,
-    alignItems: 'center',
+    borderRadius: SIZES.m24,
+    flexDirection: 'row',
+    height: SIZES.s48,
     justifyContent: 'center',
-    flexDirection: 'row',
     marginLeft: SCALE(2),
+    width: SIZES.s48,
   },
-  optionsContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-    paddingHorizontal: SIZES.m24,
-    paddingVertical: SIZES.m16,
-    borderBottomWidth: 0.2,
-    borderColor: COLORS.darkGray,
+  sendicon: {
+    color: COLORS.primary100,
+    fontSize: SIZES.f16,
+    marginBottom: SIZES.m4,
   },
-  optionIcon: {
-    fontSize: SIZES.m24,
-    color: COLORS.primary400,
+  showIcon: {
+    color: COLORS.black,
+    fontSize: SIZES.f16,
+    padding: SIZES.m6,
   },
-  optionsText: {
-    marginLeft: SIZES.m16,
+  title: {
     fontSize: SIZES.f14,
-    fontWeight: '500',
-    includeFontPadding: false,
+    fontWeight: 'bold',
   },
 });
 
