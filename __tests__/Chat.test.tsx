@@ -32,15 +32,15 @@ describe('Contacts screen', () => {
     },
   ];
   test('renders correctly', async () => {
-    const { getByTestId } = renderWithAuth(<Chat />, mocks);
+    const { getByTestId, getAllByTestId } = renderWithAuth(<Chat />, mocks);
     const searchInput = getByTestId('searchInput');
     const loadingIndicator = getByTestId('loadingIndicator');
+
+    expect(loadingIndicator).toBeTruthy();
     await waitFor(() => {
       expect(searchInput).toBeDefined();
-      expect(loadingIndicator).toBeTruthy();
+      expect(getAllByTestId('contactCard')).toHaveLength(1);
     });
-
-    await waitFor(() => {});
   });
 
   test('updates search correctly', async () => {
