@@ -1,26 +1,24 @@
 import React from 'react';
-import { View, ActivityIndicator, StyleSheet, Dimensions } from 'react-native';
-import { Colors } from '../../constants/styles';
-
-const screenDimensions = {
-  width: Dimensions.get('window').width,
-  height: Dimensions.get('window').height,
-};
+import { ActivityIndicator, StyleSheet } from 'react-native';
+import { COLORS } from '../../constants';
 
 const LoadingPage = () => {
   return (
-    <View style={styles.container}>
-      <ActivityIndicator size="large" color={Colors.primary400} />
-    </View>
+    <ActivityIndicator
+      testID="loadingIndicator"
+      size="large"
+      color={COLORS.primary400}
+      style={styles.container}
+    />
   );
 };
 
-const margin = 0.5 * screenDimensions.height;
+export default LoadingPage;
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: margin,
+    alignSelf: 'center',
+    marginVertical: 50,
+    position: 'absolute',
   },
 });
-
-export default LoadingPage;

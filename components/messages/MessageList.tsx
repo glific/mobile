@@ -1,16 +1,38 @@
-import React, { useState, useRef } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import React, { useRef } from 'react';
+import { ScrollView, StyleSheet, Text } from 'react-native';
+import { useQuery } from '@apollo/client';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import { FakeMessage } from './Fakemessages';
+import { GET_CONTACT_MESSAGES } from '../../graphql/queries/Contact';
+import { COLORS } from '../../constants';
+import LoadingPage from '../ui/Loading';
 import Message from './Message';
 
-const MessagesList = ({ onSwipeToReply }: any) => {
-  const [messages, setMessages] = useState(FakeMessage);
+type MessageListProps = {
+  contact: {
+    id: number;
+    name: string;
+  };
+  onSwipeToReply: (message: any) => void;
+};
 
-  const user = useRef(0);
+const MessagesList: React.FC<MessageListProps> = ({ contact, onSwipeToReply }: any) => {
   const scrollView = useRef();
 
-  return (
+  const variables = {
+    filter: { id: contact.id },
+    contactOpts: { limit: 1 },
+    messageOpts: { limit: 10, offset: 1 },
+  };
+  const { loading, error, data } = useQuery(GET_CONTACT_MESSAGES, { variables });
+
+  if (error) {
+    console.log(error);
+  }
+
+  return loading ? (
+    <LoadingPage />
+  ) : (
     <ScrollView
       style={styles.container}
       ref={(ref) => (scrollView.current = ref)}
@@ -18,22 +40,27 @@ const MessagesList = ({ onSwipeToReply }: any) => {
         scrollView.current.scrollToEnd({ animated: true });
       }}
     >
-      {messages.map((message, index) => (
-        <Message
-          key={index}
-          time={message.time}
-          isLeft={message.user !== user.current}
-          message={message.content}
-          onSwipe={onSwipeToReply}
-        />
-      ))}
+      <GestureHandlerRootView>
+        {data?.search[0]?.messages.length ? (
+          data.search[0].messages.map((message, index) => (
+            <Message
+              key={index}
+              message={message}
+              isLeft={message?.sender?.id != contact.id}
+              onSwipe={onSwipeToReply}
+            />
+          ))
+        ) : (
+          <Text>No messages</Text>
+        )}
+      </GestureHandlerRootView>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
     flex: 1,
   },
 });

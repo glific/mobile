@@ -1,34 +1,44 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, Image, Pressable, StyleSheet } from 'react-native';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
-import { Colors } from '../../constants/styles';
 import { Feather } from '@expo/vector-icons';
+
+import Wallet from './Wallet';
+import { COLORS } from '../../constants';
 import Storage from '../../utils/asyncStorage';
+import AuthContext from '../../config/AuthContext';
 
 type DrawerContentProps = {
   navigation: any;
 };
 
 const CustomDrawer: React.FC<DrawerContentProps> = (props: any) => {
+  const { setToken } = useContext(AuthContext);
+
   const LogoutHandler = async () => {
     await Storage.removeData('session');
-    props.navigation.navigate('Login');
+    setToken(null);
   };
 
   return (
     <View style={styles.mainConatiner}>
-      <DrawerContentScrollView {...props} contentContainerStyle={styles.topConatiner}>
-        <View style={styles.headerConatiner}>
+      <DrawerContentScrollView {...props} contentContainerStyle={styles.topContainer}>
+        <View style={styles.headerContainer}>
           <Image source={require('../../assets/glific-logo.png')} style={styles.logo} />
-          <View style={styles.profileConatiner}>
+          <View style={styles.profileContainer}>
             <Image source={require('../../assets/icon.png')} style={styles.profile} />
             <Text style={styles.profileText}>Aman</Text>
           </View>
         </View>
-        <DrawerItemList {...props} contentContainerStyle={{ paddingHorizontal: 6 }} />
+        <Wallet />
+        <DrawerItemList {...props} />
       </DrawerContentScrollView>
       <View style={styles.bottomContainer}>
-        <Pressable onPress={LogoutHandler} style={styles.logoutButton}>
+        <Pressable
+          onPress={LogoutHandler}
+          style={styles.logoutButton}
+          android_ripple={{ borderless: false }}
+        >
           <Feather name="log-out" size={20} color="#4e4e4e" />
           <Text style={styles.logoutText}>Logout</Text>
         </Pressable>
@@ -40,57 +50,57 @@ const CustomDrawer: React.FC<DrawerContentProps> = (props: any) => {
 export default CustomDrawer;
 
 const styles = StyleSheet.create({
-  mainConatiner: {
-    flex: 1,
-  },
-  topConatiner: {
-    paddingTop: 0,
-  },
   bottomContainer: {
-    height: 70,
+    borderTopColor: COLORS.white,
     borderTopWidth: 0.75,
-    borderTopColor: '#9e9e9e',
+    height: 70,
   },
-  headerConatiner: {
-    backgroundColor: Colors.secondary100,
-    width: '100%',
+  headerContainer: {
+    backgroundColor: COLORS.primary400,
     height: 120,
-    padding: 10,
     justifyContent: 'space-between',
     marginBottom: 20,
+    padding: 10,
+    width: '100%',
   },
   logo: {
-    width: 58,
     height: 35,
-  },
-  profileConatiner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 6,
-    marginBottom: 6,
-  },
-  profile: {
-    backgroundColor: '#8e8e8e',
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    resizeMode: 'contain',
-  },
-  profileText: {
-    fontSize: 18,
-    fontWeight: 500,
-    color: '#4e4e4e',
-    marginLeft: 10,
+    width: 58,
   },
   logoutButton: {
-    marginHorizontal: 16,
-    height: 40,
     alignItems: 'center',
     flexDirection: 'row',
+    height: 40,
+    marginHorizontal: 16,
     marginTop: 16,
   },
   logoutText: {
+    color: COLORS.error100,
     marginLeft: 10,
-    color: '#4e4e4e',
+  },
+  mainConatiner: {
+    flex: 1,
+  },
+  profile: {
+    backgroundColor: COLORS.lightGray,
+    borderRadius: 18,
+    height: 36,
+    resizeMode: 'contain',
+    width: 36,
+  },
+  profileContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginBottom: 6,
+    paddingHorizontal: 6,
+  },
+  profileText: {
+    color: COLORS.darkGray,
+    fontSize: 18,
+    fontWeight: 500,
+    marginLeft: 10,
+  },
+  topContainer: {
+    paddingTop: 0,
   },
 });

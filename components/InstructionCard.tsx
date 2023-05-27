@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Colors } from '../constants/styles';
+import { COLORS, SCALE, SIZES } from '../constants';
 
 const InstructionCard = () => {
   return (
@@ -18,42 +18,42 @@ const InstructionCard = () => {
 export default InstructionCard;
 
 const styles = StyleSheet.create({
-  cardContainer: {
-    width: '92%',
-    alignSelf: 'center',
-    marginTop: 12,
+  bodyText: {
+    color: COLORS.black,
+    fontSize: SIZES.f12,
+    marginBottom: SIZES.m6,
+    textAlignVertical: 'center',
   },
-  shadowCard: {
-    position: 'absolute',
-    bottom: -4,
-    width: '98.6%',
-    height: 112,
-    backgroundColor: Colors.primary10,
-    borderWidth: 0.75,
-    borderRadius: 10,
-    borderColor: Colors.primary50,
+  cardContainer: {
+    alignSelf: 'center',
+    marginTop: SIZES.m12,
+    width: SIZES.s328,
   },
   frontCard: {
-    width: '98.6%',
-    height: 112,
     alignSelf: 'flex-end',
-    backgroundColor: 'white',
-    borderWidth: 0.75,
-    borderRadius: 10,
-    borderColor: Colors.primary50,
-    paddingHorizontal: 20,
+    backgroundColor: COLORS.white,
+    borderColor: COLORS.primary50,
+    borderRadius: SIZES.r10,
+    borderWidth: SCALE(0.75),
+    height: SCALE(112),
     justifyContent: 'center',
+    paddingHorizontal: SIZES.m20,
+    width: '98.6%',
+  },
+  shadowCard: {
+    backgroundColor: COLORS.primary10,
+    borderColor: COLORS.primary50,
+    borderRadius: SIZES.r10,
+    borderWidth: SCALE(0.75),
+    bottom: -SIZES.m4,
+    height: SCALE(112),
+    position: 'absolute',
+    width: '98.6%',
   },
   titleText: {
-    fontSize: 16,
-    fontWeight: 500,
-    marginBottom: 8,
-    color: Colors.black,
-  },
-  bodyText: {
-    fontSize: 13,
-    textAlignVertical: 'center',
-    color: Colors.black,
-    marginBottom: 6,
+    color: COLORS.black,
+    fontSize: SIZES.f16,
+    fontWeight: '500',
+    marginBottom: SCALE(8),
   },
 });

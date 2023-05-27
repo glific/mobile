@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
-import { Colors } from '../constants/styles';
+import { COLORS } from '../constants';
 import { validateUrl } from '../utils/helper';
 import InstructionCard from '../components/InstructionCard';
+import AxiosService from '../config/axios';
 
 type RootStackParamList = {
   Server: undefined;
@@ -24,13 +25,13 @@ const Server = ({ navigation }: Props) => {
     setErrorMessage('');
   };
 
-  const onSubmitHandler = () => {
+  const onSubmitHandler = async () => {
     if (!serverURL || !validateUrl(serverURL)) {
       setErrorMessage('Please enter valid server url');
       return;
     }
 
-    // navigate to next page
+    await AxiosService.updateServerURL(serverURL);
     navigation.navigate('Login');
   };
 
@@ -66,19 +67,19 @@ const Server = ({ navigation }: Props) => {
 export default Server;
 
 const styles = StyleSheet.create({
-  inputContainer: { paddingHorizontal: 20 },
-  mainContainer: {
-    flex: 1,
-    paddingTop: 20,
-    backgroundColor: 'white',
-  },
   buttonContainer: {
-    position: 'absolute',
-    bottom: 20,
-    width: '92%',
     alignSelf: 'center',
+    bottom: 20,
+    position: 'absolute',
+    width: '92%',
   },
   errorLabel: {
-    color: Colors.error100,
+    color: COLORS.error100,
+  },
+  inputContainer: { paddingHorizontal: 20 },
+  mainContainer: {
+    backgroundColor: COLORS.white,
+    flex: 1,
+    paddingTop: 20,
   },
 });

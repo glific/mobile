@@ -14,7 +14,7 @@ module.exports = {
     '!**/utils/**',
     '!**/helper.ts',
     '!**/App.tsx',
+    '!**/.eslintrc.js',
   ],
   setupFilesAfterEnv: ['@testing-library/jest-native/extend-expect', '<rootDir>/config/jest.ts'],
-  coverageReporters: ['lcov'],
 };

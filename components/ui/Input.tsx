@@ -1,7 +1,10 @@
+import React from 'react';
 import { View, Text, TextInput, StyleSheet, KeyboardTypeOptions } from 'react-native';
-import { Colors } from '../../constants/styles';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 
-import { AntDesign } from '@expo/vector-icons';
+import { COLORS } from '../../constants';
+
+type InputType = 'text' | 'password' | 'number';
 
 export interface InputProps {
   label: string;
@@ -12,6 +15,8 @@ export interface InputProps {
   keyboardType?: KeyboardTypeOptions;
   placeholder: string;
   testID?: string;
+  onShowPassword?: () => void;
+  type?: InputType;
 }
 
 const Input = ({
@@ -23,6 +28,8 @@ const Input = ({
   value,
   isError = false,
   testID,
+  onShowPassword,
+  type = 'text',
 }: InputProps) => {
   return (
     <View style={styles.inputContainer}>
@@ -37,17 +44,25 @@ const Input = ({
           onChangeText={onUpdateValue}
           value={value}
           placeholder={placeholder}
-          cursorColor={Colors.darkGray}
-          selectionColor={Colors.darkGray}
+          cursorColor={COLORS.darkGray}
+          selectionColor={COLORS.darkGray}
           underlineColorAndroid="transparent"
         />
-        {value && (
-          <AntDesign
-            testID="close"
-            name="close"
+        {type == 'password' ? (
+          <Ionicons
+            name={secure ? 'eye' : 'eye-off'}
             style={styles.clearIcon}
-            onPress={() => onUpdateValue('')}
+            onPress={onShowPassword}
           />
+        ) : (
+          value && (
+            <AntDesign
+              testID="close"
+              name="close"
+              style={styles.clearIcon}
+              onPress={() => onUpdateValue('')}
+            />
+          )
         )}
       </View>
     </View>
@@ -57,39 +72,36 @@ const Input = ({
 export default Input;
 
 const styles = StyleSheet.create({
-  inputContainer: {
-    width: '100%',
-    marginVertical: 4,
-  },
-  label: {
+  clearIcon: {
+    color: COLORS.darkGray,
     fontSize: 16,
-    color: Colors.black,
-    marginBottom: 4,
   },
   errorLabel: {
-    color: Colors.error100,
-  },
-  inputBox: {
-    width: '100%',
-    height: 48,
-    marginVertical: 8,
-    borderWidth: 0.75,
-    paddingHorizontal: 10,
-    alignItems: 'center',
-    backgroundColor: 'white',
-    borderColor: Colors.darkGray,
-    borderRadius: 10,
-    flexDirection: 'row',
+    color: COLORS.error100,
   },
   input: {
     flex: 1,
     fontSize: 16,
   },
-  clearIcon: {
-    fontSize: 16,
-    color: Colors.darkGray,
+  inputBox: {
+    alignItems: 'center',
+    backgroundColor: COLORS.white,
+    borderColor: COLORS.darkGray,
+    borderRadius: 10,
+    borderWidth: 0.75,
+    flexDirection: 'row',
+    height: 48,
+    marginVertical: 8,
+    paddingHorizontal: 10,
+    width: '100%',
   },
-  error: {
-    backgroundColor: Colors.error100,
+  inputContainer: {
+    marginVertical: 4,
+    width: '100%',
+  },
+  label: {
+    color: COLORS.black,
+    fontSize: 16,
+    marginBottom: 4,
   },
 });

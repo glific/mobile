@@ -1,134 +1,206 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Pressable, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Icon from '@expo/vector-icons/FontAwesome';
-import { AntDesign } from '@expo/vector-icons';
+import { Entypo, Ionicons, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 
-const ChatHeader = (props: any) => {
+import { COLORS } from '../../constants';
+
+interface DataProps {
+  contact: {
+    id: number;
+    name: string;
+  };
+}
+
+interface MenuProps {
+  icon: JSX.Element;
+  text: string;
+  onPress: () => void;
+}
+
+const MenuButton: React.FC<MenuProps> = ({ icon, text, onPress }: any) => {
+  return (
+    <Pressable
+      onPress={onPress}
+      style={styles.menuButton}
+      android_ripple={{ color: COLORS.primary10 }}
+    >
+      {icon}
+      <Text style={[styles.menuText, text === 'Block Contact' && { color: COLORS.error100 }]}>
+        {text}
+      </Text>
+    </Pressable>
+  );
+};
+
+const ChatHeader: React.FC<DataProps> = ({ contact }) => {
   const navigation = useNavigation();
-  const tap: boolean = false;
-  const name: String = 'Alok';
+  const [showMenu, setShowMenu] = useState(false);
+
+  const handleMenu = () => {
+    setShowMenu(!showMenu);
+  };
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity
+    <View style={styles.mainContainer}>
+      <AntDesign
+        testID="backButton"
+        name="arrowleft"
         style={styles.backButton}
-        onPress={(): void => navigation.navigate('Contacts')}
+        onPress={(): void => navigation.goBack()}
+      />
+      <Pressable style={styles.innerContainer} android_ripple={{ color: COLORS.primary70 }}>
+        <View>
+          <Image
+            testID="userProfile"
+            source={require('../../assets/icon.png')}
+            style={styles.avatar}
+          />
+          <View
+            style={[
+              styles.circle,
+              { backgroundColor: true ? COLORS.primary100 : COLORS.darkGray }, // TODO: for online status
+            ]}
+          />
+        </View>
+        <Text testID="userName" style={styles.nameText}>
+          {contact.name}
+        </Text>
+      </Pressable>
+      <Pressable
+        onPress={handleMenu}
+        style={styles.threeDotIconContainer}
+        android_ripple={{ borderless: true }}
       >
-        <AntDesign name="arrowleft" size={24} color={'white'} />
-      </TouchableOpacity>
-      <View style={styles.profileOptions}>
-        <View style={styles.item}>
-          <View style={styles.avatar}>
-            <Text style={styles.firstletter}>{name.charAt(0)}</Text>
+        <Entypo testID="menuIcon" name="dots-three-vertical" style={styles.threeDotIcon} />
+      </Pressable>
+      {showMenu && (
+        <>
+          <Pressable onPress={handleMenu} style={styles.menuBackground} />
+          <View style={styles.menuContainer}>
+            <MenuButton
+              text="Add to Collection"
+              icon={<Ionicons name="person-add-sharp" style={styles.menuIcon} />}
+              onPress={() => {
+                console.log('1');
+              }}
+            />
+            <MenuButton
+              text="Clear Conversation"
+              icon={<MaterialCommunityIcons name="message-bulleted-off" style={styles.menuIcon} />}
+              onPress={() => {
+                console.log('2');
+              }}
+            />
+            <MenuButton
+              text="Terminate Flows"
+              icon={<MaterialCommunityIcons name="hand-back-right-off" style={styles.menuIcon} />}
+              onPress={() => {
+                console.log('3');
+              }}
+            />
+            <MenuButton
+              text="Block Contact"
+              icon={<Entypo name="block" style={[styles.menuIcon, { color: COLORS.error100 }]} />}
+              onPress={() => {
+                console.log('4');
+              }}
+            />
           </View>
-          <View style={styles.bgfirstletter}></View>
-          <Text style={styles.Name}>{name}</Text>
-        </View>
-        <View style={styles.options}>
-          <TouchableOpacity style={styles.righticon} onPress={() => props.data(!tap)}>
-            <Icon name="ellipsis-v" size={25} color={'white'} />
-          </TouchableOpacity>
-        </View>
-      </View>
+        </>
+      )}
     </View>
   );
 };
 
+export default ChatHeader;
+
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    backgroundColor: '#073F24',
-    paddingTop: 10,
-    paddingBottom: 5,
+  avatar: {
+    borderRadius: 20,
+    height: 40,
+    width: 40,
   },
   backButton: {
     alignSelf: 'center',
+    color: COLORS.white,
+    fontSize: 22,
     paddingHorizontal: 10,
   },
-  profileOptions: {
+  circle: {
+    borderColor: COLORS.primary400,
+    borderRadius: 7.5,
+    borderWidth: 2,
+    bottom: -4,
+    height: 15,
+    position: 'absolute',
+    right: -4,
+    width: 15,
+  },
+  innerContainer: {
+    alignItems: 'center',
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 10,
   },
-  profile: {
-    flexDirection: 'row',
+  mainContainer: {
     alignItems: 'center',
-    borderColor: '#fff',
-    flex: 4,
-  },
-  item: {
-    padding: 5,
-    marginVertical: 1,
-    marginHorizontal: 2,
+    backgroundColor: COLORS.primary400,
     flexDirection: 'row',
-    alignItems: 'center',
     height: 60,
+    padding: '2%',
+    width: '100%',
+    zIndex: 50,
   },
-  Name: {
-    fontSize: 24,
-    marginLeft: 18,
-    color: 'white',
-    fontWeight: '600',
-    letterSpacing: 1,
+  menuBackground: {
+    height: 800,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    width: 500,
   },
-  avatar: {
-    height: 50,
-    width: 50,
-    borderRadius: 25.5,
-    backgroundColor: '#FFF0DE',
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-  },
-  image: {
-    height: 65,
-    width: 65,
-    borderRadius: 32.5,
-  },
-  firstletter: {
-    justifyContent: 'center',
+  menuButton: {
     alignItems: 'center',
-    paddingLeft: 16,
-    paddingTop: 8,
-    fontSize: 25,
-    fontWeight: 'bold',
-    color: '#073F24',
+    flexDirection: 'row',
+    height: 40,
+    paddingHorizontal: 12,
+    width: '100%',
   },
-  bgfirstletter: {
-    height: 15,
-    width: 15,
-    borderRadius: 7.5,
-    backgroundColor: '#FFF0DE',
-    marginTop: 28,
-    marginLeft: -10,
-    borderColor: '#073F24',
-    borderWidth: 2,
+  menuContainer: {
+    backgroundColor: COLORS.white,
+    borderRadius: 4,
+    bottom: -180,
+    elevation: 4,
+    height: 190,
+    justifyContent: 'space-around',
+    paddingVertical: 10,
+    position: 'absolute',
+    right: 16,
+    shadowColor: COLORS.black,
+    shadowOffset: { height: 4, width: 0 },
+    shadowRadius: 4,
+    width: 220,
   },
-  usernameAndOnlineStatus: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    paddingHorizontal: 10,
+  menuIcon: {
+    color: COLORS.primary100,
+    fontSize: 22,
+    marginRight: 10,
   },
-  username: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  righticon: {
-    paddingHorizontal: 20,
-  },
-  onlineStatus: {
-    color: 'white',
+  menuText: {
+    color: COLORS.black,
     fontSize: 16,
   },
-  options: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+  nameText: {
+    color: COLORS.white,
+    fontSize: 18,
+    fontWeight: '500',
+    letterSpacing: 1,
+    marginLeft: 10,
+  },
+  threeDotIcon: {
+    color: COLORS.white,
+    fontSize: 20,
+  },
+  threeDotIconContainer: {
+    paddingHorizontal: 6,
   },
 });
-
-export default ChatHeader;
