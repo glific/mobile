@@ -59,53 +59,53 @@ const HomeHeaderRight: React.FC = ({ navigation }: any) => {
 export default HomeHeaderRight;
 
 const styles = StyleSheet.create({
-  mainContainer: {
-    flexDirection: 'row',
-    padding: SIZES.m10,
-    backgroundColor: COLORS.primary400,
-  },
-  iconContainer: {
-    width: SIZES.s30,
-    height: SIZES.s30,
-    borderRadius: SIZES.m20,
+  filter: {
     alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: SIZES.m4,
-  },
-  icon: {
-    fontSize: SIZES.f20,
-    color: COLORS.white,
+    flexDirection: 'row',
+    height: SIZES.s40,
+    justifyContent: 'space-between',
+    paddingHorizontal: SIZES.m12,
+    width: SIZES.s200,
   },
   filterBackground: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    width: SIZES.width,
     height: SIZES.height,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    width: SIZES.width,
+  },
+  filterText: {
+    color: COLORS.black,
+    fontSize: SIZES.f16,
   },
   filtersContainer: {
-    width: SIZES.s200,
-    position: 'absolute',
-    backgroundColor: 'white',
-    right: SIZES.m16,
-    bottom: -SCALE(220),
+    backgroundColor: COLORS.white,
     borderRadius: SIZES.r4,
+    bottom: -SCALE(220),
     elevation: SIZES.r4,
+    paddingVertical: SIZES.m12,
+    position: 'absolute',
+    right: SIZES.m16,
     shadowColor: COLORS.black,
     shadowOffset: { height: SIZES.r4, width: 0 },
     shadowRadius: SIZES.r4,
-    paddingVertical: SIZES.m12,
-  },
-  filter: {
     width: SIZES.s200,
-    height: SIZES.s40,
-    paddingHorizontal: SIZES.m12,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
   },
-  filterText: {
-    fontSize: SIZES.f16,
-    color: COLORS.black,
+  icon: {
+    color: COLORS.white,
+    fontSize: SIZES.f20,
+  },
+  iconContainer: {
+    alignItems: 'center',
+    borderRadius: SIZES.m20,
+    height: SIZES.s30,
+    justifyContent: 'center',
+    marginLeft: SIZES.m4,
+    width: SIZES.s30,
+  },
+  mainContainer: {
+    backgroundColor: COLORS.primary400,
+    flexDirection: 'row',
+    padding: SIZES.m10,
   },
 });

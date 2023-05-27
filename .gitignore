@@ -13,6 +13,9 @@ web-build/
 coverage/
 .env
 
+# WebStorm
+.idea
+
 # macOS
 .DS_Store
 

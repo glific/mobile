@@ -43,9 +43,7 @@ const CollectionList: React.FC<CollectionListProps> = () => {
         <FlatList
           data={collections}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <Contact {...item} />
-          )}
+          renderItem={({ item }) => <Contact {...item} />}
         />
       )}
     </View>

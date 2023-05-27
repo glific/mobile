@@ -48,16 +48,16 @@ const ChatScreen = ({ navigation, route }: Props) => {
 export default ChatScreen;
 
 const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    backgroundColor: COLORS.white,
-  },
   item: {
-    padding: SIZES.m6,
-    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: COLORS.lightGray,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    padding: SIZES.m6,
+  },
+  mainContainer: {
+    backgroundColor: COLORS.white,
+    flex: 1,
   },
   time: {
     fontSize: SIZES.f14,

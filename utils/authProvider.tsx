@@ -4,13 +4,11 @@ import AuthContext from '../config/AuthContext';
 import { MockedProvider } from '@apollo/client/testing';
 import { NavigationContainer } from '@react-navigation/native';
 
-const renderWithAuth = (component, mocks) =>
+const renderWithAuth = (component, mocks = []) =>
   render(
     <MockedProvider mocks={mocks}>
       <AuthContext.Provider value={{ token: 'existing_token', setToken: jest.fn() }}>
-        <NavigationContainer>
-          {component}
-        </NavigationContainer>
+        <NavigationContainer>{component}</NavigationContainer>
       </AuthContext.Provider>
     </MockedProvider>
   );

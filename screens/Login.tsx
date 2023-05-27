@@ -1,4 +1,4 @@
-import { useState, useContext, useRef } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import PhoneInput from 'react-native-phone-number-input';
@@ -8,7 +8,7 @@ import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import Storage from '../utils/asyncStorage';
 import AuthContext from '../config/AuthContext';
-import createAxiosClient from '../config/axios';
+import AxiosService from '../config/axios';
 
 type RootStackParamList = {
   Login: undefined;
@@ -24,7 +24,6 @@ const Login = ({ navigation }: Props) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const phoneInput = useRef<PhoneInput>(null);
-  const Client = createAxiosClient();
 
   const updateInputValueHandler = (inputType: string, enteredValue: string) => {
     switch (inputType) {
@@ -42,7 +41,9 @@ const Login = ({ navigation }: Props) => {
       if (enteredMobile == '' || enteredPassword == '') {
         throw new Error('Please enter mobile number and password!');
       }
+      const Client = await AxiosService.createAxiosInstance();
       const countryCode = phoneInput.current?.getCallingCode();
+
       const response = await Client.post('/v1/session', {
         user: {
           phone: countryCode + enteredMobile,
@@ -107,30 +108,9 @@ const Login = ({ navigation }: Props) => {
 export default Login;
 
 const styles = StyleSheet.create({
-  errorLabel: {
-    color: COLORS.error100,
-  },
-  phoneInputContainer: {
-    width: '100%',
-    backgroundColor: 'white',
-    borderWidth: 0.75,
-    borderRadius: 10,
+  buttonContainer: {
+    alignSelf: 'stretch',
     marginBottom: 20,
-    borderColor: COLORS.darkGray,
-    height: 48,
-  },
-  phoneInput: {
-    width: '80%',
-    fontSize: 16,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    marginLeft: -12,
-    paddingVertical: 8,
-    paddingHorizontal: 6,
-  },
-  numberLabel: {
-    paddingBottom: 10,
-    fontSize: 16,
   },
   container: {
     flex: 1,
@@ -138,19 +118,34 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 32,
   },
-
+  errorLabel: {
+    color: COLORS.error100,
+  },
   forgotPassword: {
     alignSelf: 'flex-end',
     color: COLORS.primary100,
     marginTop: 5,
   },
-  buttonContainer: {
-    alignSelf: 'stretch',
-    marginBottom: 20,
+  numberLabel: {
+    fontSize: 16,
+    paddingBottom: 10,
   },
-  iconContainer: {
-    position: 'absolute',
-    top: 55,
-    right: 10,
+  phoneInput: {
+    backgroundColor: COLORS.white,
+    borderRadius: 10,
+    fontSize: 16,
+    marginLeft: -12,
+    paddingHorizontal: 6,
+    paddingVertical: 8,
+    width: '80%',
+  },
+  phoneInputContainer: {
+    backgroundColor: COLORS.white,
+    borderColor: COLORS.darkGray,
+    borderRadius: 10,
+    borderWidth: 0.75,
+    height: 48,
+    marginBottom: 20,
+    width: '100%',
   },
 });

@@ -17,8 +17,8 @@ export default LoadingPage;
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
     alignSelf: 'center',
     marginVertical: 50,
+    position: 'absolute',
   },
 });

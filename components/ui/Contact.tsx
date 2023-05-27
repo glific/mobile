@@ -1,9 +1,10 @@
+import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { COLORS } from '../../constants';
 
 export interface ContactProps {
-  index: number;
+  id: number;
   name: string;
 }
 
@@ -26,33 +27,33 @@ const Contact: React.FC<ContactProps> = ({ id, name }) => {
 };
 
 const styles = StyleSheet.create({
+  avatar: {
+    alignItems: 'center',
+    backgroundColor: COLORS.primary10,
+    borderRadius: 22,
+    flexDirection: 'row',
+    height: 44,
+    justifyContent: 'center',
+    width: 44,
+  },
+  avatartext: {
+    color: COLORS.primary400,
+    fontSize: 18,
+    fontWeight: '500',
+  },
   item: {
-    width: '100%',
+    alignItems: 'center',
+    backgroundColor: COLORS.white,
+    borderColor: COLORS.darkGray,
+    borderWidth: 0.5,
+    flexDirection: 'row',
     height: 70,
     paddingHorizontal: '4%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    borderWidth: 0.5,
-    borderColor: COLORS.darkGray,
+    width: '100%',
   },
   name: {
     fontSize: 16,
     marginLeft: 18,
-  },
-  avatar: {
-    height: 44,
-    width: 44,
-    borderRadius: 22,
-    backgroundColor: COLORS.primary10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  avatartext: {
-    fontSize: 18,
-    fontWeight: '500',
-    color: COLORS.primary400,
   },
 });
 

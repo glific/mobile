@@ -2,7 +2,9 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useQuery } from '@apollo/client';
+
 import LoadingPage from '../ui/Loading';
+import { COLORS, SIZES } from '../../constants';
 import { BSP_BALANCE } from '../../graphql/queries/Balance';
 
 const Wallet = () => {
@@ -35,36 +37,36 @@ const Wallet = () => {
   );
 };
 
+export default Wallet;
+
 const styles = StyleSheet.create({
-  walletContainer: {
-    backgroundColor: '#119656',
-    height: 40,
+  dollarText: {
+    color: COLORS.white,
+    fontSize: SIZES.f16,
+    fontWeight: '800',
+    marginLeft: 'auto',
+    marginRight: SIZES.m6,
+    marginTop: SIZES.m6,
   },
   innerContainer: {
+    alignItems: 'center',
     flexDirection: 'row',
     textAlign: 'center',
-    alignItems: 'center',
+  },
+  walletContainer: {
+    backgroundColor: COLORS.primary100,
+    height: SIZES.m40,
   },
   walletIcon: {
-    justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 8,
-    marginLeft: 10,
+    justifyContent: 'center',
+    marginLeft: SIZES.m10,
+    marginTop: SIZES.m6,
   },
   walletText: {
-    color: 'white',
-    fontSize: 14,
-    marginTop: 8,
-    marginLeft: 12,
-  },
-  dollarText: {
-    color: 'white',
-    fontSize: 17,
-    marginTop: 8,
-    marginLeft: 'auto',
-    marginRight: 8,
-    fontWeight: '800',
+    color: COLORS.white,
+    fontSize: SIZES.f14,
+    marginLeft: SIZES.m12,
+    marginTop: SIZES.m6,
   },
 });
-
-export default Wallet;
