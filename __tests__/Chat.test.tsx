@@ -5,14 +5,11 @@ import renderWithAuth from '../utils/authProvider';
 import { GET_CONTACTS } from '../graphql/queries/Contact';
 
 describe('Contacts screen', () => {
-  const mockContacts = [
-    {
-      id: '1',
-      name: 'test',
-      maskedPhone: '12*****90',
-    },
-  ];
-
+  const mockContacts = {
+    id: '1',
+    name: 'test',
+    maskedPhone: '12*****90',
+  };
   const mocks = [
     {
       request: {
@@ -23,7 +20,7 @@ describe('Contacts screen', () => {
           contactOpts: { limit: 10, offset: 0 },
         },
       },
-      response: {
+      result: {
         data: {
           search: [
             {
@@ -34,23 +31,27 @@ describe('Contacts screen', () => {
       },
     },
   ];
-  test('renders correctly', () => {
+  test('renders correctly', async () => {
     const { getByTestId } = renderWithAuth(<Chat />, mocks);
-
     const searchInput = getByTestId('searchInput');
     const loadingIndicator = getByTestId('loadingIndicator');
+    await waitFor(() => {
+      expect(searchInput).toBeDefined();
+      expect(loadingIndicator).toBeTruthy();
+    });
 
-    expect(searchInput).toBeDefined();
-    expect(loadingIndicator).toBeTruthy();
+    await waitFor(() => {});
   });
 
-  test('updates search correctly', () => {
+  test('updates search correctly', async () => {
     const { getByTestId } = renderWithAuth(<Chat />, mocks);
 
     const searchInput = getByTestId('searchInput');
     fireEvent.changeText(searchInput, 'test search');
 
-    expect(searchInput.props.value).toBe('test search');
+    await waitFor(() => {
+      expect(searchInput.props.value).toBe('test search');
+    });
   });
 
   test('should test when search and filter icon pressed', async () => {
