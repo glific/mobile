@@ -6,8 +6,10 @@ class AxiosService {
   private static baseURL: string | null = null;
 
   static async createAxiosInstance(): Promise<AxiosInstance> {
+    const serverURL = await Storage.getData('serverURL');
+    AxiosService.baseURL = serverURL;
     AxiosService.instance = axios.create({
-      baseURL: AxiosService.baseURL,
+      baseURL: serverURL,
     });
     return AxiosService.instance!;
   }

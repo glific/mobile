@@ -1,22 +1,21 @@
 import { ApolloClient, InMemoryCache, ApolloLink, HttpLink } from '@apollo/client';
-import { API_BASE_URL } from '@env';
 import Storage from '../utils/asyncStorage';
 
-const httpLink = new HttpLink({ uri: API_BASE_URL });
+// Fetches the uri dynamically
+const customFetch = async (uri, options) => {
+  const serverURL = await Storage.getData('serverURL');
+  return fetch(serverURL, options);
+};
 
 // Create an ApolloLink instance
 const authLink = new ApolloLink((operation, forward) => {
-  // Asynchronously fetch the token
   return fetchToken().then((token) => {
-    // Set the token in the request headers
     operation.setContext(({ headers = {} }) => ({
       headers: {
         ...headers,
         Authorization: token,
       },
     }));
-
-    // Proceed with the request chain
     return forward(operation);
   });
 });
@@ -29,10 +28,10 @@ async function fetchToken() {
     const parsedSessionValue = JSON.parse(sessionValue);
     token = parsedSessionValue.access_token;
   }
-  // Simulate an asynchronous API call to retrieve the token
-
   return token;
 }
+
+const httpLink = new HttpLink({ fetch: customFetch });
 
 export const client = new ApolloClient({
   link: authLink.concat(httpLink),
