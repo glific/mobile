@@ -1,13 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { COLORS } from '../../constants';
-
-export interface CollectionListItemProps {
-  id: number;
-  name: string;
-  lastMessageAt: string;
-}
+import { COLORS, SIZES } from '../../constants';
 
 const CollectionListItem: React.FC<CollectionListItemProps> = ({ id, name }) => {
   const navigation = useNavigation();
@@ -53,8 +47,8 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   name: {
-    fontSize: 16,
-    marginLeft: 18,
+    fontSize: SIZES.f16,
+    marginLeft: SIZES.m16,
   },
 });
 

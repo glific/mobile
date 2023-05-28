@@ -20,11 +20,7 @@ const ContactList: React.FC<ContactListProps> = () => {
   const { loading, error, data } = useQuery(GET_CONTACTS, { variables });
 
   if (error) {
-    return (
-      <View>
-        <Text>{error}</Text>
-      </View>
-    );
+    console.log(error);
   }
 
   let contacts = [];

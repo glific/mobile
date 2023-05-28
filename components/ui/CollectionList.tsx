@@ -26,11 +26,7 @@ const CollectionList: React.FC<CollectionListProps> = () => {
   const { loading, error, data } = useQuery(GET_COLLECTIONS, { variables });
 
   if (error) {
-    return (
-      <View>
-        <Text>{error}</Text>
-      </View>
-    );
+    console.log(error);
   }
 
   let collections = [];
