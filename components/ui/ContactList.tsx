@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, View, StyleSheet, Text } from 'react-native';
+import { FlatList, View, StyleSheet } from 'react-native';
 import { useQuery } from '@apollo/client';
 
 import Contact from './Contact';

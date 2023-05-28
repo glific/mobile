@@ -7,7 +7,13 @@ export interface ContactProps {
   id: number;
   name: string;
   lastMessageAt: string;
-  lastSessiontime: any;
+  Messages: [
+    {
+      id: number;
+      body: string;
+    }
+  ];
+  lastSessiontime: string;
 }
 
 const Contact: React.FC<ContactProps> = ({ id, name, lastMessageAt, Messages }) => {
@@ -30,7 +36,7 @@ const Contact: React.FC<ContactProps> = ({ id, name, lastMessageAt, Messages }) 
     );
   }
 
-  const getSessionTimeLeft = (time) => {
+  const getSessionTimeLeft = (time: string) => {
     const currentTime = new Date();
     const lastMessageTime = new Date(time);
     const timeDifference = lastMessageTime.getTime() + 24 * 60 * 60 * 1000 - currentTime.getTime();
