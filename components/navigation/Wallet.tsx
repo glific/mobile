@@ -42,7 +42,7 @@ export default Wallet;
 const styles = StyleSheet.create({
   dollarText: {
     color: COLORS.white,
-    fontSize: SIZES.f16,
+    fontSize: SIZES.f14,
     fontWeight: '800',
   },
   innerContainer: {
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   },
   walletText: {
     color: COLORS.white,
-    fontSize: SIZES.f16,
+    fontSize: SIZES.f14,
     fontWeight: '400',
     marginLeft: SIZES.m16,
   },

@@ -23,7 +23,7 @@ const AppDrawer = () => {
           width: SCALE(308),
         },
         drawerLabelStyle: {
-          fontSize: SIZES.f16,
+          fontSize: SIZES.f14,
           fontWeight: '400',
           marginLeft: -SIZES.f14,
         },
@@ -44,7 +44,7 @@ const AppDrawer = () => {
       drawerContent={(props) => <CustomDrawer {...props} />}
     >
       <Drawer.Screen
-        name="Chat"
+        name="Chats"
         component={HomeTabs}
         options={({ navigation }) => {
           return {
@@ -83,7 +83,7 @@ const AppDrawer = () => {
         }}
       />
       <Drawer.Screen
-        name="Setting"
+        name="Settings"
         component={Setting}
         options={{
           drawerIcon: ({ color }) => (

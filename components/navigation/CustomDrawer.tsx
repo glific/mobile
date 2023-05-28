@@ -73,10 +73,11 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     backgroundColor: COLORS.primary400,
-    height: SCALE(116),
+    height: SCALE(150),
     justifyContent: 'space-between',
     marginBottom: 0,
     padding: SIZES.m10,
+    paddingTop: SIZES.m30,
     width: '100%',
   },
   logo: {
