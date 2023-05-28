@@ -2,7 +2,7 @@ import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { COLORS } from '../../constants';
-import getSessionTimeLeft from '../../screens/ChatScreen';
+
 export interface ContactProps {
   id: number;
   name: string;
@@ -86,85 +86,87 @@ const Contact: React.FC<ContactProps> = ({ id, name, lastMessageAt, Messages }) 
 };
 
 const styles = StyleSheet.create({
-  item: {
-    width: '100%',
-    height: 70,
-    paddingHorizontal: '4%',
+  avatar: {
+    alignItems: 'center',
+    borderRadius: 22,
+    backgroundColor: COLORS.primary10,
     flexDirection: 'row',
+    height: 44,
+    justifyContent: 'center',
+    width: 44,
+  },
+  avatartext: {
+    color: COLORS.primary400,
+    fontSize: 18,
+    fontWeight: '500',
+  },
+  item: {
     alignItems: 'center',
     backgroundColor: 'white',
     borderBottomWidth: 0.5,
     borderColor: COLORS.darkGray,
-  },
-  name: {
-    fontSize: 18,
-    fontWeight: 600,
-    marginLeft: 18,
-    color: '#212121',
-  },
-  avatar: {
-    height: 44,
-    width: 44,
-    borderRadius: 22,
-    backgroundColor: COLORS.primary10,
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    height: 70,
+    paddingHorizontal: '4%',
+    width: '100%',
   },
-  avatartext: {
-    fontSize: 18,
-    fontWeight: '500',
-    color: COLORS.primary400,
+  lastMsg: {
+    color: '#49454F',
+    marginLeft: 18,
+    width: '100%',
+  },
+  lastSession: {
+    alignItems: 'flex-end',
+    backgroundColor: '#ECF7F1',
+    color: '#073F24',
+    fontWeight: 600,
+  },
+  lastTime: {
+    alignItems: 'flex-end',
+    color: '#93A29B',
   },
   mainbody: {
     flexDirection: 'column',
     width: '60%',
   },
-  timeComp: {
-    flexDirection: 'column',
-    flex: 3,
-    alignItems: 'flex-end',
-  },
-  lastMsg: {
+  name: {
+    color: '#212121',
+    fontSize: 18,
+    fontWeight: 600,
     marginLeft: 18,
-    color: '#49454F',
-    width: '100%',
   },
-  lastTime: { color: '#93A29B', alignItems: 'flex-end' },
+
   sessionBorder: {
-    height: 25,
-    width: 44,
+    alignItems: 'center',
     borderRadius: 14,
     backgroundColor: '#ECF7F1',
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'center',
     marginTop: 5,
-  },
-  sessionInvalid: {
     height: 25,
     width: 44,
+  },
+  sessionInvalid: {
+    alignItems: 'center',
     backgroundColor: '#F2F2F2',
     borderRadius: 14,
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'center',
     marginTop: 5,
+    height: 25,
+    width: 44,
   },
+  timeComp: {
+    alignItems: 'flex-end',
+    flex: 3,
+    flexDirection: 'column',
+  },
+
   textInvalid: {
+    alignItems: 'flex-end',
     backgroundColor: '#F2F2F2',
     color: '#93A29B',
     fontWeight: 600,
-
-    alignItems: 'flex-end',
-  },
-
-  lastSession: {
-    alignItems: 'flex-end',
-    color: '#073F24',
-    fontWeight: 600,
-
-    backgroundColor: '#ECF7F1',
   },
 });
 
