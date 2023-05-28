@@ -3,8 +3,8 @@ import { FlatList, View, StyleSheet } from 'react-native';
 import { GET_COLLECTIONS } from '../../graphql/queries/Collection';
 import { useQuery } from '@apollo/client';
 
-import Contact from './Contact';
 import Loading from './Loading';
+import CollectionMain from './CollectionMain';
 
 interface CollectionListProps {
   navigation: any;
@@ -28,6 +28,7 @@ const CollectionList: React.FC<CollectionListProps> = () => {
   if (error) {
     console.log(error);
   }
+  console.log();
 
   let collections = [];
   if (data) {
@@ -43,7 +44,7 @@ const CollectionList: React.FC<CollectionListProps> = () => {
         <FlatList
           data={collections}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <Contact {...item} />}
+          renderItem={({ item }) => <CollectionMain {...item} />}
         />
       )}
     </View>

@@ -9,6 +9,10 @@ export const GET_CONTACTS = gql`
         maskedPhone
         lastMessageAt
       }
+      messages{
+        id
+        body
+      }
     }
   }
 `;
