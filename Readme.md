@@ -49,6 +49,20 @@ Note that you need to connect either an android device or an emulator with your 
 
 ## Developer Guidelines
 
+### Theme Constants Usage 
+Import the project theme constants from the constants folder:
+```sh
+import { COLORS, SIZES, FONTS, SCALE } from '/path/to/constants';
+```
+
+Here are the project theme constants available for usage:
+- **COLORS**: Contains color-related constants, ex. `COLORS.primary400`.
+- **SIZES**: Includes size-related constants, ex. `SIZES.m10`, `SIZES.r4` etc.
+- **FONTS**: Provides font-related constants, ex. `...FONTS.regular14`.
+- **SCALE**: Offers custom scaling constants which are not included in SIZES for text and other UI elements, ex. `SCALE(100)`.
+
+Refer to the /constants/theme.ts file containing the project theme constants.
+
 ### Naming Convention for testID and class
 
 - For `testID` and `class` attributes used in your code, follow the camelCase naming convention.
@@ -65,4 +79,7 @@ Example:
 <View testID="my element" className="my-component" />
 ```
 
-Following a consistent naming convention helps maintain code readability and consistency across the project.
+
+Following these guidelines helps to ensure a smoother development process and easier maintenance.
+
+If you have any questions or need further assistance, feel free to reach out to the project team. Happy coding!
