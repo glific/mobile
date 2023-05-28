@@ -1,19 +1,35 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, Image, Pressable, StyleSheet } from 'react-native';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
-import { Feather } from '@expo/vector-icons';
 
 import Wallet from './Wallet';
-import { COLORS } from '../../constants';
+import { Feather } from '@expo/vector-icons';
 import Storage from '../../utils/asyncStorage';
+import { COLORS, SCALE, SIZES } from '../../constants';
 import AuthContext from '../../config/AuthContext';
+import AxiosService from '../../config/axios';
 
 type DrawerContentProps = {
   navigation: any;
 };
 
 const CustomDrawer: React.FC<DrawerContentProps> = (props: any) => {
+  const [orgName, setOrgName] = useState('');
   const { setToken } = useContext(AuthContext);
+
+  const FetchOrganisation = async () => {
+    try {
+      const Client = await AxiosService.createAxiosInstance();
+      const response = await Client.post('/v1/session/name');
+      setOrgName(response?.data?.data?.name);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    FetchOrganisation();
+  }, []);
 
   const LogoutHandler = async () => {
     await Storage.removeData('session');
@@ -21,13 +37,15 @@ const CustomDrawer: React.FC<DrawerContentProps> = (props: any) => {
   };
 
   return (
-    <View style={styles.mainConatiner}>
+    <View style={styles.mainContainer}>
       <DrawerContentScrollView {...props} contentContainerStyle={styles.topContainer}>
         <View style={styles.headerContainer}>
           <Image source={require('../../assets/glific-logo.png')} style={styles.logo} />
           <View style={styles.profileContainer}>
-            <Image source={require('../../assets/icon.png')} style={styles.profile} />
-            <Text style={styles.profileText}>Aman</Text>
+            <View style={styles.profile}>
+              <Text style={styles.profileText}>{orgName[0]}</Text>
+            </View>
+            <Text style={styles.orgText}>{orgName}</Text>
           </View>
         </View>
         <Wallet />
@@ -39,7 +57,7 @@ const CustomDrawer: React.FC<DrawerContentProps> = (props: any) => {
           style={styles.logoutButton}
           android_ripple={{ borderless: false }}
         >
-          <Feather name="log-out" size={20} color="#4e4e4e" />
+          <Feather name="log-out" style={styles.logoutIcon} />
           <Text style={styles.logoutText}>Logout</Text>
         </Pressable>
       </View>
@@ -51,54 +69,63 @@ export default CustomDrawer;
 
 const styles = StyleSheet.create({
   bottomContainer: {
-    borderTopColor: COLORS.white,
-    borderTopWidth: 0.75,
-    height: 70,
+    height: SIZES.s60,
   },
   headerContainer: {
     backgroundColor: COLORS.primary400,
-    height: 120,
+    height: SCALE(116),
     justifyContent: 'space-between',
-    marginBottom: 20,
-    padding: 10,
+    marginBottom: 0,
+    padding: SIZES.m10,
     width: '100%',
   },
   logo: {
-    height: 35,
-    width: 58,
+    height: SCALE(38),
+    width: SCALE(62),
   },
   logoutButton: {
     alignItems: 'center',
     flexDirection: 'row',
-    height: 40,
-    marginHorizontal: 16,
-    marginTop: 16,
+    height: SCALE(56),
+    paddingHorizontal: SIZES.m16,
+  },
+  logoutIcon: {
+    color: COLORS.error100,
+    fontSize: SIZES.s20,
   },
   logoutText: {
     color: COLORS.error100,
-    marginLeft: 10,
+    fontSize: SIZES.f16,
+    marginLeft: SIZES.m16,
   },
-  mainConatiner: {
+  mainContainer: {
     flex: 1,
   },
+  orgText: {
+    color: COLORS.white,
+    fontSize: SIZES.f18,
+    fontWeight: '500',
+    marginLeft: SIZES.m12,
+  },
   profile: {
-    backgroundColor: COLORS.lightGray,
-    borderRadius: 18,
-    height: 36,
-    resizeMode: 'contain',
-    width: 36,
+    alignItems: 'center',
+    backgroundColor: COLORS.primary100,
+    borderRadius: SIZES.r20,
+    height: SIZES.s40,
+    justifyContent: 'center',
+    width: SIZES.s40,
   },
   profileContainer: {
     alignItems: 'center',
     flexDirection: 'row',
-    marginBottom: 6,
-    paddingHorizontal: 6,
+    marginBottom: SCALE(2),
+    paddingLeft: SIZES.m6,
   },
   profileText: {
-    color: COLORS.darkGray,
-    fontSize: 18,
-    fontWeight: 500,
-    marginLeft: 10,
+    color: COLORS.white,
+    fontSize: SIZES.f20,
+    fontWeight: '600',
+    includeFontPadding: false,
   },
   topContainer: {
     paddingTop: 0,

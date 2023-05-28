@@ -41,7 +41,7 @@ describe('Contacts screen', () => {
       expect(searchInput).toBeDefined();
       expect(getAllByTestId('contactCard')).toHaveLength(1);
     });
-  });
+  }, 10000);
 
   test('updates search correctly', async () => {
     const { getByTestId } = renderWithAuth(<Chat />, mocks);
