@@ -29,6 +29,7 @@ const ContactList: React.FC<ContactListProps> = () => {
       return {
         id: element.contact?.id,
         name: element.contact?.name || element.contact?.maskedPhone,
+        lastMessageAt: element.contact?.lastMessageAt,
       };
     });
   }
