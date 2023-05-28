@@ -88,8 +88,8 @@ const Contact: React.FC<ContactProps> = ({ id, name, lastMessageAt, Messages }) 
 const styles = StyleSheet.create({
   avatar: {
     alignItems: 'center',
-    borderRadius: 22,
     backgroundColor: COLORS.primary10,
+    borderRadius: 22,
     flexDirection: 'row',
     height: 44,
     justifyContent: 'center',
@@ -111,26 +111,26 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   lastMsg: {
-    color: '#49454F',
+    color: COLORS.mediumGray,
     marginLeft: 18,
     width: '100%',
   },
   lastSession: {
     alignItems: 'flex-end',
-    backgroundColor: '#ECF7F1',
-    color: '#073F24',
+    backgroundColor: COLORS.lightGreen,
+    color: COLORS.green20,
     fontWeight: 600,
   },
   lastTime: {
     alignItems: 'flex-end',
-    color: '#93A29B',
+    color: '',
   },
   mainbody: {
     flexDirection: 'column',
     width: '60%',
   },
   name: {
-    color: '#212121',
+    color: COLORS.black,
     fontSize: 18,
     fontWeight: 600,
     marginLeft: 18,
@@ -138,8 +138,8 @@ const styles = StyleSheet.create({
 
   sessionBorder: {
     alignItems: 'center',
+    backgroundColor: COLORS.lightGreen,
     borderRadius: 14,
-    backgroundColor: '#ECF7F1',
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: 5,
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   },
   sessionInvalid: {
     alignItems: 'center',
-    backgroundColor: '#F2F2F2',
+    backgroundColor: COLORS.secondary100,
     borderRadius: 14,
     flexDirection: 'row',
     justifyContent: 'center',
@@ -156,17 +156,16 @@ const styles = StyleSheet.create({
     height: 25,
     width: 44,
   },
+  textInvalid: {
+    alignItems: 'flex-end',
+    backgroundColor: COLORS.secondary100,
+    color: COLORS.darkGray,
+    fontWeight: 600,
+  },
   timeComp: {
     alignItems: 'flex-end',
     flex: 3,
     flexDirection: 'column',
-  },
-
-  textInvalid: {
-    alignItems: 'flex-end',
-    backgroundColor: '#F2F2F2',
-    color: '#93A29B',
-    fontWeight: 600,
   },
 });
 
