@@ -3,18 +3,18 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { COLORS } from '../../constants';
 
-export interface CollectionMainProps {
+export interface CollectionListItemProps {
   id: number;
   name: string;
   lastMessageAt: string;
 }
 
-const CollectionMain: React.FC<CollectionMainProps> = ({ id, name }) => {
+const CollectionListItem: React.FC<CollectionListItemProps> = ({ id, name }) => {
   const navigation = useNavigation();
 
   return (
     <Pressable
-      testID="CollectionMainCard"
+      testID="CollectionListItemCard"
       onPress={() => navigation.navigate('ChatScreen', { contact: { id, name } })}
       style={styles.item}
       android_ripple={{ color: COLORS.primary10 }}
@@ -58,4 +58,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CollectionMain;
+export default CollectionListItem;

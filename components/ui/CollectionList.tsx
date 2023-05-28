@@ -4,7 +4,7 @@ import { GET_COLLECTIONS } from '../../graphql/queries/Collection';
 import { useQuery } from '@apollo/client';
 
 import Loading from './Loading';
-import CollectionMain from './CollectionMain';
+import CollectionListItem from './CollectionListItem';
 
 interface CollectionListProps {
   navigation: any;
@@ -47,7 +47,7 @@ const CollectionList: React.FC<CollectionListProps> = () => {
         <FlatList
           data={collections}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <CollectionMain {...item} />}
+          renderItem={({ item }) => <CollectionListItem {...item} />}
         />
       )}
     </View>
