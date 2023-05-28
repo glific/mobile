@@ -9,7 +9,7 @@ export const GET_CONTACTS = gql`
         maskedPhone
         lastMessageAt
       }
-      messages{
+      messages {
         id
         body
       }

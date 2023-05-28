@@ -27,7 +27,7 @@ const Contact: React.FC<ContactProps> = ({ id, name, lastMessageAt, Messages }) 
     );
   }
 
-  let temp = Messages[Messages.length - 1];
+  const temp = Messages[Messages.length - 1];
   if (!temp) {
     return (
       <View>
@@ -45,7 +45,7 @@ const Contact: React.FC<ContactProps> = ({ id, name, lastMessageAt, Messages }) 
     return hours;
   };
 
-  let lastSessiontime = getSessionTimeLeft(lastMessageAt);
+  const lastSessiontime = getSessionTimeLeft(lastMessageAt);
 
   const dateObj = new Date(lastMessageAt);
   const formattedTime = dateObj.toLocaleString('en-US', {
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   },
   item: {
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
     borderBottomWidth: 0.5,
     borderColor: COLORS.darkGray,
     flexDirection: 'row',
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
   },
   lastTime: {
     alignItems: 'flex-end',
-    color: '',
+    color: COLORS.darkGray,
   },
   mainbody: {
     flexDirection: 'column',
@@ -141,9 +141,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.lightGreen,
     borderRadius: 14,
     flexDirection: 'row',
+    height: 25,
     justifyContent: 'center',
     marginTop: 5,
-    height: 25,
     width: 44,
   },
   sessionInvalid: {
@@ -151,9 +151,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.secondary100,
     borderRadius: 14,
     flexDirection: 'row',
+    height: 25,
     justifyContent: 'center',
     marginTop: 5,
-    height: 25,
     width: 44,
   },
   textInvalid: {

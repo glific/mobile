@@ -14,7 +14,7 @@ export const COLORS = {
   primary400: '#073f24',
   lightGreen: '#ECF7F1',
   mediumGray: '#49454F',
-  green20:'#073F24',
+  green20: '#073F24',
   secondary100: '#f2f2f2',
   lightGray: '#f0f0f0',
   darkGray: '#93A29B',
