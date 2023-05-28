@@ -77,7 +77,7 @@ const Contact: React.FC<ContactProps> = ({ id, name, lastMessageAt, Messages }) 
         </Text>
         <View style={lastSessiontime ? styles.sessionBorder : styles.sessionInvalid}>
           <Text style={lastSessiontime ? styles.lastSession : styles.textInvalid}>
-            {lastSessiontime}
+            {lastSessiontime}hrs
           </Text>
         </View>
       </View>
