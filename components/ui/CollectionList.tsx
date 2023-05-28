@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
+import { FlatList, View, StyleSheet, Text } from 'react-native';
 import { GET_COLLECTIONS } from '../../graphql/queries/Collection';
 import { useQuery } from '@apollo/client';
 
@@ -26,9 +26,12 @@ const CollectionList: React.FC<CollectionListProps> = () => {
   const { loading, error, data } = useQuery(GET_COLLECTIONS, { variables });
 
   if (error) {
-    console.log(error);
+    return (
+      <View>
+        <Text>{error}</Text>
+      </View>
+    );
   }
-  console.log();
 
   let collections = [];
   if (data) {

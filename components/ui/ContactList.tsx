@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
+import { FlatList, View, StyleSheet, Text } from 'react-native';
 import { useQuery } from '@apollo/client';
 
 import Contact from './Contact';
@@ -20,7 +20,11 @@ const ContactList: React.FC<ContactListProps> = () => {
   const { loading, error, data } = useQuery(GET_CONTACTS, { variables });
 
   if (error) {
-    console.log(error);
+    return (
+      <View>
+        <Text>{error}</Text>
+      </View>
+    );
   }
 
   let contacts = [];

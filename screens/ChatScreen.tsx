@@ -14,7 +14,7 @@ const getSessionTimeLeft = (time) => {
   hours = Math.min(hours, 24);
   return hours;
 };
-console.log();
+
 
 type RootStackParamList = {
   Chat: undefined;
@@ -24,15 +24,13 @@ type RootStackParamList = {
       name: string;
       lastMessageAt: string;
     };
-  };
+   
 };
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ChatScreen'>;
 
 const ChatScreen = ({ route }: Props) => {
   const { contact } = route.params;
-  console.log('route');
-  console.log(route);
   const [reply, setReply] = useState(null);
 
   const swipeToReply = (message: any) => {
