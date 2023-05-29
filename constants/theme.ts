@@ -21,6 +21,7 @@ export const COLORS = {
   error100: '#f44336',
   white: '#ffffff',
   black: '#212121',
+  red: '#ff0000',
 };
 
 export const SIZES = {
