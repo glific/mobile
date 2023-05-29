@@ -47,6 +47,20 @@ Note that you need to connect either an android device or an emulator with your 
 - Download Expo Go app from playstore
 - Scan the QR from your CLI
 
+## Contributing
+
+### Pull Request Submission Guidelines
+
+When submitting a pull request, please ensure that it meets the following requirements:
+
+- [ ] The code passes all relevant unit test cases.
+- [ ] The pull request references the related issue and clearly explains the problem it aims to solve.
+- [ ] The code has been scanned for any deepscan issues and none are present.
+- [ ] The code follows the project's formatting guidelines and has been formatted using prettier.
+
+Please make sure to address all the checkboxes above before submitting your pull request. This will help in ensuring the quality and maintainability of the project.
+
+
 ## Developer Guidelines
 
 ### Theme Constants Usage 
