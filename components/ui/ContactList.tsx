@@ -8,10 +8,6 @@ import { GET_CONTACTS } from '../../graphql/queries/Contact';
 
 interface ContactListProps {
   navigation: any;
-  id: number;
-  name: string;
-  maskedPhone: string;
-  lastMessageAt: string;
   messagesLength: number;
 }
 
