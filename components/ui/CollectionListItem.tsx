@@ -25,11 +25,11 @@ const styles = StyleSheet.create({
   avatar: {
     alignItems: 'center',
     backgroundColor: COLORS.primary10,
-    borderRadius: 22,
+    borderRadius: SIZES.r22,
     flexDirection: 'row',
-    height: 44,
+    height: SIZES.s44,
     justifyContent: 'center',
-    width: 44,
+    width: SIZES.s44,
   },
   avatartext: {
     color: COLORS.primary400,
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.darkGray,
     borderWidth: 0.5,
     flexDirection: 'row',
-    height: 70,
+    height: SIZES.s70,
     paddingHorizontal: '4%',
     width: '100%',
   },

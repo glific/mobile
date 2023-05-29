@@ -31,7 +31,9 @@ export const SIZES = {
   // radius
   r4: SCALE(4),
   r10: SCALE(10),
+  r14: SCALE(14),
   r20: SCALE(20),
+  r22: SCALE(22),
 
   // regular width and height
   s12: SCALE(12),
@@ -42,6 +44,7 @@ export const SIZES = {
   s30: SCALE(30),
   s36: SCALE(36),
   s40: SCALE(40),
+  s44: SCALE(44),
   s48: SCALE(48),
   s50: SCALE(50),
   s60: SCALE(60),
@@ -56,6 +59,7 @@ export const SIZES = {
   m10: SCALE(10),
   m12: SCALE(12),
   m16: SCALE(16),
+  m18: SCALE(18),
   m20: SCALE(20),
   m24: SCALE(24),
   m30: SCALE(30),

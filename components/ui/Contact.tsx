@@ -1,49 +1,27 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { COLORS } from '../../constants';
+import { COLORS, SIZES } from '../../constants';
+import { getSessionTimeLeft } from '../../screens/ChatScreen';
 
 export interface ContactProps {
   id: number;
   name: string;
   lastMessageAt: string;
-  Messages: [
-    {
-      id: number;
-      body: string;
-    }
-  ];
+  lastMessage: string;
   lastSessiontime: string;
 }
 
-const Contact: React.FC<ContactProps> = ({ id, name, lastMessageAt, Messages }) => {
+const Contact: React.FC<ContactProps> = ({ id, name, lastMessageAt, lastMessage }) => {
   const navigation = useNavigation();
 
-  if (!Messages) {
+  if (!lastMessage) {
     return (
       <View>
         <Text></Text>
       </View>
     );
   }
-
-  const temp = Messages[Messages.length - 1];
-  if (!temp) {
-    return (
-      <View>
-        <Text></Text>
-      </View>
-    );
-  }
-
-  const getSessionTimeLeft = (time: string) => {
-    const currentTime = new Date();
-    const lastMessageTime = new Date(time);
-    const timeDifference = lastMessageTime.getTime() + 24 * 60 * 60 * 1000 - currentTime.getTime();
-    let hours = Math.max(Math.ceil(timeDifference / (1000 * 60 * 60)), 0);
-    hours = Math.min(hours, 24);
-    return hours;
-  };
 
   const lastSessiontime = getSessionTimeLeft(lastMessageAt);
 
@@ -68,7 +46,7 @@ const Contact: React.FC<ContactProps> = ({ id, name, lastMessageAt, Messages }) 
         <Text style={styles.name}>{name}</Text>
 
         <Text style={styles.lastMsg} numberOfLines={1}>
-          {temp.body}
+          {lastMessage}
         </Text>
       </View>
       <View style={styles.timeComp}>
@@ -89,11 +67,11 @@ const styles = StyleSheet.create({
   avatar: {
     alignItems: 'center',
     backgroundColor: COLORS.primary10,
-    borderRadius: 22,
+    borderRadius: SIZES.r22,
     flexDirection: 'row',
-    height: 44,
+    height: SIZES.s44,
     justifyContent: 'center',
-    width: 44,
+    width: SIZES.s44,
   },
   avatartext: {
     color: COLORS.primary400,
@@ -106,13 +84,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     borderColor: COLORS.darkGray,
     flexDirection: 'row',
-    height: 70,
+    height: SIZES.s70,
     paddingHorizontal: '4%',
     width: '100%',
   },
   lastMsg: {
     color: COLORS.mediumGray,
-    marginLeft: 18,
+    marginLeft: SIZES.m18,
     width: '100%',
   },
   lastSession: {
@@ -131,30 +109,30 @@ const styles = StyleSheet.create({
   },
   name: {
     color: COLORS.black,
-    fontSize: 18,
+    fontSize: SIZES.f16,
     fontWeight: 600,
-    marginLeft: 18,
+    marginLeft: SIZES.m18,
   },
 
   sessionBorder: {
     alignItems: 'center',
     backgroundColor: COLORS.lightGreen,
-    borderRadius: 14,
+    borderRadius: SIZES.r14,
     flexDirection: 'row',
-    height: 25,
+    height: SIZES.s24,
     justifyContent: 'center',
-    marginTop: 5,
-    width: 44,
+    marginTop: SIZES.m4,
+    width: SIZES.s44,
   },
   sessionInvalid: {
     alignItems: 'center',
     backgroundColor: COLORS.secondary100,
-    borderRadius: 14,
+    borderRadius: SIZES.r14,
     flexDirection: 'row',
-    height: 25,
+    height: SIZES.s24,
     justifyContent: 'center',
-    marginTop: 5,
-    width: 44,
+    marginTop: SIZES.m4,
+    width: SIZES.s44,
   },
   textInvalid: {
     alignItems: 'flex-end',
