@@ -8,6 +8,11 @@ import { GET_CONTACTS } from '../../graphql/queries/Contact';
 
 interface ContactListProps {
   navigation: any;
+  id: number;
+  name: string;
+  maskedPhone: string;
+  lastMessageAt: string;
+  messagesLength: number;
 }
 
 const variables = {
@@ -26,12 +31,12 @@ const ContactList: React.FC<ContactListProps> = () => {
   let contacts = [];
   if (data) {
     contacts = data.search.map((element: any) => {
-      const messages = element.messages;
+      const messagesLength = element.messages?.length;
       return {
         id: element.contact?.id,
         name: element.contact?.name || element.contact?.maskedPhone,
         lastMessageAt: element.contact?.lastMessageAt,
-        lastMessage: messages.length > 0 && messages[messages.length - 1]?.body,
+        lastMessage: messagesLength > 0 && element.messages[messagesLength - 1]?.body,
       };
     });
   }

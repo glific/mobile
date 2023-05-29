@@ -23,9 +23,6 @@ type RootStackParamList = {
       name: string;
       lastMessageAt: string;
     };
-    messages: {
-      id: number;
-    };
   };
 };
 
