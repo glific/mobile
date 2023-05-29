@@ -27,11 +27,12 @@ const ContactList: React.FC<ContactListProps> = () => {
   if (data) {
     contacts = data.search.map((element: any) => {
       const Messages = element.messages;
+
       return {
         id: element.contact?.id,
         name: element.contact?.name || element.contact?.maskedPhone,
         lastMessageAt: element.contact?.lastMessageAt,
-        lastMessage: Messages[Messages.length - 1]?.body,
+        lastMessage: Messages[Messages?.length - 1]?.body,
       };
     });
   }
