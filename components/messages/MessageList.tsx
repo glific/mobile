@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { useQuery } from '@apollo/client';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { GET_CONTACT_MESSAGES } from '../../graphql/queries/Contact';
 import { COLORS } from '../../constants';
@@ -13,10 +12,9 @@ type MessageListProps = {
     id: number;
     name: string;
   };
-  onSwipeToReply: (message: any) => void;
 };
 
-const MessagesList: React.FC<MessageListProps> = ({ contact, onSwipeToReply }: any) => {
+const MessagesList: React.FC<MessageListProps> = ({ contact }) => {
   const scrollView = useRef();
 
   const variables = {
@@ -40,20 +38,13 @@ const MessagesList: React.FC<MessageListProps> = ({ contact, onSwipeToReply }: a
         scrollView.current.scrollToEnd({ animated: true });
       }}
     >
-      <GestureHandlerRootView>
-        {data?.search[0]?.messages.length ? (
-          data.search[0].messages.map((message, index) => (
-            <Message
-              key={index}
-              message={message}
-              isLeft={message?.sender?.id === contact.id}
-              onSwipe={onSwipeToReply}
-            />
-          ))
-        ) : (
-          <Text>No messages</Text>
-        )}
-      </GestureHandlerRootView>
+      {data?.search[0]?.messages.length ? (
+        data.search[0].messages.map((message, index) => (
+          <Message key={index} message={message} isLeft={message?.sender?.id === contact.id} />
+        ))
+      ) : (
+        <Text>No messages</Text>
+      )}
     </ScrollView>
   );
 };

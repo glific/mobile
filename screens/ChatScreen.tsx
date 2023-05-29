@@ -28,17 +28,8 @@ type RootStackParamList = {
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ChatScreen'>;
 
-const ChatScreen = ({ navigation, route }: Props) => {
+const ChatScreen = ({ route }: Props) => {
   const { contact } = route.params;
-  const [reply, setReply] = useState(null);
-
-  const swipeToReply = (message: any) => {
-    setReply(message);
-  };
-
-  const closeReply = () => {
-    setReply(null);
-  };
 
   return (
     <>
@@ -47,8 +38,8 @@ const ChatScreen = ({ navigation, route }: Props) => {
         <View style={styles.item}>
           <Text style={styles.time}>Time left: {getSessionTimeLeft(contact.lastMessageAt)}</Text>
         </View>
-        <MessagesList contact={contact} onSwipeToReply={swipeToReply} />
-        <ChatInput contact={contact} reply={reply} closeReply={closeReply} />
+        <MessagesList contact={contact} />
+        <ChatInput contact={contact} />
       </View>
     </>
   );
