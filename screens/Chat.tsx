@@ -10,7 +10,7 @@ type RootStackParamList = {
   Contacts: undefined;
   Collections: undefined;
   SavedSearches: undefined;
-  ChatScreen: undefined;
+  ContactList: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Contacts'>;

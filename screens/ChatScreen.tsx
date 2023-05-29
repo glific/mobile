@@ -6,7 +6,7 @@ import MessagesList from '../components/messages/MessageList';
 import ChatInput from '../components/messages/ChatInput';
 import { COLORS, SIZES } from '../constants';
 
-const getSessionTimeLeft = (time) => {
+export const getSessionTimeLeft = (time) => {
   const currentTime = new Date();
   const lastMessageTime = new Date(time);
   const timeDifference = lastMessageTime.getTime() + 24 * 60 * 60 * 1000 - currentTime.getTime();
@@ -28,9 +28,9 @@ type RootStackParamList = {
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ChatScreen'>;
 
-const ChatScreen = ({ navigation, route }: Props) => {
+const ChatScreen = ({ route }: Props) => {
   const { contact } = route.params;
-  console.log(contact);
+
   const [reply, setReply] = useState(null);
 
   const swipeToReply = (message: any) => {
