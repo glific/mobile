@@ -15,14 +15,6 @@ export interface ContactProps {
 const Contact: React.FC<ContactProps> = ({ id, name, lastMessageAt, lastMessage }) => {
   const navigation = useNavigation();
 
-  if (!lastMessage) {
-    return (
-      <View>
-        <Text></Text>
-      </View>
-    );
-  }
-
   const lastSessiontime = getSessionTimeLeft(lastMessageAt);
 
   const dateObj = new Date(lastMessageAt);
