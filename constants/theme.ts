@@ -65,6 +65,7 @@ export const SIZES = {
   m30: SCALE(30),
   m35: SCALE(35),
   m40: SCALE(40),
+  m65: SCALE(65),
 
   // font sizes
   f8: SCALE(8),

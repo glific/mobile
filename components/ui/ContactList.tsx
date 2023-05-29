@@ -13,12 +13,15 @@ interface ContactListProps {
 
 const variables = {
   filter: {},
-  messageOpts: { limit: 3, offset: 0 },
-  contactOpts: { limit: 10, offset: 0 },
+  messageOpts: { limit: 1 },
+  contactOpts: { limit: 10 },
 };
 
 const ContactList: React.FC<ContactListProps> = () => {
-  const { loading, error, data } = useQuery(GET_CONTACTS, { variables });
+  const { loading, error, data } = useQuery(GET_CONTACTS, {
+    variables,
+    fetchPolicy: 'cache-and-network',
+  });
 
   if (error) {
     console.log(error);
