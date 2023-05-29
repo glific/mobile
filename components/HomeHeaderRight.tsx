@@ -34,13 +34,12 @@ const HomeHeaderRight: React.FC = ({ navigation }: any) => {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [notificationCount, setNotificationCount] = useState(0);
 
-  const { loading, error, data } = useQuery(GET_NOTIFICATIONS_COUNT, { variables });
-
-  useEffect(() => {
-    if (data) {
+  useQuery(GET_NOTIFICATIONS_COUNT, {
+    variables,
+    onCompleted: (data) => {
       setNotificationCount(data.countNotifications);
-    }
-  }, [data]);
+    },
+  });
 
   return (
     <View style={styles.mainContainer}>
