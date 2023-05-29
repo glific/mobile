@@ -1,13 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, Pressable } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Pressable, Keyboard } from 'react-native';
 import { FontAwesome, AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import { useMutation } from '@apollo/client';
 
 import { COLORS, SCALE, SIZES } from '../../constants';
+import { SEND_CONTACT_MESSAGE } from '../../graphql/queries/Contact';
 
-const ChatInput = ({ reply, closeReply }: any) => {
+const ChatInput = ({ reply, closeReply, contact }: any) => {
   const [message, setMessage] = useState('');
   const [showOptions, setShowOptions] = useState(true);
+  const [createAndSendMessage] = useMutation(SEND_CONTACT_MESSAGE);
+
+  const HandleSendMessage = async () => {
+    try {
+      if (message != '') {
+        const response = await createAndSendMessage({
+          variables: {
+            input: {
+              body: message,
+              flow: 'OUTBOUND',
+              type: 'TEXT',
+              receiverId: contact.id,
+            },
+          },
+        });
+        console.log(response.data.createAndSendMessage.message);
+        setMessage('');
+        Keyboard.dismiss();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const translateY = useSharedValue(0);
 
@@ -59,7 +84,7 @@ const ChatInput = ({ reply, closeReply }: any) => {
           />
         </View>
 
-        <Pressable style={styles.sendButton}>
+        <Pressable style={styles.sendButton} onPress={HandleSendMessage}>
           <Ionicons name="chatbox-sharp" style={styles.iconchatbox} />
           <FontAwesome name="send" style={styles.sendicon} />
         </Pressable>

@@ -27,7 +27,17 @@ const Message: React.FC<MessageProps> = ({ isLeft, message, onSwipe }) => {
   });
 
   const onRight = (type: string) => {
-    if (isLeft) return {};
+    if (isLeft)
+      switch (type) {
+        case 'message':
+          return {
+            alignSelf: 'flex-start',
+          };
+        case 'body':
+          return {};
+        case 'time':
+          return {};
+      }
     else {
       switch (type) {
         case 'message':
@@ -54,26 +64,19 @@ const Message: React.FC<MessageProps> = ({ isLeft, message, onSwipe }) => {
   const gestureHandler = (event: any) => {
     const translationX = event.nativeEvent.translationX;
 
-    if (isLeft && translationX > 0) {
-      translateX.value = Math.min(translationX, 50);
-    } else if (!isLeft && translationX < 0) {
-      translateX.value = Math.max(translationX, -50);
+    if (translationX > 0) {
+      translateX.value = Math.min(translationX, 40);
     }
   };
 
   const gestureStateHandler = (event: any) => {
     if (event.nativeEvent.state === State.END) {
-      const translationThreshold = 40;
+      const translationThreshold = 30;
 
-      if (
-        (isLeft && translateX.value >= translationThreshold) ||
-        (!isLeft && translateX.value <= -translationThreshold)
-      ) {
+      if (translateX.value >= translationThreshold) {
         onSwipe({ ...message, isLeft });
-        translateX.value = withSpring(0);
-      } else {
-        translateX.value = withSpring(0);
       }
+      translateX.value = withSpring(0);
     }
   };
 

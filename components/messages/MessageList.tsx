@@ -46,7 +46,7 @@ const MessagesList: React.FC<MessageListProps> = ({ contact, onSwipeToReply }: a
             <Message
               key={index}
               message={message}
-              isLeft={message?.sender?.id != contact.id}
+              isLeft={message?.sender?.id === contact.id}
               onSwipe={onSwipeToReply}
             />
           ))

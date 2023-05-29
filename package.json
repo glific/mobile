@@ -24,6 +24,7 @@
     "axios": "^1.4.0",
     "expo": "~48.0.5",
     "graphql": "^15.8.0",
+    "graphql-ws": "^5.13.1",
     "react": "18.2.0",
     "react-native": "0.71.8",
     "react-native-dotenv": "^3.4.8",
