@@ -4,10 +4,10 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
 type notificationType = {
-  header: String;
-  message: String;
-  time: String;
-  type: String;
+  header: string;
+  message: string;
+  time: string;
+  type: string;
 };
 const windowWidth = Dimensions.get('window').width;
 const NotificationItem = (props: { notification: notificationType }) => {
@@ -43,7 +43,17 @@ const NotificationItem = (props: { notification: notificationType }) => {
 };
 
 export default NotificationItem;
-const colors=['#E0E0E0','#D7E6EF','#218AFF','#EFD6D6','#DD1F1F','#EAEDEC','#767672','#212121','#6E8E7F']
+const colors = [
+  '#E0E0E0',
+  '#D7E6EF',
+  '#218AFF',
+  '#EFD6D6',
+  '#DD1F1F',
+  '#EAEDEC',
+  '#767672',
+  '#212121',
+  '#6E8E7F',
+];
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
@@ -56,6 +66,20 @@ const styles = StyleSheet.create({
   container2: {
     width: windowWidth - 100,
   },
+  critical: {
+    alignItems: 'center',
+    backgroundColor: colors[5],
+    borderColor: colors[6],
+    borderRadius: 25,
+    borderWidth: 1,
+    height: 48,
+    justifyContent: 'center',
+    width: 48,
+  },
+  header: {
+    color: colors[7],
+    fontWeight: '700',
+  },
   imgContainer: {
     margin: 20,
   },
@@ -66,36 +90,21 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     borderWidth: 1,
     height: 48,
-    justifyContent: 'center', 
-    width: 48
+    justifyContent: 'center',
+    width: 48,
+  },
+  time: {
+    color: colors[8],
+    fontWeight: '700',
   },
   warning: {
     alignItems: 'center',
     backgroundColor: colors[3],
     borderColor: colors[4],
-    borderRadius: 25, 
-    borderWidth: 1,
-    height: 48,
-    justifyContent: 'center',
-    width: 48
-  },
-  critical: {
-    alignItems: 'center',
-    backgroundColor: colors[5],
-    borderColor: colors[6],
     borderRadius: 25,
     borderWidth: 1,
     height: 48,
     justifyContent: 'center',
-    width: 48
-  },
-  header: {
-    color: colors[7],
-    fontWeight: '700',
-    
-  },
-  time: {
-    fontWeight: '700',
-    color: colors[8],  
+    width: 48,
   },
 });
