@@ -48,9 +48,9 @@ const Notifications = () => {
 
   return (
     <View style={styles.mainContainer}>
-      <Text style={{display:"none"}}>Notifications</Text>
+      <Text style={{ display: 'none' }}>Notifications</Text>
       <View style={styles.navBar}>
-      <RenderOption
+        <RenderOption
           label="All"
           selectedOption={option}
           setNotificationArray={setNotificationArray}
@@ -73,7 +73,6 @@ const Notifications = () => {
           selectedOption={option}
           setNotificationArray={setNotificationArray}
           setOption={setOption}
-
         />
       </View>
       <ScrollView>
@@ -89,12 +88,12 @@ const RenderOption = ({
   label,
   selectedOption,
   setNotificationArray,
-  setOption
+  setOption,
 }: {
-  label: string,
-  selectedOption: string,
-  setNotificationArray: Dispatch<React.SetStateAction<notificationType[]>>
-setOption: Dispatch<React.SetStateAction<string>>
+  label: string;
+  selectedOption: string;
+  setNotificationArray: Dispatch<React.SetStateAction<notificationType[]>>;
+  setOption: Dispatch<React.SetStateAction<string>>;
 }) => {
   const handleOptionPress = (option: string) => {
     setOption(option);
@@ -110,10 +109,10 @@ setOption: Dispatch<React.SetStateAction<string>>
     return Notification.filter((item) => item['type'] === value);
   }
 
-  const isActive=(label===selectedOption);
+  const isActive = label === selectedOption;
   return (
     <View style={isActive ? styles.option : {}}>
-      <TouchableOpacity onPress={()=>handleOptionPress(label)}>
+      <TouchableOpacity onPress={() => handleOptionPress(label)}>
         <Text style={[styles.text, isActive ? styles.active : {}]}>{label}</Text>
       </TouchableOpacity>
     </View>
@@ -122,8 +121,11 @@ setOption: Dispatch<React.SetStateAction<string>>
 
 export default Notifications;
 
-const colors=['#ECF7F1','#6E8E7F','#073F24']
+const colors = ['#ECF7F1', '#6E8E7F', '#073F24'];
 const styles = StyleSheet.create({
+  active: {
+    color: colors[2],
+  },
   mainContainer: {
     flex: 1,
   },
@@ -137,18 +139,15 @@ const styles = StyleSheet.create({
     paddingLeft: 17,
     paddingRight: 90,
   },
+  option: {
+    borderBottomColor: colors[2],
+    borderBottomWidth: 2,
+  },
   text: {
     color: colors[1],
     fontSize: 14,
     fontWeight: '700',
     marginBottom: 11,
     marginTop: 11,
-  },
-  active: {
-    color: colors[2],
-  },
-  option: {
-    borderBottomColor: colors[2],
-    borderBottomWidth: 2,
   },
 });
