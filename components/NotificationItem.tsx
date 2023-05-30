@@ -43,14 +43,15 @@ const NotificationItem = (props: { notification: notificationType }) => {
 };
 
 export default NotificationItem;
+const colors=['#E0E0E0','#D7E6EF','#218AFF','#EFD6D6','#DD1F1F','#EAEDEC','#767672','#212121','#6E8E7F']
 const styles = StyleSheet.create({
   container: {
+    alignItems: 'center',
+    borderBottomColor: colors[0],
+    borderBottomWidth: 1,
     display: 'flex',
     flexDirection: 'row',
     height: 116,
-    borderBottomColor: '#E0E0E0',
-    borderBottomWidth: 1,
-    alignItems: 'center',
   },
   container2: {
     width: windowWidth - 100,
@@ -59,41 +60,42 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   info: {
-    height: 48,
-    width: 48,
-    borderRadius: 25,
-    backgroundColor: '#D7E6EF',
     alignItems: 'center',
-    justifyContent: 'center',
-    borderColor: '#218AFF',
+    backgroundColor: colors[1],
+    borderColor: colors[2],
+    borderRadius: 25,
     borderWidth: 1,
+    height: 48,
+    justifyContent: 'center', 
+    width: 48
   },
   warning: {
-    height: 48,
-    width: 48,
-    borderRadius: 25,
-    backgroundColor: '#EFD6D6',
     alignItems: 'center',
-    justifyContent: 'center',
-    borderColor: '#DD1F1F',
+    backgroundColor: colors[3],
+    borderColor: colors[4],
+    borderRadius: 25, 
     borderWidth: 1,
+    height: 48,
+    justifyContent: 'center',
+    width: 48
   },
   critical: {
-    height: 48,
-    width: 48,
-    borderRadius: 25,
-    backgroundColor: '#EAEDEC',
     alignItems: 'center',
-    justifyContent: 'center',
-    borderColor: '#767672',
+    backgroundColor: colors[5],
+    borderColor: colors[6],
+    borderRadius: 25,
     borderWidth: 1,
+    height: 48,
+    justifyContent: 'center',
+    width: 48
   },
   header: {
+    color: colors[7],
     fontWeight: '700',
-    color: '#212121',
+    
   },
   time: {
-    color: '#6E8E7F',
     fontWeight: '700',
+    color: colors[8],  
   },
 });
