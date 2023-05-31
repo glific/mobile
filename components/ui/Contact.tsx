@@ -11,7 +11,6 @@ export interface ContactProps {
 
 const Contact: React.FC<ContactProps> = ({ id, name, lastMessageAt }) => {
   const navigation = useNavigation();
-
   return (
     <Pressable
       testID="contactCard"
