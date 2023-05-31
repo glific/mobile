@@ -31,3 +31,26 @@ export const GET_CONTACT_MESSAGES = gql`
     }
   }
 `;
+
+export const SEND_CONTACT_MESSAGE = gql`
+  mutation createAndSendMessage($input: MessageInput!) {
+    createAndSendMessage(input: $input) {
+      message {
+        id
+        body
+        receiver {
+          id
+          name
+        }
+        sender {
+          id
+          name
+        }
+      }
+      errors {
+        key
+        message
+      }
+    }
+  }
+`;

@@ -18,10 +18,7 @@ const ContactList: React.FC<ContactListProps> = ({ info }) => {
     messageOpts: { limit: 3, offset: 0 },
     contactOpts: { limit: 10, offset: 0 },
   };
-  const { loading, error, data } = useQuery(GET_CONTACTS, {
-    variables,
-    fetchPolicy: 'cache-and-network',
-  });
+  const { loading, error, data } = useQuery(GET_CONTACTS, { variables });
 
   if (error) {
     console.log(error);

@@ -21,6 +21,7 @@ export const COLORS = {
   error100: '#f44336',
   white: '#ffffff',
   black: '#212121',
+  red: '#ff0000',
 };
 
 export const SIZES = {
@@ -66,6 +67,7 @@ export const SIZES = {
   m30: SCALE(30),
   m35: SCALE(35),
   m40: SCALE(40),
+  m65: SCALE(65),
 
   // font sizes
   f8: SCALE(8),

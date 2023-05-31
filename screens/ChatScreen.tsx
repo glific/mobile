@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import ChatHeader from '../components/messages/ChatHeader';
@@ -30,17 +30,6 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ChatScreen'>;
 
 const ChatScreen = ({ route }: Props) => {
   const { contact } = route.params;
-
-  const [reply, setReply] = useState(null);
-
-  const swipeToReply = (message: any) => {
-    setReply(message);
-  };
-
-  const closeReply = () => {
-    setReply(null);
-  };
-
   return (
     <>
       <ChatHeader contact={contact} />
@@ -48,8 +37,8 @@ const ChatScreen = ({ route }: Props) => {
         <View style={styles.item}>
           <Text style={styles.time}>Time left: {getSessionTimeLeft(contact.lastMessageAt)}</Text>
         </View>
-        <MessagesList contact={contact} onSwipeToReply={swipeToReply} />
-        <ChatInput reply={reply} closeReply={closeReply} />
+        <MessagesList contact={contact} />
+        <ChatInput contact={contact} />
       </View>
     </>
   );

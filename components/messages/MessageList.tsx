@@ -1,10 +1,9 @@
 import React, { useRef } from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { useQuery } from '@apollo/client';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { GET_CONTACT_MESSAGES } from '../../graphql/queries/Contact';
-import { COLORS } from '../../constants';
+import { COLORS, SIZES } from '../../constants';
 import LoadingPage from '../ui/Loading';
 import Message from './Message';
 
@@ -13,47 +12,49 @@ type MessageListProps = {
     id: number;
     name: string;
   };
-  onSwipeToReply: (message: any) => void;
 };
 
-const MessagesList: React.FC<MessageListProps> = ({ contact, onSwipeToReply }: any) => {
-  const scrollView = useRef();
+const MessagesList: React.FC<MessageListProps> = ({ contact }) => {
+  const scrollView = useRef(null);
 
   const variables = {
     filter: { id: contact.id },
     contactOpts: { limit: 1 },
-    messageOpts: { limit: 10, offset: 1 },
+    messageOpts: { limit: 10 },
   };
-  const { loading, error, data } = useQuery(GET_CONTACT_MESSAGES, { variables });
+  const { loading, error, data } = useQuery(GET_CONTACT_MESSAGES, {
+    variables,
+    fetchPolicy: 'cache-and-network',
+  });
 
   if (error) {
     console.log(error);
   }
 
-  return loading ? (
-    <LoadingPage />
-  ) : (
+  if (loading) {
+    return <LoadingPage />;
+  }
+
+  let dataArray = [];
+  if (data && data.search && data.search[0] && data.search[0].messages) {
+    dataArray = [...data.search[0].messages].reverse();
+  }
+
+  return (
     <ScrollView
       style={styles.container}
-      ref={(ref) => (scrollView.current = ref)}
-      onContentChange={() => {
-        scrollView.current.scrollToEnd({ animated: true });
+      ref={scrollView}
+      onContentSizeChange={() => {
+        scrollView.current?.scrollToEnd({ animated: true });
       }}
     >
-      <GestureHandlerRootView>
-        {data?.search[0]?.messages.length ? (
-          data.search[0].messages.map((message, index) => (
-            <Message
-              key={index}
-              message={message}
-              isLeft={message?.sender?.id != contact.id}
-              onSwipe={onSwipeToReply}
-            />
-          ))
-        ) : (
-          <Text>No messages</Text>
-        )}
-      </GestureHandlerRootView>
+      {dataArray.length ? (
+        dataArray.map((message, index) => (
+          <Message key={index} message={message} isLeft={message?.sender?.id === contact.id} />
+        ))
+      ) : (
+        <Text>No messages</Text>
+      )}
     </ScrollView>
   );
 };
@@ -62,6 +63,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.white,
     flex: 1,
+    marginBottom: SIZES.m65,
   },
 });
 
