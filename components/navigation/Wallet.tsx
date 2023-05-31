@@ -5,7 +5,7 @@ import { useQuery } from '@apollo/client';
 
 import LoadingPage from '../ui/Loading';
 import { COLORS, SIZES } from '../../constants';
-import { BSP_BALANCE } from '../../graphql/queries/Balance';
+import { BSP_BALANCE } from '../../graphql/queries/Account';
 
 const Wallet = () => {
   const { loading, data } = useQuery(BSP_BALANCE);
@@ -31,8 +31,8 @@ const Wallet = () => {
           style={styles.walletIcon}
         />
         <Text style={styles.walletText}>Your Wallet Balance</Text>
-        <Text style={styles.dollarText}>$ {balance}</Text>
       </View>
+      <Text style={styles.dollarText}>$ {balance}</Text>
     </View>
   );
 };
@@ -42,31 +42,30 @@ export default Wallet;
 const styles = StyleSheet.create({
   dollarText: {
     color: COLORS.white,
-    fontSize: SIZES.f16,
+    fontSize: SIZES.f14,
     fontWeight: '800',
-    marginLeft: 'auto',
-    marginRight: SIZES.m6,
-    marginTop: SIZES.m6,
   },
   innerContainer: {
     alignItems: 'center',
     flexDirection: 'row',
-    textAlign: 'center',
   },
   walletContainer: {
+    alignItems: 'center',
     backgroundColor: COLORS.primary100,
+    flexDirection: 'row',
     height: SIZES.m40,
+    justifyContent: 'space-between',
+    paddingHorizontal: SIZES.m16,
   },
   walletIcon: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: SIZES.m10,
-    marginTop: SIZES.m6,
+    fontSize: SIZES.s24,
+    fontWeight: '400',
+    marginLeft: SIZES.m4,
   },
   walletText: {
     color: COLORS.white,
     fontSize: SIZES.f14,
-    marginLeft: SIZES.m12,
-    marginTop: SIZES.m6,
+    fontWeight: '400',
+    marginLeft: SIZES.m16,
   },
 });

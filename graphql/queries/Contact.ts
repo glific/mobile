@@ -7,6 +7,11 @@ export const GET_CONTACTS = gql`
         id
         name
         maskedPhone
+        lastMessageAt
+      }
+      messages {
+        id
+        body
       }
     }
   }
@@ -22,6 +27,29 @@ export const GET_CONTACT_MESSAGES = gql`
         sender {
           id
         }
+      }
+    }
+  }
+`;
+
+export const SEND_CONTACT_MESSAGE = gql`
+  mutation createAndSendMessage($input: MessageInput!) {
+    createAndSendMessage(input: $input) {
+      message {
+        id
+        body
+        receiver {
+          id
+          name
+        }
+        sender {
+          id
+          name
+        }
+      }
+      errors {
+        key
+        message
       }
     }
   }

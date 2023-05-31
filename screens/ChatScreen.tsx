@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-
 import ChatHeader from '../components/messages/ChatHeader';
 import MessagesList from '../components/messages/MessageList';
 import ChatInput from '../components/messages/ChatInput';
 import { COLORS, SIZES } from '../constants';
+
+export const getSessionTimeLeft = (time) => {
+  const currentTime = new Date();
+  const lastMessageTime = new Date(time);
+  const timeDifference = lastMessageTime.getTime() + 24 * 60 * 60 * 1000 - currentTime.getTime();
+  let hours = Math.max(Math.ceil(timeDifference / (1000 * 60 * 60)), 0);
+  hours = Math.min(hours, 24);
+  return hours;
+};
 
 type RootStackParamList = {
   Chat: undefined;
@@ -13,33 +21,24 @@ type RootStackParamList = {
     contact: {
       id: number;
       name: string;
+      lastMessageAt: string;
     };
   };
 };
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ChatScreen'>;
 
-const ChatScreen = ({ navigation, route }: Props) => {
+const ChatScreen = ({ route }: Props) => {
   const { contact } = route.params;
-  const [reply, setReply] = useState(null);
-
-  const swipeToReply = (message: any) => {
-    setReply(message);
-  };
-
-  const closeReply = () => {
-    setReply(null);
-  };
-
   return (
     <>
       <ChatHeader contact={contact} />
       <View style={styles.mainContainer}>
         <View style={styles.item}>
-          <Text style={styles.time}>Time left: 24</Text>
+          <Text style={styles.time}>Time left: {getSessionTimeLeft(contact.lastMessageAt)}</Text>
         </View>
-        <MessagesList contact={contact} onSwipeToReply={swipeToReply} />
-        <ChatInput reply={reply} closeReply={closeReply} />
+        <MessagesList contact={contact} />
+        <ChatInput contact={contact} />
       </View>
     </>
   );

@@ -47,7 +47,35 @@ Note that you need to connect either an android device or an emulator with your 
 - Download Expo Go app from playstore
 - Scan the QR from your CLI
 
+## Contributing
+
+### Pull Request Submission Guidelines
+
+When submitting a pull request, please ensure that it meets the following requirements:
+
+- The code passes all relevant unit test cases.
+- The pull request references the related issue and clearly explains the problem it aims to solve.
+- The code has been scanned for any deepscan issues and none are present.
+- The code follows the project's formatting guidelines and has been formatted using prettier.
+
+Please make sure to address all the checkboxes above before submitting your pull request. This will help in ensuring the quality and maintainability of the project.
+
+
 ## Developer Guidelines
+
+### Theme Constants Usage 
+Import the project theme constants from the constants folder:
+```sh
+import { COLORS, SIZES, FONTS, SCALE } from '/path/to/constants';
+```
+
+Here are the project theme constants available for usage:
+- **COLORS**: Contains color-related constants, ex. `COLORS.primary400`.
+- **SIZES**: Includes size-related constants, ex. `SIZES.m10`, `SIZES.r4` etc.
+- **FONTS**: Provides font-related constants, ex. `...FONTS.regular14`.
+- **SCALE**: Offers custom scaling constants which are not included in SIZES for text and other UI elements, ex. `SCALE(100)`.
+
+Refer to the /constants/theme.ts file containing the project theme constants.
 
 ### Naming Convention for testID and class
 
@@ -65,4 +93,7 @@ Example:
 <View testID="my element" className="my-component" />
 ```
 
-Following a consistent naming convention helps maintain code readability and consistency across the project.
+
+Following these guidelines helps to ensure a smoother development process and easier maintenance.
+
+If you have any questions or need further assistance, feel free to reach out to the project team. Happy coding!

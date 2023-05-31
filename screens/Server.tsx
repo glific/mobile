@@ -4,7 +4,7 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
-import { COLORS } from '../constants';
+import { COLORS, SIZES } from '../constants';
 import { validateUrl } from '../utils/helper';
 import InstructionCard from '../components/InstructionCard';
 import AxiosService from '../config/axios';
@@ -17,7 +17,7 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList, 'Server'>;
 
 const Server = ({ navigation }: Props) => {
-  const [serverURL, setServerURL] = useState('https://glific.test');
+  const [serverURL, setServerURL] = useState('staging.tides.coloredcow.com'); // TODO: Remove this initialization when in production
   const [errorMessage, setErrorMessage] = useState('');
 
   const serverURLChanged = (value: string) => {
@@ -26,12 +26,12 @@ const Server = ({ navigation }: Props) => {
   };
 
   const onSubmitHandler = async () => {
-    if (!serverURL || !validateUrl(serverURL)) {
+    if (!serverURL || !validateUrl(`https://api.${serverURL}/api`)) {
       setErrorMessage('Please enter valid server url');
       return;
     }
 
-    await AxiosService.updateServerURL(serverURL);
+    await AxiosService.updateServerURL(`https://api.${serverURL}/api`);
     navigation.navigate('Login');
   };
 
@@ -50,12 +50,12 @@ const Server = ({ navigation }: Props) => {
           value={serverURL}
           isError={errorMessage ? true : false}
           keyboardType="url"
-          placeholder="https://smilefoundation.org/..."
+          placeholder="smilefoundation.org/..."
         />
+        {errorDisplay}
       </View>
       <InstructionCard />
       <View style={styles.buttonContainer}>
-        {errorDisplay}
         <Button onPress={onSubmitHandler}>
           <Text>CONTINUE</Text>
         </Button>
@@ -69,17 +69,17 @@ export default Server;
 const styles = StyleSheet.create({
   buttonContainer: {
     alignSelf: 'center',
-    bottom: 20,
+    bottom: SIZES.m20,
     position: 'absolute',
-    width: '92%',
+    width: SIZES.s328,
   },
   errorLabel: {
     color: COLORS.error100,
   },
-  inputContainer: { paddingHorizontal: 20 },
+  inputContainer: { paddingHorizontal: SIZES.m20 },
   mainContainer: {
     backgroundColor: COLORS.white,
     flex: 1,
-    paddingTop: 20,
+    paddingTop: SIZES.m24,
   },
 });

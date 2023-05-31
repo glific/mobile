@@ -1,16 +1,55 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, Pressable } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Pressable, Keyboard } from 'react-native';
 import { FontAwesome, AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import { useMutation } from '@apollo/client';
 
 import { COLORS, SCALE, SIZES } from '../../constants';
+import { SEND_CONTACT_MESSAGE } from '../../graphql/queries/Contact';
 
-const ChatInput = ({ reply, closeReply }: any) => {
+interface ChatInputProps {
+  contact: {
+    id: number;
+    name: string;
+  };
+}
+
+const ChatInput: React.FC<ChatInputProps> = ({ contact }) => {
   const [message, setMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const [showOptions, setShowOptions] = useState(true);
+  const [createAndSendMessage] = useMutation(SEND_CONTACT_MESSAGE, {
+    onCompleted: (data) => {
+      console.log(data.createAndSendMessage.message);
+      setMessage('');
+      Keyboard.dismiss();
+    },
+    onError: (error) => {
+      Keyboard.dismiss();
+      setErrorMessage(error.message);
+      setInterval(() => {
+        setErrorMessage('');
+      }, 5000);
+      // Handle error display or other actions as needed
+    },
+  });
+
+  const HandleSendMessage = () => {
+    if (message !== '') {
+      createAndSendMessage({
+        variables: {
+          input: {
+            body: message,
+            flow: 'OUTBOUND',
+            type: 'TEXT',
+            receiverId: contact.id,
+          },
+        },
+      });
+    }
+  };
 
   const translateY = useSharedValue(0);
-
   useEffect(() => {
     if (showOptions) {
       translateY.value = withTiming(SCALE(170));
@@ -26,73 +65,94 @@ const ChatInput = ({ reply, closeReply }: any) => {
   });
 
   return (
-    <Animated.View style={[styles.mainContainer, animatedStyle]}>
-      {reply && (
-        <View style={styles.replyContainer}>
-          <MaterialCommunityIcons name="close" style={styles.closeReply} onPress={closeReply} />
-          <Text style={styles.title}>Response to {reply.isLeft ? reply?.sender.id : 'Me'}</Text>
-          <Text style={styles.reply}>
-            {reply?.body.length > 50 ? reply?.body.slice(0, 40) + '...' : reply?.body}
-          </Text>
+    <>
+      <Animated.View style={[styles.mainContainer, animatedStyle]}>
+        <View style={styles.inputContainer}>
+          <AntDesign
+            name="up"
+            style={[styles.showIcon, !showOptions && { transform: [{ rotate: '180deg' }] }]}
+            onPress={() => setShowOptions(!showOptions)}
+          />
+          <View style={styles.inputAndEmoji}>
+            <MaterialCommunityIcons name={'emoticon-outline'} style={styles.emoticonButton} />
+            <TextInput
+              multiline
+              placeholder={'Start Typing...'}
+              style={styles.input}
+              value={message}
+              onChangeText={(text) => setMessage(text)}
+            />
+            <MaterialCommunityIcons
+              name="paperclip"
+              size={23}
+              color={COLORS.black}
+              style={styles.paperclipicon}
+            />
+          </View>
+
+          <Pressable style={styles.sendButton} onPress={HandleSendMessage}>
+            <Ionicons name="chatbox-sharp" style={styles.iconchatbox} />
+            <FontAwesome name="send" style={styles.sendicon} />
+          </Pressable>
+        </View>
+        <Pressable style={styles.optionsContainer} android_ripple={{ borderless: false }}>
+          <MaterialCommunityIcons name="message-flash" style={styles.optionIcon} />
+          <Text style={styles.optionsText}>Speed sends</Text>
+        </Pressable>
+        <Pressable style={styles.optionsContainer} android_ripple={{ borderless: false }}>
+          <MaterialCommunityIcons name="message-star" style={styles.optionIcon} />
+          <Text style={styles.optionsText}>Templates</Text>
+        </Pressable>
+        <Pressable style={styles.optionsContainer} android_ripple={{ borderless: false }}>
+          <MaterialCommunityIcons name="gesture-tap-button" style={styles.optionIcon} />
+          <Text style={styles.optionsText}>Interactive message</Text>
+        </Pressable>
+      </Animated.View>
+      {errorMessage && (
+        <View style={styles.errorContainer}>
+          <MaterialCommunityIcons name="close" style={styles.errorIcon} />
+          <Text style={styles.errorText}>{errorMessage}</Text>
         </View>
       )}
-      <View style={styles.inputContainer}>
-        <AntDesign
-          name="up"
-          style={[styles.showIcon, !showOptions && { transform: [{ rotate: '180deg' }] }]}
-          onPress={() => setShowOptions(!showOptions)}
-        />
-        <View style={styles.inputAndEmoji}>
-          <MaterialCommunityIcons name={'emoticon-outline'} style={styles.emoticonButton} />
-          <TextInput
-            multiline
-            placeholder={'Start Typing...'}
-            style={styles.input}
-            value={message}
-            onChangeText={(text) => setMessage(text)}
-          />
-          <MaterialCommunityIcons
-            name="paperclip"
-            size={23}
-            color={COLORS.black}
-            style={styles.paperclipicon}
-          />
-        </View>
-
-        <Pressable style={styles.sendButton}>
-          <Ionicons name="chatbox-sharp" style={styles.iconchatbox} />
-          <FontAwesome name="send" style={styles.sendicon} />
-        </Pressable>
-      </View>
-      <Pressable style={styles.optionsContainer} android_ripple={{ borderless: false }}>
-        <MaterialCommunityIcons name="message-flash" style={styles.optionIcon} />
-        <Text style={styles.optionsText}>Speed sends</Text>
-      </Pressable>
-      <Pressable style={styles.optionsContainer} android_ripple={{ borderless: false }}>
-        <MaterialCommunityIcons name="message-star" style={styles.optionIcon} />
-        <Text style={styles.optionsText}>Templates</Text>
-      </Pressable>
-      <Pressable style={styles.optionsContainer} android_ripple={{ borderless: false }}>
-        <MaterialCommunityIcons name="gesture-tap-button" style={styles.optionIcon} />
-        <Text style={styles.optionsText}>Interactive message</Text>
-      </Pressable>
-    </Animated.View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  closeReply: {
-    color: COLORS.black,
-    fontSize: SIZES.f20,
-    position: 'absolute',
-    right: SIZES.m10,
-    top: SIZES.m4,
-  },
   emoticonButton: {
     color: COLORS.black,
     fontSize: SIZES.s24,
     marginLeft: SCALE(2),
     padding: SIZES.m6,
+  },
+  errorContainer: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: COLORS.white,
+    elevation: 3,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: SCALE(80),
+    maxWidth: SIZES.s328,
+    paddingHorizontal: SIZES.m16,
+    paddingVertical: SIZES.m6,
+    shadowColor: COLORS.darkGray,
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+  },
+  errorIcon: {
+    color: COLORS.error100,
+    fontSize: SIZES.f14,
+    marginRight: SIZES.m10,
+  },
+  errorText: {
+    color: COLORS.error100,
+    fontSize: SIZES.f14,
+    maxWidth: SIZES.s328,
   },
   iconchatbox: {
     color: COLORS.white,
@@ -156,18 +216,6 @@ const styles = StyleSheet.create({
     padding: SIZES.m6,
     transform: [{ rotate: '50deg' }],
   },
-  reply: {
-    fontSize: SIZES.f14,
-    marginTop: 5,
-  },
-  replyContainer: {
-    alignItems: 'flex-start',
-    backgroundColor: COLORS.primary10,
-    borderRadius: 10,
-    justifyContent: 'center',
-    margin: 10,
-    padding: 10,
-  },
   sendButton: {
     alignItems: 'center',
     backgroundColor: COLORS.primary100,
@@ -187,10 +235,6 @@ const styles = StyleSheet.create({
     color: COLORS.black,
     fontSize: SIZES.f16,
     padding: SIZES.m6,
-  },
-  title: {
-    fontSize: SIZES.f14,
-    fontWeight: 'bold',
   },
 });
 
