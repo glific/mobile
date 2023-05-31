@@ -12,13 +12,16 @@ export const COLORS = {
   primary70: '#6E8E7F',
   primary100: '#119656',
   primary400: '#073f24',
-
+  lightGreen: '#ECF7F1',
+  mediumGray: '#49454F',
+  green20: '#073F24',
   secondary100: '#f2f2f2',
   lightGray: '#f0f0f0',
   darkGray: '#93A29B',
   error100: '#f44336',
   white: '#ffffff',
   black: '#212121',
+  red: '#ff0000',
 };
 
 export const SIZES = {
@@ -29,7 +32,9 @@ export const SIZES = {
   // radius
   r4: SCALE(4),
   r10: SCALE(10),
+  r14: SCALE(14),
   r20: SCALE(20),
+  r22: SCALE(22),
 
   // regular width and height
   s12: SCALE(12),
@@ -40,6 +45,7 @@ export const SIZES = {
   s30: SCALE(30),
   s36: SCALE(36),
   s40: SCALE(40),
+  s44: SCALE(44),
   s48: SCALE(48),
   s50: SCALE(50),
   s60: SCALE(60),
@@ -54,11 +60,13 @@ export const SIZES = {
   m10: SCALE(10),
   m12: SCALE(12),
   m16: SCALE(16),
+  m18: SCALE(18),
   m20: SCALE(20),
   m24: SCALE(24),
   m30: SCALE(30),
   m35: SCALE(35),
   m40: SCALE(40),
+  m65: SCALE(65),
 
   // font sizes
   f8: SCALE(8),

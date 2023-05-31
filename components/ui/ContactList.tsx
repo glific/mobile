@@ -8,16 +8,20 @@ import { GET_CONTACTS } from '../../graphql/queries/Contact';
 
 interface ContactListProps {
   navigation: any;
+  messagesLength: number;
 }
 
 const variables = {
   filter: {},
-  messageOpts: { limit: 3, offset: 0 },
-  contactOpts: { limit: 10, offset: 0 },
+  messageOpts: { limit: 1 },
+  contactOpts: { limit: 10 },
 };
 
 const ContactList: React.FC<ContactListProps> = () => {
-  const { loading, error, data } = useQuery(GET_CONTACTS, { variables });
+  const { loading, error, data } = useQuery(GET_CONTACTS, {
+    variables,
+    fetchPolicy: 'cache-and-network',
+  });
 
   if (error) {
     console.log(error);
@@ -26,10 +30,12 @@ const ContactList: React.FC<ContactListProps> = () => {
   let contacts = [];
   if (data) {
     contacts = data.search.map((element: any) => {
+      const messagesLength = element.messages?.length;
       return {
         id: element.contact?.id,
         name: element.contact?.name || element.contact?.maskedPhone,
         lastMessageAt: element.contact?.lastMessageAt,
+        lastMessage: messagesLength > 0 && element.messages[messagesLength - 1]?.body,
       };
     });
   }
