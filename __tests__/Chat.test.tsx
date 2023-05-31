@@ -9,6 +9,7 @@ describe('Contacts screen', () => {
     id: '1',
     name: 'test',
     maskedPhone: '12*****90',
+    lastMessageAt: '2021-08-10T12:00:00.000Z',
   };
   const mocks = [
     {
@@ -16,8 +17,8 @@ describe('Contacts screen', () => {
         query: GET_CONTACTS,
         variables: {
           filter: {},
-          messageOpts: { limit: 3, offset: 0 },
-          contactOpts: { limit: 10, offset: 0 },
+          messageOpts: { limit: 1 },
+          contactOpts: { limit: 10 },
         },
       },
       result: {
@@ -25,6 +26,12 @@ describe('Contacts screen', () => {
           search: [
             {
               contact: mockContacts,
+              messages: [
+                {
+                  id: '1',
+                  body: 'test',
+                },
+              ],
             },
           ],
         },
