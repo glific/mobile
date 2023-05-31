@@ -10,13 +10,13 @@ type RootStackParamList = {
   Contacts: undefined;
   Collections: undefined;
   SavedSearches: undefined;
-  ContactList: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Contacts'>;
 
 const Chat = ({ navigation }: Props) => {
   const [session, setSession] = useState<object | null>();
+  const [info, setinfo] = useState<string>('');
 
   useEffect(() => {
     // Retrieve the session from AsyncStorage
@@ -27,13 +27,18 @@ const Chat = ({ navigation }: Props) => {
         setSession(parsedSessionValue);
       }
     };
+
     getSession();
   }, []);
 
+  const sendData = (data: string) => {
+    setinfo(data);
+  };
+
   return (
     <View style={styles.mainContainer}>
-      <SearchBar />
-      <ContactList navigation={navigation} />
+      <SearchBar sendData={sendData} />
+      <ContactList navigation={navigation} info={info} />
     </View>
   );
 };

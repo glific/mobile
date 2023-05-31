@@ -9,15 +9,15 @@ import { GET_CONTACTS } from '../../graphql/queries/Contact';
 interface ContactListProps {
   navigation: any;
   messagesLength: number;
+  info: string;
 }
 
-const variables = {
-  filter: {},
-  messageOpts: { limit: 3, offset: 0 },
-  contactOpts: { limit: 10, offset: 0 },
-};
-
-const ContactList: React.FC<ContactListProps> = () => {
+const ContactList: React.FC<ContactListProps> = ({ info }) => {
+  const variables = {
+    filter: { term: info },
+    messageOpts: { limit: 3, offset: 0 },
+    contactOpts: { limit: 10, offset: 0 },
+  };
   const { loading, error, data } = useQuery(GET_CONTACTS, { variables });
 
   if (error) {

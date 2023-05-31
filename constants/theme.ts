@@ -54,6 +54,7 @@ export const SIZES = {
   s400: SCALE(400),
 
   // paddings and margins
+  m2: SCALE(2),
   m4: SCALE(4),
   m6: SCALE(6),
   m10: SCALE(10),
