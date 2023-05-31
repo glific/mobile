@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-
+import { Colors } from '../constants/theme';
 type notificationType = {
   header: string;
   message: string;
@@ -43,21 +43,10 @@ const NotificationItem = (props: { notification: notificationType }) => {
 };
 
 export default NotificationItem;
-const colors = [
-  '#E0E0E0',
-  '#D7E6EF',
-  '#218AFF',
-  '#EFD6D6',
-  '#DD1F1F',
-  '#EAEDEC',
-  '#767672',
-  '#212121',
-  '#6E8E7F',
-];
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    borderBottomColor: colors[0],
+    borderBottomColor: Colors.gray,
     borderBottomWidth: 1,
     display: 'flex',
     flexDirection: 'row',
@@ -68,8 +57,8 @@ const styles = StyleSheet.create({
   },
   critical: {
     alignItems: 'center',
-    backgroundColor: colors[5],
-    borderColor: colors[6],
+    backgroundColor: Colors.criticalBackground,
+    borderColor: Colors.criticalBorder,
     borderRadius: 25,
     borderWidth: 1,
     height: 48,
@@ -77,7 +66,7 @@ const styles = StyleSheet.create({
     width: 48,
   },
   header: {
-    color: colors[7],
+    color: Colors.black,
     fontWeight: '700',
   },
   imgContainer: {
@@ -85,8 +74,8 @@ const styles = StyleSheet.create({
   },
   info: {
     alignItems: 'center',
-    backgroundColor: colors[1],
-    borderColor: colors[2],
+    backgroundColor: Colors.infoBackground,
+    borderColor: Colors.infoBorder,
     borderRadius: 25,
     borderWidth: 1,
     height: 48,
@@ -94,13 +83,13 @@ const styles = StyleSheet.create({
     width: 48,
   },
   time: {
-    color: colors[8],
+    color: Colors.primary70,
     fontWeight: '700',
   },
   warning: {
     alignItems: 'center',
-    backgroundColor: colors[3],
-    borderColor: colors[4],
+    backgroundColor: Colors.warningBackground,
+    borderColor: Colors.warningBorder,
     borderRadius: 25,
     borderWidth: 1,
     height: 48,
