@@ -53,7 +53,7 @@ const HomeHeaderRight: React.FC = ({ navigation }: any) => {
           <Text style={styles.badgeText}>{notificationCount}</Text>
         </View>
       </Pressable>
-      <Pressable
+      {/* <Pressable
         onPress={() => setIsFilterVisible(true)}
         style={styles.iconContainer}
         android_ripple={{ borderless: true }}
@@ -71,7 +71,7 @@ const HomeHeaderRight: React.FC = ({ navigation }: any) => {
             <FilterButton label="Opt out" count={10} />
           </View>
         </>
-      )}
+      )} */}
     </View>
   );
 };

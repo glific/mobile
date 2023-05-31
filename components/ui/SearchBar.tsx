@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
-import { COLORS } from '../../constants';
-import { AntDesign, Ionicons } from '@expo/vector-icons';
+import { View, TextInput, StyleSheet, Pressable, Text, Dimensions } from 'react-native';
+import { COLORS,SCALE, SIZES } from '../../constants';
+import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
 
 const SearchBar = () => {
   const [searchValue, setSearchValue] = useState<string>('');
@@ -32,6 +32,9 @@ const SearchBar = () => {
   function onFilterHandler(newFilter: string) {
     setFilter((prev) => [...prev, newFilter]);
   }
+
+  //Virtical 3 dots 
+  
 
   return (
     <View style={styles.mainContainer}>
@@ -72,7 +75,7 @@ export default SearchBar;
 const styles = StyleSheet.create({
   icon: {
     color: COLORS.darkGray,
-    marginHorizontal: 2,
+    fontSize: SIZES.f20,
   },
   input: {
     backgroundColor: COLORS.white,
@@ -89,8 +92,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 0.75,
     flexDirection: 'row',
-    paddingHorizontal: 10,
-    width: '95%',
+    paddingHorizontal: 12,
+    width: '85%',
+    marginLeft:SIZES.s16
   },
   mainContainer: {
     backgroundColor: COLORS.white,
@@ -98,5 +102,6 @@ const styles = StyleSheet.create({
     borderColor: COLORS.darkGray,
     borderTopWidth: 0.2,
     paddingVertical: 12,
+    flexDirection:"row",
   },
 });
