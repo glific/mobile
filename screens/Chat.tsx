@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-
 import ContactList from '../components/ui/ContactList';
 import SearchBar from '../components/ui/SearchBar';
 import Storage from '../utils/asyncStorage';
 import { COLORS, SCALE, SIZES } from '../constants';
 import { Entypo } from '@expo/vector-icons';
-import { transform } from '@babel/core';
 
 type RootStackParamList = {
   Contacts: undefined;
@@ -38,8 +36,6 @@ const Chat = ({ navigation }: Props) => {
     label: string;
     count: number;
   }
-
-  
   const FilterButton: React.FC<FilterButtonProps> = ({ label, count }) => {
     return (
       <Pressable
@@ -90,17 +86,17 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
   },
-  searchContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: COLORS.white,
-    borderBottomWidth: 0.2,
-    borderColor: COLORS.darkGray,
-  },
   icon: {
     color: COLORS.darkGray,
     fontSize: SIZES.f20,
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.white,
+    borderBottomWidth: 0.2,
+    borderColor: COLORS.darkGray,
   },
   mainIconContainer: {
     marginLeft: -SIZES.m6,
@@ -126,8 +122,8 @@ const styles = StyleSheet.create({
     paddingVertical: SIZES.m12,
     position: 'absolute',
     right: SIZES.m16,
-    zIndex: -50,
     shadowColor: COLORS.black,
+    zIndex: -50,
     shadowOffset: { height: SIZES.r4, width: 0 },
     shadowRadius: SIZES.r4,
     width: SIZES.s200,
@@ -138,8 +134,8 @@ const styles = StyleSheet.create({
     height: SIZES.s40,
     justifyContent: 'center',
     marginLeft: SIZES.m6,
-    width: SIZES.s36,
     borderColor: COLORS.darkGray,
+    width: SIZES.s36,
     borderWidth: 1,
   },
   filterBackground: {

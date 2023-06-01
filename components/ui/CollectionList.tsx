@@ -53,7 +53,6 @@ const CollectionList: React.FC<CollectionListProps> = () => {
 const styles = StyleSheet.create({
   collectionList: {
     marginBottom: 20,
-
   },
 });
 

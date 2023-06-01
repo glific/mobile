@@ -92,8 +92,8 @@ const styles = StyleSheet.create({
     borderWidth: 0.75,
     flexDirection: 'row',
     paddingHorizontal: 12,
-    width: '85%',
     marginLeft: SIZES.s16,
+    width: '85%',
   },
   mainContainer: {
     backgroundColor: COLORS.white,
