@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { COLORS } from '../constants';
 import AppDrawer from './Drawer';
 import ChatScreen from '../screens/ChatScreen';
+import ContactProfile from '../screens/ContactProfile';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,7 @@ const AppStack = () => {
     >
       <Stack.Screen name="Home" component={AppDrawer} />
       <Stack.Screen name="ChatScreen" component={ChatScreen} />
+      <Stack.Screen name="ContactProfile" component={ContactProfile} />
       {/* <Stack.Screen name="Filter" component={Filter} /> */}
     </Stack.Navigator>
   );
