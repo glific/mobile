@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Pressable } from 'react-native';
 import { Entypo, Ionicons } from '@expo/vector-icons';
-import { COLORS, SCALE, SIZES } from '../constants';
+import { COLORS, SIZES } from '../constants';
 import { useQuery } from '@apollo/client';
 import { GET_NOTIFICATIONS_COUNT } from '../graphql/queries/Notification';
 import { log } from 'react-native-reanimated';
-
 
 const variables = {
   filter: {

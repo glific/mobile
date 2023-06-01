@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, TextInput, StyleSheet, Pressable, Text, Dimensions } from 'react-native';
-import { COLORS,SCALE, SIZES } from '../../constants';
-import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
+import { View, TextInput, StyleSheet } from 'react-native';
+import { COLORS, SIZES } from '../../constants';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 
 const SearchBar = () => {
   const [searchValue, setSearchValue] = useState<string>('');
@@ -33,8 +33,7 @@ const SearchBar = () => {
     setFilter((prev) => [...prev, newFilter]);
   }
 
-  //Virtical 3 dots 
-  
+  //Virtical 3 dots
 
   return (
     <View style={styles.mainContainer}>
@@ -94,14 +93,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 12,
     width: '85%',
-    marginLeft:SIZES.s16
+    marginLeft: SIZES.s16,
   },
   mainContainer: {
     backgroundColor: COLORS.white,
     borderBottomWidth: 0.2,
     borderColor: COLORS.darkGray,
     borderTopWidth: 0.2,
+    flexDirection: 'row',
     paddingVertical: 12,
-    flexDirection:"row",
   },
 });

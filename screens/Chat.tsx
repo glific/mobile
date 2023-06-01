@@ -38,12 +38,7 @@ const Chat = ({ navigation }: Props) => {
     label: string;
     count: number;
   }
-  
-  const variables = {
-    filter: {
-      is_read: false,
-    },
-  };
+
   
   const FilterButton: React.FC<FilterButtonProps> = ({ label, count }) => {
     return (
@@ -60,28 +55,31 @@ const Chat = ({ navigation }: Props) => {
   return (
     <View style={styles.mainContainer}>
       <View style={styles.searchContainer}>
-      <SearchBar />
-      <View style={styles.mainIconContainer}>
-      <Pressable
-        onPress={() => setIsFilterVisible(true)}
-        style={styles.iconContainer}
-        android_ripple={{ borderless: true }}
-      >
-        <Entypo name="dots-three-vertical" style={styles.icon} />
-      </Pressable>
-      {isFilterVisible && (
-        <>
-          <Pressable onPress={() => setIsFilterVisible(false)} style={styles.filterBackground} />
-          <View style={styles.filtersContainer}>
-            <FilterButton label="All" count={1} />
-            <FilterButton label="Unread" count={4} />
-            <FilterButton label="Not responded" count={35} />
-            <FilterButton label="Opt in" count={0} />
-            <FilterButton label="Opt out" count={10} />
-          </View>
-        </>
-      )}
-      </View>
+        <SearchBar />
+        <View style={styles.mainIconContainer}>
+          <Pressable
+            onPress={() => setIsFilterVisible(true)}
+            style={styles.iconContainer}
+            android_ripple={{ borderless: true }}
+          >
+            <Entypo name="dots-three-vertical" style={styles.icon} />
+          </Pressable>
+          {isFilterVisible && (
+            <>
+              <Pressable
+                onPress={() => setIsFilterVisible(false)}
+                style={styles.filterBackground}
+              />
+              <View style={styles.filtersContainer}>
+                <FilterButton label="All" count={1} />
+                <FilterButton label="Unread" count={4} />
+                <FilterButton label="Not responded" count={35} />
+                <FilterButton label="Opt in" count={0} />
+                <FilterButton label="Opt out" count={10} />
+              </View>
+            </>
+          )}
+        </View>
       </View>
       <ContactList navigation={navigation} />
     </View>
@@ -92,11 +90,11 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
   },
-  searchContainer:{
-    flexDirection:"row",
-    justifyContent:"center",
-    alignItems:"center",
-    backgroundColor:COLORS.white,
+  searchContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.white,
     borderBottomWidth: 0.2,
     borderColor: COLORS.darkGray,
   },
@@ -104,9 +102,9 @@ const styles = StyleSheet.create({
     color: COLORS.darkGray,
     fontSize: SIZES.f20,
   },
-  mainIconContainer:{
-    marginLeft:-SIZES.m6,
-    width:"15%",
+  mainIconContainer: {
+    marginLeft: -SIZES.m6,
+    width: '15%',
   },
   filter: {
     alignItems: 'center',
@@ -128,7 +126,7 @@ const styles = StyleSheet.create({
     paddingVertical: SIZES.m12,
     position: 'absolute',
     right: SIZES.m16,
-    zIndex:-50,
+    zIndex: -50,
     shadowColor: COLORS.black,
     shadowOffset: { height: SIZES.r4, width: 0 },
     shadowRadius: SIZES.r4,
@@ -142,15 +140,15 @@ const styles = StyleSheet.create({
     marginLeft: SIZES.m6,
     width: SIZES.s36,
     borderColor: COLORS.darkGray,
-    borderWidth:1,
+    borderWidth: 1,
   },
   filterBackground: {
-    height: SIZES.height+100,
+    height: SIZES.height + 100,
     position: 'absolute',
     right: -10,
     top: -40,
-    width:Dimensions.get("window").width+20,
-    zIndex:-50,
+    width: Dimensions.get('window').width + 20,
+    zIndex: -50,
   },
 });
 
