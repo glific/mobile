@@ -49,8 +49,11 @@ const ChatHeader: React.FC<DataProps> = ({ contact }) => {
         style={styles.backButton}
         onPress={(): void => navigation.goBack()}
       />
-      <Pressable style={styles.innerContainer} android_ripple={{ color: COLORS.primary70 }} 
-      onPress={() => navigation.navigate('ContactProfile',{contact})}>
+      <Pressable
+        style={styles.innerContainer}
+        android_ripple={{ color: COLORS.primary70 }}
+        onPress={() => navigation.navigate('ContactProfile', { contact })}
+      >
         <View>
           <Image
             testID="userProfile"

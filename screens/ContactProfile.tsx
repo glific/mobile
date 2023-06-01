@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView, Image } from 'react-native';
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Entypo, Ionicons, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import { COLORS } from '../constants';
-import { GET_CONTACTS } from '../graphql/queries/Contact';
 
 const ContactProfile = ({ navigation, route }: Props) => {
   const { contact } = route.params;
@@ -73,27 +71,27 @@ const styles = StyleSheet.create({
     color: COLORS.darkGray,
   },
   viewButton: {
-    margin: 20,
     alignItems: 'center',
+    margin: 20,
     justifyContent: 'center',
     backgroundColor: 'transparent',
     flexDirection: 'row',
-  },
-  viewText: {
-    margin: 5,
-    fontSize: 16,
-    lineHeight: 21,
-    fontWeight: 'bold',
-    letterSpacing: 0.25,
-    color: COLORS.darkGray,
   },
   detailsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  session: {
-    marginTop: 4,
+  viewText: {
+    fontSize: 16,
+    margin: 5,
+    lineHeight: 21,
     fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: COLORS.darkGray,
+  },
+  session: {
+    fontWeight: 'bold',
+    marginTop: 4,
     color: COLORS.darkGray,
   },
   subContainer: {
@@ -104,17 +102,17 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 18,
-    fontWeight: 'bold',
     color: COLORS.darkGray,
+    fontWeight: 'bold',
   },
   subHeading: {
-    marginTop: 20,
     fontWeight: '500',
+    marginTop: 20,
     color: COLORS.darkGray,
   },
   text: {
-    fontWeight: '800',
     color: COLORS.black,
+    fontWeight: '800',
   },
   mainContainer: {
     flex: 1,
