@@ -3,18 +3,23 @@ import { View, TextInput, StyleSheet } from 'react-native';
 import { COLORS } from '../../constants';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 
-const SearchBar = () => {
+interface SearchBarProps {
+  onSearch: () => void;
+  onFilter: () => void;
+}
+
+const SearchBar: React.FC<SearchBarProps> = ({ onSearch, onFilter }) => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [filter, setFilter] = useState<string[]>([]);
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
 
-  function onSearch(enteredValue: string) {
+  function handleSearch(enteredValue: string) {
     setSearchValue(enteredValue);
   }
 
-  async function onSearchHandler() {
+  async function handleSearchAction() {
     try {
-      if (searchValue == '') {
+      if (searchValue === '') {
         return;
       }
       // TODO:
@@ -25,8 +30,12 @@ const SearchBar = () => {
     }
   }
 
-  function onFilter() {
+  function toggleFilterVisibility() {
     setIsFilterVisible(!isFilterVisible);
+  }
+
+  function handleFilter() {
+    onFilter();
   }
 
   function onFilterHandler(newFilter: string) {
@@ -36,32 +45,34 @@ const SearchBar = () => {
   return (
     <View style={styles.mainContainer}>
       <View style={styles.inputContainer}>
-        <AntDesign
-          testID="searchIcon"
-          name="search1"
-          size={20}
-          style={styles.icon}
-          onPress={onSearchHandler}
-        />
+        <View testID="searchIcon">
+          <AntDesign
+            name="search1"
+            size={20}
+            style={styles.icon}
+            onPress={handleSearchAction}
+          />
+        </View>
         <TextInput
           testID="searchInput"
           style={styles.input}
           autoCapitalize="none"
           keyboardType="default"
           placeholder="Search"
-          onChangeText={onSearch}
+          onChangeText={handleSearch}
           value={searchValue}
           cursorColor={COLORS.darkGray}
           selectionColor={COLORS.darkGray}
           underlineColorAndroid="transparent"
         />
-        <Ionicons
-          testID="filterOutline"
-          name="filter-outline"
-          size={20}
-          style={styles.icon}
-          onPress={onFilter}
-        />
+        <View testID="filterOutline">
+          <Ionicons
+            name="filter-outline"
+            size={20}
+            style={styles.icon}
+            onPress={handleFilter}
+          />
+        </View>
       </View>
     </View>
   );

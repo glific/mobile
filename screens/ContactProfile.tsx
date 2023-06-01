@@ -9,12 +9,13 @@ const ContactProfile = ({ navigation, route }: Props) => {
   return (
     <ScrollView style={styles.mainContainer}>
       <View style={styles.headContainer}>
-        <AntDesign
-          testID="backButton"
+       <View testID="backButton">
+       <AntDesign
           name="arrowleft"
           style={styles.backButton}
           onPress={(): void => navigation.goBack()}
         />
+       </View>
         <Pressable style={styles.innerContainer} android_ripple={{ color: COLORS.primary70 }}>
           <View>
             <Image
