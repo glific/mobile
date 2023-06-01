@@ -83,16 +83,17 @@ const Chat = ({ navigation }: Props) => {
 };
 
 const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-  },
   icon: {
     color: COLORS.darkGray,
     fontSize: SIZES.f20,
   },
+  mainContainer: {
+    flex: 1,
+  },
+
   searchContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'center',
     backgroundColor: COLORS.white,
     borderBottomWidth: 0.2,
@@ -123,8 +124,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: SIZES.m16,
     shadowColor: COLORS.black,
-    zIndex: -50,
     shadowOffset: { height: SIZES.r4, width: 0 },
+    zIndex: -50,
     shadowRadius: SIZES.r4,
     width: SIZES.s200,
   },
@@ -133,8 +134,8 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.m12,
     height: SIZES.s40,
     justifyContent: 'center',
-    marginLeft: SIZES.m6,
     borderColor: COLORS.darkGray,
+    marginLeft: SIZES.m6,
     width: SIZES.s36,
     borderWidth: 1,
   },

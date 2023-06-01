@@ -91,8 +91,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 0.75,
     flexDirection: 'row',
-    paddingHorizontal: 12,
     marginLeft: SIZES.s16,
+    paddingHorizontal: 12,
     width: '85%',
   },
   mainContainer: {
