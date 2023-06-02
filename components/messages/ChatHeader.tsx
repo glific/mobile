@@ -36,6 +36,7 @@ const MenuButton: React.FC<MenuProps> = ({ icon, text, onPress }: any) => {
 const ChatHeader: React.FC<DataProps> = ({ contact }) => {
   const navigation = useNavigation();
   const [showMenu, setShowMenu] = useState(false);
+  const [background] = useState<boolean>(true);
 
   const handleMenu = () => {
     setShowMenu(!showMenu);
@@ -63,7 +64,7 @@ const ChatHeader: React.FC<DataProps> = ({ contact }) => {
           <View
             style={[
               styles.circle,
-              { backgroundColor: true ? COLORS.primary100 : COLORS.darkGray }, // TODO: for online status
+              { backgroundColor: background ? COLORS.primary100 : COLORS.darkGray }, // TODO: for online status
             ]}
           />
         </View>
