@@ -4,7 +4,7 @@ import { COLORS, SIZES } from '../../constants';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 
 type SearchBarProps = {
-  sendData: (data: string) => void;
+  setSearchValue: (searchValue: string) => void;
 };
 
 const SearchBar: React.FC<SearchBarProps> = (props: SearchBarProps) => {
@@ -22,7 +22,7 @@ const SearchBar: React.FC<SearchBarProps> = (props: SearchBarProps) => {
         return;
       }
       // TODO:
-      props.sendData(searchValue);
+      props.setSearchValue(searchValue);
     } catch (error: any) {
       // perform action when error
     }

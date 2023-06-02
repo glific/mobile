@@ -16,7 +16,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Contacts'>;
 
 const Chat = ({ navigation }: Props) => {
   const [session, setSession] = useState<object | null>();
-  const [info, setinfo] = useState<string>('');
+  const [searchValue, setSearchValue] = useState<string>('');
 
   useEffect(() => {
     // Retrieve the session from AsyncStorage
@@ -31,14 +31,10 @@ const Chat = ({ navigation }: Props) => {
     getSession();
   }, []);
 
-  const sendData = (data: string) => {
-    setinfo(data);
-  };
-
   return (
     <View style={styles.mainContainer}>
-      <SearchBar sendData={sendData} />
-      <ContactList navigation={navigation} info={info} />
+      <SearchBar setSearchValue={(value) => setSearchValue(value)} />
+      <ContactList navigation={navigation} searchValue={searchValue} />
     </View>
   );
 };
