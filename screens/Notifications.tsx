@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import React, { Dispatch, useState } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import NotificationItem from '../components/NotificationItem';
-import { Colors } from '../constants/theme';
+import { COLORS } from '../constants/theme';
 
 type notificationType = {
   header: string;
@@ -49,7 +49,6 @@ const Notifications = () => {
 
   return (
     <View style={styles.mainContainer}>
-      <Text style={{ display: 'none' }}>Notifications</Text>
       <View style={styles.navBar}>
         <RenderOption
           label="All"
@@ -124,14 +123,14 @@ export default Notifications;
 
 const styles = StyleSheet.create({
   active: {
-    color: Colors.darkDarkGreen,
+    color: COLORS.darkDarkGreen,
   },
   mainContainer: {
     flex: 1,
   },
   navBar: {
     alignItems: 'center',
-    backgroundColor: Colors.lightGreen,
+    backgroundColor: COLORS.lightGreen,
     display: 'flex',
     flexDirection: 'row',
     height: 59,
@@ -140,11 +139,11 @@ const styles = StyleSheet.create({
     paddingRight: 90,
   },
   option: {
-    borderBottomColor: Colors.darkDarkGreen,
+    borderBottomColor: COLORS.darkDarkGreen,
     borderBottomWidth: 2,
   },
   text: {
-    color: Colors.lightDarkGreen,
+    color: COLORS.lightDarkGreen,
     fontSize: 14,
     fontWeight: '700',
     marginBottom: 11,

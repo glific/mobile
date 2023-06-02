@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-import { Colors } from '../constants/theme';
+import { COLORS } from '../constants/theme';
 type notificationType = {
   header: string;
   message: string;
@@ -46,7 +46,7 @@ export default NotificationItem;
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    borderBottomColor: Colors.gray,
+    borderBottomColor: COLORS.gray,
     borderBottomWidth: 1,
     display: 'flex',
     flexDirection: 'row',
@@ -57,8 +57,8 @@ const styles = StyleSheet.create({
   },
   critical: {
     alignItems: 'center',
-    backgroundColor: Colors.criticalBackground,
-    borderColor: Colors.criticalBorder,
+    backgroundColor: COLORS.criticalBackground,
+    borderColor: COLORS.criticalBorder,
     borderRadius: 25,
     borderWidth: 1,
     height: 48,
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     width: 48,
   },
   header: {
-    color: Colors.black,
+    color: COLORS.black,
     fontWeight: '700',
   },
   imgContainer: {
@@ -74,8 +74,8 @@ const styles = StyleSheet.create({
   },
   info: {
     alignItems: 'center',
-    backgroundColor: Colors.infoBackground,
-    borderColor: Colors.infoBorder,
+    backgroundColor: COLORS.infoBackground,
+    borderColor: COLORS.infoBorder,
     borderRadius: 25,
     borderWidth: 1,
     height: 48,
@@ -83,13 +83,13 @@ const styles = StyleSheet.create({
     width: 48,
   },
   time: {
-    color: Colors.primary70,
+    color: COLORS.primary70,
     fontWeight: '700',
   },
   warning: {
     alignItems: 'center',
-    backgroundColor: Colors.warningBackground,
-    borderColor: Colors.warningBorder,
+    backgroundColor: COLORS.warningBackground,
+    borderColor: COLORS.warningBorder,
     borderRadius: 25,
     borderWidth: 1,
     height: 48,
