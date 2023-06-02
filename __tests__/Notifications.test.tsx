@@ -4,8 +4,8 @@ import renderWithAuth from '../utils/authProvider';
 
 describe('Notifications Screen', () => {
   test('renders the Notifications screen', () => {
-    const { getByText } = renderWithAuth(<Notifications />);
-    const notificationText = getByText('Notifications');
-    expect(notificationText).toBeDefined();
+    const { getAllByText } = renderWithAuth(<Notifications />);
+    const notificationText = getAllByText('Glific stimulator four');
+    expect(notificationText).toHaveLength(5);
   });
 });
