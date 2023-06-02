@@ -21,6 +21,16 @@ export const COLORS = {
   error100: '#f44336',
   white: '#ffffff',
   black: '#212121',
+  darkDarkGreen: '#073F24',
+  lightDarkGreen: '#6E8E7F',
+  lightGreen: '#ECF7F1',
+  gray: '#E0E0E0',
+  criticalBackground: '#EAEDEC',
+  criticalBorder: '#767672',
+  warningBackground: '#EFD6D6',
+  warningBorder: '#DD1F1F',
+  infoBackground: '#D7E6EF',
+  infoBorder: '#218AFF',
   red: '#ff0000',
 };
 
@@ -55,6 +65,7 @@ export const SIZES = {
   s400: SCALE(400),
 
   // paddings and margins
+  m2: SCALE(2),
   m4: SCALE(4),
   m6: SCALE(6),
   m10: SCALE(10),

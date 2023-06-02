@@ -3,7 +3,11 @@ import { View, TextInput, StyleSheet } from 'react-native';
 import { COLORS, SIZES } from '../../constants';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 
-const SearchBar = () => {
+type SearchBarProps = {
+  setSearchValue: () => void;
+};
+
+const SearchBar: React.FC<SearchBarProps> = (props: SearchBarProps) => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [filter, setFilter] = useState<string[]>([]);
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
@@ -18,8 +22,7 @@ const SearchBar = () => {
         return;
       }
       // TODO:
-      // perform the search query
-      console.log(searchValue);
+      props.setSearchValue();
     } catch (error: any) {
       // perform action when error
     }
@@ -74,7 +77,7 @@ export default SearchBar;
 const styles = StyleSheet.create({
   icon: {
     color: COLORS.darkGray,
-    fontSize: SIZES.f20,
+    marginHorizontal: 2,
   },
   input: {
     backgroundColor: COLORS.white,

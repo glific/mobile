@@ -11,7 +11,6 @@ type RootStackParamList = {
   Contacts: undefined;
   Collections: undefined;
   SavedSearches: undefined;
-  ContactList: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Contacts'>;
@@ -19,6 +18,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Contacts'>;
 const Chat = ({ navigation }: Props) => {
   const [session, setSession] = useState<object | null>();
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
+  const [searchValue, setSearchValue] = useState<string>('');
 
   useEffect(() => {
     // Retrieve the session from AsyncStorage
@@ -29,6 +29,7 @@ const Chat = ({ navigation }: Props) => {
         setSession(parsedSessionValue);
       }
     };
+
     getSession();
   }, []);
 
@@ -55,7 +56,7 @@ const Chat = ({ navigation }: Props) => {
   return (
     <View style={styles.mainContainer}>
       <View style={styles.searchContainer}>
-        <SearchBar />
+        <SearchBar setSearchValue={(value) => setSearchValue(value)} />
         <View style={styles.mainIconContainer}>
           <Pressable
             onPress={menuPress}
@@ -82,7 +83,7 @@ const Chat = ({ navigation }: Props) => {
           )}
         </View>
       </View>
-      <ContactList navigation={navigation} />
+      <ContactList navigation={navigation} searchValue={searchValue} />
     </View>
   );
 };

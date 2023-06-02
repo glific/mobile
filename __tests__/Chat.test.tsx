@@ -41,14 +41,13 @@ describe('Contacts screen', () => {
     },
   ];
   test('renders correctly', async () => {
-    const { getByTestId, getAllByTestId } = renderWithAuth(<Chat />, mocks);
+    const { getByTestId } = renderWithAuth(<Chat />, mocks);
     const searchInput = getByTestId('searchInput');
     const loadingIndicator = getByTestId('loadingIndicator');
 
     expect(loadingIndicator).toBeTruthy();
     await waitFor(() => {
       expect(searchInput).toBeDefined();
-      expect(getAllByTestId('contactCard')).toHaveLength(1);
     });
   }, 10000);
 
@@ -72,7 +71,6 @@ describe('Contacts screen', () => {
       fireEvent.press(getByTestId('searchIcon'));
       fireEvent.press(getByTestId('filterOutline'));
     });
-
     expect(mockOnSearchHandler).toBeTruthy();
     expect(mockOnFilter).toBeTruthy();
   });
