@@ -22,7 +22,7 @@ const SearchBar: React.FC<SearchBarProps> = (props: SearchBarProps) => {
         return;
       }
       // TODO:
-      props.setSearchValue(searchValue);
+      props.setSearchValue();
     } catch (error: any) {
       // perform action when error
     }
