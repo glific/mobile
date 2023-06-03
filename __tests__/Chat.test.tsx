@@ -72,7 +72,7 @@ describe('Contacts screen', () => {
     expect(mockOnSearchHandler).toBeTruthy();
     expect(mockOnFilter).toBeTruthy();
   });
-  test("Should test menu is visible on press or not ",async()=>{
+  test('Should test menu is visible on press or not ', async () => {
     const { getByTestId } = renderWithAuth(<Chat />, mocks);
     await waitFor(() => {
       fireEvent.press(getByTestId('menuButton'));
