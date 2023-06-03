@@ -77,7 +77,7 @@ describe('Contacts screen', () => {
     await waitFor(() => {
       fireEvent.press(getByTestId('menuButton'));
     });
-    const menu = screen.queryByTestId("menuId")
-    expect(menu).toBeTruthy()
+    const menu = screen.queryByTestId('menuId');
+    expect(menu).toBeTruthy();
   });
 });
