@@ -93,18 +93,17 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
   },
-
-  searchContainer: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    backgroundColor: COLORS.white,
-    borderBottomWidth: 0.2,
-    borderColor: COLORS.darkGray,
-  },
   mainIconContainer: {
     marginLeft: -SIZES.m6,
     width: '15%',
+  },
+  searchContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    backgroundColor: COLORS.white,
+    justifyContent: 'center',
+    borderBottomWidth: 0.2,
+    borderColor: COLORS.darkGray,
   },
   filter: {
     alignItems: 'center',
@@ -128,16 +127,16 @@ const styles = StyleSheet.create({
     right: SIZES.m16,
     shadowColor: COLORS.black,
     shadowOffset: { height: SIZES.r4, width: 0 },
-    zIndex: -50,
     shadowRadius: SIZES.r4,
+    zIndex: -50,
     width: SIZES.s200,
   },
   iconContainer: {
     alignItems: 'center',
     borderRadius: SIZES.m12,
     height: SIZES.s40,
-    justifyContent: 'center',
     borderColor: COLORS.darkGray,
+    justifyContent: 'center',
     marginLeft: SIZES.m6,
     width: SIZES.s36,
     borderWidth: 1,
