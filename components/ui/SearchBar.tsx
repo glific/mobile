@@ -39,7 +39,7 @@ const SearchBar: React.FC<SearchBarProps> = (props: SearchBarProps) => {
 
   return (
     <View style={styles.mainContainer}>
-      <View style={[styles.inputContainer]}>
+      <View style={styles.inputContainer}>
         <AntDesign
           testID="searchIcon"
           name="search1"
