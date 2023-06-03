@@ -50,17 +50,17 @@ const Chat = ({ navigation }: Props) => {
     );
   };
 
-  const menuPress=() => setIsFilterVisible(true)
-  const closeMenu=() => setIsFilterVisible(false)
+  const menuPress = () => setIsFilterVisible(true);
+  const closeMenu = () => setIsFilterVisible(false);
 
   return (
     <View style={styles.mainContainer}>
       <View style={styles.searchContainer}>
-        <SearchBar setSearchValue={(value) => setSearchValue(value)} />
+        <SearchBar setSearchValue={(value) => setSearchValue(value)} width="78%" />
         <View style={styles.mainIconContainer}>
           <Pressable
             onPress={menuPress}
-            testID='menuButton'
+            testID="menuButton"
             style={styles.iconContainer}
             android_ripple={{ borderless: true }}
           >
@@ -68,11 +68,8 @@ const Chat = ({ navigation }: Props) => {
           </Pressable>
           {isFilterVisible && (
             <>
-              <Pressable
-                onPress={closeMenu}
-                style={styles.filterBackground}
-              />
-              <View style={styles.filtersContainer} testID='menuId'>
+              <Pressable onPress={closeMenu} style={styles.filterBackground} />
+              <View style={styles.filtersContainer} testID="menuId">
                 <FilterButton label="All" count={1} />
                 <FilterButton label="Unread" count={4} />
                 <FilterButton label="Not responded" count={35} />

@@ -5,6 +5,7 @@ import { AntDesign, Ionicons } from '@expo/vector-icons';
 
 type SearchBarProps = {
   setSearchValue: () => void;
+  width: string;
 };
 
 const SearchBar: React.FC<SearchBarProps> = (props: SearchBarProps) => {
@@ -36,11 +37,9 @@ const SearchBar: React.FC<SearchBarProps> = (props: SearchBarProps) => {
     setFilter((prev) => [...prev, newFilter]);
   }
 
-  //Virtical 3 dots
-
   return (
     <View style={styles.mainContainer}>
-      <View style={styles.inputContainer}>
+      <View style={[styles.inputContainer]}>
         <AntDesign
           testID="searchIcon"
           name="search1"
@@ -50,7 +49,7 @@ const SearchBar: React.FC<SearchBarProps> = (props: SearchBarProps) => {
         />
         <TextInput
           testID="searchInput"
-          style={styles.input}
+          style={[styles.input, { width: props.width }]}
           autoCapitalize="none"
           keyboardType="default"
           placeholder="Search"
@@ -84,7 +83,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     paddingHorizontal: 6,
     paddingVertical: 8,
-    width: '85%',
   },
   inputContainer: {
     alignItems: 'center',
@@ -96,7 +94,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginLeft: SIZES.s16,
     paddingHorizontal: 12,
-    width: '85%',
   },
   mainContainer: {
     backgroundColor: COLORS.white,
