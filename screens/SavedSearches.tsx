@@ -5,7 +5,7 @@ import SearchBar from '../components/ui/SearchBar';
 const SavedSearches = () => {
   return (
     <View style={styles.mainContainer}>
-      <SearchBar  width="85%"/>
+      <SearchBar width="85%"/>
       <Text>SavedSearches</Text>
     </View>
   );
