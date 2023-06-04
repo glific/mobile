@@ -4,55 +4,28 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import PhoneInput from 'react-native-phone-number-input';
 
 import { COLORS, SCALE, SIZES } from '../constants';
-import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
-import Storage from '../utils/asyncStorage';
-import AuthContext from '../config/AuthContext';
-import AxiosService from '../config/axios';
 
 type RootStackParamList = {
   Login: undefined;
-  Home: undefined;
+  ResetPassword: undefined;
+  OtpScreen: undefined;
 };
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'ResetPassword'>;
 
-const Login = ({ navigation }: Props) => {
-  const { setToken } = useContext(AuthContext);
+const ResetPassword = ({ navigation }: Props) => {
   const [enteredMobile, setEnteredMobile] = useState('');
-  const [enteredPassword, setEnteredPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
   const phoneInput = useRef<PhoneInput>(null);
 
-  const updateInputValueHandler = (inputType: string, enteredValue: string) => {
-    switch (inputType) {
-      case 'mobile':
-        setEnteredMobile(enteredValue);
-        break;
-      case 'password':
-        setEnteredPassword(enteredValue);
-        break;
-    }
-  };
-
-  const onSubmitHandler = async () => {
+  const onGenerateHandler = async () => {
     try {
-      if (enteredMobile == '' || enteredPassword == '') {
-        throw new Error('Please enter mobile number and password!');
+      if (enteredMobile == '') {
+        throw new Error('Please enter mobile number!');
       }
-      const Client = await AxiosService.createAxiosInstance();
-      const countryCode = phoneInput.current?.getCallingCode();
 
-      const response = await Client.post('/v1/session', {
-        user: {
-          phone: countryCode + enteredMobile,
-          password: enteredPassword,
-        },
-      });
-
-      await Storage.storeData('session', JSON.stringify(response.data.data));
-      setToken(response.data.data.access_token);
+      navigation.navigate('OtpScreen');
     } catch (error: any) {
       setErrorMessage(error.message);
     }
@@ -73,7 +46,7 @@ const Login = ({ navigation }: Props) => {
           testID="mobileNumber"
           ref={phoneInput}
           defaultCode="IN"
-          onChangeText={(text) => updateInputValueHandler('mobile', text)}
+          onChangeText={(text) => setEnteredMobile(text)}
           layout="first"
           value={enteredMobile}
           placeholder="Enter 10 digit phone number"
@@ -81,32 +54,18 @@ const Login = ({ navigation }: Props) => {
           textContainerStyle={styles.phoneInput}
           flagButtonStyle={styles.flagButtonStyle}
         />
-        <Input
-          testID="password"
-          label="Enter your password"
-          placeholder="Password"
-          value={enteredPassword}
-          onUpdateValue={(text) => updateInputValueHandler('password', text)}
-          secure={showPassword ? false : true}
-          onShowPassword={() => setShowPassword(!showPassword)}
-          isError={errorMessage ? true : false}
-          type="password"
-        />
-        <Text style={styles.forgotPassword} onPress={() => navigation.navigate('ResetPassword')}>
-          Forgot password?
-        </Text>
         {errorDisplay}
       </View>
       <View style={styles.buttonContainer}>
-        <Button disable={!enteredMobile && !enteredPassword} onPress={onSubmitHandler}>
-          <Text>LOG IN</Text>
+        <Button disable={!enteredMobile} onPress={onGenerateHandler}>
+          <Text>Generate OTP</Text>
         </Button>
       </View>
     </View>
   );
 };
 
-export default Login;
+export default ResetPassword;
 
 const styles = StyleSheet.create({
   buttonContainer: {
@@ -121,11 +80,6 @@ const styles = StyleSheet.create({
   flagButtonStyle: {
     justifyContent: 'flex-start',
     paddingLeft: SCALE(2),
-  },
-  forgotPassword: {
-    alignSelf: 'flex-end',
-    color: COLORS.primary100,
-    marginTop: SIZES.m6,
   },
   inputContainer: { paddingHorizontal: SIZES.m20 },
   mainContainer: {
