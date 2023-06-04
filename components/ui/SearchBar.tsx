@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
-import { COLORS } from '../../constants';
+import { COLORS, SIZES } from '../../constants';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 
+type SearchBarProps = {
+  setSearchValue: () => void;
+};
+
+const SearchBar: React.FC<SearchBarProps> = (props: SearchBarProps) => {
 interface SearchBarProps {
   onSearch: () => void;
   onFilter: () => void;
@@ -23,8 +28,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, onFilter }) => {
         return;
       }
       // TODO:
-      // perform the search query
-      console.log(searchValue);
+      props.setSearchValue();
     } catch (error: any) {
       // perform action when error
     }
@@ -83,7 +87,7 @@ export default SearchBar;
 const styles = StyleSheet.create({
   icon: {
     color: COLORS.darkGray,
-    marginHorizontal: 2,
+    marginHorizontal: SIZES.m2,
   },
   input: {
     backgroundColor: COLORS.white,
