@@ -62,7 +62,7 @@ describe('CollectionList component', () => {
         </NavigationContainer>
       </MockedProvider>
     );
-
+  
     await waitFor(async () => {
       const collection1 = await findByText('Collection 1');
       expect(collection1).toBeTruthy();
@@ -70,6 +70,6 @@ describe('CollectionList component', () => {
       const collection2 = await findByText('Collection 2');
       expect(collection2).toBeTruthy();
     });
-    
   });
+  
 });
