@@ -2,15 +2,18 @@ import React, { useState } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import { COLORS, SIZES } from '../../constants';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 type SearchBarProps = {
-  setSearchValue: () => void;
+  value: string;
+  setSearchValue: (value: string) => void;
 };
 
 const SearchBar: React.FC<SearchBarProps> = (props: SearchBarProps) => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [filter, setFilter] = useState<string[]>([]);
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
+  const navigation = useNavigation();
 
   function onSearch(enteredValue: string) {
     setSearchValue(enteredValue);
@@ -29,7 +32,8 @@ const SearchBar: React.FC<SearchBarProps> = (props: SearchBarProps) => {
   }
 
   function onFilter() {
-    setIsFilterVisible(!isFilterVisible);
+    navigation.navigate('ConversationFilter');
+    // setIsFilterVisible(!isFilterVisible);
   }
 
   function onFilterHandler(newFilter: string) {

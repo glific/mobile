@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
+import { useQuery } from '@apollo/client';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-import ContactList from '../components/ui/ContactList';
 import SearchBar from '../components/ui/SearchBar';
-import Storage from '../utils/asyncStorage';
+import Contact from '../components/ui/Contact';
+import { GET_CONTACTS } from '../graphql/queries/Contact';
+
+interface ContactData {
+  id: string;
+  name: string;
+  lastMessageAt: string;
+  lastMessage: string | undefined;
+}
 
 type RootStackParamList = {
   Contacts: undefined;
@@ -15,34 +23,54 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList, 'Contacts'>;
 
 const Chat = ({ navigation }: Props) => {
-  const [session, setSession] = useState<object | null>();
   const [searchValue, setSearchValue] = useState<string>('');
+  const [contacts, setContacts] = useState<ContactData[]>([]);
+
+  const variables = {
+    filter: { term: searchValue },
+    messageOpts: { limit: 1 },
+    contactOpts: { limit: 10 },
+  };
+  const { loading, error, data } = useQuery(GET_CONTACTS, { variables });
 
   useEffect(() => {
-    // Retrieve the session from AsyncStorage
-    const getSession = async () => {
-      const sessionValue = await Storage.getData('session');
-      if (sessionValue !== null) {
-        const parsedSessionValue = JSON.parse(sessionValue);
-        setSession(parsedSessionValue);
-      }
-    };
+    if (error) {
+      console.log(error);
+    }
+    if (data) {
+      const newContacts: ContactData[] = data.search.map((element: any) => {
+        const messagesLength = element.messages?.length;
+        return {
+          id: element.contact?.id,
+          name: element.contact?.name || element.contact?.maskedPhone,
+          lastMessageAt: element.contact?.lastMessageAt,
+          lastMessage: messagesLength > 0 && element.messages[messagesLength - 1]?.body,
+        };
+      });
 
-    getSession();
-  }, []);
+      setContacts(newContacts);
+    }
+  }, [data, error]);
 
   return (
-    <View style={styles.mainContainer}>
-      <SearchBar setSearchValue={(value) => setSearchValue(value)} />
-      <ContactList navigation={navigation} searchValue={searchValue} />
-    </View>
+    <FlatList
+      data={contacts}
+      keyExtractor={(item) => item.id}
+      renderItem={({ item }) => (
+        <Contact
+          id={item.id}
+          name={item.name}
+          lastMessage={item.lastMessage}
+          lastMessageAt={item.lastMessageAt}
+        />
+      )}
+      ListHeaderComponent={<SearchBar setSearchValue={(value) => setSearchValue(value)} />}
+      stickyHeaderIndices={[0]}
+      stickyHeaderHiddenOnScroll={true}
+    />
   );
 };
 
-const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-  },
-});
-
 export default Chat;
+
+const styles = StyleSheet.create({});

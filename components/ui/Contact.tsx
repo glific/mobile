@@ -5,11 +5,10 @@ import { COLORS, SIZES } from '../../constants';
 import { getSessionTimeLeft } from '../../screens/ChatScreen';
 
 export interface ContactProps {
-  id: number;
+  id: string;
   name: string;
   lastMessageAt: string;
-  lastMessage: string;
-  lastSessiontime: string;
+  lastMessage: string | undefined;
 }
 
 const Contact: React.FC<ContactProps> = ({ id, name, lastMessageAt, lastMessage }) => {

@@ -6,11 +6,11 @@ import { COLORS } from '../../constants';
 
 type InputType = 'text' | 'password' | 'number';
 
-export interface InputProps {
-  label: string;
+interface InputProps {
+  label?: string;
   onUpdateValue: (text: string) => void;
   value: string;
-  isError: boolean;
+  isError?: boolean;
   secure?: boolean;
   keyboardType?: KeyboardTypeOptions;
   placeholder: string;
@@ -33,7 +33,7 @@ const Input = ({
 }: InputProps) => {
   return (
     <View style={styles.inputContainer}>
-      <Text style={[styles.label, isError && styles.errorLabel]}>{label}</Text>
+      {label && <Text style={[styles.label, isError && styles.errorLabel]}>{label}</Text>}
       <View style={styles.inputBox}>
         <TextInput
           testID={testID}

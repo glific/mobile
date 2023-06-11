@@ -55,7 +55,7 @@ const ContactList: React.FC<ContactListProps> = ({ searchValue }) => {
 const styles = StyleSheet.create({
   contactList: {
     flex: 1,
-    marginBottom: 20,
+    // marginBottom: 20,
   },
 });
 
