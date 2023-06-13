@@ -5,6 +5,7 @@ import { useQuery } from '@apollo/client';
 
 import Loading from './Loading';
 import CollectionListItem from './CollectionListItem';
+import { NavigationContainer } from '@react-navigation/native';
 
 interface CollectionListProps {
   navigation: any;
@@ -43,7 +44,7 @@ const CollectionList: React.FC<CollectionListProps> = () => {
         <FlatList
           data={collections}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <CollectionListItem {...item} />}
+          renderItem={({ item }) => <NavigationContainer><CollectionListItem {...item} /></NavigationContainer> }
         />
       )}
     </View>

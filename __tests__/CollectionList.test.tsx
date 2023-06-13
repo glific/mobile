@@ -57,9 +57,9 @@ describe('CollectionList component', () => {
   it('renders collections after data loading', async () => {
     const { findByText } = render(
       <MockedProvider mocks={mocks} addTypename={false}>
-        <NavigationContainer>
+
           <CollectionList navigation={{ navigate: jest.fn() }} />
-        </NavigationContainer>
+
       </MockedProvider>
     );
   
