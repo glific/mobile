@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
   contactList: {
     flex: 1,
     marginBottom: 20,
+    zIndex: -50,
   },
 });
 

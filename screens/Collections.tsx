@@ -16,7 +16,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Collections'>;
 const Collections = ({ navigation }: Props) => {
   return (
     <View style={styles.mainContainer}>
-      <SearchBar />
+      <SearchBar width="85%"/>
       <CollectionList navigation={navigation} />
     </View>
   );
