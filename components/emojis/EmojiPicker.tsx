@@ -15,7 +15,7 @@ interface EmojiPickerProps {
 }
 
 const EmojiPicker: React.FC<EmojiPickerProps> = ({ setMessage }) => {
-  const layout = useWindowDimensions();
+
   const [index, setIndex] = useState<number>(0);
   const [routes, setRoutes] = useState<{ key: string; title: string }[]>(
     categories.tabs.map((tab: Tab) => ({ key: tab.category, title: tab.tabLabel }))

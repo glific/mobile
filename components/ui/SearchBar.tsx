@@ -32,9 +32,9 @@ const SearchBar: React.FC<SearchBarProps> = (props: SearchBarProps) => {
     setIsFilterVisible(!isFilterVisible);
   }
 
-  function onFilterHandler(newFilter: string) {
-    setFilter((prev) => [...prev, newFilter]);
-  }
+  // function onFilterHandler(newFilter: string) {
+  //   setFilter((prev) => [...prev, newFilter]);
+  // }
 
   return (
     <View style={styles.mainContainer}>

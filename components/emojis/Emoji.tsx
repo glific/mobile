@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { TouchableOpacity, Text, StyleSheet, GestureResponderEvent } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 import shortnameToUnicode from './shortnameToUnicode';
 
