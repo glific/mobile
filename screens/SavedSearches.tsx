@@ -1,12 +1,24 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import SearchBar from '../components/ui/SearchBar';
+import SaveSearchList from '../components/ui/SaveSearchList';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-const SavedSearches = () => {
+
+type RootStackParamList = {
+  SavedSearches: undefined;
+};
+
+
+type Props = NativeStackScreenProps<RootStackParamList, 'Collections'>;
+
+
+const SavedSearches = ({ navigation }: Props) => {
   return (
     <View style={styles.mainContainer}>
       <SearchBar width="85%"/>
-      <Text>SavedSearches</Text>
+      <SaveSearchList navigation={navigation}/>
+
     </View>
   );
 };
