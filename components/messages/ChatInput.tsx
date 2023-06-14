@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import { View, Text, StyleSheet, TextInput, Pressable, Keyboard } from 'react-native';
 import { FontAwesome, AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
@@ -6,6 +6,7 @@ import { useMutation } from '@apollo/client';
 
 import { COLORS, SCALE, SIZES } from '../../constants';
 import { SEND_CONTACT_MESSAGE } from '../../graphql/queries/Contact';
+import EmojiPicker from '../emojis/EmojiPicker';
 
 interface ChatInputProps {
   contact: {
@@ -15,6 +16,8 @@ interface ChatInputProps {
 }
 
 const ChatInput: React.FC<ChatInputProps> = ({ contact }) => {
+  const inputRef = useRef<TextInput>(null);
+
   const [message, setMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [showOptions, setShowOptions] = useState(true);
@@ -64,23 +67,27 @@ const ChatInput: React.FC<ChatInputProps> = ({ contact }) => {
     };
   });
 
+  const [showEmoji, setShowEmoji] = useState(false);
+
   return (
     <>
-      <Animated.View style={[styles.mainContainer, animatedStyle]}>
+      <Animated.View style={[styles.mainContainer, animatedStyle]} >
         <View style={styles.inputContainer}>
           <AntDesign
             name="up"
             style={[styles.showIcon, !showOptions && { transform: [{ rotate: '180deg' }] }]}
-            onPress={() => setShowOptions(!showOptions)}
+            onPress={() => {setShowOptions(!showOptions);}}
           />
-          <View style={styles.inputAndEmoji}>
-            <MaterialCommunityIcons name={'emoticon-outline'} style={styles.emoticonButton} />
+          <View style={styles.inputAndEmoji} >
+            <MaterialCommunityIcons name={'emoticon-outline'} style={styles.emoticonButton} onPress={() => {setShowEmoji(!showEmoji); inputRef.current.blur(); }} />
             <TextInput
+              ref={inputRef}
               multiline
               placeholder={'Start Typing...'}
               style={styles.input}
               value={message}
               onChangeText={(text) => setMessage(text)}
+              onFocus={() => {setShowEmoji(false)}}
             />
             <MaterialCommunityIcons
               name="paperclip"
@@ -95,6 +102,11 @@ const ChatInput: React.FC<ChatInputProps> = ({ contact }) => {
             <FontAwesome name="send" style={styles.sendicon} />
           </Pressable>
         </View>
+        {showEmoji &&
+          <View style={{ height: 300,width:'100%' }}>
+             <EmojiPicker setMessage={setMessage}/>
+          </View>
+        }
         <Pressable style={styles.optionsContainer} android_ripple={{ borderless: false }}>
           <MaterialCommunityIcons name="message-flash" style={styles.optionIcon} />
           <Text style={styles.optionsText}>Speed sends</Text>
