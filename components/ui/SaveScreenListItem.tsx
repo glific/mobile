@@ -8,12 +8,12 @@ const SaveScreenListItem: React.FC<SaveScreenListItemProps> = ({ id, name }) => 
 
   return (
     <Pressable
-      testID="SaveScreenListItemCard"
       onPress={() => navigation.navigate('ChatScreen', { contact: { id, name } })}
       style={styles.item}
+      testID="pressableSaveScreen"
       android_ripple={{ color: COLORS.primary10 }}
     >
-      <View style={styles.avatar}>
+      <View style={styles.avatar} testID="SaveScreenListItemCard">
         <Text style={styles.avatartext}>{name.charAt(0)}</Text>
       </View>
       <Text style={styles.name}>{name}</Text>

@@ -1,7 +1,6 @@
 import React from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
 import { useQuery } from '@apollo/client';
-
 import Contact from './Contact';
 import Loading from './Loading';
 import { GET_CONTACTS } from '../../graphql/queries/Contact';

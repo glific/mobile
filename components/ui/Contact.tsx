@@ -23,7 +23,7 @@ const Contact: React.FC<ContactProps> = ({ id, name, lastMessageAt, lastMessage 
     minute: 'numeric',
     hour12: true,
   });
-  console.log(name)
+  console.log(name);
 
   return (
     <Pressable

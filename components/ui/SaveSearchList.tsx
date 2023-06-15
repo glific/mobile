@@ -7,7 +7,7 @@ import SaveScreenListItem from './SaveScreenListItem';
 
 interface SaveSearchListProps {
   navigation: any;
-  searchValue:String;
+  searchValue: String;
 }
 
 const SaveSearchList: React.FC<SaveSearchListProps> = ({ searchValue }) => {
@@ -27,7 +27,8 @@ const SaveSearchList: React.FC<SaveSearchListProps> = ({ searchValue }) => {
     contacts = data.savedSearches.map((element: any) => {
       return {
         id: element.id,
-        name: element.label || "Unknmow"  }
+        name: element.label || 'Unknmow',
+      };
     });
   }
 
@@ -38,10 +39,9 @@ const SaveSearchList: React.FC<SaveSearchListProps> = ({ searchValue }) => {
       ) : (
         <FlatList
           data={contacts}
-          testID='flatlist'
+          testID="flatlist"
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <SaveScreenListItem {...item} 
-          />}
+          renderItem={({ item }) => <SaveScreenListItem {...item} />}
         />
       )}
     </View>
