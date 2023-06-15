@@ -90,7 +90,7 @@ const ConversationFilter: React.FC = ({ navigation }: any) => {
         <Button onPress={() => navigation.goBack()} type="neutral">
           <Text>CANCEL</Text>
         </Button>
-        <View style={{ width: '2%' }} />
+        <View style={styles.divideSpace} />
         <Button disable={true} onPress={() => navigation.goBack()}>
           <Text>APPLY</Text>
         </Button>
@@ -109,6 +109,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: SIZES.m12,
     position: 'absolute',
   },
+  divideSpace: { width: '2%' },
   headerText: {
     color: COLORS.black,
     fontSize: SIZES.f14,

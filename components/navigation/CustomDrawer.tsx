@@ -10,10 +10,10 @@ import AuthContext from '../../config/AuthContext';
 import AxiosService from '../../config/axios';
 
 type DrawerContentProps = {
-  navigation: any;
+  navigation: undefined;
 };
 
-const CustomDrawer: React.FC<DrawerContentProps> = (props: any) => {
+const CustomDrawer: React.FC<DrawerContentProps> = (props) => {
   const [orgName, setOrgName] = useState('');
   const { setToken } = useContext(AuthContext);
 

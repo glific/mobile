@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable, StyleSheet, Modal, ScrollView } from 'react-native';
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
-import { COLORS, SCALE, SIZES } from '../../constants';
+import { COLORS, SIZES } from '../../constants';
 
 interface Option {
   id: string;

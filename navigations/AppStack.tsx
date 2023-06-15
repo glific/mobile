@@ -5,7 +5,7 @@ import { COLORS } from '../constants';
 import AppDrawer from './Drawer';
 import ChatScreen from '../screens/ChatScreen';
 import ContactProfile from '../screens/ContactProfile';
-import ConversationFilter from '../screens/CollectionFilter';
+import ConversationFilter from '../screens/ConversationFilter';
 
 const Stack = createNativeStackNavigator();
 

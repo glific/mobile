@@ -7,7 +7,7 @@ import Loading from './Loading';
 import CollectionListItem from './CollectionListItem';
 
 interface CollectionListProps {
-  navigation: any;
+  navigation: undefined;
 }
 
 const variables = {

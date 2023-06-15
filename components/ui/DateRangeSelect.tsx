@@ -7,8 +7,8 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 interface Props {
   selectedDateFrom: string;
   selectedDateTo: string;
-  onSelectDateFrom: (date: string) => void;
-  onSelectDateTo: (date: string) => void;
+  onSelectDateFrom: (text: string) => void;
+  onSelectDateTo: (text: string) => void;
   label: string;
 }
 
@@ -57,7 +57,7 @@ const DateRangeSelect: React.FC<Props> = ({
           )}
           <MaterialCommunityIcons name="calendar" style={styles.calendarIcon} />
         </Pressable>
-        <View style={{ width: '4%' }} />
+        <View style={styles.divideSpace} />
         <Pressable style={styles.dateButton} onPress={handleDateToVisible}>
           <DateTimePickerModal
             isVisible={isVisibleToPicker}
@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
   datesContainer: {
     flexDirection: 'row',
   },
+  divideSpace: { width: '4%' },
   label: {
     color: COLORS.black,
     fontSize: 14,

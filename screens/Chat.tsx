@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 import { useQuery } from '@apollo/client';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
@@ -33,6 +33,17 @@ const Chat = ({ navigation }: Props) => {
   };
   const { loading, error, data } = useQuery(GET_CONTACTS, { variables });
 
+  async function onSearchHandler() {
+    try {
+      if (searchValue == '') return;
+
+      // TODO:
+      console.log(searchValue);
+    } catch (error: any) {
+      // perform action when error
+    }
+  }
+
   useEffect(() => {
     if (error) {
       console.log(error);
@@ -64,7 +75,14 @@ const Chat = ({ navigation }: Props) => {
           lastMessageAt={item.lastMessageAt}
         />
       )}
-      ListHeaderComponent={<SearchBar setSearchValue={(value) => setSearchValue(value)} />}
+      ListHeaderComponent={
+        <SearchBar
+          value={searchValue}
+          setSearchValue={(value) => setSearchValue(value)}
+          onSearch={onSearchHandler}
+          showMenu
+        />
+      }
       stickyHeaderIndices={[0]}
       stickyHeaderHiddenOnScroll={true}
     />
@@ -72,5 +90,3 @@ const Chat = ({ navigation }: Props) => {
 };
 
 export default Chat;
-
-const styles = StyleSheet.create({});

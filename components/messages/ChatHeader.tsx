@@ -18,7 +18,7 @@ interface MenuProps {
   onPress: () => void;
 }
 
-const MenuButton: React.FC<MenuProps> = ({ icon, text, onPress }: any) => {
+const MenuButton: React.FC<MenuProps> = ({ icon, text, onPress }) => {
   return (
     <Pressable
       onPress={onPress}
