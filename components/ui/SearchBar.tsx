@@ -43,13 +43,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   return (
     <View style={styles.mainContainer}>
       <View style={styles.inputContainer}>
-        <AntDesign
-          testID="searchIcon"
-          name="search1"
-          size={20}
-          style={styles.icon}
-          onPress={onSearch}
-        />
+        <AntDesign testID="searchIcon" name="search1" style={styles.icon} onPress={onSearch} />
         <TextInput
           testID="searchInput"
           style={styles.input}
@@ -65,7 +59,6 @@ const SearchBar: React.FC<SearchBarProps> = ({
         <Ionicons
           testID="filterOutline"
           name="filter-outline"
-          size={20}
           style={styles.icon}
           onPress={() => navigation.navigate('ConversationFilter')}
         />
@@ -96,6 +89,7 @@ export default SearchBar;
 const styles = StyleSheet.create({
   icon: {
     color: COLORS.darkGray,
+    fontSize: SIZES.f20,
   },
   input: {
     backgroundColor: COLORS.white,

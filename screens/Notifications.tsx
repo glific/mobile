@@ -1,8 +1,10 @@
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import React, { Dispatch, useState } from 'react';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+
 import NotificationItem from '../components/NotificationItem';
 import { COLORS } from '../constants/theme';
+import NotificationHeader from '../components/headers/NotificationHeader';
 
 type notificationType = {
   header: string;
@@ -10,6 +12,7 @@ type notificationType = {
   time: string;
   type: string;
 };
+
 const Notification: notificationType[] = [
   {
     header: 'Glific stimulator four',
@@ -43,9 +46,24 @@ const Notification: notificationType[] = [
     type: 'Info',
   },
 ];
-const Notifications = () => {
+
+const Notifications = ({ navigation }) => {
+  const [searchValue, setSearchValue] = useState('');
   const [option, setOption] = useState('All');
   const [notificationArray, setNotificationArray] = useState(Notification);
+
+  const handleSearch = (text: string) => {
+    setSearchValue(text);
+    // TODO: filter the notification array
+  };
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <NotificationHeader searchValue={searchValue} handleSearch={handleSearch} />
+      ),
+    });
+  }, [searchValue]);
 
   return (
     <View style={styles.mainContainer}>
