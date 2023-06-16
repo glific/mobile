@@ -64,7 +64,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         />
       </View>
       {showMenu && (
-        <Pressable onPress={openMenu} testID="menuButton" style={styles.menuIconContainer}>
+        <Pressable testID="menuIcon" onPress={openMenu} style={styles.menuIconContainer}>
           <Entypo name="dots-three-vertical" style={styles.menuIcon} />
         </Pressable>
       )}

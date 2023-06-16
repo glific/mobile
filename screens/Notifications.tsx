@@ -75,6 +75,7 @@ const RenderOption: React.FC<RenderOptionProps> = ({ label, selectedTab, handleP
   const isActive = label === selectedTab.label;
   return (
     <TouchableOpacity
+      testID={label}
       onPress={handlePress}
       style={isActive ? styles.activeTab : styles.inActiveTab}
     >

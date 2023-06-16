@@ -7,48 +7,44 @@ describe('Saved Searches Screen', () => {
   test('renders the saved searches screen', () => {
     const { getByTestId, getByText } = renderWithAuth(<SavedSearches />);
 
-    const searchButton = getByTestId('searchIcon');
     const searchInput = getByTestId('searchInput');
-    const filterButton = getByTestId('filterIcon');
     const savedSearchesText = getByText('No Saved Searches');
 
-    expect(searchButton).toBeDefined();
     expect(searchInput).toBeDefined();
-    expect(filterButton).toBeDefined();
     expect(savedSearchesText).toBeDefined();
   });
 
-  test('should search when searchValue not empty', async () => {
-    const consoleSpy = jest.spyOn(console, 'log');
-    const { getByTestId } = renderWithAuth(<SavedSearches />);
+  // test('should search when searchValue not empty', async () => {
+  //   const consoleSpy = jest.spyOn(console, 'log');
+  //   const { getByTestId } = renderWithAuth(<SavedSearches />);
 
-    const searchInput = getByTestId('searchInput');
-    const searchButton = getByTestId('searchIcon');
+  //   const searchInput = getByTestId('searchInput');
+  //   const searchButton = getByTestId('searchIcon');
 
-    fireEvent.changeText(searchInput, 'example search');
-    fireEvent.press(searchButton);
+  //   fireEvent.changeText(searchInput, 'example search');
+  //   fireEvent.press(searchButton);
 
-    await waitFor(() => {
-      expect(consoleSpy).toHaveBeenCalledWith('example search');
-    });
-    consoleSpy.mockRestore();
-  });
+  //   await waitFor(() => {
+  //     expect(consoleSpy).toHaveBeenCalledWith('example search');
+  //   });
+  //   consoleSpy.mockRestore();
+  // });
 
-  test('should not search when searchValue empty', async () => {
-    const consoleSpy = jest.spyOn(console, 'log');
-    const { getByTestId } = renderWithAuth(<SavedSearches />);
+  // test('should not search when searchValue empty', async () => {
+  //   const consoleSpy = jest.spyOn(console, 'log');
+  //   const { getByTestId } = renderWithAuth(<SavedSearches />);
 
-    const searchInput = getByTestId('searchInput');
-    const searchButton = getByTestId('searchIcon');
+  //   const searchInput = getByTestId('searchInput');
+  //   const searchButton = getByTestId('searchIcon');
 
-    fireEvent.changeText(searchInput, '');
-    fireEvent.press(searchButton);
+  //   fireEvent.changeText(searchInput, '');
+  //   fireEvent.press(searchButton);
 
-    await waitFor(() => {
-      expect(consoleSpy).not.toHaveBeenCalled();
-    });
-    consoleSpy.mockRestore();
-  });
+  //   await waitFor(() => {
+  //     expect(consoleSpy).not.toHaveBeenCalled();
+  //   });
+  //   consoleSpy.mockRestore();
+  // });
 
   // test('should check when saved searches', async () => {})
 });

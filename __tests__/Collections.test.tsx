@@ -15,8 +15,8 @@ const mocks = [
       query: GET_COLLECTIONS,
       variables: {
         filter: { term: '', searchGroup: true },
-        messageOpts: { limit: 3, offset: 0 },
-        contactOpts: { limit: 10, offset: 0 },
+        messageOpts: { limit: 1 },
+        contactOpts: { limit: 10 },
       },
     },
     result: {
@@ -34,8 +34,11 @@ const mocks = [
 describe('Collections Screen', () => {
   test('renders the Collections screen', async () => {
     const { getByTestId, findByText } = renderWithAuth(<Collections />, mocks);
+    const searchInput = getByTestId('searchInput');
 
     await waitFor(async () => {
+      expect(searchInput).toBeDefined();
+
       const collectionCard = await getByTestId('collectionCard');
       const testGroup = await findByText('test group');
 

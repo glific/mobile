@@ -56,11 +56,11 @@ describe('Server screen', () => {
     const continueButton = getByText('CONTINUE');
 
     fireEvent.changeText(serverUrlInput, 'example.com');
+    fireEvent.press(continueButton);
 
     await waitFor(() => {
       expect(AxiosService.updateServerURL).toHaveBeenCalledWith('https://api.example.com/api');
 
-      fireEvent.press(continueButton);
       expect(navigateMock).toHaveBeenCalledWith('Login');
     });
   });

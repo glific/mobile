@@ -10,7 +10,7 @@ type notificationType = {
 
 const NotificationItem: React.FC<notificationType> = ({ notification }) => {
   return (
-    <View style={styles.mainContainer}>
+    <View testID="notificationItem" style={styles.mainContainer}>
       <View style={styles.iconContainer}>
         {notification.type === 'Info' ? (
           <View style={styles.typeInfo}>
