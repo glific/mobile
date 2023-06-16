@@ -4,8 +4,10 @@ import { useQuery } from '@apollo/client';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import SearchBar from '../components/ui/SearchBar';
-import Contact from '../components/ui/Contact';
+import ContactCard from '../components/ui/ContactCard';
 import { GET_CONTACTS } from '../graphql/queries/Contact';
+import { COLORS } from '../constants';
+import Loading from '../components/ui/Loading';
 
 interface ContactData {
   id: string;
@@ -40,7 +42,7 @@ const Chat = ({ navigation }: Props) => {
       // TODO:
       console.log(searchValue);
     } catch (error: any) {
-      // perform action when error
+      console.log(error);
     }
   }
 
@@ -68,7 +70,7 @@ const Chat = ({ navigation }: Props) => {
       data={contacts}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
-        <Contact
+        <ContactCard
           id={item.id}
           name={item.name}
           lastMessage={item.lastMessage}
@@ -85,8 +87,16 @@ const Chat = ({ navigation }: Props) => {
       }
       stickyHeaderIndices={[0]}
       stickyHeaderHiddenOnScroll={true}
+      style={styles.mainContainer}
     />
   );
 };
 
 export default Chat;
+
+const styles = StyleSheet.create({
+  mainContainer: {
+    backgroundColor: COLORS.white,
+    flex: 1,
+  },
+});

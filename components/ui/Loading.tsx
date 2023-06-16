@@ -1,8 +1,8 @@
 import React from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
-import { COLORS } from '../../constants';
+import { COLORS, SIZES } from '../../constants';
 
-const LoadingPage = () => {
+const Loading = () => {
   return (
     <ActivityIndicator
       testID="loadingIndicator"
@@ -13,12 +13,13 @@ const LoadingPage = () => {
   );
 };
 
-export default LoadingPage;
+export default Loading;
 
 const styles = StyleSheet.create({
   container: {
     alignSelf: 'center',
-    marginVertical: 50,
+    marginVertical: SIZES.s50,
     position: 'absolute',
+    zIndex: 100,
   },
 });
