@@ -18,7 +18,9 @@ interface ChatInputProps {
 const ChatInput: React.FC<ChatInputProps> = ({ contact }) => {
   const inputRef = useRef<TextInput>(null);
 
-  const [message, setMessage] = useState<any>();
+  const [message, setMessage] = useState('');
+  const [cursor, setcursor] = useState(0);
+
   const [errorMessage, setErrorMessage] = useState('');
   const [showOptions, setShowOptions] = useState(true);
   const [createAndSendMessage] = useMutation(SEND_CONTACT_MESSAGE, {
@@ -99,6 +101,9 @@ const ChatInput: React.FC<ChatInputProps> = ({ contact }) => {
               onFocus={() => {
                 setShowEmoji(false);
               }}
+              onSelectionChange={(event) => {
+                setcursor(event?.nativeEvent?.selection.start);
+              }}
             />
             <MaterialCommunityIcons
               name="paperclip"
@@ -115,7 +120,10 @@ const ChatInput: React.FC<ChatInputProps> = ({ contact }) => {
         </View>
         {showEmoji && (
           <View style={{ height: 300, width: '100%' }}>
-            <EmojiPicker setMessage={setMessage} />
+            <EmojiPicker
+              messageObj={{ set: setMessage, value: message }}
+              cursor={{ set: setcursor, value: cursor }}
+            />
           </View>
         )}
         <Pressable style={styles.optionsContainer} android_ripple={{ borderless: false }}>

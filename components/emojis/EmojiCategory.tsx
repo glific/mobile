@@ -6,14 +6,15 @@ import { emojisByCategory } from './emojis';
 
 interface EmojiCategoryProps {
   category: string;
-  setMessage: any;
+  messageObj: any;
+  cursor: any;
 }
 
-const EmojiCategory: React.FC<EmojiCategoryProps> = ({ category, setMessage }) => {
+const EmojiCategory: React.FC<EmojiCategoryProps> = ({ category, messageObj, cursor}) => {
   return (
     <FlatList
       data={emojisByCategory[category]}
-      renderItem={({ item }) => <Emoji item={item} setMessage={setMessage} />}
+      renderItem={({ item }) => <Emoji item={item} messageObj={messageObj} cursor={cursor} />}
       keyExtractor={(item) => item}
       numColumns={8}
       style={{ height: 250, width: "100%" }}

@@ -11,10 +11,11 @@ interface Tab {
 }
 
 interface EmojiPickerProps {
-  setMessage: (message: string) => void;
+  messageObj: any;
+  cursor: any;
 }
 
-const EmojiPicker: React.FC<EmojiPickerProps> = ({ setMessage }) => {
+const EmojiPicker: React.FC<EmojiPickerProps> = ({ messageObj,cursor }) => {
 
   const [index, setIndex] = useState<number>(0);
   const [routes, setRoutes] = useState<{ key: string; title: string }[]>(
@@ -24,7 +25,7 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({ setMessage }) => {
   return (
     <>
       <TabBar setIndex={setIndex} index={index} routes={routes} />
-      <EmojiCategory category={routes[index]?.key} setMessage={setMessage} />
+      <EmojiCategory category={routes[index]?.key} messageObj={messageObj} cursor={cursor} />
     </>
   );
 };

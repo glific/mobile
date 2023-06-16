@@ -5,12 +5,17 @@ import shortnameToUnicode from './shortnameToUnicode';
 
 interface EmojiProps {
   item: any;
-  setMessage: any;
+  messageObj: any;
+  cursor: any;
 }
 
-const Emoji: React.FC<EmojiProps> = ({ item, setMessage }) => {
+const Emoji: React.FC<EmojiProps> = ({ item, messageObj, cursor }) => {
   const handlePress = () => {
-    setMessage((prev:any) => prev + shortnameToUnicode[`:${item}:`]);
+    messageObj.set(
+      (prev: any) =>
+        prev.slice(0, cursor?.value) + shortnameToUnicode[`:${item}:`] + prev.slice(cursor?.value)
+    );
+    cursor.set(cursor.value + 2);
   };
 
   return (
