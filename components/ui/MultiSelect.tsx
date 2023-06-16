@@ -9,6 +9,7 @@ interface Option {
 }
 
 interface Props {
+  testID?: string;
   options: Option[];
   selectedOptions: Option[];
   onSelectOption: (options: Option[]) => void;
@@ -17,6 +18,7 @@ interface Props {
 }
 
 const MultiSelect: React.FC<Props> = ({
+  testID,
   options,
   selectedOptions,
   onSelectOption,
@@ -50,7 +52,7 @@ const MultiSelect: React.FC<Props> = ({
   return (
     <View style={styles.mainContainer}>
       <Text style={styles.label}>{label}</Text>
-      <Pressable onPress={toggleModal} style={styles.dropdownButton}>
+      <Pressable testID={testID} onPress={toggleModal} style={styles.dropdownButton}>
         {selectedOptions.length == 0 ? (
           <Text style={styles.placeholderText}>{placeHolder}</Text>
         ) : (

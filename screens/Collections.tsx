@@ -5,7 +5,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import SearchBar from '../components/ui/SearchBar';
 import { GET_COLLECTIONS } from '../graphql/queries/Collection';
-import CollectionCard from '../components/ui/CollectionCard';
+import CollectionCard from '../components/CollectionCard';
 import { COLORS } from '../constants';
 
 interface CollectionData {

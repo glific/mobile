@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import SearchBar from '../components/ui/SearchBar';
-import ContactCard from '../components/ui/ContactCard';
+import ContactCard from '../components/ContactCard';
 import { GET_CONTACTS } from '../graphql/queries/Contact';
 import { COLORS } from '../constants';
 import Loading from '../components/ui/Loading';

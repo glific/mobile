@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import ChatHeader from '../components/messages/ChatHeader';
+import ChatHeader from '../components/headers/ChatHeader';
 import MessagesList from '../components/messages/MessageList';
 import ChatInput from '../components/messages/ChatInput';
 import { COLORS, SIZES } from '../constants';

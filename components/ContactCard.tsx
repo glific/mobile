@@ -2,9 +2,9 @@ import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import formatTime from '../../utils/formatTime';
-import { COLORS, SCALE, SIZES } from '../../constants';
-import { getSessionTimeLeft } from '../../screens/ChatScreen';
+import formatTime from '../utils/formatTime';
+import { COLORS, SCALE, SIZES } from '../constants';
+import { getSessionTimeLeft } from '../screens/ChatScreen';
 
 export interface ContactProps {
   id: string;

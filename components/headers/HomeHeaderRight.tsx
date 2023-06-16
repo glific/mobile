@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS, SCALE, SIZES } from '../constants';
+import { COLORS, SCALE, SIZES } from '../../constants';
 import { useQuery } from '@apollo/client';
-import { GET_NOTIFICATIONS_COUNT } from '../graphql/queries/Notification';
+import { GET_NOTIFICATIONS_COUNT } from '../../graphql/queries/Notification';
 const variables = {
   filter: {
     is_read: false,

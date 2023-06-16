@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import Button from '../components/ui/Button';
+
 import { COLORS, SCALE, SIZES } from '../constants';
-import MultiSelect from '../components/ui/MultiSelect';
+import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
+import MultiSelect from '../components/ui/MultiSelect';
 import DateRangeSelect from '../components/ui/DateRangeSelect';
 
 const options = [
@@ -55,8 +56,14 @@ const ConversationFilter: React.FC = ({ navigation }: any) => {
         <Text style={styles.headerText}>
           You can apply more parameters below to search for conversations.
         </Text>
-        <Input onUpdateValue={nameChanged} value={name} placeholder="Enter name, label, keyword" />
+        <Input
+          testID="labelInput"
+          onUpdateValue={nameChanged}
+          value={name}
+          placeholder="Enter name, label, keyword"
+        />
         <MultiSelect
+          testID="labelSelect"
           options={options}
           selectedOptions={selectLabels}
           onSelectOption={handleSelectLabel}
@@ -64,6 +71,7 @@ const ConversationFilter: React.FC = ({ navigation }: any) => {
           placeHolder="Age group"
         />
         <MultiSelect
+          testID="collectionSelect"
           options={options}
           selectedOptions={selectCollections}
           onSelectOption={handleSelectCollection}
@@ -71,6 +79,7 @@ const ConversationFilter: React.FC = ({ navigation }: any) => {
           placeHolder="Variable"
         />
         <MultiSelect
+          testID="staffSelect"
           options={options}
           selectedOptions={selectStaffs}
           onSelectOption={handleSelectStaff}

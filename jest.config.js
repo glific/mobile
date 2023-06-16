@@ -8,6 +8,7 @@ module.exports = {
     '**/*.{js,jsx,ts,tsx}',
     '!**/coverage/**',
     '!**/node_modules/**',
+    '!**/navigations/**',
     '!**/babel.config.js',
     '!**/jest.config.js',
     '!**/utils/**',

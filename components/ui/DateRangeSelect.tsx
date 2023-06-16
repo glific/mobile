@@ -43,7 +43,7 @@ const DateRangeSelect: React.FC<Props> = ({
     <View style={styles.mainContainer}>
       <Text style={styles.label}>{label}</Text>
       <View style={styles.datesContainer}>
-        <Pressable style={styles.dateButton} onPress={handleDateFromVisible}>
+        <Pressable testID="dateFromPick" style={styles.dateButton} onPress={handleDateFromVisible}>
           <DateTimePickerModal
             isVisible={isVisibleFromPicker}
             mode="date"
@@ -57,8 +57,10 @@ const DateRangeSelect: React.FC<Props> = ({
           )}
           <MaterialCommunityIcons name="calendar" style={styles.calendarIcon} />
         </Pressable>
+
         <View style={styles.divideSpace} />
-        <Pressable style={styles.dateButton} onPress={handleDateToVisible}>
+
+        <Pressable testID="dateToPick" style={styles.dateButton} onPress={handleDateToVisible}>
           <DateTimePickerModal
             isVisible={isVisibleToPicker}
             mode="date"

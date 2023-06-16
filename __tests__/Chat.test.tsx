@@ -4,50 +4,58 @@ import Chat from '../screens/Chat';
 import renderWithAuth from '../utils/authProvider';
 import { GET_CONTACTS } from '../graphql/queries/Contact';
 
-describe('Contacts screen', () => {
-  const mockContacts = {
-    id: '1',
-    name: 'test',
-    maskedPhone: '12*****90',
-    lastMessageAt: '2021-08-10T12:00:00.000Z',
-  };
-  const mocks = [
-    {
-      request: {
-        query: GET_CONTACTS,
-        variables: {
-          filter: {},
-          messageOpts: { limit: 1 },
-          contactOpts: { limit: 10 },
-        },
-      },
-      result: {
-        data: {
-          search: [
-            {
-              contact: mockContacts,
-              messages: [
-                {
-                  id: '1',
-                  body: 'test',
-                },
-              ],
-            },
-          ],
-        },
+const mockContacts = {
+  id: '1',
+  name: 'test',
+  maskedPhone: '12*****90',
+  lastMessageAt: '2021-08-10T12:00:00.000Z',
+};
+
+const mocks = [
+  {
+    request: {
+      query: GET_CONTACTS,
+      variables: {
+        filter: { term: '' },
+        messageOpts: { limit: 1 },
+        contactOpts: { limit: 10 },
       },
     },
-  ];
-  test('renders correctly', async () => {
-    const { getByTestId } = renderWithAuth(<Chat />, mocks);
-    const searchInput = getByTestId('searchInput');
-    const loadingIndicator = getByTestId('loadingIndicator');
+    result: {
+      data: {
+        search: [
+          {
+            contact: mockContacts,
+            messages: [
+              {
+                id: '1',
+                body: 'test message',
+              },
+            ],
+          },
+        ],
+      },
+    },
+  },
+];
 
-    expect(loadingIndicator).toBeTruthy();
-    await waitFor(() => {
+describe('Contacts screen', () => {
+  test('renders correctly', async () => {
+    const { getByTestId, findByText } = renderWithAuth(<Chat />, mocks);
+    const searchInput = getByTestId('searchInput');
+
+    await waitFor(async () => {
       expect(searchInput).toBeDefined();
+
+      const contactCard = await getByTestId('contactCard');
+      const testName = await findByText('test');
+      const testLastMessage = await findByText('test message');
+
+      expect(contactCard).toBeTruthy();
+      expect(testName).toBeTruthy();
+      expect(testLastMessage).toBeTruthy();
     });
-  }, 10000);
+  });
 
   test('updates search correctly', async () => {
     const { getByTestId } = renderWithAuth(<Chat />, mocks);
@@ -61,18 +69,23 @@ describe('Contacts screen', () => {
   });
 
   test('should test when search and filter icon pressed', async () => {
+    const navigateMock = jest.fn();
     const mockOnSearchHandler = jest.fn();
-    const mockOnFilter = jest.fn();
 
-    const { getByTestId } = renderWithAuth(<Chat />, mocks);
-    await waitFor(() => {
-      fireEvent.press(getByTestId('searchIcon'));
-      fireEvent.press(getByTestId('filterOutline'));
+    const { getByTestId } = renderWithAuth(<Chat navigation={{ navigate: navigateMock }} />, mocks);
+
+    await waitFor(async () => {
+      const searchIcon = await getByTestId('searchIcon');
+      const filterIcon = await getByTestId('filterIcon');
+      fireEvent.press(searchIcon);
+      expect(mockOnSearchHandler).toBeTruthy();
+
+      fireEvent.press(filterIcon);
+      expect(navigateMock).toHaveBeenCalledWith('ConversationFilter');
     });
-    expect(mockOnSearchHandler).toBeTruthy();
-    expect(mockOnFilter).toBeTruthy();
   });
-  test('Should test menu is visible on press or not ', async () => {
+
+  test('should test menu is visible on press or not ', async () => {
     const { getByTestId } = renderWithAuth(<Chat />, mocks);
     await waitFor(() => {
       fireEvent.press(getByTestId('menuButton'));

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { COLORS, SCALE, SIZES } from '../../constants';
+import { COLORS, SCALE, SIZES } from '../constants';
 
 export interface CollectionCardProps {
   id: string;
@@ -13,7 +13,7 @@ const CollectionCard: React.FC<CollectionCardProps> = ({ id, name }) => {
 
   return (
     <Pressable
-      testID="CollectionCard"
+      testID="collectionCard"
       onPress={() =>
         navigation.navigate('ChatScreen', {
           contact: { id, name },

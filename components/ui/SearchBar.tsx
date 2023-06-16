@@ -57,7 +57,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
           underlineColorAndroid="transparent"
         />
         <Ionicons
-          testID="filterOutline"
+          testID="filterIcon"
           name="filter-outline"
           style={styles.icon}
           onPress={() => navigation.navigate('ConversationFilter')}

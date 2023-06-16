@@ -16,7 +16,7 @@ const SavedSearches = () => {
   // };
   // const { loading, error, data } = useQuery(SAVED_SEARCH_QUERY, { variables });
 
-  async function onSearchHandler() {
+  const onSearchHandler = async () => {
     try {
       if (searchValue == '') return;
 
@@ -25,7 +25,7 @@ const SavedSearches = () => {
     } catch (error: any) {
       console.log(error);
     }
-  }
+  };
 
   // useEffect(() => {
   //   if (error) {
