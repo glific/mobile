@@ -1,55 +1,91 @@
-import React, { Dispatch, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import NotificationItem from '../components/NotificationItem';
-import { COLORS } from '../constants/theme';
+import { COLORS, SCALE, SIZES } from '../constants/theme';
 import NotificationHeader from '../components/headers/NotificationHeader';
 
 type notificationType = {
-  header: string;
-  message: string;
-  time: string;
+  id: number;
+  title: string;
+  description: string;
+  date: string;
   type: string;
 };
 
 const Notification: notificationType[] = [
   {
-    header: 'Glific stimulator four',
-    message: 'Sorry! 24 hrs window closed. Your message cannot be sent at this time.',
-    time: '15 min',
+    id: 1,
+    title: 'Glific stimulator four',
+    description: 'Sorry! 24 hrs window closed. Your message cannot be sent at this time.',
+    date: '15 min',
     type: 'Warning',
   },
   {
-    header: 'Glific stimulator four',
-    message:
+    id: 2,
+    title: 'Glific stimulator four',
+    description:
       'Sorry! 24 hrs window closed. Your message cannot be sent at this time. Hello How are you? Are you fine',
-    time: '20 min',
+    date: '20 min',
     type: 'Warning',
   },
   {
-    header: 'Glific stimulator four',
-    message: 'Sorry! 24 hrs window closed. Your message cannot be sent at this time.',
-    time: '20 min',
+    id: 3,
+    title: 'Glific stimulator four',
+    description: 'Sorry! 24 hrs window closed. Your message cannot be sent at this time.',
+    date: '20 min',
     type: 'Critical',
   },
   {
-    header: 'Glific stimulator four',
-    message: 'Sorry! 24 hrs window closed. Your message cannot be sent at this time.',
-    time: '1 hour',
+    id: 4,
+    title: 'Glific stimulator four',
+    description: 'Sorry! 24 hrs window closed. Your message cannot be sent at this time.',
+    date: '1 hour',
     type: 'Info',
   },
   {
-    header: 'Glific stimulator four',
-    message: 'Sorry! 24 hrs window closed. Your message cannot be sent at this time.',
-    time: '1 hour',
+    id: 5,
+    title: 'Glific stimulator four',
+    description: 'Sorry! 24 hrs window closed. Your message cannot be sent at this time.',
+    date: '1 hour',
     type: 'Info',
   },
 ];
 
+interface ITab {
+  id: number;
+  label: string;
+}
+
+const Tabs: ITab[] = [
+  { id: 1, label: 'All' },
+  { id: 2, label: 'Critical' },
+  { id: 3, label: 'Warning' },
+  { id: 4, label: 'Info' },
+];
+
+type RenderOptionProps = {
+  label: string;
+  selectedTab: ITab;
+  handlePress: () => void;
+};
+
+const RenderOption: React.FC<RenderOptionProps> = ({ label, selectedTab, handlePress }) => {
+  const isActive = label === selectedTab.label;
+  return (
+    <TouchableOpacity
+      onPress={handlePress}
+      style={isActive ? styles.activeTab : styles.inActiveTab}
+    >
+      <Text style={[styles.tabText, isActive ? styles.active : {}]}>{label}</Text>
+    </TouchableOpacity>
+  );
+};
+
 const Notifications = ({ navigation }) => {
   const [searchValue, setSearchValue] = useState('');
-  const [option, setOption] = useState('All');
+  const [activeTab, setActiveTab] = useState(Tabs[0]);
   const [notificationArray, setNotificationArray] = useState(Notification);
 
   const handleSearch = (text: string) => {
@@ -65,74 +101,33 @@ const Notifications = ({ navigation }) => {
     });
   }, [searchValue]);
 
-  return (
-    <View style={styles.mainContainer}>
-      <View style={styles.navBar}>
-        <RenderOption
-          label="All"
-          selectedOption={option}
-          setNotificationArray={setNotificationArray}
-          setOption={setOption}
-        />
-        <RenderOption
-          label="Critical"
-          selectedOption={option}
-          setNotificationArray={setNotificationArray}
-          setOption={setOption}
-        />
-        <RenderOption
-          label="Warning"
-          selectedOption={option}
-          setNotificationArray={setNotificationArray}
-          setOption={setOption}
-        />
-        <RenderOption
-          label="Info"
-          selectedOption={option}
-          setNotificationArray={setNotificationArray}
-          setOption={setOption}
-        />
-      </View>
-      <ScrollView>
-        {notificationArray.map((item) => {
-          return <NotificationItem key={notificationArray.indexOf(item)} notification={item} />;
-        })}
-      </ScrollView>
-    </View>
-  );
-};
-
-const RenderOption = ({
-  label,
-  selectedOption,
-  setNotificationArray,
-  setOption,
-}: {
-  label: string;
-  selectedOption: string;
-  setNotificationArray: Dispatch<React.SetStateAction<notificationType[]>>;
-  setOption: Dispatch<React.SetStateAction<string>>;
-}) => {
-  const handleOptionPress = (option: string) => {
-    setOption(option);
-    if (option === 'All') {
+  const handleTabPress = (tab: ITab) => {
+    setActiveTab(tab);
+    if (tab.label === 'All') {
       setNotificationArray(Notification);
     } else {
-      const filteredArray = filterArrayByField(option);
+      const filteredArray = Notification.filter((item) => item['type'] === tab.label);
       setNotificationArray(filteredArray);
     }
   };
 
-  function filterArrayByField(value: string): notificationType[] {
-    return Notification.filter((item) => item['type'] === value);
-  }
-
-  const isActive = label === selectedOption;
   return (
-    <View style={isActive ? styles.option : {}}>
-      <TouchableOpacity onPress={() => handleOptionPress(label)}>
-        <Text style={[styles.text, isActive ? styles.active : {}]}>{label}</Text>
-      </TouchableOpacity>
+    <View style={styles.mainContainer}>
+      <View style={styles.navBar}>
+        {Tabs.map((tab) => (
+          <RenderOption
+            key={tab.id}
+            label={tab.label}
+            selectedTab={activeTab}
+            handlePress={() => handleTabPress(tab)}
+          />
+        ))}
+      </View>
+      <ScrollView>
+        {notificationArray.map((item) => {
+          return <NotificationItem key={item.id} notification={item} />;
+        })}
+      </ScrollView>
     </View>
   );
 };
@@ -141,7 +136,21 @@ export default Notifications;
 
 const styles = StyleSheet.create({
   active: {
-    color: COLORS.darkDarkGreen,
+    color: COLORS.primary70,
+  },
+  activeTab: {
+    alignContent: 'center',
+    borderBottomColor: COLORS.primary400,
+    borderBottomWidth: SCALE(2),
+    height: SIZES.s60,
+    justifyContent: 'center',
+    marginHorizontal: SIZES.m16,
+  },
+  inActiveTab: {
+    alignContent: 'center',
+    height: SIZES.s60,
+    justifyContent: 'center',
+    marginHorizontal: SIZES.m16,
   },
   mainContainer: {
     flex: 1,
@@ -149,22 +158,15 @@ const styles = StyleSheet.create({
   navBar: {
     alignItems: 'center',
     backgroundColor: COLORS.lightGreen,
-    display: 'flex',
+    borderBottomWidth: SCALE(0.2),
+    borderColor: COLORS.darkGray,
     flexDirection: 'row',
-    height: 59,
-    justifyContent: 'space-between',
-    paddingLeft: 17,
-    paddingRight: 90,
+    height: SIZES.s60,
+    paddingLeft: SIZES.m16,
   },
-  option: {
-    borderBottomColor: COLORS.darkDarkGreen,
-    borderBottomWidth: 2,
-  },
-  text: {
-    color: COLORS.lightDarkGreen,
-    fontSize: 14,
+  tabText: {
+    color: COLORS.primary70,
+    fontSize: SIZES.f14,
     fontWeight: '700',
-    marginBottom: 11,
-    marginTop: 11,
   },
 });

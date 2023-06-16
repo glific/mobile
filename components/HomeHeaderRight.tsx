@@ -49,7 +49,7 @@ export default HomeHeaderRight;
 const styles = StyleSheet.create({
   badge: {
     alignItems: 'center',
-    backgroundColor: COLORS.red,
+    backgroundColor: COLORS.error100,
     borderRadius: SIZES.r10,
     height: SIZES.s18,
     justifyContent: 'center',

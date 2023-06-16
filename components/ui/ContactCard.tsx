@@ -1,6 +1,8 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+
+import formatTime from '../../utils/formatTime';
 import { COLORS, SCALE, SIZES } from '../../constants';
 import { getSessionTimeLeft } from '../../screens/ChatScreen';
 
@@ -9,39 +11,6 @@ export interface ContactProps {
   name: string;
   lastMessageAt: string;
   lastMessage: string | undefined;
-}
-
-function formatTime(dateObj: Date) {
-  const currentTime = new Date();
-  const timeDifference = currentTime - dateObj;
-
-  // Less than 30 minutes
-  if (timeDifference < 30 * 60 * 1000) {
-    const minutes = Math.floor(timeDifference / (60 * 1000));
-    return `${minutes} mins`;
-  }
-
-  // More than 30 minutes from current
-  if (timeDifference > 30 * 60 * 1000 && timeDifference < 24 * 60 * 60 * 1000) {
-    const options = { hour: 'numeric', minute: '2-digit', hour12: true };
-    return dateObj.toLocaleString('en-US', options);
-  }
-
-  // Yesterday
-  const yesterday = new Date(currentTime);
-  yesterday.setDate(currentTime.getDate() - 1);
-  if (
-    dateObj.getDate() === yesterday.getDate() &&
-    dateObj.getMonth() === yesterday.getMonth() &&
-    dateObj.getFullYear() === yesterday.getFullYear()
-  ) {
-    return 'Yesterday';
-  }
-
-  // Date format (6 Jun)
-  const options = { day: 'numeric', month: 'short' };
-  const formattedDate = dateObj.toLocaleString('en-US', options);
-  return formattedDate;
 }
 
 const Contact: React.FC<ContactProps> = ({ id, name, lastMessageAt, lastMessage }) => {
