@@ -22,7 +22,7 @@ const SavedSearches = () => {
 
       // TODO:
       console.log(searchValue);
-    } catch (error: any) {
+    } catch (error) {
       console.log(error);
     }
   };

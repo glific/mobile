@@ -84,7 +84,7 @@ const RenderOption: React.FC<RenderOptionProps> = ({ label, selectedTab, handleP
   );
 };
 
-const Notifications = ({ navigation }) => {
+const Notifications = ({ navigation }: { navigation: undefined }) => {
   const [searchValue, setSearchValue] = useState('');
   const [activeTab, setActiveTab] = useState(Tabs[0]);
   const [notificationArray, setNotificationArray] = useState(Notification);

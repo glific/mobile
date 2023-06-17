@@ -7,7 +7,12 @@ import Input from '../components/ui/Input';
 import MultiSelect from '../components/ui/MultiSelect';
 import DateRangeSelect from '../components/ui/DateRangeSelect';
 
-const options = [
+interface OptionData {
+  id: string;
+  label: string;
+}
+
+const options: OptionData[] = [
   { id: '1', label: 'Age Group 11 to 14' },
   { id: '2', label: 'Age Group  15 to 18' },
   { id: '3', label: 'Hindi' },
@@ -22,29 +27,29 @@ const options = [
 
 const ConversationFilter: React.FC = ({ navigation }: any) => {
   const [name, setName] = useState('');
-  const [selectLabels, setSelectLabels] = useState([]);
-  const [selectCollections, setSelectCollections] = useState([]);
-  const [selectStaffs, setSelectStaffs] = useState([]);
+  const [selectLabels, setSelectLabels] = useState<OptionData[]>([]);
+  const [selectCollections, setSelectCollections] = useState<OptionData[]>([]);
+  const [selectStaffs, setSelectStaffs] = useState<OptionData[]>([]);
   const [dateFrom, setDateFrom] = useState(null);
   const [dateTo, setDateTo] = useState(null);
 
   const nameChanged = (value: string) => {
     setName(value);
   };
-  const handleSelectLabel = (options: any) => {
+  const handleSelectLabel = (options: OptionData[]) => {
     setSelectLabels(options);
   };
-  const handleSelectCollection = (options: any) => {
+  const handleSelectCollection = (options: OptionData[]) => {
     setSelectCollections(options);
   };
-  const handleSelectStaff = (options: any) => {
+  const handleSelectStaff = (options: OptionData[]) => {
     setSelectStaffs(options);
   };
 
-  const onDateFrom = (date: Date) => {
+  const onDateFrom = (date: Date | null) => {
     setDateFrom(date);
   };
-  const onDateTo = (date: Date) => {
+  const onDateTo = (date: Date | null) => {
     setDateTo(date);
   };
 

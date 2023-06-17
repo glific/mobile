@@ -41,7 +41,7 @@ const Chat = ({ navigation }: Props) => {
 
       // TODO:
       console.log(searchValue);
-    } catch (error: any) {
+    } catch (error) {
       console.log(error);
     }
   }

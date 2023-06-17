@@ -3,6 +3,11 @@ import { View, Text, StyleSheet, Pressable, ScrollView, Image } from 'react-nati
 import { AntDesign } from '@expo/vector-icons';
 import { COLORS } from '../constants';
 
+type Props = {
+  navigation: any;
+  route: any;
+};
+
 const ContactProfile = ({ navigation, route }: Props) => {
   const { contact } = route.params;
   const [isMore, setIsMore] = useState(true);
