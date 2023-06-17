@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-
 import ContactList from '../components/ui/ContactList';
 import SearchBar from '../components/ui/SearchBar';
 import Storage from '../utils/asyncStorage';
+import { COLORS, SCALE, SIZES } from '../constants';
+import { Entypo } from '@expo/vector-icons';
 
 type RootStackParamList = {
   Contacts: undefined;
@@ -33,15 +34,24 @@ const Chat = ({ navigation }: Props) => {
 
   return (
     <View style={styles.mainContainer}>
-      <SearchBar setSearchValue={(value) => setSearchValue(value)} />
+      <SearchBar setSearchValue={(value) => setSearchValue(value)} width="75%" showMenu={true} />
+      <View style={styles.mainIconContainer}></View>
       <ContactList navigation={navigation} searchValue={searchValue} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  icon: {
+    color: COLORS.darkGray,
+    fontSize: SIZES.f20,
+  },
   mainContainer: {
     flex: 1,
+  },
+  mainIconContainer: {
+    marginLeft: -SIZES.m6,
+    width: '15%',
   },
 });
 

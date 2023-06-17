@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, waitFor } from '@testing-library/react-native';
+import { fireEvent, screen, waitFor } from '@testing-library/react-native';
 import Chat from '../screens/Chat';
 import renderWithAuth from '../utils/authProvider';
 import { GET_CONTACTS } from '../graphql/queries/Contact';
@@ -71,5 +71,13 @@ describe('Contacts screen', () => {
     });
     expect(mockOnSearchHandler).toBeTruthy();
     expect(mockOnFilter).toBeTruthy();
+  });
+  test('Should test menu is visible on press or not ', async () => {
+    const { getByTestId } = renderWithAuth(<Chat />, mocks);
+    await waitFor(() => {
+      fireEvent.press(getByTestId('menuButton'));
+    });
+    const menu = screen.queryByTestId('menuId');
+    expect(menu).toBeTruthy();
   });
 });
