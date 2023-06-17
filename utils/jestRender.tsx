@@ -1,8 +1,8 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
-import AuthContext from '../config/AuthContext';
 import { MockedProvider } from '@apollo/client/testing';
 import { NavigationContainer } from '@react-navigation/native';
+import AuthContext from '../config/AuthContext';
 
 const customRender = (
   component: React.ReactElement,

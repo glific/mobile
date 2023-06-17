@@ -3,38 +3,11 @@ import { waitFor } from '@testing-library/react-native';
 import customRender from '../utils/jestRender';
 
 import Collections from '../screens/Collections';
-import { GET_COLLECTIONS } from '../graphql/queries/Collection';
-
-const mockGroups = {
-  id: '1',
-  label: 'test group',
-};
-
-const mocks = [
-  {
-    request: {
-      query: GET_COLLECTIONS,
-      variables: {
-        filter: { term: '', searchGroup: true },
-        messageOpts: { limit: 1 },
-        contactOpts: { limit: 10 },
-      },
-    },
-    result: {
-      data: {
-        search: [
-          {
-            group: mockGroups,
-          },
-        ],
-      },
-    },
-  },
-];
+import { GET_COLLECTIONS_MOCK } from '../__mocks__/queries/collection';
 
 describe('Collections Screen', () => {
   test('renders the Collections screen', async () => {
-    const { getByTestId, findByText } = customRender(<Collections />, mocks);
+    const { getByTestId, findByText } = customRender(<Collections />, GET_COLLECTIONS_MOCK);
     const searchInput = getByTestId('searchInput');
     const searchIcon = getByTestId('searchIcon');
     const filterIcon = getByTestId('filterIcon');
