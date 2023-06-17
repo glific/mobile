@@ -3,15 +3,6 @@ import SavedSearches from '../screens/SavedSearches';
 import { fireEvent, waitFor } from '@testing-library/react-native';
 import renderWithAuth from '../utils/authProvider';
 
-jest.mock('@expo/vector-icons', () => {
-  const { View } = require('react-native');
-  return {
-    Ionicons: View,
-    AntDesign: View,
-    Entypo: View,
-  };
-});
-
 describe('Saved Searches Screen', () => {
   test('renders the saved searches screen', () => {
     const { getByTestId, getByText } = renderWithAuth(<SavedSearches />);

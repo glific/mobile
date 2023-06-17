@@ -4,15 +4,6 @@ import Chat from '../screens/Chat';
 import renderWithAuth from '../utils/authProvider';
 import { GET_CONTACTS } from '../graphql/queries/Contact';
 
-jest.mock('@expo/vector-icons', () => {
-  const { View } = require('react-native');
-  return {
-    Ionicons: View,
-    AntDesign: View,
-    Entypo: View,
-  };
-});
-
 const mockContacts = {
   id: '1',
   name: 'test',

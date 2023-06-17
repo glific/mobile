@@ -3,13 +3,6 @@ import { fireEvent } from '@testing-library/react-native';
 import ContactProfile from '../screens/ContactProfile';
 import renderWithAuth from '../utils/authProvider';
 
-jest.mock('@expo/vector-icons', () => {
-  const { View } = require('react-native');
-  return {
-    AntDesign: View,
-  };
-});
-
 describe('ContactProfile', () => {
   const contact = {
     name: 'John Doe',

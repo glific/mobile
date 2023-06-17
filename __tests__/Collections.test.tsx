@@ -4,15 +4,6 @@ import renderWithAuth from '../utils/authProvider';
 import { GET_COLLECTIONS } from '../graphql/queries/Collection';
 import { waitFor } from '@testing-library/react-native';
 
-jest.mock('@expo/vector-icons', () => {
-  const { View } = require('react-native');
-  return {
-    Ionicons: View,
-    AntDesign: View,
-    Entypo: View,
-  };
-});
-
 const mockGroups = {
   id: '1',
   label: 'test group',

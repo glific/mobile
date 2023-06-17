@@ -3,13 +3,6 @@ import { fireEvent } from '@testing-library/react-native';
 import Login from '../screens/Login';
 import renderWithAuth from '../utils/authProvider';
 
-jest.mock('react-native-phone-number-input', () => {
-  const { TextInput } = jest.requireActual('react-native');
-  return jest.fn().mockImplementation((props) => {
-    return <TextInput onChange={props.onChangeText} value={props.value} testID="mobileNumber" />;
-  });
-});
-
 describe('Login screen', () => {
   test('renders correctly', () => {
     const { getByTestId, getByText } = renderWithAuth(<Login />);

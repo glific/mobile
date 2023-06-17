@@ -4,8 +4,6 @@ import Server from '../screens/Server';
 import renderWithAuth from '../utils/authProvider';
 import AxiosService from '../config/axios';
 
-jest.mock('../config/axios');
-
 describe('Server screen', () => {
   test('renders correctly', () => {
     const { getByTestId, getByText } = renderWithAuth(<Server />);
