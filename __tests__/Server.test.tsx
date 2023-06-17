@@ -1,12 +1,13 @@
 import React from 'react';
 import { fireEvent, waitFor } from '@testing-library/react-native';
+import customRender from '../utils/jestRender';
+
 import Server from '../screens/Server';
-import renderWithAuth from '../utils/authProvider';
 import AxiosService from '../config/axios';
 
 describe('Server screen', () => {
   test('renders correctly', () => {
-    const { getByTestId, getByText } = renderWithAuth(<Server />);
+    const { getByTestId, getByText } = customRender(<Server />);
 
     const serverUrlInput = getByTestId('server');
     const continueButton = getByText('CONTINUE');
@@ -16,7 +17,7 @@ describe('Server screen', () => {
   });
 
   test('updates server URL correctly', async () => {
-    const { findByTestId, getByTestId } = renderWithAuth(<Server />);
+    const { findByTestId, getByTestId } = customRender(<Server />);
 
     const serverUrlInput = getByTestId('server');
 
@@ -30,7 +31,7 @@ describe('Server screen', () => {
   });
 
   test('displays error message for invalid server URL', () => {
-    const { getByTestId, getByText } = renderWithAuth(<Server />);
+    const { getByTestId, getByText } = customRender(<Server />);
 
     const serverUrlInput = getByTestId('server');
     const continueButton = getByText('CONTINUE');
@@ -46,7 +47,7 @@ describe('Server screen', () => {
     const navigateMock = jest.fn();
     AxiosService.updateServerURL = jest.fn();
 
-    const { getByTestId, getByText } = renderWithAuth(
+    const { getByTestId, getByText } = customRender(
       <Server navigation={{ navigate: navigateMock }} />
     );
 

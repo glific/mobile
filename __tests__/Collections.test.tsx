@@ -1,8 +1,9 @@
 import React from 'react';
-import Collections from '../screens/Collections';
-import renderWithAuth from '../utils/authProvider';
-import { GET_COLLECTIONS } from '../graphql/queries/Collection';
 import { waitFor } from '@testing-library/react-native';
+import customRender from '../utils/jestRender';
+
+import Collections from '../screens/Collections';
+import { GET_COLLECTIONS } from '../graphql/queries/Collection';
 
 const mockGroups = {
   id: '1',
@@ -33,7 +34,7 @@ const mocks = [
 
 describe('Collections Screen', () => {
   test('renders the Collections screen', async () => {
-    const { getByTestId, findByText } = renderWithAuth(<Collections />, mocks);
+    const { getByTestId, findByText } = customRender(<Collections />, mocks);
     const searchInput = getByTestId('searchInput');
     const searchIcon = getByTestId('searchIcon');
     const filterIcon = getByTestId('filterIcon');

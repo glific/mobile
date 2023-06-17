@@ -1,16 +1,17 @@
 import React from 'react';
 import { fireEvent } from '@testing-library/react-native';
+import customRender from '../utils/jestRender';
+
 import ContactProfile from '../screens/ContactProfile';
-import renderWithAuth from '../utils/authProvider';
+
+const contact = {
+  name: 'John Doe',
+  lastMessageAt: '2023-06-15',
+};
 
 describe('ContactProfile', () => {
-  const contact = {
-    name: 'John Doe',
-    lastMessageAt: '2023-06-15',
-  };
-
   test('renders the contact profile with correct information', () => {
-    const { getByTestId, getByText } = renderWithAuth(
+    const { getByTestId, getByText } = customRender(
       <ContactProfile route={{ params: { contact } }} />
     );
 
@@ -40,7 +41,7 @@ describe('ContactProfile', () => {
 
   test('calls the navigation.goBack() function when the back button is pressed', () => {
     const navigationMock = { goBack: jest.fn() };
-    const { getByTestId } = renderWithAuth(
+    const { getByTestId } = customRender(
       <ContactProfile navigation={navigationMock} route={{ params: { contact } }} />
     );
 

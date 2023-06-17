@@ -1,11 +1,12 @@
 import React from 'react';
 import { fireEvent } from '@testing-library/react-native';
+import customRender from '../utils/jestRender';
+
 import Login from '../screens/Login';
-import renderWithAuth from '../utils/authProvider';
 
 describe('Login screen', () => {
   test('renders correctly', () => {
-    const { getByTestId, getByText } = renderWithAuth(<Login />);
+    const { getByTestId, getByText } = customRender(<Login />);
 
     const mobileInput = getByTestId('mobileNumber');
     const passwordInput = getByTestId('password');
@@ -14,7 +15,7 @@ describe('Login screen', () => {
     expect(mobileInput).toBeDefined();
     expect(passwordInput).toBeDefined();
     expect(loginButton).toBeDefined();
-    // const { getByTestId, getByPlaceholderText, getByText } = renderWithAuth(<Login />);
+    // const { getByTestId, getByPlaceholderText, getByText } = customRender(<Login />);
 
     // // Check if important components are rendered
     // expect(getByTestId('mobileNumber')).toBeDefined();
@@ -25,7 +26,7 @@ describe('Login screen', () => {
   });
 
   test('updates input values correctly', () => {
-    const { getByTestId } = renderWithAuth(<Login />);
+    const { getByTestId } = customRender(<Login />);
 
     const mobileInput = getByTestId('mobileNumber');
     const passwordInput = getByTestId('password');
@@ -38,7 +39,7 @@ describe('Login screen', () => {
   });
 
   test('error message when empty mobile number input', async () => {
-    const { getByTestId, getByText } = renderWithAuth(<Login />);
+    const { getByTestId, getByText } = customRender(<Login />);
 
     const passwordInput = getByTestId('password');
     fireEvent.changeText(passwordInput, 'secret1234');
@@ -51,7 +52,7 @@ describe('Login screen', () => {
   });
 
   test('error message when empty password input', async () => {
-    const { getByTestId, getByText } = renderWithAuth(<Login />);
+    const { getByTestId, getByText } = customRender(<Login />);
 
     const mobileInput = getByTestId('mobileNumber');
     fireEvent.changeText(mobileInput, '917834811114');
@@ -66,7 +67,7 @@ describe('Login screen', () => {
   // test("navigates to Chat screen on successful submit", async () => {
   //   const navigationMock = { navigate: jest.fn() };
 
-  //   const { getByTestId, getByText } = renderWithAuth(<Login />);
+  //   const { getByTestId, getByText } = customRender(<Login />);
 
   //   const mobileInput = getByTestId("mobileNumber");
   //   const passwordInput = getByTestId("password");

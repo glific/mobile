@@ -1,7 +1,8 @@
 import React from 'react';
 import { fireEvent, screen, waitFor } from '@testing-library/react-native';
+import customRender from '../utils/jestRender';
+
 import Chat from '../screens/Chat';
-import renderWithAuth from '../utils/authProvider';
 import { GET_CONTACTS } from '../graphql/queries/Contact';
 
 const mockContacts = {
@@ -69,7 +70,7 @@ const withSearchMocks = [
 
 describe('Chat screen', () => {
   test('renders correctly', async () => {
-    const { getByTestId, findByText } = renderWithAuth(<Chat />, noSearchMocks);
+    const { getByTestId, findByText } = customRender(<Chat />, noSearchMocks);
     const searchInput = getByTestId('searchInput');
     const searchIcon = getByTestId('searchIcon');
     const filterIcon = getByTestId('filterIcon');
@@ -90,7 +91,7 @@ describe('Chat screen', () => {
   });
 
   test('updates search correctly', async () => {
-    const { getByTestId } = renderWithAuth(<Chat />, withSearchMocks);
+    const { getByTestId } = customRender(<Chat />, withSearchMocks);
 
     const searchInput = getByTestId('searchInput');
     fireEvent.changeText(searchInput, 'test search');
@@ -104,7 +105,7 @@ describe('Chat screen', () => {
     const navigateMock = jest.fn();
     const mockOnSearchHandler = jest.fn();
 
-    const { getByTestId } = renderWithAuth(
+    const { getByTestId } = customRender(
       <Chat navigation={{ navigate: navigateMock }} />,
       withSearchMocks
     );
@@ -119,7 +120,7 @@ describe('Chat screen', () => {
   });
 
   test('should test menu is visible on press or not ', async () => {
-    const { getByTestId } = renderWithAuth(<Chat />, noSearchMocks);
+    const { getByTestId } = customRender(<Chat />, noSearchMocks);
     await waitFor(() => {
       fireEvent.press(getByTestId('menuIcon'));
     });

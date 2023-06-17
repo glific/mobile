@@ -1,11 +1,12 @@
 import React from 'react';
-import SavedSearches from '../screens/SavedSearches';
 import { fireEvent, waitFor } from '@testing-library/react-native';
-import renderWithAuth from '../utils/authProvider';
+import customRender from '../utils/jestRender';
+
+import SavedSearches from '../screens/SavedSearches';
 
 describe('Saved Searches Screen', () => {
   test('renders the saved searches screen', () => {
-    const { getByTestId, getByText } = renderWithAuth(<SavedSearches />);
+    const { getByTestId, getByText } = customRender(<SavedSearches />);
 
     const searchInput = getByTestId('searchInput');
     const savedSearchesText = getByText('No Saved Searches');
@@ -16,7 +17,7 @@ describe('Saved Searches Screen', () => {
 
   test('should search when searchValue not empty', async () => {
     const consoleSpy = jest.spyOn(console, 'log');
-    const { getByTestId } = renderWithAuth(<SavedSearches />);
+    const { getByTestId } = customRender(<SavedSearches />);
 
     const searchInput = getByTestId('searchInput');
     const searchButton = getByTestId('searchIcon');
@@ -32,7 +33,7 @@ describe('Saved Searches Screen', () => {
 
   test('should not search when searchValue empty', async () => {
     const consoleSpy = jest.spyOn(console, 'log');
-    const { getByTestId } = renderWithAuth(<SavedSearches />);
+    const { getByTestId } = customRender(<SavedSearches />);
 
     const searchInput = getByTestId('searchInput');
     const searchButton = getByTestId('searchIcon');

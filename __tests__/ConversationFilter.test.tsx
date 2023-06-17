@@ -1,11 +1,12 @@
 import React from 'react';
 import { fireEvent } from '@testing-library/react-native';
+import customRender from '../utils/jestRender';
+
 import ConversationFilter from '../screens/ConversationFilter';
-import renderWithAuth from '../utils/authProvider';
 
 describe('ConversationFilter', () => {
   test('renders all input fields and buttons', () => {
-    const { getByText, getByTestId } = renderWithAuth(<ConversationFilter />);
+    const { getByText, getByTestId } = customRender(<ConversationFilter />);
 
     const labelInput = getByTestId('labelInput');
     const labelSelect = getByTestId('labelSelect');
@@ -29,7 +30,7 @@ describe('ConversationFilter', () => {
   });
 
   test('should update when label input change', () => {
-    const { getByTestId } = renderWithAuth(<ConversationFilter />);
+    const { getByTestId } = customRender(<ConversationFilter />);
 
     const labelInput = getByTestId('labelInput');
     fireEvent.changeText(labelInput, 'John Doe');
@@ -38,7 +39,7 @@ describe('ConversationFilter', () => {
   });
 
   // test('should update state when multi-select options change', () => {
-  //   const { getByLabelText } = renderWithAuth(<ConversationFilter />);
+  //   const { getByLabelText } = customRender(<ConversationFilter />);
 
   //   // Update labels multi-select
   //   const labelsMultiSelect = getByLabelText('Includes Labels');
@@ -62,7 +63,7 @@ describe('ConversationFilter', () => {
 
   test('calls the appropriate callbacks when buttons are pressed', () => {
     const navigationMock = { goBack: jest.fn() };
-    const { getByText } = renderWithAuth(<ConversationFilter navigation={navigationMock} />);
+    const { getByText } = customRender(<ConversationFilter navigation={navigationMock} />);
 
     const cancelButton = getByText('CANCEL');
     const applyButton = getByText('APPLY');
