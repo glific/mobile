@@ -3,6 +3,13 @@ import { fireEvent } from '@testing-library/react-native';
 import ContactProfile from '../screens/ContactProfile';
 import renderWithAuth from '../utils/authProvider';
 
+jest.mock('@expo/vector-icons', () => {
+  const { View } = require('react-native');
+  return {
+    AntDesign: View,
+  };
+});
+
 describe('ContactProfile', () => {
   const contact = {
     name: 'John Doe',
@@ -38,14 +45,14 @@ describe('ContactProfile', () => {
     expect(statusMessageText).toBeDefined();
   });
 
-  // test('calls the navigation.goBack() function when the back button is pressed', () => {
-  //   const navigationMock = { goBack: jest.fn() };
-  //   const { getByTestId } = renderWithAuth(
-  //     <ContactProfile navigation={navigationMock} route={{ params: { contact } }} />
-  //   );
+  test('calls the navigation.goBack() function when the back button is pressed', () => {
+    const navigationMock = { goBack: jest.fn() };
+    const { getByTestId } = renderWithAuth(
+      <ContactProfile navigation={navigationMock} route={{ params: { contact } }} />
+    );
 
-  //   const backButton = getByTestId('backButton');
-  //   fireEvent.press(backButton);
-  //   expect(navigationMock.goBack).toHaveBeenCalled();
-  // });
+    const backButton = getByTestId('backButton');
+    fireEvent.press(backButton);
+    expect(navigationMock.goBack).toHaveBeenCalled();
+  });
 });
