@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { COLORS } from '../../constants';
+import { COLORS, SIZES } from '../../constants';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 interface Props {
-  selectedDateFrom: string;
-  selectedDateTo: string;
-  onSelectDateFrom: (text: string) => void;
-  onSelectDateTo: (text: string) => void;
+  selectedDateFrom: Date | null;
+  selectedDateTo: Date | null;
+  onSelectDateFrom: (date: Date | null) => void;
+  onSelectDateTo: (date: Date | null) => void;
   label: string;
 }
 
@@ -21,60 +21,67 @@ const DateRangeSelect: React.FC<Props> = ({
 }) => {
   const [isVisibleFromPicker, setIsVisibleFromPicker] = useState(false);
   const [isVisibleToPicker, setIsVisibleToPicker] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleDateFromVisible = () => {
-    setIsVisibleFromPicker(!isVisibleFromPicker);
+  const handleDateVisible = (dateType: string) => {
+    if (dateType === 'from') setIsVisibleFromPicker(!isVisibleFromPicker);
+    else setIsVisibleToPicker(!isVisibleToPicker);
   };
-  const handleDateToVisible = () => {
-    setIsVisibleToPicker(!isVisibleToPicker);
-  };
 
-  const handleDate = (date: object, input: string) => {
-    const dateArr = new Date(date).toISOString().split('T')[0].split('-');
-
-    if (input == 'from') {
-      onSelectDateFrom(`${dateArr[2]}/${dateArr[1]}/${dateArr[0].slice(2)}`);
+  const handleDate = (date: Date, input: string) => {
+    if (input === 'from') {
+      if (selectedDateTo) {
+        onSelectDateTo(null);
+      }
+      onSelectDateFrom(date);
     } else {
-      onSelectDateTo(`${dateArr[2]}/${dateArr[1]}/${dateArr[0].slice(2)}`);
+      if (selectedDateFrom <= date) {
+        setErrorMessage('');
+        onSelectDateTo(date);
+      } else {
+        onSelectDateTo(null);
+        setErrorMessage('To date should be >= selected from date.');
+      }
     }
+  };
+
+  const formatDate = (date: Date) => {
+    const dateArr = new Date(date).toISOString().split('T')[0].split('-');
+    return `${dateArr[2]}/${dateArr[1]}/${dateArr[0].slice(2)}`;
+  };
+
+  const renderDateButton = (date: Date | null, dateType: 'from' | 'to') => {
+    return (
+      <Pressable
+        testID={`${dateType}Pick`}
+        style={styles.dateButton}
+        onPress={() => handleDateVisible(dateType)}
+      >
+        <DateTimePickerModal
+          isVisible={dateType === 'from' ? isVisibleFromPicker : isVisibleToPicker}
+          mode="date"
+          onConfirm={(date) => handleDate(date, dateType)}
+          onCancel={() => handleDateVisible(dateType)}
+        />
+        {!date ? (
+          <Text style={styles.placeholderText}>Date {dateType}</Text>
+        ) : (
+          <Text style={styles.dateText}>{formatDate(date)}</Text>
+        )}
+        <MaterialCommunityIcons name="calendar" style={styles.calendarIcon} />
+      </Pressable>
+    );
   };
 
   return (
     <View style={styles.mainContainer}>
       <Text style={styles.label}>{label}</Text>
       <View style={styles.datesContainer}>
-        <Pressable testID="dateFromPick" style={styles.dateButton} onPress={handleDateFromVisible}>
-          <DateTimePickerModal
-            isVisible={isVisibleFromPicker}
-            mode="date"
-            onConfirm={(date) => handleDate(date, 'from')}
-            onCancel={handleDateFromVisible}
-          />
-          {selectedDateFrom == '' ? (
-            <Text style={styles.placeholderText}>Date from</Text>
-          ) : (
-            <Text style={styles.dateText}>{selectedDateFrom}</Text>
-          )}
-          <MaterialCommunityIcons name="calendar" style={styles.calendarIcon} />
-        </Pressable>
-
+        {renderDateButton(selectedDateFrom, 'from')}
         <View style={styles.divideSpace} />
-
-        <Pressable testID="dateToPick" style={styles.dateButton} onPress={handleDateToVisible}>
-          <DateTimePickerModal
-            isVisible={isVisibleToPicker}
-            mode="date"
-            onConfirm={(date) => handleDate(date, 'to')}
-            onCancel={handleDateToVisible}
-          />
-          {selectedDateTo == '' ? (
-            <Text style={styles.placeholderText}>Date to</Text>
-          ) : (
-            <Text style={styles.dateText}>{selectedDateTo}</Text>
-          )}
-          <MaterialCommunityIcons name="calendar" style={styles.calendarIcon} />
-        </Pressable>
+        {renderDateButton(selectedDateTo, 'to')}
       </View>
+      {errorMessage !== '' && <Text style={styles.errorLabel}>{errorMessage}</Text>}
     </View>
   );
 };
@@ -106,6 +113,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   divideSpace: { width: '4%' },
+  errorLabel: {
+    color: COLORS.error100,
+    fontSize: SIZES.f14,
+    marginTop: SIZES.m6,
+  },
   label: {
     color: COLORS.black,
     fontSize: 14,

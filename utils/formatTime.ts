@@ -9,7 +9,9 @@ function formatTime(dateObj: Date): string {
   }
 
   // More than 30 minutes from current
-  if (timeDifference > 30 * 60 * 1000 && timeDifference < 24 * 60 * 60 * 1000) {
+  const midnightTime = new Date().setHours(0, 0, 0, 0);
+
+  if (timeDifference > 30 * 60 * 1000 && timeDifference < midnightTime - Date.now()) {
     const options: Intl.DateTimeFormatOptions = {
       hour: 'numeric',
       minute: '2-digit',

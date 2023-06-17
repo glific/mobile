@@ -25,8 +25,8 @@ const ConversationFilter: React.FC = ({ navigation }: any) => {
   const [selectLabels, setSelectLabels] = useState([]);
   const [selectCollections, setSelectCollections] = useState([]);
   const [selectStaffs, setSelectStaffs] = useState([]);
-  const [dateFrom, setDateFrom] = useState('');
-  const [dateTo, setDateTo] = useState('');
+  const [dateFrom, setDateFrom] = useState(null);
+  const [dateTo, setDateTo] = useState(null);
 
   const nameChanged = (value: string) => {
     setName(value);
@@ -41,12 +41,10 @@ const ConversationFilter: React.FC = ({ navigation }: any) => {
     setSelectStaffs(options);
   };
 
-  const onDateFrom = (date: string) => {
-    console.log(date);
+  const onDateFrom = (date: Date) => {
     setDateFrom(date);
   };
-  const onDateTo = (date: string) => {
-    console.log(date);
+  const onDateTo = (date: Date) => {
     setDateTo(date);
   };
 

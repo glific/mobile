@@ -11,8 +11,8 @@ describe('ConversationFilter', () => {
     const labelSelect = getByTestId('labelSelect');
     const collectionSelect = getByTestId('collectionSelect');
     const staffSelect = getByTestId('staffSelect');
-    const dateFromPick = getByTestId('dateFromPick');
-    const dateToPick = getByTestId('dateToPick');
+    const dateFromPick = getByTestId('fromPick');
+    const dateToPick = getByTestId('toPick');
 
     expect(labelInput).toBeDefined();
     expect(labelSelect).toBeDefined();
