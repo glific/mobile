@@ -35,7 +35,7 @@ const NotificationItem = (props: { notification: notificationType }) => {
       </View>
       <View style={styles.container2}>
         <Text style={styles.header}>{notification.header}</Text>
-        <Text>{notification.message}</Text>
+        <Text numberOfLines={3}>{notification.message}</Text>
         <Text style={styles.time}>{notification.time}</Text>
       </View>
     </View>
