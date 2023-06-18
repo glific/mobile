@@ -1,6 +1,5 @@
 import React from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-
 import Chat from '../screens/Chat';
 import Collections from '../screens/Collections';
 import SavedSearches from '../screens/SavedSearches';

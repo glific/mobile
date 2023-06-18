@@ -5,6 +5,7 @@ import { COLORS, SIZES } from '../../constants';
 
 const CollectionListItem: React.FC<CollectionListItemProps> = ({ id, name }) => {
   const navigation = useNavigation();
+  // const { loading, error, data } = useQuery(GET_SAVED_SEARCH, { variables });
 
   return (
     <Pressable

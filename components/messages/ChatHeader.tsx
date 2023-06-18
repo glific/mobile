@@ -53,7 +53,7 @@ const ChatHeader: React.FC<DataProps> = ({ contact }) => {
       <Pressable
         style={styles.innerContainer}
         android_ripple={{ color: COLORS.primary70 }}
-        onPress={() => navigation.navigate('ContactProfile', { contact })}
+        onPress={() => navigation.navigate('ContactProfile', { contact :contact})}
       >
         <View>
           <Image
