@@ -17,17 +17,34 @@ type notificationType = {
 let Notification: notificationType[] = [];
 
 const formatNotifications = (notifications: object[]): notificationType[] => {
-  return notifications.map((notification) => {
+  const formattedNotifications: notificationType[] = notifications.map((notification) => {
     const { entity, message, updatedAt, severity } = notification;
     const { name, phone } = JSON.parse(entity);
     return {
       header: name || phone,
       message,
-      time: getTimeDifference(updatedAt),
+      time: updatedAt,
       type: severity.replace(/"/g, ''),
     };
   });
+
+  // Sort the formatted notifications based on time in descending order (recent on first)
+  const sortedNotifications = formattedNotifications.sort((a, b) => {
+    const timeA = new Date(a.time).getTime();
+    const timeB = new Date(b.time).getTime();
+    return timeB - timeA;
+  });
+
+  return sortedNotifications.map((notification) => {
+    const { time, ...rest } = notification;
+    return {
+      ...rest,
+      time: getTimeDifference(time), // format time into minutes, hrs, days etc.
+    };
+  });
 };
+
+
 
 const Notifications = () => {
   const [option, setOption] = useState('All');
