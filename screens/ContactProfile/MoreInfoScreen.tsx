@@ -15,7 +15,7 @@ const MoreInfoScreen = ({ navigation }: Props) => {
         />
         <Text style={{ color: COLORS.white }}>More Information</Text>
       </View>
-      <View style={styles.subContainer} testID='mainContainer'>
+      <View style={styles.subContainer} testID="mainContainer">
         <Text style={styles.subHeading}>Provider status</Text>
         <Text style={styles.text}>Can send template messages</Text>
         <Text style={styles.subHeading}>Status</Text>

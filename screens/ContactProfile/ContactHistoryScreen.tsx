@@ -39,7 +39,7 @@ const ContactHistoryScreen = ({ navigation, route }: Props) => {
               <View style={styles.mainListContainer}>
                 {data.contactHistory.map((item) => (
                   <View key={item.id} style={styles.subContainer}>
-                    <Text style={styles.text} testID='eventLabel'>
+                    <Text style={styles.text} testID="eventLabel">
                       {item.eventLabel} {}
                     </Text>
                     <Text style={styles.textTime}>{item.eventDatetime}</Text>

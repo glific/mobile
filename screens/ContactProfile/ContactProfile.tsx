@@ -42,7 +42,7 @@ const ContactProfile = ({ navigation, route }: Props) => {
           {contact.name}
         </Text>
       </Pressable>
-      <View style={styles.subContainer} testID='mainContainer'>
+      <View style={styles.subContainer} testID="mainContainer">
         <Text style={styles.subHeading}>
           Phone{'\n'}
           <Text style={styles.text}>+919876543210</Text>

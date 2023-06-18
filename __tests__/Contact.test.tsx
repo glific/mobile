@@ -19,29 +19,29 @@ jest.mock('@react-navigation/native', () => {
 });
 
 describe('Contact Proifile', () => {
-//   const mocks = [
-//     {
-//       request: {
-//         query: GET_CONTACT_HISTORY,
-//         variables: {
-//           filter: { contactId: undefined },
-//           opts: { limit: 10, offset: 0, order: 'DESC' },
-//         },
-//       },
-//       response: {
-//         data: {
-//                 contactHistory: [
-//                     {
-//                         id: '19',
-//                         eventLabel: 'Test',
-//                         eventDateTime: '12/12/12',
-//                     },
-//                 ],
-            
-//         },
-//       },
-//     },
-//   ];
+  //   const mocks = [
+  //     {
+  //       request: {
+  //         query: GET_CONTACT_HISTORY,
+  //         variables: {
+  //           filter: { contactId: undefined },
+  //           opts: { limit: 10, offset: 0, order: 'DESC' },
+  //         },
+  //       },
+  //       response: {
+  //         data: {
+  //                 contactHistory: [
+  //                     {
+  //                         id: '19',
+  //                         eventLabel: 'Test',
+  //                         eventDateTime: '12/12/12',
+  //                     },
+  //                 ],
+
+  //         },
+  //       },
+  //     },
+  //   ];
   const contact = {
     params: {
       contact: {
@@ -60,12 +60,12 @@ describe('Contact Proifile', () => {
     expect(screen.getByTestId('mainContainer')).toBeTruthy();
   });
 
-//   test('contact history screen', async () => {
-//     render(
-//       <MockedProvider mocks={mocks} addTypename={false}>
-//         <ContactHistoryScreen route={contact} navigtion={mockNavigate} />
-//       </MockedProvider>
-//     );
-//     expect(await screen.getByTestId('backButton')).toBeTruthy();
-//   });
+  //   test('contact history screen', async () => {
+  //     render(
+  //       <MockedProvider mocks={mocks} addTypename={false}>
+  //         <ContactHistoryScreen route={contact} navigtion={mockNavigate} />
+  //       </MockedProvider>
+  //     );
+  //     expect(await screen.getByTestId('backButton')).toBeTruthy();
+  //   });
 });
