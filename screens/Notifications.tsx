@@ -3,6 +3,9 @@ import React, { Dispatch, useState } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import NotificationItem from '../components/NotificationItem';
 import { COLORS } from '../constants/theme';
+import { GET_NOTIFICATIONS } from '../graphql/queries/Notification';
+import { useQuery } from '@apollo/client';
+import { getTimeDifference } from '../utils/timeDuration';
 
 type notificationType = {
   header: string;
@@ -10,42 +13,32 @@ type notificationType = {
   time: string;
   type: string;
 };
-const Notification: notificationType[] = [
-  {
-    header: 'Glific stimulator four',
-    message: 'Sorry! 24 hrs window closed. Your message cannot be sent at this time.',
-    time: '15 min',
-    type: 'Warning',
-  },
-  {
-    header: 'Glific stimulator four',
-    message:
-      'Sorry! 24 hrs window closed. Your message cannot be sent at this time. Hello How are you? Are you fine',
-    time: '20 min',
-    type: 'Warning',
-  },
-  {
-    header: 'Glific stimulator four',
-    message: 'Sorry! 24 hrs window closed. Your message cannot be sent at this time.',
-    time: '20 min',
-    type: 'Critical',
-  },
-  {
-    header: 'Glific stimulator four',
-    message: 'Sorry! 24 hrs window closed. Your message cannot be sent at this time.',
-    time: '1 hour',
-    type: 'Info',
-  },
-  {
-    header: 'Glific stimulator four',
-    message: 'Sorry! 24 hrs window closed. Your message cannot be sent at this time.',
-    time: '1 hour',
-    type: 'Info',
-  },
-];
+
+let Notification: notificationType[] = [];
+
+const formatNotifications = (notifications: object[]): notificationType[] => {
+  return notifications.map((notification) => {
+    const { entity, message, updatedAt, severity } = notification;
+    const { name, phone } = JSON.parse(entity);
+    return {
+      header: name || phone,
+      message,
+      time: getTimeDifference(updatedAt),
+      type: severity.replace(/"/g, ''),
+    };
+  });
+};
+
 const Notifications = () => {
   const [option, setOption] = useState('All');
   const [notificationArray, setNotificationArray] = useState(Notification);
+
+  useQuery(GET_NOTIFICATIONS, {
+    onCompleted: (data) => {
+      Notification = formatNotifications(data.notifications);
+      setNotificationArray(Notification);
+    },
+  });
 
   return (
     <View style={styles.mainContainer}>
