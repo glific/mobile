@@ -31,6 +31,7 @@ export const COLORS = {
   infoBackground: '#D7E6EF',
   infoBorder: '#218AFF',
   red: '#ff0000',
+  transparent: 'transparent',
 };
 
 export const SIZES = {

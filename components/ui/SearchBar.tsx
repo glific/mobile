@@ -6,7 +6,7 @@ import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
 type SearchBarProps = {
   setSearchValue: () => void;
   width: string;
-  showMenu: Boolean;
+  showMenu: boolean;
 };
 
 const SearchBar: React.FC<SearchBarProps> = (props: SearchBarProps) => {
@@ -119,40 +119,13 @@ const SearchBar: React.FC<SearchBarProps> = (props: SearchBarProps) => {
 export default SearchBar;
 
 const styles = StyleSheet.create({
-  icon: {
-    color: COLORS.darkGray,
-    marginHorizontal: 2,
-  },
-  input: {
-    backgroundColor: COLORS.white,
-    fontSize: 16,
-    paddingHorizontal: 6,
-    paddingVertical: 8,
-  },
-  filterText: {
-    color: COLORS.black,
-    fontSize: SIZES.f16,
-  },
-  inputContainer: {
+  filter: {
     alignItems: 'center',
-    alignSelf: 'center',
-    justifyContent: 'space-evenly',
-    backgroundColor: COLORS.white,
-    borderColor: COLORS.darkGray,
-    borderRadius: 10,
-    borderWidth: 0.75,
     flexDirection: 'row',
-    marginLeft: SIZES.s16,
-    paddingHorizontal: 12,
-  },
-  mainContainer: {
-    backgroundColor: COLORS.white,
-    borderBottomWidth: 0.2,
-    borderColor: COLORS.darkGray,
-    borderTopWidth: 0.2,
-    flexDirection: 'row',
-    paddingVertical: 12,
-    paddingRight: 20,
+    height: SIZES.s40,
+    justifyContent: 'space-between',
+    paddingHorizontal: SIZES.m12,
+    width: SIZES.s200,
   },
   filterBackground: {
     height: SIZES.height + 100,
@@ -162,23 +135,9 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width + 20,
     zIndex: -50,
   },
-  iconContainer: {
-    alignItems: 'center',
-    borderRadius: SIZES.m12,
-    height: SIZES.s40,
-    justifyContent: 'center',
-    borderColor: COLORS.darkGray,
-    marginLeft: SIZES.m6,
-    width: SIZES.s36,
-    borderWidth: 1,
-  },
-  filter: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    height: SIZES.s40,
-    justifyContent: 'space-between',
-    paddingHorizontal: SIZES.m12,
-    width: SIZES.s200,
+  filterText: {
+    color: COLORS.black,
+    fontSize: SIZES.f16,
   },
   filtersContainer: {
     backgroundColor: COLORS.white,
@@ -190,8 +149,49 @@ const styles = StyleSheet.create({
     right: SIZES.m16,
     shadowColor: COLORS.black,
     shadowOffset: { height: SIZES.r4, width: 0 },
-    zIndex: -50,
     shadowRadius: SIZES.r4,
     width: SIZES.s200,
+    zIndex: -50,
+  },
+  icon: {
+    color: COLORS.darkGray,
+    marginHorizontal: 2,
+  },
+  iconContainer: {
+    alignItems: 'center',
+    borderColor: COLORS.darkGray,
+    borderRadius: SIZES.m12,
+    borderWidth: 1,
+    height: SIZES.s40,
+    justifyContent: 'center',
+    marginLeft: SIZES.m6,
+    width: SIZES.s36,
+  },
+  input: {
+    backgroundColor: COLORS.white,
+    fontSize: 16,
+    paddingHorizontal: 6,
+    paddingVertical: 8,
+  },
+  inputContainer: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: COLORS.white,
+    borderColor: COLORS.darkGray,
+    borderRadius: 10,
+    borderWidth: 0.75,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    marginLeft: SIZES.s16,
+    paddingHorizontal: 12,
+  },
+  mainContainer: {
+    backgroundColor: COLORS.white,
+    borderBottomWidth: 0.2,
+    borderColor: COLORS.darkGray,
+    borderTopWidth: 0.2,
+    flexDirection: 'row',
+    paddingRight: 20,
+    paddingVertical: 12,
   },
 });
