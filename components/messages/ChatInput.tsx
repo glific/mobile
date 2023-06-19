@@ -80,17 +80,30 @@ const ChatInput: React.FC<ChatInputProps> = ({ contact }) => {
             style={[styles.showIcon, !showOptions && { transform: [{ rotate: '180deg' }] }]}
             onPress={() => {
               setShowOptions(!showOptions);
+              setShowEmoji(false);
             }}
           />
           <View style={styles.inputAndEmoji}>
-            <MaterialCommunityIcons
-              name={'emoticon-outline'}
-              style={styles.emoticonButton}
-              onPress={() => {
-                setShowEmoji(!showEmoji);
-                inputRef?.current?.blur();
-              }}
-            />
+            {showEmoji ? (
+              <MaterialCommunityIcons
+                name={'keyboard'}
+                style={styles.emoticonButton}
+                onPress={() => {
+                  setShowEmoji(!showEmoji);
+                  inputRef?.current?.blur();
+                }}
+              />
+            ) : (
+              <MaterialCommunityIcons
+                name={'emoticon-outline'}
+                style={styles.emoticonButton}
+                onPress={() => {
+                  setShowOptions(true);
+                  setShowEmoji(!showEmoji);
+                  inputRef?.current?.blur();
+                }}
+              />
+            )}
             <TextInput
               ref={inputRef}
               multiline
