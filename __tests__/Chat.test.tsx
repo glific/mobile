@@ -16,7 +16,7 @@ describe('Contacts screen', () => {
       request: {
         query: GET_CONTACTS,
         variables: {
-          filter: {},
+          filter: {term:""},
           messageOpts: { limit: 1 },
           contactOpts: { limit: 10 },
         },

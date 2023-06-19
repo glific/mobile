@@ -62,14 +62,15 @@ const SearchBar: React.FC<SearchBarProps> = (props: SearchBarProps) => {
 
   return (
     <View style={styles.mainContainer}>
-      <View style={styles.inputContainer}>
+      <View style={styles.inputContainer} >
+        <View testID="searchIcon">
         <AntDesign
-          testID="searchIcon"
           name="search1"
           size={20}
           style={styles.icon}
           onPress={onSearchHandler}
         />
+        </View>
         <TextInput
           testID="searchInput"
           style={[styles.input, { width: props.width }]}
@@ -82,13 +83,14 @@ const SearchBar: React.FC<SearchBarProps> = (props: SearchBarProps) => {
           selectionColor={COLORS.darkGray}
           underlineColorAndroid="transparent"
         />
+        <View testID="filterOutline">
         <Ionicons
-          testID="filterOutline"
           name="filter-outline"
           size={20}
           style={styles.icon}
           onPress={onFilter}
         />
+        </View>
       </View>
       {props.showMenu && (
         <Pressable
