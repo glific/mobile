@@ -44,8 +44,6 @@ const formatNotifications = (notifications: object[]): notificationType[] => {
   });
 };
 
-
-
 const Notifications = () => {
   const [option, setOption] = useState('All');
   const [notificationArray, setNotificationArray] = useState(Notification);
