@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { FlatList } from 'react-native';
 
 import Emoji from './Emoji';
@@ -22,4 +22,4 @@ const EmojiCategory: React.FC<EmojiCategoryProps> = ({ category, messageObj, cur
   );
 };
 
-export default memo(EmojiCategory);
+export default EmojiCategory;

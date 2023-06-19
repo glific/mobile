@@ -1,6 +1,4 @@
-import React, { useState, memo } from 'react';
-import { useWindowDimensions } from 'react-native';
-
+import React, { useState } from 'react';
 import categories from './categories';
 import EmojiCategory from './EmojiCategory';
 import TabBar from './TabBar';
@@ -30,4 +28,4 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({ messageObj,cursor }) => {
   );
 };
 
-export default memo(EmojiPicker);
+export default EmojiPicker;

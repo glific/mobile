@@ -35,9 +35,9 @@ const SearchBar: React.FC<SearchBarProps> = (props: SearchBarProps) => {
     setIsFilterVisible(!isFilterVisible);
   }
 
-  function onFilterHandler(newFilter: string) {
-    setFilter((prev) => [...prev, newFilter]);
-  }
+  // function onFilterHandler(newFilter: string) {
+  //   setFilter((prev) => [...prev, newFilter]);
+  // }
   interface FilterButtonProps {
     label: string;
     count: number;

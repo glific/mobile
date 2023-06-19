@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
+import {StyleSheet, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import ContactList from '../components/ui/ContactList';
 import SearchBar from '../components/ui/SearchBar';
 import Storage from '../utils/asyncStorage';
-import { COLORS, SCALE, SIZES } from '../constants';
-import { Entypo } from '@expo/vector-icons';
+import { COLORS, SIZES } from '../constants';
 
 type RootStackParamList = {
   Contacts: undefined;

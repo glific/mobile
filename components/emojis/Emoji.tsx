@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 import shortnameToUnicode from './shortnameToUnicode';
@@ -35,4 +35,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default memo(Emoji);
+export default Emoji;
