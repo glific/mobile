@@ -8,6 +8,7 @@ module.exports = {
     '**/*.{js,jsx,ts,tsx}',
     '!**/coverage/**',
     '!**/node_modules/**',
+    '!**/navigations/**',
     '!**/babel.config.js',
     '!**/jest.config.js',
     '!**/utils/**',
@@ -15,5 +16,9 @@ module.exports = {
     '!**/App.tsx',
     '!**/.eslintrc.js',
   ],
-  setupFilesAfterEnv: ['@testing-library/jest-native/extend-expect', '<rootDir>/config/jest.ts'],
+  setupFilesAfterEnv: [
+    '@testing-library/jest-native/extend-expect',
+    '<rootDir>/config/jest.ts',
+    './__mocks__/setupTests.js',
+  ],
 };

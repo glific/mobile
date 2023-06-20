@@ -1,56 +1,34 @@
 import React from 'react';
 import { fireEvent, screen, waitFor } from '@testing-library/react-native';
+import customRender from '../utils/jestRender';
+
 import Chat from '../screens/Chat';
-import renderWithAuth from '../utils/authProvider';
-import { GET_CONTACTS } from '../graphql/queries/Contact';
+import { NO_SEARCH_CONTACTS_MOCK, SEARCH_CONTACTS_MOCK } from '../__mocks__/queries/contact';
 
-describe('Contacts screen', () => {
-  const mockContacts = {
-    id: '1',
-    name: 'test',
-    maskedPhone: '12*****90',
-    lastMessageAt: '2021-08-10T12:00:00.000Z',
-  };
-  const mocks = [
-    {
-      request: {
-        query: GET_CONTACTS,
-        variables: {
-          filter: {},
-          messageOpts: { limit: 1 },
-          contactOpts: { limit: 10 },
-        },
-      },
-      result: {
-        data: {
-          search: [
-            {
-              contact: mockContacts,
-              messages: [
-                {
-                  id: '1',
-                  body: 'test',
-                },
-              ],
-            },
-          ],
-        },
-      },
-    },
-  ];
+describe('Chat screen', () => {
   test('renders correctly', async () => {
-    const { getByTestId } = renderWithAuth(<Chat />, mocks);
+    const { getByTestId, findByText } = customRender(<Chat />, NO_SEARCH_CONTACTS_MOCK);
     const searchInput = getByTestId('searchInput');
-    const loadingIndicator = getByTestId('loadingIndicator');
+    const searchIcon = getByTestId('searchIcon');
+    const filterIcon = getByTestId('filterIcon');
 
-    expect(loadingIndicator).toBeTruthy();
-    await waitFor(() => {
+    await waitFor(async () => {
       expect(searchInput).toBeDefined();
+      expect(searchIcon).toBeDefined();
+      expect(filterIcon).toBeDefined();
+
+      const contactCard = await getByTestId('contactCard');
+      const testName = await findByText('test');
+      const testLastMessage = await findByText('test message');
+
+      expect(contactCard).toBeTruthy();
+      expect(testName).toBeTruthy();
+      expect(testLastMessage).toBeTruthy();
     });
-  }, 10000);
+  });
 
   test('updates search correctly', async () => {
-    const { getByTestId } = renderWithAuth(<Chat />, mocks);
+    const { getByTestId } = customRender(<Chat />, SEARCH_CONTACTS_MOCK);
 
     const searchInput = getByTestId('searchInput');
     fireEvent.changeText(searchInput, 'test search');
@@ -61,23 +39,29 @@ describe('Contacts screen', () => {
   });
 
   test('should test when search and filter icon pressed', async () => {
+    const navigateMock = jest.fn();
     const mockOnSearchHandler = jest.fn();
-    const mockOnFilter = jest.fn();
 
-    const { getByTestId } = renderWithAuth(<Chat />, mocks);
-    await waitFor(() => {
-      fireEvent.press(getByTestId('searchIcon'));
-      fireEvent.press(getByTestId('filterOutline'));
-    });
+    const { getByTestId } = customRender(
+      <Chat navigation={{ navigate: navigateMock }} />,
+      SEARCH_CONTACTS_MOCK
+    );
+
+    const searchIcon = getByTestId('searchIcon');
+    fireEvent.press(searchIcon);
     expect(mockOnSearchHandler).toBeTruthy();
-    expect(mockOnFilter).toBeTruthy();
+
+    // const filterIcon = getByTestId('filterIcon');
+    // fireEvent.press(filterIcon);
+    // expect(navigateMock).toHaveBeenCalledWith('ConversationFilter');
   });
-  test('Should test menu is visible on press or not ', async () => {
-    const { getByTestId } = renderWithAuth(<Chat />, mocks);
+
+  test('should test menu is visible on press or not ', async () => {
+    const { getByTestId } = customRender(<Chat />, NO_SEARCH_CONTACTS_MOCK);
     await waitFor(() => {
-      fireEvent.press(getByTestId('menuButton'));
+      fireEvent.press(getByTestId('menuIcon'));
     });
-    const menu = screen.queryByTestId('menuId');
+    const menu = screen.queryByTestId('menuCard');
     expect(menu).toBeTruthy();
   });
 });

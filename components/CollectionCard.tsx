@@ -1,15 +1,24 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { COLORS, SIZES } from '../../constants';
+import { COLORS, SCALE, SIZES } from '../constants';
 
-const CollectionListItem: React.FC<CollectionListItemProps> = ({ id, name }) => {
+export interface CollectionCardProps {
+  id: string;
+  name: string;
+}
+
+const CollectionCard: React.FC<CollectionCardProps> = ({ id, name }) => {
   const navigation = useNavigation();
 
   return (
     <Pressable
-      testID="CollectionListItemCard"
-      onPress={() => navigation.navigate('ChatScreen', { contact: { id, name } })}
+      testID="collectionCard"
+      onPress={() =>
+        navigation.navigate('ChatScreen', {
+          contact: { id, name },
+        })
+      }
       style={styles.item}
       android_ripple={{ color: COLORS.primary10 }}
     >
@@ -21,11 +30,13 @@ const CollectionListItem: React.FC<CollectionListItemProps> = ({ id, name }) => 
   );
 };
 
+export default CollectionCard;
+
 const styles = StyleSheet.create({
   avatar: {
     alignItems: 'center',
-    backgroundColor: COLORS.primary10,
-    borderRadius: SIZES.r22,
+    backgroundColor: COLORS.lightGray,
+    borderRadius: SIZES.r4,
     flexDirection: 'row',
     height: SIZES.s44,
     justifyContent: 'center',
@@ -33,23 +44,24 @@ const styles = StyleSheet.create({
   },
   avatartext: {
     color: COLORS.primary400,
-    fontSize: 18,
+    fontSize: SIZES.f18,
     fontWeight: '500',
+    includeFontPadding: false,
   },
   item: {
     alignItems: 'center',
     backgroundColor: COLORS.white,
+    borderBottomWidth: SCALE(0.25),
     borderColor: COLORS.darkGray,
-    borderWidth: 0.5,
     flexDirection: 'row',
     height: SIZES.s70,
     paddingHorizontal: '4%',
     width: '100%',
   },
   name: {
+    color: COLORS.black,
     fontSize: SIZES.f16,
+    fontWeight: '600',
     marginLeft: SIZES.m16,
   },
 });
-
-export default CollectionListItem;

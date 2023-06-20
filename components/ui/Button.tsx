@@ -1,22 +1,44 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { Pressable, StyleSheet, Text } from 'react-native';
-import { COLORS } from '../../constants';
-import { ReactElement } from 'react';
+import { COLORS, SIZES } from '../../constants';
+
+type ButtonType = 'positive' | 'neutral' | 'negative';
 
 export interface ButtonProps {
   children: ReactElement | string;
   onPress: () => void;
   disable?: boolean;
+  type?: ButtonType;
 }
 
-const Button = ({ children, onPress, disable = false }: ButtonProps) => {
+const Button = ({ children, onPress, disable = false, type = 'positive' }: ButtonProps) => {
+  const buttonTypeStyle = (component: string) => {
+    if (component === 'container') {
+      return {
+        backgroundColor:
+          type === 'negative'
+            ? COLORS.error100
+            : type === 'neutral'
+            ? COLORS.lightGray
+            : COLORS.primary100,
+      };
+    } else if (component === 'text') {
+      return {
+        color: type === 'neutral' ? COLORS.black : COLORS.white,
+      };
+    }
+  };
   return (
     <Pressable
-      style={({ pressed }) => [styles.button, pressed && styles.pressed]}
+      style={({ pressed }) => [
+        styles.button,
+        buttonTypeStyle('container'),
+        pressed && styles.pressed,
+      ]}
       onPress={onPress}
       disabled={disable}
     >
-      <Text style={styles.buttonText}>{children}</Text>
+      <Text style={[styles.buttonText, buttonTypeStyle('text')]}>{children}</Text>
     </Pressable>
   );
 };
@@ -25,22 +47,21 @@ export default Button;
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: COLORS.primary100,
-    borderRadius: 24,
+    alignItems: 'center',
+    borderRadius: SIZES.r20,
     elevation: 2,
-    height: 40,
+    flex: 1,
+    height: SIZES.s40,
     justifyContent: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
+    paddingHorizontal: SIZES.m12,
     shadowColor: COLORS.black,
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
   },
   buttonText: {
-    color: COLORS.white,
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: SIZES.f16,
+    fontWeight: '500',
     includeFontPadding: false,
     textAlign: 'center',
   },

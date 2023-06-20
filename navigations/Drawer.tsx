@@ -8,7 +8,7 @@ import Help from '../screens/Help';
 import Setting from '../screens/Setting';
 import MyAccount from '../screens/MyAccount';
 import Notifications from '../screens/Notifications';
-import HomeHeaderRight from '../components/HomeHeaderRight';
+import HomeHeaderRight from '../components/headers/HomeHeaderRight';
 import CustomDrawer from '../components/navigation/CustomDrawer';
 import { COLORS, SCALE, SIZES } from '../constants';
 

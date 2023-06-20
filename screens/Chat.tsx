@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
+import { useQuery } from '@apollo/client';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import ContactList from '../components/ui/ContactList';
+
 import SearchBar from '../components/ui/SearchBar';
-import Storage from '../utils/asyncStorage';
-import { COLORS, SCALE, SIZES } from '../constants';
-import { Entypo } from '@expo/vector-icons';
+import ContactCard from '../components/ContactCard';
+import { GET_CONTACTS } from '../graphql/queries/Contact';
+import { COLORS } from '../constants';
+import Loading from '../components/ui/Loading';
+
+interface ContactData {
+  id: string;
+  name: string;
+  lastMessageAt: string;
+  lastMessage: string | undefined;
+}
 
 type RootStackParamList = {
   Contacts: undefined;
@@ -16,43 +25,78 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList, 'Contacts'>;
 
 const Chat = ({ navigation }: Props) => {
-  const [session, setSession] = useState<object | null>();
   const [searchValue, setSearchValue] = useState<string>('');
+  const [contacts, setContacts] = useState<ContactData[]>([]);
+
+  const variables = {
+    filter: { term: searchValue },
+    messageOpts: { limit: 1 },
+    contactOpts: { limit: 10 },
+  };
+  const { loading, error, data } = useQuery(GET_CONTACTS, { variables });
+
+  async function onSearchHandler() {
+    try {
+      if (searchValue == '') return;
+
+      // TODO:
+      console.log(searchValue);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
-    // Retrieve the session from AsyncStorage
-    const getSession = async () => {
-      const sessionValue = await Storage.getData('session');
-      if (sessionValue !== null) {
-        const parsedSessionValue = JSON.parse(sessionValue);
-        setSession(parsedSessionValue);
-      }
-    };
+    if (error) {
+      console.log(error);
+    }
+    if (data) {
+      const newContacts: ContactData[] = data.search.map((element: any) => {
+        const messagesLength = element.messages?.length;
+        return {
+          id: element.contact?.id,
+          name: element.contact?.name || element.contact?.maskedPhone,
+          lastMessageAt: element.contact?.lastMessageAt,
+          lastMessage: messagesLength > 0 && element.messages[messagesLength - 1]?.body,
+        };
+      });
 
-    getSession();
-  }, []);
+      setContacts(newContacts);
+    }
+  }, [data, error]);
 
   return (
-    <View style={styles.mainContainer}>
-      <SearchBar setSearchValue={(value) => setSearchValue(value)} width="75%" showMenu={true} />
-      <View style={styles.mainIconContainer}></View>
-      <ContactList navigation={navigation} searchValue={searchValue} />
-    </View>
+    <FlatList
+      data={contacts}
+      keyExtractor={(item) => item.id}
+      renderItem={({ item }) => (
+        <ContactCard
+          id={item.id}
+          name={item.name}
+          lastMessage={item.lastMessage}
+          lastMessageAt={item.lastMessageAt}
+        />
+      )}
+      ListHeaderComponent={
+        <SearchBar
+          value={searchValue}
+          setSearchValue={(value) => setSearchValue(value)}
+          onSearch={onSearchHandler}
+          showMenu
+        />
+      }
+      stickyHeaderIndices={[0]}
+      stickyHeaderHiddenOnScroll={true}
+      style={styles.mainContainer}
+    />
   );
 };
 
+export default Chat;
+
 const styles = StyleSheet.create({
-  icon: {
-    color: COLORS.darkGray,
-    fontSize: SIZES.f20,
-  },
   mainContainer: {
+    backgroundColor: COLORS.white,
     flex: 1,
   },
-  mainIconContainer: {
-    marginLeft: -SIZES.m6,
-    width: '15%',
-  },
 });
-
-export default Chat;

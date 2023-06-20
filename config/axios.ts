@@ -11,7 +11,7 @@ class AxiosService {
     AxiosService.instance = axios.create({
       baseURL: serverURL,
     });
-    return AxiosService.instance!;
+    return AxiosService.instance;
   }
 
   static async updateServerURL(url: string): Promise<void> {

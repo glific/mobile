@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import ChatHeader from '../components/messages/ChatHeader';
+import ChatHeader from '../components/headers/ChatHeader';
 import MessagesList from '../components/messages/MessageList';
 import ChatInput from '../components/messages/ChatInput';
 import { COLORS, SIZES } from '../constants';
@@ -35,7 +35,7 @@ const ChatScreen = ({ route }: Props) => {
       <ChatHeader contact={contact} />
       <View style={styles.mainContainer}>
         <View style={styles.item}>
-          <Text style={styles.time}>Time left: {getSessionTimeLeft(contact.lastMessageAt)}</Text>
+          <Text style={styles.time}>Time left: {getSessionTimeLeft(contact.lastMessageAt)}hrs</Text>
         </View>
         <MessagesList contact={contact} />
         <ChatInput contact={contact} />
