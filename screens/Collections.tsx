@@ -32,7 +32,7 @@ const Collections = ({ navigation }: Props) => {
     messageOpts: { limit: 1 },
     contactOpts: { limit: 10 },
   };
-  const { loading, error, data } = useQuery(GET_COLLECTIONS, { variables });
+  const { error, data } = useQuery(GET_COLLECTIONS, { variables });
 
   async function onSearchHandler() {
     try {

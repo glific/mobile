@@ -7,7 +7,7 @@ import SearchBar from '../components/ui/SearchBar';
 import ContactCard from '../components/ContactCard';
 import { GET_CONTACTS } from '../graphql/queries/Contact';
 import { COLORS } from '../constants';
-import Loading from '../components/ui/Loading';
+// import Loading from '../components/ui/Loading';
 
 interface ContactData {
   id: string;
@@ -33,7 +33,7 @@ const Chat = ({ navigation }: Props) => {
     messageOpts: { limit: 1 },
     contactOpts: { limit: 10 },
   };
-  const { loading, error, data } = useQuery(GET_CONTACTS, { variables });
+  const { error, data } = useQuery(GET_CONTACTS, { variables });
 
   async function onSearchHandler() {
     try {
