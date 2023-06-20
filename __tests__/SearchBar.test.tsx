@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, waitFor, screen } from '@testing-library/react-native';
+import { fireEvent, waitFor, screen } from '@testing-library/react-native';
 import SearchBar from '../components/ui/SearchBar';
 import customRender from '../utils/jestRender';
 
