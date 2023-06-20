@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TextInput, StyleSheet, KeyboardTypeOptions } from 'react-native';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 
-import { COLORS } from '../../constants';
+import { COLORS, SCALE, SIZES } from '../../constants';
 
 type InputType = 'text' | 'password' | 'number';
 
@@ -74,34 +74,34 @@ export default Input;
 const styles = StyleSheet.create({
   clearIcon: {
     color: COLORS.darkGray,
-    fontSize: 16,
+    fontSize: SIZES.f16,
   },
   errorLabel: {
     color: COLORS.error100,
   },
   input: {
     flex: 1,
-    fontSize: 16,
+    fontSize: SIZES.f16,
   },
   inputBox: {
     alignItems: 'center',
     backgroundColor: COLORS.white,
     borderColor: COLORS.darkGray,
-    borderRadius: 10,
-    borderWidth: 0.75,
+    borderRadius: SIZES.r10,
+    borderWidth: SCALE(0.75),
     flexDirection: 'row',
-    height: 48,
-    marginVertical: 8,
-    paddingHorizontal: 10,
+    height: SIZES.s48,
+    marginVertical: SIZES.m8,
+    paddingHorizontal: SIZES.m10,
     width: '100%',
   },
   inputContainer: {
-    marginVertical: 4,
+    marginVertical: SIZES.m4,
     width: '100%',
   },
   label: {
     color: COLORS.black,
-    fontSize: 16,
-    marginBottom: 4,
+    fontSize: SIZES.f16,
+    marginBottom: SIZES.m4,
   },
 });

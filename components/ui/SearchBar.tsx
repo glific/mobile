@@ -8,6 +8,7 @@ interface MenuButtonProps {
   label: string;
   count: number;
 }
+
 const MenuButton: React.FC<MenuButtonProps> = ({ label, count }) => {
   return (
     <Pressable
@@ -71,7 +72,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
       {menuVisible && (
         <>
           <Pressable onPress={closeMenu} style={styles.menuBackground} />
-          <View style={styles.menuContainer} testID="menuId">
+          <View style={styles.menuContainer} testID="menuCard">
             <MenuButton label="All" count={1} />
             <MenuButton label="Unread" count={4} />
             <MenuButton label="Not responded" count={35} />
@@ -102,7 +103,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: COLORS.darkGray,
     borderRadius: SIZES.r10,
-    borderWidth: 0.75,
+    borderWidth: SCALE(0.75),
     flex: 1,
     flexDirection: 'row',
     minWidth: '80%',
@@ -155,7 +156,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: COLORS.darkGray,
     borderRadius: SIZES.r10,
-    borderWidth: 0.75,
+    borderWidth: SCALE(0.75),
     height: SCALE(45),
     justifyContent: 'center',
     marginLeft: SIZES.m6,

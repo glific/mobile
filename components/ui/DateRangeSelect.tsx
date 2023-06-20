@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { COLORS, SIZES } from '../../constants';
+import { COLORS, SCALE, SIZES } from '../../constants';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 interface Props {
@@ -91,23 +91,23 @@ export default DateRangeSelect;
 const styles = StyleSheet.create({
   calendarIcon: {
     color: COLORS.primary400,
-    fontSize: 18,
+    fontSize: SIZES.f18,
   },
   dateButton: {
     alignItems: 'center',
     backgroundColor: COLORS.white,
     borderColor: COLORS.darkGray,
-    borderRadius: 10,
-    borderWidth: 0.75,
+    borderRadius: SIZES.r10,
+    borderWidth: SCALE(0.75),
     flex: 1,
     flexDirection: 'row',
-    height: 48,
+    height: SIZES.s48,
     justifyContent: 'space-between',
-    paddingHorizontal: 10,
+    paddingHorizontal: SIZES.m10,
   },
   dateText: {
     color: COLORS.black,
-    fontSize: 14,
+    fontSize: SIZES.f14,
   },
   datesContainer: {
     flexDirection: 'row',
@@ -120,15 +120,15 @@ const styles = StyleSheet.create({
   },
   label: {
     color: COLORS.black,
-    fontSize: 14,
-    marginBottom: 8,
+    fontSize: SIZES.f14,
+    marginBottom: SIZES.m8,
   },
   mainContainer: {
-    marginVertical: 8,
+    marginVertical: SIZES.m8,
     width: '100%',
   },
   placeholderText: {
     color: COLORS.darkGray,
-    fontSize: 16,
+    fontSize: SIZES.f16,
   },
 });
