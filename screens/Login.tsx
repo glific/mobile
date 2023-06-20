@@ -71,7 +71,7 @@ const Login = ({ navigation }: Props) => {
         </Text>
         <PhoneInput
           testID="mobileNumber"
-          innerRef={phoneInput}
+          ref={phoneInput}
           defaultCode="IN"
           onChangeText={(text) => updateInputValueHandler('mobile', text)}
           layout="first"

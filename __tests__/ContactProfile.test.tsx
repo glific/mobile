@@ -1,51 +1,52 @@
 import React from 'react';
-import { render, fireEvent} from '@testing-library/react-native';
+import { fireEvent } from '@testing-library/react-native';
+import customRender from '../utils/jestRender';
+
 import ContactProfile from '../screens/ContactProfile';
 
-describe('ContactProfile', () => {
-  const contact = {
-    name: 'John Doe',
-    lastMessageAt: '2023-05-30',
-  };
+const contact = {
+  name: 'John Doe',
+  lastMessageAt: '2023-06-15',
+};
 
-  it('should render the contact profile correctly', () => {
-    const { queryByTestId, queryAllByText } = render(
+describe('ContactProfile', () => {
+  test('renders the contact profile with correct information', () => {
+    const { getByTestId, getByText } = customRender(
       <ContactProfile route={{ params: { contact } }} />
     );
 
-    // Check if the user profile image is rendered
-    expect(queryByTestId('userProfile')).toBeTruthy();
+    const userProfile = getByTestId('userProfile');
+    const userName = getByTestId('userName');
+    const viewMoreButton = getByText('View More');
 
-    // Check if the contact name is rendered
-    expect(queryByTestId('userName')).toBeTruthy();
-    expect(queryAllByText('John Doe')).toBeTruthy();
+    expect(userProfile).toBeDefined();
+    expect(userName.props.children).toBe(contact.name);
+    expect(viewMoreButton).toBeDefined();
 
-    // Check if the back button is rendered
-    expect(queryByTestId('backButton')).toBeTruthy();
+    // Additional assertions for other contact details
+    const statusText = getByText('Valid contact');
+    const languageText = getByText('English');
+    const phoneText = getByText('+919876543210');
+    const collectionsText = getByText('Optin contact');
+    const assignedToText = getByText('None');
+    const statusMessageText = getByText(`Optin via WA on ${contact.lastMessageAt}`);
 
-    // Check if the profile details are rendered
-    expect(queryAllByText('Name')).toBeTruthy();
-    expect(queryAllByText('Status')).toBeTruthy();
-    expect(queryAllByText('Provider status')).toBeTruthy();
-    expect(queryAllByText('Language')).toBeTruthy();
-
-    // Check if the contact history section is rendered
-    expect(queryAllByText('Contact history')).toBeTruthy();
+    expect(statusText).toBeDefined();
+    expect(languageText).toBeDefined();
+    expect(phoneText).toBeDefined();
+    expect(collectionsText).toBeDefined();
+    expect(assignedToText).toBeDefined();
+    expect(statusMessageText).toBeDefined();
   });
 
-  it('should toggle "isMore" state when the view button is pressed', () => {
-    const { getByText } = render(<ContactProfile route={{ params: { contact } }} />);
+  test('calls the navigation.goBack() function when the back button is pressed', () => {
+    const navigationMock = { goBack: jest.fn() };
+    const { getByTestId } = customRender(
+      <ContactProfile navigation={navigationMock} route={{ params: { contact } }} />
+    );
 
-    const viewButton = getByText('View More');
-
-    fireEvent.press(viewButton);
-
-    // Check if the "isMore" state is toggled
-    expect(getByText('View Less')).toBeTruthy();
-
-    fireEvent.press(viewButton);
-
-    // Check if the "isMore" state is toggled again
-    expect(getByText('View More')).toBeTruthy();
+    const backButton = getByTestId('backButton');
+    fireEvent.press(backButton);
+    expect(navigationMock.goBack).toHaveBeenCalled();
   });
 });

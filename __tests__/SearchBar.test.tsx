@@ -1,47 +1,79 @@
- import React from 'react';
- import { render, fireEvent } from '@testing-library/react-native';
- import SearchBar from '../components/ui/SearchBar';
-
+import React from 'react';
+import { fireEvent, waitFor, screen } from '@testing-library/react-native';
+import SearchBar from '../components/ui/SearchBar';
+import customRender from '../utils/jestRender';
 
 describe('SearchBar', () => {
+  const setSearchValueMock = jest.fn();
+  const onSearchMock = jest.fn();
 
-  it('should render SearchBar component', () => {
-    const { getByTestId } = render(<SearchBar/>);
+  beforeEach(() => {
+    setSearchValueMock.mockClear();
+    onSearchMock.mockClear();
+  });
+
+  test('should render Search Bar without menu', () => {
+    const { getByTestId } = customRender(
+      <SearchBar value="" setSearchValue={setSearchValueMock} onSearch={onSearchMock} />
+    );
 
     const searchIcon = getByTestId('searchIcon');
     const searchInput = getByTestId('searchInput');
-    const filterOutline = getByTestId('filterOutline');
+    const filterIcon = getByTestId('filterIcon');
 
     expect(searchIcon).toBeDefined();
     expect(searchInput).toBeDefined();
-    expect(filterOutline).toBeDefined();
+    expect(filterIcon).toBeDefined();
   });
 
-//   it('should call onSearchHandler when search icon is pressed', () => {
-//     const onSearchHandler = jest.fn();
-//     const { getByTestId } = render(<SearchBar onSearch
-//       ={onSearchHandler} />);
+  test('should render Search Bar with menu', () => {
+    const { getByTestId } = customRender(
+      <SearchBar
+        value=""
+        setSearchValue={setSearchValueMock}
+        onSearch={onSearchMock}
+        showMenu={true}
+      />
+    );
 
-//     fireEvent.press(getByTestId('searchIcon'));
+    const searchIcon = getByTestId('searchIcon');
+    const searchInput = getByTestId('searchInput');
+    const filterIcon = getByTestId('filterIcon');
+    const menuIcon = getByTestId('menuIcon');
 
-//     expect(onSearchHandler).toHaveBeenCalled();
-//   });
+    expect(searchIcon).toBeDefined();
+    expect(searchInput).toBeDefined();
+    expect(filterIcon).toBeDefined();
+    expect(menuIcon).toBeDefined();
+  });
 
-//   it('should update the searchValue when text input changes', () => {
-//     const { getByTestId } = render(<SearchBar />);
-//     const searchInput = getByTestId('searchInput');
+  test('should changes the input value and call onSearch when search button is pressed  ', () => {
+    const { getByTestId } = customRender(
+      <SearchBar value="" setSearchValue={setSearchValueMock} onSearch={onSearchMock} />
+    );
+    const searchIcon = getByTestId('searchIcon');
+    const searchInput = getByTestId('searchInput');
 
-//     fireEvent.changeText(searchInput, 'example search');
+    fireEvent.changeText(searchInput, 'test');
+    expect(setSearchValueMock).toHaveBeenCalledWith('test');
 
-//     expect(searchInput.props.value).toBe('example search');
-//   });
+    fireEvent.press(searchIcon);
+    expect(onSearchMock).toHaveBeenCalled();
+  });
 
-//   it('should call onFilter when filter icon is pressed', () => {
-//     const onFilter = jest.fn();
-//     const { getByTestId } = render(<SearchBar onFilter={onFilter} />);
-
-//     fireEvent.press(getByTestId('filterOutline'));
-
-//     expect(onFilter).toHaveBeenCalled();
-//   });
+  it('should show menu component when showMenu is true', async () => {
+    const { getByTestId } = customRender(
+      <SearchBar
+        value=""
+        setSearchValue={setSearchValueMock}
+        onSearch={onSearchMock}
+        showMenu={true}
+      />
+    );
+    await waitFor(() => {
+      fireEvent.press(getByTestId('menuIcon'));
+    });
+    const menu = screen.queryByTestId('menuCard');
+    expect(menu).toBeTruthy();
+  });
 });

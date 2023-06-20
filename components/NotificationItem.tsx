@@ -1,99 +1,115 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
-import { COLORS } from '../constants/theme';
+import { View, Text, StyleSheet } from 'react-native';
+import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
+
+import { COLORS, SCALE, SIZES } from '../constants/theme';
+
 type notificationType = {
-  header: string;
-  message: string;
-  time: string;
-  type: string;
+  notification: { id: number; title: string; description: string; date: string; type: string };
 };
-const windowWidth = Dimensions.get('window').width;
-const NotificationItem = (props: { notification: notificationType }) => {
-  const { notification } = props;
+
+const NotificationItem: React.FC<notificationType> = ({ notification }) => {
   return (
-    <View style={styles.container}>
-      <View style={styles.imgContainer}>
+    <View testID="notificationItem" style={styles.mainContainer}>
+      <View style={styles.iconContainer}>
         {notification.type === 'Info' ? (
-          <View style={styles.info}>
-            <MaterialCommunityIcons name="message-text-outline" size={24} color="#218AFF" />
+          <View style={styles.typeInfo}>
+            <MaterialCommunityIcons
+              name="message-text-outline"
+              style={styles.icon}
+              color={COLORS.info}
+            />
           </View>
         ) : (
           <>
             {notification.type === 'Critical' ? (
-              <View style={styles.critical}>
-                <AntDesign name="setting" size={24} color="#767672" />
+              <View style={styles.typeCritical}>
+                <AntDesign name="setting" style={styles.icon} color={COLORS.critical} />
               </View>
             ) : (
-              <View style={styles.warning}>
-                <AntDesign name="warning" size={24} color="#DD1F1F" />
+              <View style={styles.typeWarning}>
+                <AntDesign name="warning" style={styles.icon} color={COLORS.warning} />
               </View>
             )}
           </>
         )}
       </View>
-      <View style={styles.container2}>
-        <Text style={styles.header}>{notification.header}</Text>
-        <Text>{notification.message}</Text>
-        <Text style={styles.time}>{notification.time}</Text>
+      <View style={styles.detailsContainer}>
+        <Text style={styles.title}>{notification.title}</Text>
+        <Text numberOfLines={2} style={styles.description}>
+          {notification.description}
+        </Text>
+        <Text style={styles.date}>{notification.date}</Text>
       </View>
     </View>
   );
 };
 
 export default NotificationItem;
+
 const styles = StyleSheet.create({
-  container: {
+  date: {
+    color: COLORS.primary70,
+    fontSize: SIZES.f12,
+    fontWeight: '600',
+  },
+  description: {
+    color: COLORS.black,
+    fontSize: SIZES.f14,
+    marginBottom: SIZES.m10,
+  },
+  detailsContainer: {
+    flex: 1,
+  },
+  icon: {
+    fontSize: SIZES.f20,
+    includeFontPadding: false,
+  },
+  iconContainer: {
+    marginRight: SIZES.m16,
+  },
+  mainContainer: {
     alignItems: 'center',
-    borderBottomColor: COLORS.gray,
-    borderBottomWidth: 1,
-    display: 'flex',
+    borderBottomColor: COLORS.darkGray,
+    borderBottomWidth: SCALE(0.2),
     flexDirection: 'row',
-    height: 116,
+    height: SCALE(110),
+    paddingHorizontal: SIZES.m16,
   },
-  container2: {
-    width: windowWidth - 100,
+  title: {
+    color: COLORS.black,
+    fontSize: SIZES.f16,
+    fontWeight: '500',
+    marginBottom: SCALE(2),
   },
-  critical: {
+  typeCritical: {
     alignItems: 'center',
     backgroundColor: COLORS.criticalBackground,
-    borderColor: COLORS.criticalBorder,
-    borderRadius: 25,
-    borderWidth: 1,
-    height: 48,
+    borderColor: COLORS.critical,
+    borderRadius: SIZES.m30,
+    borderWidth: SCALE(1),
+    height: SIZES.s48,
     justifyContent: 'center',
-    width: 48,
+    width: SIZES.s48,
   },
-  header: {
-    color: COLORS.black,
-    fontWeight: '700',
-  },
-  imgContainer: {
-    margin: 20,
-  },
-  info: {
+  typeInfo: {
     alignItems: 'center',
     backgroundColor: COLORS.infoBackground,
-    borderColor: COLORS.infoBorder,
-    borderRadius: 25,
-    borderWidth: 1,
-    height: 48,
+    borderColor: COLORS.info,
+    borderRadius: SIZES.m30,
+    borderWidth: SCALE(1),
+    height: SIZES.s48,
     justifyContent: 'center',
-    width: 48,
+    width: SIZES.s48,
   },
-  time: {
-    color: COLORS.primary70,
-    fontWeight: '700',
-  },
-  warning: {
+  typeWarning: {
     alignItems: 'center',
     backgroundColor: COLORS.warningBackground,
-    borderColor: COLORS.warningBorder,
-    borderRadius: 25,
-    borderWidth: 1,
-    height: 48,
+    borderColor: COLORS.warning,
+    borderRadius: SIZES.m30,
+    borderWidth: SCALE(1),
+    height: SIZES.s48,
     justifyContent: 'center',
-    width: 48,
+    width: SIZES.s48,
   },
 });
