@@ -3,6 +3,11 @@ import { View, Text, StyleSheet, Pressable, ScrollView, Image } from 'react-nati
 import { AntDesign } from '@expo/vector-icons';
 import { COLORS } from '../constants';
 
+type Props = {
+  navigation: any;
+  route: any;
+};
+
 const ContactProfile = ({ navigation, route }: Props) => {
   const { contact } = route.params;
   const [isMore, setIsMore] = useState(true);
@@ -70,53 +75,6 @@ const styles = StyleSheet.create({
   arrow: {
     color: COLORS.darkGray,
   },
-  viewButton: {
-    alignItems: 'center',
-    margin: 20,
-    justifyContent: 'center',
-    backgroundColor: 'transparent',
-    flexDirection: 'row',
-  },
-  detailsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  viewText: {
-    fontSize: 16,
-    margin: 5,
-    lineHeight: 21,
-    fontWeight: 'bold',
-    letterSpacing: 0.25,
-    color: COLORS.darkGray,
-  },
-  session: {
-    fontWeight: 'bold',
-    marginTop: 4,
-    color: COLORS.darkGray,
-  },
-  subContainer: {
-    marginTop: 3,
-    flexDirection: 'column',
-    backgroundColor: COLORS.white,
-    padding: 20,
-  },
-  heading: {
-    fontSize: 18,
-    color: COLORS.darkGray,
-    fontWeight: 'bold',
-  },
-  subHeading: {
-    fontWeight: '500',
-    marginTop: 20,
-    color: COLORS.darkGray,
-  },
-  text: {
-    color: COLORS.black,
-    fontWeight: '800',
-  },
-  mainContainer: {
-    flex: 1,
-  },
   avatar: {
     borderRadius: 20,
     height: 40,
@@ -128,10 +86,9 @@ const styles = StyleSheet.create({
     fontSize: 22,
     paddingHorizontal: 10,
   },
-  innerContainer: {
-    alignItems: 'center',
-    flex: 1,
+  detailsContainer: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   headContainer: {
     alignItems: 'center',
@@ -142,11 +99,58 @@ const styles = StyleSheet.create({
     width: '100%',
     zIndex: 50,
   },
+  heading: {
+    color: COLORS.darkGray,
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  innerContainer: {
+    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'row',
+  },
+  mainContainer: {
+    flex: 1,
+  },
   nameText: {
     color: COLORS.white,
     fontSize: 18,
     fontWeight: '500',
     letterSpacing: 1,
     marginLeft: 10,
+  },
+  session: {
+    color: COLORS.darkGray,
+    fontWeight: 'bold',
+    marginTop: 4,
+  },
+  subContainer: {
+    backgroundColor: COLORS.white,
+    flexDirection: 'column',
+    marginTop: 3,
+    padding: 20,
+  },
+  subHeading: {
+    color: COLORS.darkGray,
+    fontWeight: '500',
+    marginTop: 20,
+  },
+  text: {
+    color: COLORS.black,
+    fontWeight: '800',
+  },
+  viewButton: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    margin: 20,
+  },
+  viewText: {
+    color: COLORS.darkGray,
+    fontSize: 16,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    lineHeight: 21,
+    margin: 5,
   },
 });

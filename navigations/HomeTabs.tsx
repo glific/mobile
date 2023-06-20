@@ -4,7 +4,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import Chat from '../screens/Chat';
 import Collections from '../screens/Collections';
 import SavedSearches from '../screens/SavedSearches';
-import { COLORS } from '../constants';
+import { COLORS, SIZES } from '../constants';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -13,8 +13,13 @@ const HomeTabs = () => {
     <Tab.Navigator
       initialRouteName="Contacts"
       screenOptions={{
-        tabBarStyle: { backgroundColor: COLORS.primary10, elevation: 0, shadowOpacity: 0 },
-        tabBarLabelStyle: { fontSize: 12, fontWeight: '700' },
+        swipeEnabled: false,
+        tabBarStyle: {
+          backgroundColor: COLORS.primary10,
+          elevation: 0,
+          shadowOpacity: 0,
+        },
+        tabBarLabelStyle: { fontSize: SIZES.f12, fontWeight: '700' },
         tabBarActiveTintColor: COLORS.primary400,
         tabBarInactiveTintColor: COLORS.primary70,
         tabBarIndicatorStyle: { backgroundColor: COLORS.primary400 },

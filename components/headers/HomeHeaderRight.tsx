@@ -1,16 +1,22 @@
 import React, {useState } from 'react';
 import { StyleSheet, Text, View, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS, SIZES } from '../constants';
+import { COLORS, SCALE, SIZES } from '../../constants';
 import { useQuery } from '@apollo/client';
-import { GET_NOTIFICATIONS_COUNT } from '../graphql/queries/Notification';
+import { GET_NOTIFICATIONS_COUNT } from '../../graphql/queries/Notification';
 const variables = {
   filter: {
     is_read: false,
   },
 };
 
-const HomeHeaderRight: React.FC = ({ navigation }: any) => {
+interface HomeHeaderProps {
+  navigation: {
+    navigate: (text: string) => void;
+  };
+}
+
+const HomeHeaderRight: React.FC<HomeHeaderProps> = ({ navigation }) => {
   const [notificationCount, setNotificationCount] = useState(0);
 
   useQuery(GET_NOTIFICATIONS_COUNT, {
@@ -28,9 +34,11 @@ const HomeHeaderRight: React.FC = ({ navigation }: any) => {
         android_ripple={{ borderless: true }}
       >
         <Ionicons name="notifications-outline" style={styles.icon} />
-        <View style={styles.badge}>
-          <Text style={styles.badgeText}>{notificationCount}</Text>
-        </View>
+        {notificationCount.toString() !== '0' && (
+          <View style={styles.badge}>
+            <Text style={styles.badgeText}>{notificationCount}</Text>
+          </View>
+        )}
       </Pressable>
     </View>
   );
@@ -41,19 +49,20 @@ export default HomeHeaderRight;
 const styles = StyleSheet.create({
   badge: {
     alignItems: 'center',
-    backgroundColor: COLORS.red,
-    borderRadius: 10,
-    height: 20,
+    backgroundColor: COLORS.error100,
+    borderRadius: SIZES.r10,
+    height: SIZES.s18,
     justifyContent: 'center',
     position: 'absolute',
-    right: -3,
-    top: -3,
-    width: 20,
+    right: -SCALE(3),
+    top: -SCALE(3),
+    width: SIZES.s18,
   },
   badgeText: {
     color: COLORS.white,
-    fontSize: 12,
-    fontWeight: 'bold',
+    fontSize: SIZES.f12,
+    fontWeight: '500',
+    includeFontPadding: false,
   },
   icon: {
     color: COLORS.white,
@@ -64,7 +73,7 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.m20,
     height: SIZES.s30,
     justifyContent: 'center',
-    marginLeft: SIZES.m4,
+    marginLeft: SIZES.m10,
     width: SIZES.s30,
   },
   mainContainer: {

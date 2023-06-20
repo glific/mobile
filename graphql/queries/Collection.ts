@@ -7,6 +7,10 @@ export const GET_COLLECTIONS = gql`
         id
         label
       }
+      messages {
+        id
+        body
+      }
     }
   }
 `;
