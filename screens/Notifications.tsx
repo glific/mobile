@@ -1,13 +1,16 @@
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
-import React, { Dispatch, useState } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+
 import NotificationItem from '../components/NotificationItem';
-import { COLORS } from '../constants/theme';
-import { GET_NOTIFICATIONS } from '../graphql/queries/Notification';
-import { useQuery } from '@apollo/client';
+import { COLORS, SCALE, SIZES } from '../constants/theme';
+import NotificationHeader from '../components/headers/NotificationHeader';
 import { getTimeDifference } from '../utils/timeDuration';
+import { useQuery } from '@apollo/client';
+import { GET_NOTIFICATIONS } from '../graphql/queries/Notification';
 
 type notificationType = {
+  id: number;
   header: string;
   message: string;
   time: string;
@@ -17,10 +20,13 @@ type notificationType = {
 let Notification: notificationType[] = [];
 
 const formatNotifications = (notifications: object[]): notificationType[] => {
+  let id = 0;
   const formattedNotifications: notificationType[] = notifications.map((notification) => {
     const { entity, message, updatedAt, severity } = notification;
     const { name, phone } = JSON.parse(entity);
+    id += 1;
     return {
+      id: id,
       header: name || phone,
       message,
       time: updatedAt,
@@ -43,9 +49,40 @@ const formatNotifications = (notifications: object[]): notificationType[] => {
     };
   });
 };
+interface ITab {
+  id: number;
+  label: string;
+}
 
-const Notifications = () => {
-  const [option, setOption] = useState('All');
+const Tabs: ITab[] = [
+  { id: 1, label: 'All' },
+  { id: 2, label: 'Critical' },
+  { id: 3, label: 'Warning' },
+  { id: 4, label: 'Info' },
+];
+
+type RenderOptionProps = {
+  label: string;
+  selectedTab: ITab;
+  handlePress: () => void;
+};
+
+const RenderOption: React.FC<RenderOptionProps> = ({ label, selectedTab, handlePress }) => {
+  const isActive = label === selectedTab.label;
+  return (
+    <TouchableOpacity
+      testID={label}
+      onPress={handlePress}
+      style={isActive ? styles.activeTab : styles.inActiveTab}
+    >
+      <Text style={[styles.tabText, isActive ? styles.active : {}]}>{label}</Text>
+    </TouchableOpacity>
+  );
+};
+
+const Notifications = ({ navigation }: { navigation: undefined }) => {
+  const [searchValue, setSearchValue] = useState('');
+  const [activeTab, setActiveTab] = useState(Tabs[0]);
   const [notificationArray, setNotificationArray] = useState(Notification);
 
   useQuery(GET_NOTIFICATIONS, {
@@ -55,74 +92,46 @@ const Notifications = () => {
     },
   });
 
-  return (
-    <View style={styles.mainContainer}>
-      <View style={styles.navBar}>
-        <RenderOption
-          label="All"
-          selectedOption={option}
-          setNotificationArray={setNotificationArray}
-          setOption={setOption}
-        />
-        <RenderOption
-          label="Critical"
-          selectedOption={option}
-          setNotificationArray={setNotificationArray}
-          setOption={setOption}
-        />
-        <RenderOption
-          label="Warning"
-          selectedOption={option}
-          setNotificationArray={setNotificationArray}
-          setOption={setOption}
-        />
-        <RenderOption
-          label="Info"
-          selectedOption={option}
-          setNotificationArray={setNotificationArray}
-          setOption={setOption}
-        />
-      </View>
-      <ScrollView>
-        {notificationArray.map((item) => {
-          return <NotificationItem key={notificationArray.indexOf(item)} notification={item} />;
-        })}
-      </ScrollView>
-    </View>
-  );
-};
+  // const handleSearch = (text: string) => {
+  //   setSearchValue(text);
+  //   // TODO: filter the notification array
+  // };
 
-const RenderOption = ({
-  label,
-  selectedOption,
-  setNotificationArray,
-  setOption,
-}: {
-  label: string;
-  selectedOption: string;
-  setNotificationArray: Dispatch<React.SetStateAction<notificationType[]>>;
-  setOption: Dispatch<React.SetStateAction<string>>;
-}) => {
-  const handleOptionPress = (option: string) => {
-    setOption(option);
-    if (option === 'All') {
+  // React.useLayoutEffect(() => {
+  //   navigation.setOptions({
+  //     headerRight: () => (
+  //       <NotificationHeader searchValue={searchValue} handleSearch={handleSearch} />
+  //     ),
+  //   });
+  // }, [searchValue]);
+
+  const handleTabPress = (tab: ITab) => {
+    setActiveTab(tab);
+    if (tab.label === 'All') {
       setNotificationArray(Notification);
     } else {
-      const filteredArray = filterArrayByField(option);
+      const filteredArray = Notification.filter((item) => item['type'] === tab.label);
       setNotificationArray(filteredArray);
     }
   };
 
-  function filterArrayByField(value: string): notificationType[] {
-    return Notification.filter((item) => item['type'] === value);
-  }
-
-  const isActive = label === selectedOption;
   return (
-    <View style={isActive ? styles.option : {}}>
-      <TouchableOpacity onPress={() => handleOptionPress(label)}>
-        <Text style={[styles.text, isActive ? styles.active : {}]}>{label}</Text>
-      </TouchableOpacity>
+    <View style={styles.mainContainer}>
+      <View style={styles.navBar}>
+        {Tabs.map((tab) => (
+          <RenderOption
+            key={tab.id}
+            label={tab.label}
+            selectedTab={activeTab}
+            handlePress={() => handleTabPress(tab)}
+          />
+        ))}
+      </View>
+      <ScrollView>
+        {notificationArray.map((item) => {
+          return <NotificationItem key={item.id} notification={item} />;
+        })}
+      </ScrollView>
     </View>
   );
 };
@@ -131,7 +140,21 @@ export default Notifications;
 
 const styles = StyleSheet.create({
   active: {
-    color: COLORS.darkDarkGreen,
+    color: COLORS.primary70,
+  },
+  activeTab: {
+    alignContent: 'center',
+    borderBottomColor: COLORS.primary400,
+    borderBottomWidth: SCALE(2),
+    height: SIZES.s60,
+    justifyContent: 'center',
+    marginHorizontal: SIZES.m16,
+  },
+  inActiveTab: {
+    alignContent: 'center',
+    height: SIZES.s60,
+    justifyContent: 'center',
+    marginHorizontal: SIZES.m16,
   },
   mainContainer: {
     flex: 1,
@@ -139,22 +162,15 @@ const styles = StyleSheet.create({
   navBar: {
     alignItems: 'center',
     backgroundColor: COLORS.lightGreen,
-    display: 'flex',
+    borderBottomWidth: SCALE(0.2),
+    borderColor: COLORS.darkGray,
     flexDirection: 'row',
-    height: 59,
-    justifyContent: 'space-between',
-    paddingLeft: 17,
-    paddingRight: 90,
+    height: SIZES.s60,
+    paddingLeft: SIZES.m16,
   },
-  option: {
-    borderBottomColor: COLORS.darkDarkGreen,
-    borderBottomWidth: 2,
-  },
-  text: {
-    color: COLORS.lightDarkGreen,
-    fontSize: 14,
+  tabText: {
+    color: COLORS.primary70,
+    fontSize: SIZES.f14,
     fontWeight: '700',
-    marginBottom: 11,
-    marginTop: 11,
   },
 });

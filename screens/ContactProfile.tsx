@@ -141,7 +141,6 @@ const styles = StyleSheet.create({
   },
   viewButton: {
     alignItems: 'center',
-    backgroundColor: COLORS.transparent,
     flexDirection: 'row',
     justifyContent: 'center',
     margin: 20,

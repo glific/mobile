@@ -36,7 +36,7 @@ describe('Notifications Screen', () => {
   ];
 
   test('renders the Notifications screen', async () => {
-    const { getAllByText } = customRender(<Notifications />, mocks);
+    const { getAllByText } = customRender(<Notifications navigation={undefined} />, mocks);
 
     // search for element with John Doe
     await waitFor(() => getAllByText('John Doe'));
