@@ -1,6 +1,6 @@
 import React from 'react';
 import Notifications from '../screens/Notifications';
-import renderWithAuth from '../utils/authProvider';
+import customRender from '../utils/jestRender';
 import { GET_NOTIFICATIONS } from '../graphql/queries/Notification';
 import { fireEvent, waitFor } from '@testing-library/react-native';
 
@@ -36,7 +36,7 @@ describe('Notifications Screen', () => {
   ];
 
   test('renders the Notifications screen', async () => {
-    const { getAllByText } = renderWithAuth(<Notifications />, mocks);
+    const { getAllByText } = customRender(<Notifications />, mocks);
 
     // search for element with John Doe
     await waitFor(() => getAllByText('John Doe'));
