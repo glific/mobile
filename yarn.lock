@@ -2059,6 +2059,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/eslint-plugin/-/eslint-plugin-1.3.0.tgz#9e558170c106bbafaa1ef502bd8e6d4651012bf9"
   integrity sha512-+zDZ20NUnSWghj7Ku5aFphMzuM9JulqCW+aPXT6IfIXFbb8tzYTTOSeRFOtuekJ99ibW2fUCSsjuKNlwDIbHFg==
 
+"@react-native-community/slider@^4.4.2":
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/@react-native-community/slider/-/slider-4.4.2.tgz#1fea0eb3ae31841fe87bd6c4fc67569066e9cf4b"
+  integrity sha512-D9bv+3Vd2gairAhnRPAghwccgEmoM7g562pm8i4qB3Esrms5mggF81G3UvCyc0w3jjtFHh8dpQkfEoKiP0NW/Q==
+
 "@react-native/assets@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@react-native/assets/-/assets-1.0.0.tgz#c6f9bf63d274bafc8e970628de24986b30a55c8e"
@@ -4306,6 +4311,11 @@ expo-asset@~8.9.1:
     path-browserify "^1.0.0"
     url-parse "^1.5.9"
 
+expo-av@^13.2.1:
+  version "13.2.1"
+  resolved "https://registry.yarnpkg.com/expo-av/-/expo-av-13.2.1.tgz#ce502a4c5d4a57962fd9f5f1a40c76c39c88f5ee"
+  integrity sha512-mC0mYSzaOaZgXjzhW2l4Ag325JjH6q5IbptfwD7gkMOFYy7VPOMxEMUnetadbs3DDzmgE6vUWrTjUIUbwq59qg==
+
 expo-constants@~14.2.0, expo-constants@~14.2.1:
   version "14.2.1"
   resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-14.2.1.tgz#b5b6b8079d2082c31ccf2cbc7cf97a0e83c229c3"
@@ -4351,6 +4361,11 @@ expo-modules-core@1.2.7:
   dependencies:
     compare-versions "^3.4.0"
     invariant "^2.2.4"
+
+expo-video-thumbnails@^7.2.1:
+  version "7.2.1"
+  resolved "https://registry.yarnpkg.com/expo-video-thumbnails/-/expo-video-thumbnails-7.2.1.tgz#aa95cef4c1944720ddc75a86f30c6f0f401177ec"
+  integrity sha512-KJCuSpKl/INhZ4QPy3pKFffUFVwWuu/TnSE8riIMB2Xx1q8a2QlOGiCgqUEL8UouQqmEeddOMkRJav9UXXG4jQ==
 
 expo@~48.0.5:
   version "48.0.17"

@@ -23,10 +23,53 @@ export const GET_CONTACT_MESSAGES = gql`
       messages {
         id
         body
+        flowLabel
+        contextMessage {
+          body
+          contextId
+          messageNumber
+          errors
+          media {
+            caption
+            sourceUrl
+            id
+            url
+          }
+          type
+          insertedAt
+          location {
+            id
+            latitude
+            longitude
+          }
+          receiver {
+            id
+          }
+          sender {
+            id
+            name
+          }
+        }
+        media {
+          caption
+          url
+        }
         insertedAt
+        errors
         sender {
           id
         }
+        sendBy
+        receiver {
+          id
+        }
+        interactiveContent
+        location {
+          latitude
+          longitude
+        }
+        messageNumber
+        type
       }
     }
   }
