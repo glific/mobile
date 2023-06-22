@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable, StyleSheet, Modal, ScrollView } from 'react-native';
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
-import { COLORS, SIZES } from '../../constants';
+import { COLORS, SCALE, SIZES } from '../../constants';
 
 interface Option {
   id: string;
@@ -115,24 +115,24 @@ export default MultiSelect;
 const styles = StyleSheet.create({
   checkBoxIcon: {
     color: COLORS.black,
-    fontSize: 20,
+    fontSize: SIZES.f20,
     marginRight: SIZES.m8,
   },
   dropIcon: {
     color: COLORS.black,
-    fontSize: 12,
-    marginTop: 18,
+    fontSize: SIZES.f12,
+    marginTop: SIZES.m18,
   },
   dropdownButton: {
     alignItems: 'flex-start',
     alignSelf: 'center',
     backgroundColor: COLORS.white,
     borderColor: COLORS.darkGray,
-    borderRadius: 10,
-    borderWidth: 0.75,
+    borderRadius: SIZES.r10,
+    borderWidth: SCALE(0.75),
     flexDirection: 'row',
-    minHeight: 48,
-    paddingHorizontal: 10,
+    minHeight: SIZES.s48,
+    paddingHorizontal: SIZES.m10,
   },
   label: {
     color: COLORS.black,

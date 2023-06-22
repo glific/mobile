@@ -61,7 +61,7 @@ describe('Chat screen', () => {
     await waitFor(() => {
       fireEvent.press(getByTestId('menuIcon'));
     });
-    const menu = screen.queryByTestId('menuId');
+    const menu = screen.queryByTestId('menuCard');
     expect(menu).toBeTruthy();
   });
 });
