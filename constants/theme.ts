@@ -16,6 +16,7 @@ export const COLORS = {
   secondary100: '#f2f2f2',
   lightGray: '#f0f0f0',
   darkGray: '#93A29B',
+  faintGray: '#ccc',
   error100: '#f44336',
   white: '#ffffff',
   black: '#212121',
@@ -29,6 +30,7 @@ export const COLORS = {
   infoBorder: '#218AFF',
   red: '#ff0000',
   transparent: 'transparent',
+  brightGreen: '#49d52a',
 };
 
 export const SIZES = {

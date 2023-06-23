@@ -132,7 +132,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ contact }) => {
           </Pressable>
         </View>
         {showEmoji && (
-          <View style={{ height: 300, width: '100%' }}>
+          <View style={styles.emojiPanel}>
             <EmojiPicker
               messageObj={{ set: setMessage, value: message }}
               cursor={{ set: setcursor, value: cursor }}
@@ -163,6 +163,10 @@ const ChatInput: React.FC<ChatInputProps> = ({ contact }) => {
 };
 
 const styles = StyleSheet.create({
+  emojiPanel: {
+    height: SCALE(300),
+    width: SIZES.width,
+  },
   emoticonButton: {
     color: COLORS.black,
     fontSize: SIZES.s24,

@@ -15,7 +15,7 @@ type MessageListProps = {
 };
 
 const MessagesList: React.FC<MessageListProps> = ({ contact }) => {
-  const scrollView = useRef(null);
+  const scrollView = useRef<ScrollView>(null);
 
   const variables = {
     filter: { id: contact.id },

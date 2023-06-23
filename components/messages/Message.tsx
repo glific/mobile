@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, ViewStyle } from 'react-native';
 
 import { COLORS, SIZES } from '../../constants';
 
@@ -23,43 +23,45 @@ const Message: React.FC<MessageProps> = ({ isLeft, message }) => {
     hour12: true,
   });
 
-  const onRight = (type: string) => {
-    if (isLeft)
-      switch (type) {
-        case 'message':
-          return {
-            alignSelf: 'flex-start',
-          };
-        case 'body':
-          return {};
-        case 'time':
-          return {};
-      }
-    else {
-      switch (type) {
-        case 'message':
-          return {
-            alignSelf: 'flex-end',
-            borderTopRightRadius: 0,
-            borderTopLeftRadius: SIZES.r10,
-            backgroundColor: COLORS.lightGray,
-          };
-        case 'body':
-          return {
-            color: COLORS.black,
-          };
-        case 'time':
-          return {
-            color: 'darkgray',
-          };
-      }
+  const getMessageContainerStyles = (): ViewStyle => {
+    if (isLeft) {
+      return {
+        alignSelf: 'flex-start',
+      };
+    } else {
+      return {
+        alignSelf: 'flex-end',
+        borderTopRightRadius: 0,
+        borderTopLeftRadius: SIZES.r10,
+        backgroundColor: COLORS.lightGray,
+      };
+    }
+  };
+
+  const getBodyStyles = () => {
+    if (isLeft) {
+      return {};
+    } else {
+      return {
+        color: COLORS.black,
+      };
+    }
+  };
+
+  const getTimeStyles = () => {
+    if (isLeft) {
+      return {};
+    } else {
+      return {
+        color: 'darkgray',
+      };
     }
   };
 
   return (
-    <View style={[styles.messageContainer, onRight('message')]}>
-      <Text style={[styles.message, onRight('body')]}>{message.body}</Text>
-      <Text style={[styles.time, onRight('time')]}>{formattedTime}</Text>
+    <View style={[styles.messageContainer, getMessageContainerStyles()]}>
+      <Text style={[styles.message, getBodyStyles()]}>{message.body}</Text>
+      <Text style={[styles.time, getTimeStyles()]}>{formattedTime}</Text>
     </View>
   );
 };

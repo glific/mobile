@@ -10,12 +10,6 @@ const SavedSearches = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [savedSearch, setSavedSearch] = useState([]);
 
-  // const variables = {
-  //   filter: { term: searchValue },
-  //   opts: { limit: 1 },
-  // };
-  // const { loading, error, data } = useQuery(SAVED_SEARCH_QUERY, { variables });
-
   const onSearchHandler = async () => {
     try {
       if (searchValue == '') return;
@@ -26,22 +20,6 @@ const SavedSearches = () => {
       console.log(error);
     }
   };
-
-  // useEffect(() => {
-  //   if (error) {
-  //     console.log(error);
-  //   }
-  //   if (data) {
-  //     const newSearches = data.search.map((element: any) => {
-  //       return {
-  //         id: element.group?.id,
-  //         name: element.group?.label || 'Unknown Name',
-  //       };
-  //     });
-
-  //     setSavedSearch(newSearches);
-  //   }
-  // }, [data, error]);
 
   return (
     <FlatList

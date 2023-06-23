@@ -8,15 +8,22 @@ interface Tab {
   tabLabel: string;
 }
 
+interface MessageObjectType {
+  set: React.Dispatch<React.SetStateAction<string>>;
+  value: string | null;
+}
+interface CursorType {
+  set: React.Dispatch<React.SetStateAction<number>>;
+  value: number;
+}
 interface EmojiPickerProps {
-  messageObj: any;
-  cursor: any;
+  messageObj: MessageObjectType;
+  cursor: CursorType;
 }
 
-const EmojiPicker: React.FC<EmojiPickerProps> = ({ messageObj,cursor }) => {
-
+const EmojiPicker: React.FC<EmojiPickerProps> = ({ messageObj, cursor }) => {
   const [index, setIndex] = useState<number>(0);
-  const [routes, setRoutes] = useState<{ key: string; title: string }[]>(
+  const [routes] = useState<{ key: string; title: string }[]>(
     categories.tabs.map((tab: Tab) => ({ key: tab.category, title: tab.tabLabel }))
   );
 
