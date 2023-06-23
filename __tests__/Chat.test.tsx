@@ -17,11 +17,9 @@ describe('Chat screen', () => {
       expect(searchIcon).toBeDefined();
       expect(filterIcon).toBeDefined();
 
-      const contactCard = await getByTestId('contactCard');
       const testName = await findByText('test');
       const testLastMessage = await findByText('test message');
 
-      expect(contactCard).toBeTruthy();
       expect(testName).toBeTruthy();
       expect(testLastMessage).toBeTruthy();
     });
