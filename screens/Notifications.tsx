@@ -4,10 +4,9 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import NotificationItem from '../components/NotificationItem';
 import { COLORS, SCALE, SIZES } from '../constants/theme';
-import NotificationHeader from '../components/headers/NotificationHeader';
-import { getTimeDifference } from '../utils/timeDuration';
 import { useQuery } from '@apollo/client';
 import { GET_NOTIFICATIONS } from '../graphql/queries/Notification';
+import moment from 'moment';
 
 type notificationType = {
   id: number;
@@ -36,8 +35,8 @@ const formatNotifications = (notifications: object[]): notificationType[] => {
 
   // Sort the formatted notifications based on time in descending order (recent on first)
   const sortedNotifications = formattedNotifications.sort((a, b) => {
-    const timeA = new Date(a.time).getTime();
-    const timeB = new Date(b.time).getTime();
+    const timeA = Number(moment.utc(a.time).valueOf());
+    const timeB = Number(moment.utc(b.time).valueOf());
     return timeB - timeA;
   });
 
@@ -45,7 +44,7 @@ const formatNotifications = (notifications: object[]): notificationType[] => {
     const { time, ...rest } = notification;
     return {
       ...rest,
-      time: getTimeDifference(time), // format time into minutes, hrs, days etc.
+      time: moment.utc(time).fromNow(), // format time into minutes, hrs, days etc.
     };
   });
 };
@@ -80,8 +79,7 @@ const RenderOption: React.FC<RenderOptionProps> = ({ label, selectedTab, handleP
   );
 };
 
-const Notifications = ({ navigation }: { navigation: undefined }) => {
-  const [searchValue, setSearchValue] = useState('');
+const Notifications = () => {
   const [activeTab, setActiveTab] = useState(Tabs[0]);
   const [notificationArray, setNotificationArray] = useState(Notification);
 
@@ -91,19 +89,6 @@ const Notifications = ({ navigation }: { navigation: undefined }) => {
       setNotificationArray(Notification);
     },
   });
-
-  // const handleSearch = (text: string) => {
-  //   setSearchValue(text);
-  //   // TODO: filter the notification array
-  // };
-
-  // React.useLayoutEffect(() => {
-  //   navigation.setOptions({
-  //     headerRight: () => (
-  //       <NotificationHeader searchValue={searchValue} handleSearch={handleSearch} />
-  //     ),
-  //   });
-  // }, [searchValue]);
 
   const handleTabPress = (tab: ITab) => {
     setActiveTab(tab);
