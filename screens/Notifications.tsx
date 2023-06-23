@@ -4,55 +4,50 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import NotificationItem from '../components/NotificationItem';
 import { COLORS, SCALE, SIZES } from '../constants/theme';
-import NotificationHeader from '../components/headers/NotificationHeader';
+import { useQuery } from '@apollo/client';
+import { GET_NOTIFICATIONS } from '../graphql/queries/Notification';
+import moment from 'moment';
 
 type notificationType = {
   id: number;
-  title: string;
-  description: string;
-  date: string;
+  header: string;
+  message: string;
+  time: string;
   type: string;
 };
 
-const Notification: notificationType[] = [
-  {
-    id: 1,
-    title: 'Glific stimulator four',
-    description: 'Sorry! 24 hrs window closed. Your message cannot be sent at this time.',
-    date: '15 min',
-    type: 'Warning',
-  },
-  {
-    id: 2,
-    title: 'Glific stimulator four',
-    description:
-      'Sorry! 24 hrs window closed. Your message cannot be sent at this time. Hello How are you? Are you fine',
-    date: '20 min',
-    type: 'Warning',
-  },
-  {
-    id: 3,
-    title: 'Glific stimulator four',
-    description: 'Sorry! 24 hrs window closed. Your message cannot be sent at this time.',
-    date: '20 min',
-    type: 'Critical',
-  },
-  {
-    id: 4,
-    title: 'Glific stimulator four',
-    description: 'Sorry! 24 hrs window closed. Your message cannot be sent at this time.',
-    date: '1 hour',
-    type: 'Info',
-  },
-  {
-    id: 5,
-    title: 'Glific stimulator four',
-    description: 'Sorry! 24 hrs window closed. Your message cannot be sent at this time.',
-    date: '1 hour',
-    type: 'Info',
-  },
-];
+let Notification: notificationType[] = [];
 
+const formatNotifications = (notifications: object[]): notificationType[] => {
+  let id = 0;
+  const formattedNotifications: notificationType[] = notifications.map((notification) => {
+    const { entity, message, updatedAt, severity } = notification;
+    const { name, phone } = JSON.parse(entity);
+    id += 1;
+    return {
+      id: id,
+      header: name || phone,
+      message,
+      time: updatedAt,
+      type: severity.replace(/"/g, ''),
+    };
+  });
+
+  // Sort the formatted notifications based on time in descending order (recent on first)
+  const sortedNotifications = formattedNotifications.sort((a, b) => {
+    const timeA = Number(moment.utc(a.time).valueOf());
+    const timeB = Number(moment.utc(b.time).valueOf());
+    return timeB - timeA;
+  });
+
+  return sortedNotifications.map((notification) => {
+    const { time, ...rest } = notification;
+    return {
+      ...rest,
+      time: moment.utc(time).fromNow(), // format time into minutes, hrs, days etc.
+    };
+  });
+};
 interface ITab {
   id: number;
   label: string;
@@ -84,23 +79,16 @@ const RenderOption: React.FC<RenderOptionProps> = ({ label, selectedTab, handleP
   );
 };
 
-const Notifications = ({ navigation }: { navigation: undefined }) => {
-  const [searchValue, setSearchValue] = useState('');
+const Notifications = () => {
   const [activeTab, setActiveTab] = useState(Tabs[0]);
   const [notificationArray, setNotificationArray] = useState(Notification);
 
-  const handleSearch = (text: string) => {
-    setSearchValue(text);
-    // TODO: filter the notification array
-  };
-
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <NotificationHeader searchValue={searchValue} handleSearch={handleSearch} />
-      ),
-    });
-  }, [searchValue]);
+  useQuery(GET_NOTIFICATIONS, {
+    onCompleted: (data) => {
+      Notification = formatNotifications(data.notifications);
+      setNotificationArray(Notification);
+    },
+  });
 
   const handleTabPress = (tab: ITab) => {
     setActiveTab(tab);

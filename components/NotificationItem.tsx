@@ -5,7 +5,11 @@ import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { COLORS, SCALE, SIZES } from '../constants/theme';
 
 type notificationType = {
-  notification: { id: number; title: string; description: string; date: string; type: string };
+  id: number;
+  header: string;
+  message: string;
+  time: string;
+  type: string;
 };
 
 const NotificationItem: React.FC<notificationType> = ({ notification }) => {
@@ -35,11 +39,11 @@ const NotificationItem: React.FC<notificationType> = ({ notification }) => {
         )}
       </View>
       <View style={styles.detailsContainer}>
-        <Text style={styles.title}>{notification.title}</Text>
-        <Text numberOfLines={2} style={styles.description}>
-          {notification.description}
+        <Text style={styles.title}>{notification.header}</Text>
+        <Text numberOfLines={3} style={styles.description}>
+          {notification.message}
         </Text>
-        <Text style={styles.date}>{notification.date}</Text>
+        <Text style={styles.date}>{notification.time}</Text>
       </View>
     </View>
   );
