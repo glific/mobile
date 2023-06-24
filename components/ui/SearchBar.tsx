@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, StyleSheet, Pressable, Text, Dimensions } from 'react-native';
+import { View, TextInput, StyleSheet, Pressable, Text } from 'react-native';
 import { COLORS, SIZES, SCALE } from '../../constants';
 import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -24,7 +24,7 @@ const MenuButton: React.FC<MenuButtonProps> = ({ label, count }) => {
 
 type SearchBarProps = {
   value: string;
-  setSearchValue: (value: string) => void;
+  setSearchValue: () => void;
   onSearch: () => void;
   showMenu?: boolean;
 };
@@ -88,53 +88,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
 export default SearchBar;
 
 const styles = StyleSheet.create({
-  filter: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    height: SIZES.s40,
-    justifyContent: 'space-between',
-    paddingHorizontal: SIZES.m12,
-    width: SIZES.s200,
-  },
-  filterBackground: {
-    height: SIZES.height + 100,
-    position: 'absolute',
-    right: -10,
-    top: -40,
-    width: Dimensions.get('window').width + 20,
-    zIndex: -50,
-  },
-  filterText: {
-    color: COLORS.black,
-    fontSize: SIZES.f16,
-  },
-  filtersContainer: {
-    backgroundColor: COLORS.white,
-    borderRadius: SIZES.r4,
-    bottom: -SCALE(220),
-    elevation: SIZES.r4,
-    paddingVertical: SIZES.m12,
-    position: 'absolute',
-    right: SIZES.m16,
-    shadowColor: COLORS.black,
-    shadowOffset: { height: SIZES.r4, width: 0 },
-    shadowRadius: SIZES.r4,
-    width: SIZES.s200,
-    zIndex: -50,
-  },
   icon: {
     color: COLORS.darkGray,
     fontSize: SIZES.f20,
-  },
-  iconContainer: {
-    alignItems: 'center',
-    borderColor: COLORS.darkGray,
-    borderRadius: SIZES.m12,
-    borderWidth: 1,
-    height: SIZES.s40,
-    justifyContent: 'center',
-    marginLeft: SIZES.m6,
-    width: SIZES.s36,
   },
   input: {
     backgroundColor: COLORS.white,
