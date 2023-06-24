@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, Image, StyleSheet, Linking, Pressable, ImageBackground } from 'react-native';
+import { AntDesign, Entypo, Octicons } from '@expo/vector-icons';
+import * as VideoThumbnails from 'expo-video-thumbnails';
 
 import { COLORS, SCALE, SIZES } from '../../constants';
-import { AntDesign, Entypo, Octicons } from '@expo/vector-icons';
 import AudioPlayer from './AudioPlayer';
-import * as VideoThumbnails from 'expo-video-thumbnails';
+import VideoPlayer from './VideoPlayer';
 
 type MessageProps = {
   isLeft: boolean;
+  handleImage: () => void;
+  handleVideo: () => void;
+  openImage: boolean;
+  openVideo: boolean;
   message: {
     id: number;
     type: string;
@@ -30,17 +35,17 @@ type MessageProps = {
   };
 };
 
-const VideoThumbnail = ({ video }: { video: string }) => {
+const VideoThumbnail = ({ videoUri }: { videoUri: string }) => {
   const [thumbnailUrl, setThumbnailUrl] = useState(null);
 
   useEffect(() => {
-    generateThumbnail(video);
-  }, [video]);
+    generateThumbnail(videoUri);
+  }, [videoUri]);
 
   const generateThumbnail = async (url: string) => {
     try {
       const { uri } = await VideoThumbnails.getThumbnailAsync(url, {
-        time: 10000,
+        time: 4000,
       });
       setThumbnailUrl(uri);
     } catch (error) {
@@ -51,9 +56,15 @@ const VideoThumbnail = ({ video }: { video: string }) => {
   return (
     <>
       {thumbnailUrl && (
-        <ImageBackground source={{ uri: thumbnailUrl }} style={styles.video}>
+        <ImageBackground
+          testID="videoThumbnail"
+          source={{ uri: thumbnailUrl }}
+          style={styles.video}
+        >
           <View style={styles.videoInnerBackground}>
-            <Entypo name="controller-play" size={SIZES.s24} color={COLORS.white} />
+            <View style={styles.playButtonBackground}>
+              <Entypo name="controller-play" size={SIZES.s24} color={COLORS.white} />
+            </View>
           </View>
         </ImageBackground>
       )}
@@ -61,7 +72,14 @@ const VideoThumbnail = ({ video }: { video: string }) => {
   );
 };
 
-const Message: React.FC<MessageProps> = ({ isLeft, message }) => {
+const Message: React.FC<MessageProps> = ({
+  isLeft,
+  message,
+  handleImage,
+  handleVideo,
+  openImage,
+  openVideo,
+}) => {
   const dateObj = new Date(message.insertedAt);
   const formattedTime = dateObj.toLocaleString('en-US', {
     hour: 'numeric',
@@ -99,7 +117,7 @@ const Message: React.FC<MessageProps> = ({ isLeft, message }) => {
     }
   };
 
-  const handlePress = () => {
+  const handleLink = () => {
     let url;
     switch (message.type) {
       case 'LOCATION':
@@ -120,7 +138,7 @@ const Message: React.FC<MessageProps> = ({ isLeft, message }) => {
     case 'IMAGE':
       media_uri = message.media.url;
       messageBody = (
-        <Pressable style={[styles.container, onRight('message')]}>
+        <Pressable testID="imageMessage" style={[styles.container, onRight('message')]}>
           <Image source={{ uri: media_uri }} style={styles.image} />
           <Text style={[styles.time, onRight('time')]}>{formattedTime}</Text>
         </Pressable>
@@ -129,8 +147,13 @@ const Message: React.FC<MessageProps> = ({ isLeft, message }) => {
     case 'VIDEO':
       media_uri = message.media.url;
       messageBody = (
-        <Pressable style={[styles.container, onRight('message')]}>
-          <VideoThumbnail video={media_uri} />
+        <Pressable
+          testID="videoMessage"
+          style={[styles.container, onRight('message')]}
+          onPress={handleVideo}
+        >
+          <VideoPlayer message={message} handleVideo={handleVideo} openVideo={openVideo} />
+          <VideoThumbnail videoUri={media_uri} />
           <Text style={[styles.time, onRight('time')]}>{formattedTime}</Text>
         </Pressable>
       );
@@ -138,8 +161,8 @@ const Message: React.FC<MessageProps> = ({ isLeft, message }) => {
     case 'AUDIO':
       media_uri = message.media.url;
       messageBody = (
-        <Pressable style={[styles.audioContainer, onRight('message')]}>
-          <AudioPlayer audio={media_uri} isLeft={isLeft} />
+        <Pressable testID="audioMessage" style={[styles.audioContainer, onRight('message')]}>
+          <AudioPlayer audioUri={media_uri} isLeft={isLeft} />
           <Text style={[styles.time, onRight('time')]}>{formattedTime}</Text>
         </Pressable>
       );
@@ -148,7 +171,11 @@ const Message: React.FC<MessageProps> = ({ isLeft, message }) => {
       media_uri = message.media.url;
       media_ext = media_uri.split('.').pop();
       messageBody = (
-        <Pressable style={[styles.container, onRight('message')]} onPress={handlePress}>
+        <Pressable
+          testID="documentMessage"
+          style={[styles.container, onRight('message')]}
+          onPress={handleLink}
+        >
           <View style={[styles.docInnerContainer, onRight('innerBackground')]}>
             <AntDesign name="file1" style={[styles.docIcon, onRight('icon')]} />
             <View style={{ marginHorizontal: SIZES.m10 }}>
@@ -166,7 +193,7 @@ const Message: React.FC<MessageProps> = ({ isLeft, message }) => {
     case 'STICKER':
       media_uri = message.media.url;
       messageBody = (
-        <Pressable style={[styles.stickerContainer, onRight('sticker')]}>
+        <Pressable testID="stickerMessage" style={[styles.stickerContainer, onRight('sticker')]}>
           <Image source={{ uri: media_uri }} style={styles.stickerImage} />
           <Text style={[styles.time, styles.blackText, onRight('time')]}>{formattedTime}</Text>
         </Pressable>
@@ -174,7 +201,11 @@ const Message: React.FC<MessageProps> = ({ isLeft, message }) => {
       break;
     case 'LOCATION':
       messageBody = (
-        <Pressable style={[styles.container, onRight('message')]} onPress={handlePress}>
+        <Pressable
+          testID="locationMessage"
+          style={[styles.container, onRight('message')]}
+          onPress={handleLink}
+        >
           <Image source={require('../../assets/location.png')} style={styles.location} />
           <Text style={[styles.time, onRight('time')]}>{formattedTime}</Text>
         </Pressable>
@@ -182,7 +213,7 @@ const Message: React.FC<MessageProps> = ({ isLeft, message }) => {
       break;
     default:
       messageBody = (
-        <Pressable style={[styles.container, onRight('message')]}>
+        <Pressable testID="textMessage" style={[styles.container, onRight('message')]}>
           <Text style={[styles.text, onRight('text')]}>{message.body}</Text>
           <Text style={[styles.time, onRight('time')]}>{formattedTime}</Text>
         </Pressable>
@@ -235,7 +266,7 @@ const styles = StyleSheet.create({
   },
   image: {
     aspectRatio: 1,
-    borderRadius: 10,
+    borderRadius: SIZES.r10,
     maxWidth: '100%',
     width: '100%',
   },
@@ -243,6 +274,14 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.r10,
     height: SCALE(120),
     width: SCALE(200),
+  },
+  playButtonBackground: {
+    alignItems: 'center',
+    backgroundColor: COLORS.black02,
+    borderRadius: SIZES.r20,
+    height: SIZES.s40,
+    justifyContent: 'center',
+    width: SIZES.s40,
   },
   stickerContainer: {
     alignSelf: 'flex-start',
@@ -255,7 +294,7 @@ const styles = StyleSheet.create({
   },
   stickerImage: {
     aspectRatio: 1,
-    borderRadius: 10,
+    borderRadius: SIZES.r10,
     maxWidth: '100%',
     width: '100%',
   },
@@ -273,7 +312,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   video: {
-    borderRadius: 10,
+    borderRadius: SIZES.r10,
     height: SCALE(160),
     width: '100%',
   },

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { useQuery } from '@apollo/client';
 
@@ -16,6 +16,8 @@ type MessageListProps = {
 
 const MessagesList: React.FC<MessageListProps> = ({ contact }) => {
   const scrollView = useRef(null);
+  const [openVideo, setOpenVideo] = useState(false);
+  const [openImage, setOpenImage] = useState(false);
 
   const variables = {
     filter: { id: contact.id },
@@ -39,6 +41,15 @@ const MessagesList: React.FC<MessageListProps> = ({ contact }) => {
   if (data && data.search && data.search[0] && data.search[0].messages) {
     dataArray = [...data.search[0].messages].reverse();
   }
+  dataArray.map((a) => console.log(a));
+
+  const handleVideo = () => {
+    setOpenVideo(!openVideo);
+  };
+
+  const handleImage = () => {
+    setOpenImage(!openImage);
+  };
 
   return (
     <ScrollView
@@ -50,7 +61,15 @@ const MessagesList: React.FC<MessageListProps> = ({ contact }) => {
     >
       {dataArray.length ? (
         dataArray.map((message, index) => (
-          <Message key={index} message={message} isLeft={message?.sender?.id === contact.id} />
+          <Message
+            key={index}
+            message={message}
+            isLeft={message?.sender?.id === contact.id}
+            handleImage={handleImage}
+            handleVideo={handleVideo}
+            openImage={openImage}
+            openVideo={openVideo}
+          />
         ))
       ) : (
         <Text>No messages</Text>
@@ -59,6 +78,8 @@ const MessagesList: React.FC<MessageListProps> = ({ contact }) => {
   );
 };
 
+export default MessagesList;
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.white,
@@ -66,5 +87,3 @@ const styles = StyleSheet.create({
     marginBottom: SIZES.m65,
   },
 });
-
-export default MessagesList;

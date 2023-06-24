@@ -1,112 +1,87 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { TouchableOpacity, View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import Slider from '@react-native-community/slider';
 import { Audio } from 'expo-av';
 
 import { COLORS, SIZES } from '../../constants';
 
+const timefy = (ms: number): string => {
+  if (!ms) return '00:00';
+  const t = ms / 1000;
+  const s = String(Math.floor(t % 60));
+  const m = String(Math.floor(t / 60));
+  return m.padStart(2, '0') + ':' + s.padStart(2, '0');
+};
+
 interface AudioPlayerProps {
-  audio: string;
+  audioUri: string;
   isLeft: boolean;
 }
 
-const AudioPlayer: React.FC<AudioPlayerProps> = ({ audio, isLeft }) => {
-  const [playing, setPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
+const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioUri, isLeft }) => {
+  const audio = useRef(new Audio.Sound()).current;
+  const [isPlay, setPlay] = useState(false);
+  const [position, setPosition] = useState(0);
   const [duration, setDuration] = useState(0);
-  const soundObject = useRef(new Audio.Sound()).current;
 
   useEffect(() => {
     const loadSound = async () => {
       try {
-        await soundObject.loadAsync({ uri: audio });
-        const { durationMillis } = await soundObject.getStatusAsync();
-        setDuration(durationMillis);
+        if (audio) {
+          await audio.loadAsync({ uri: audioUri });
+          const { durationMillis } = await audio.getStatusAsync();
+          setDuration(durationMillis);
+        }
       } catch (error) {
         console.log('LoadSound: ', error);
       }
     };
     loadSound();
     return async () => {
-      await soundObject.unloadAsync();
+      await audio.unloadAsync();
     };
-  }, [audio]);
+  }, [audioUri]);
 
-  const pause = async () => {
-    try {
-      return await soundObject.pauseAsync();
-    } catch (error) {
-      console.log('Pause: ', error);
+  const handlePlayPause = () => {
+    if (audio) {
+      isPlay ? audio.pauseAsync() : audio.playFromPositionAsync(position);
+      setPlay(!isPlay);
     }
   };
 
-  const handlePlayPause = async () => {
-    try {
-      if (playing) {
-        await pause();
-        setPlaying(false);
-      } else {
-        await soundObject.playFromPositionAsync(currentTime);
-        setPlaying(true);
-      }
-    } catch (error) {
-      console.log('handlePlayPause; ', error);
-    }
-  };
-
-  const moveAudio = async (value: number) => {
-    try {
-      const status = await soundObject.setPositionAsync(Math.floor(duration * value));
-      setCurrentTime(status.positionMillis);
-      await soundObject.playFromPositionAsync(currentTime);
-    } catch (error) {
-      console.log('moveAudio: ', error);
+  const onSlideEnd = async (value: number) => {
+    const status = await audio.setPositionAsync(duration * value);
+    setPosition(status.positionMillis);
+    if (isPlay) {
+      await audio.playAsync();
     }
   };
 
   const calculateSeekBar = () => {
-    if (duration > 0) return currentTime / duration;
-    return 0;
-  };
-
-  async function onSlide(value: number) {
-    // const { positionMillis } = await soundObject.getStatusAsync();
-    setCurrentTime(value * duration);
-  }
-
-  const convertTime = (milliseconds: number): string => {
-    if (milliseconds) {
-      const seconds: number = Math.floor(milliseconds / 1000);
-
-      const minutes = Math.floor(seconds / 60);
-      const remainingSeconds = seconds - minutes * 60;
-
-      const formattedMinutes = String(minutes).padStart(2, '0');
-      const formattedSeconds = String(remainingSeconds).padStart(2, '0');
-
-      return `${formattedMinutes}:${formattedSeconds}`;
+    if (duration && position) {
+      return position / duration;
     }
-    return '00:00';
+    return 0;
   };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={handlePlayPause}>
-        {playing ? (
-          <MaterialIcons
-            name="pause"
-            size={SIZES.s24}
-            color={isLeft ? COLORS.white : COLORS.primary400}
-          />
-        ) : (
-          <Entypo
-            name="controller-play"
-            size={SIZES.s24}
-            color={isLeft ? COLORS.white : COLORS.primary400}
-          />
-        )}
-      </TouchableOpacity>
+      {isPlay ? (
+        <MaterialIcons
+          name="pause"
+          size={SIZES.s24}
+          color={isLeft ? COLORS.white : COLORS.primary400}
+          onPress={handlePlayPause}
+        />
+      ) : (
+        <Entypo
+          name="controller-play"
+          size={SIZES.s24}
+          color={isLeft ? COLORS.white : COLORS.primary400}
+          onPress={handlePlayPause}
+        />
+      )}
       <Slider
         style={styles.slider}
         minimumValue={0}
@@ -115,20 +90,13 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audio, isLeft }) => {
         minimumTrackTintColor={isLeft ? COLORS.white : COLORS.primary400}
         maximumTrackTintColor={COLORS.black}
         thumbTintColor={isLeft ? COLORS.white : COLORS.primary400}
-        onValueChange={(value) => {
-          onSlide(value);
-        }}
         onSlidingStart={async () => {
-          if (playing) {
-            await pause();
-          }
+          await audio.pauseAsync();
         }}
-        onSlidingComplete={async (value) => {
-          await moveAudio(value);
-        }}
+        onSlidingComplete={onSlideEnd}
       />
       <Text style={[styles.time, { color: isLeft ? COLORS.white : COLORS.black }]}>
-        {convertTime(currentTime)}
+        {timefy(position)}
       </Text>
     </View>
   );
