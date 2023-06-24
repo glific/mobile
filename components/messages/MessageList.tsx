@@ -41,7 +41,6 @@ const MessagesList: React.FC<MessageListProps> = ({ contact }) => {
   if (data && data.search && data.search[0] && data.search[0].messages) {
     dataArray = [...data.search[0].messages].reverse();
   }
-  dataArray.map((a) => console.log(a));
 
   const handleVideo = () => {
     setOpenVideo(!openVideo);
