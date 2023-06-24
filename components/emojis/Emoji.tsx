@@ -26,12 +26,12 @@ const Emoji: React.FC<EmojiProps> = ({ item, messageObj, cursor }) => {
 };
 
 const styles = StyleSheet.create({
+  emoji: {
+    fontSize: 25,
+  },
   emojiContainer: {
     marginHorizontal: 6.3,
     width: '9%',
-  },
-  emoji: {
-    fontSize: 25,
   },
 });
 

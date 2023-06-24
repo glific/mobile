@@ -11,8 +11,10 @@ jest.mock('@expo/vector-icons', () => {
     AntDesign: View,
     Entypo: View,
     Feather: View,
+    FontAwesome: View,
     MaterialIcons: View,
     MaterialCommunityIcons: View,
+    Octicons: View,
   };
 });
 

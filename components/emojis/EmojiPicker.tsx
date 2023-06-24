@@ -13,8 +13,7 @@ interface EmojiPickerProps {
   cursor: any;
 }
 
-const EmojiPicker: React.FC<EmojiPickerProps> = ({ messageObj,cursor }) => {
-
+const EmojiPicker: React.FC<EmojiPickerProps> = ({ messageObj, cursor }) => {
   const [index, setIndex] = useState<number>(0);
   const [routes, setRoutes] = useState<{ key: string; title: string }[]>(
     categories.tabs.map((tab: Tab) => ({ key: tab.category, title: tab.tabLabel }))

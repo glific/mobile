@@ -42,7 +42,7 @@ describe('Chat screen', () => {
 
     const { getByTestId } = customRender(
       <Chat navigation={{ navigate: navigateMock }} />,
-      SEARCH_CONTACTS_MOCK
+      NO_SEARCH_CONTACTS_MOCK
     );
 
     const searchIcon = getByTestId('searchIcon');

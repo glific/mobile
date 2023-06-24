@@ -10,14 +10,14 @@ interface EmojiCategoryProps {
   cursor: any;
 }
 
-const EmojiCategory: React.FC<EmojiCategoryProps> = ({ category, messageObj, cursor}) => {
+const EmojiCategory: React.FC<EmojiCategoryProps> = ({ category, messageObj, cursor }) => {
   return (
     <FlatList
       data={emojisByCategory[category]}
       renderItem={({ item }) => <Emoji item={item} messageObj={messageObj} cursor={cursor} />}
       keyExtractor={(item) => item}
       numColumns={8}
-      style={{ height: 250, width: "100%" }}
+      style={{ height: 250, width: '100%' }}
     />
   );
 };
