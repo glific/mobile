@@ -1,40 +1,27 @@
 import React from 'react';
+import { waitFor } from '@testing-library/react-native';
+import customRender from '../utils/jestRender';
+
 import Collections from '../screens/Collections';
-import renderWithAuth from '../utils/authProvider';
-import { GET_COLLECTIONS } from '../graphql/queries/Collection';
+import { GET_COLLECTIONS_MOCK } from '../__mocks__/queries/collection';
 
 describe('Collections Screen', () => {
-  const mockGroups = [
-    {
-      id: '1',
-      label: 'test',
-    },
-  ];
+  test('renders the Collections screen', async () => {
+    const { getByTestId, findByText } = customRender(<Collections />, GET_COLLECTIONS_MOCK);
+    const searchInput = getByTestId('searchInput');
+    const searchIcon = getByTestId('searchIcon');
+    const filterIcon = getByTestId('filterIcon');
 
-  const mocks = [
-    {
-      request: {
-        query: GET_COLLECTIONS,
-        variables: {
-          filter: { searchGroup: true },
-          messageOpts: { limit: 3, offset: 0 },
-          contactOpts: { limit: 10, offset: 0 },
-        },
-      },
-      response: {
-        data: {
-          search: [
-            {
-              group: mockGroups,
-            },
-          ],
-        },
-      },
-    },
-  ];
-  test('renders the Collections screen', () => {
-    const { getByTestId } = renderWithAuth(<Collections />, mocks);
-    const loadingIndicator = getByTestId('loadingIndicator');
-    expect(loadingIndicator).toBeTruthy();
+    await waitFor(async () => {
+      expect(searchInput).toBeDefined();
+      expect(searchIcon).toBeDefined();
+      expect(filterIcon).toBeDefined();
+
+      const collectionCard = await getByTestId('collectionCard');
+      const testGroup = await findByText('test group');
+
+      expect(collectionCard).toBeTruthy();
+      expect(testGroup).toBeTruthy();
+    });
   });
 });

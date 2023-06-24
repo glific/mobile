@@ -18,7 +18,7 @@ interface MenuProps {
   onPress: () => void;
 }
 
-const MenuButton: React.FC<MenuProps> = ({ icon, text, onPress }: any) => {
+const MenuButton: React.FC<MenuProps> = ({ icon, text, onPress }) => {
   return (
     <Pressable
       onPress={onPress}
@@ -45,7 +45,7 @@ const ChatHeader: React.FC<DataProps> = ({ contact }) => {
   return (
     <View style={styles.mainContainer}>
       <AntDesign
-        testID="backButton"
+        testID="backIcon"
         name="arrowleft"
         style={styles.backButton}
         onPress={(): void => navigation.goBack()}
