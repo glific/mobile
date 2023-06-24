@@ -59,7 +59,6 @@ describe('Server screen', () => {
 
     await waitFor(() => {
       expect(AxiosService.updateServerURL).toHaveBeenCalledWith('https://api.example.com/api');
-
       expect(navigateMock).toHaveBeenCalledWith('Login');
     });
   });

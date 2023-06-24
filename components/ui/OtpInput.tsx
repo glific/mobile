@@ -70,6 +70,7 @@ const OtpInput = ({
             onUpdateValue(value);
             value.length == OTP_LENGTH ? setFocused(false) : setFocused(true);
           }}
+          autoFocus={true}
           caretHidden={true}
           returnKeyType={'done'}
           keyboardType={'numeric'}

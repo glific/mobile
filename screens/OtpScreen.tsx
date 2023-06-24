@@ -20,12 +20,12 @@ const OtpScreen = ({ navigation }: Props) => {
 
   const onVerifyOtpHandler = async () => {
     try {
-      if (enteredOTP == '') {
-        throw new Error('Please enter OTP!');
+      if (enteredOTP.length !== 6) {
+        throw new Error('Please enter a valid OTP!');
       }
 
       navigation.navigate('NewPassword');
-    } catch (error: any) {
+    } catch (error) {
       setErrorMessage(error.message);
     }
   };

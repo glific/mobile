@@ -29,9 +29,7 @@ const NewPassword = ({ navigation }: Props) => {
 
   const onSaveHandler = async () => {
     try {
-      if (inputs.newPassword == '' || inputs.confirmPassword == '') {
-        throw new Error('Please enter new password and confirm password!');
-      } else if (inputs.newPassword != inputs.confirmPassword) {
+      if (inputs.newPassword != inputs.confirmPassword) {
         throw new Error('Confirmed password is not same with new password');
       }
 
@@ -61,7 +59,7 @@ const NewPassword = ({ navigation }: Props) => {
           type="password"
         />
         <Input
-          testID="password"
+          testID="confirmPassword"
           label="Confirm new password"
           placeholder="Confirm password"
           value={inputs.confirmPassword}

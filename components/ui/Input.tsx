@@ -50,6 +50,7 @@ const Input = ({
         />
         {type == 'password' ? (
           <Ionicons
+            testID="passwordEye"
             name={secure ? 'eye' : 'eye-off'}
             style={styles.clearIcon}
             onPress={onShowPassword}

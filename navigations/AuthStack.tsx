@@ -1,7 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { COLORS, SIZES } from '../constants';
+import { COLORS } from '../constants';
 import Login from '../screens/Login';
 import Server from '../screens/Server';
 import ResetPassword from '../screens/ResetPassword';

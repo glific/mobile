@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import PhoneInput from 'react-native-phone-number-input';
@@ -21,12 +21,12 @@ const ResetPassword = ({ navigation }: Props) => {
 
   const onGenerateHandler = async () => {
     try {
-      if (enteredMobile == '') {
-        throw new Error('Please enter mobile number!');
+      if (enteredMobile.length !== 10) {
+        throw new Error('Please enter a valid mobile number!');
       }
 
       navigation.navigate('OtpScreen');
-    } catch (error: any) {
+    } catch (error) {
       setErrorMessage(error.message);
     }
   };

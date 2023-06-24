@@ -1,5 +1,5 @@
 import React, { useState, useContext, useRef } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import PhoneInput from 'react-native-phone-number-input';
 
@@ -12,7 +12,8 @@ import AxiosService from '../config/axios';
 
 type RootStackParamList = {
   Login: undefined;
-  Home: undefined;
+  Server: undefined;
+  ResetPassword: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
@@ -92,9 +93,13 @@ const Login = ({ navigation }: Props) => {
           isError={errorMessage ? true : false}
           type="password"
         />
-        <Text style={styles.forgotPassword} onPress={() => navigation.navigate('ResetPassword')}>
-          Forgot password?
-        </Text>
+        <Pressable
+          testID="forgotPassword"
+          style={styles.forgotPasswordContainer}
+          onPress={() => navigation.navigate('ResetPassword')}
+        >
+          <Text style={styles.forgotPassword}>Forgot password?</Text>
+        </Pressable>
         {errorDisplay}
       </View>
       <View style={styles.buttonContainer}>
@@ -123,8 +128,11 @@ const styles = StyleSheet.create({
     paddingLeft: SCALE(2),
   },
   forgotPassword: {
-    alignSelf: 'flex-end',
     color: COLORS.primary100,
+    fontSize: SIZES.f14,
+  },
+  forgotPasswordContainer: {
+    alignSelf: 'flex-end',
     marginTop: SIZES.m6,
   },
   inputContainer: { paddingHorizontal: SIZES.m20 },
