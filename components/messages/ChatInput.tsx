@@ -15,6 +15,7 @@ import EmojiPicker from '../emojis/EmojiPicker';
 import SpeedSendBS from './SpeedSendBS';
 import TemplatesBS from './TemplatesBS';
 import InteractiveMessageBS from './InteractiveMessageBS';
+import ErrorAlert from '../ui/ErrorAlert';
 
 interface ChatInputProps {
   contact: {
@@ -217,12 +218,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ contact }) => {
         </View>
       )}
 
-      {errorMessage !== '' && (
-        <View style={styles.errorContainer}>
-          <MaterialCommunityIcons name="close" style={styles.errorIcon} />
-          <Text style={styles.errorText}>{errorMessage}</Text>
-        </View>
-      )}
+      {errorMessage !== '' && <ErrorAlert message={errorMessage} />}
     </View>
   );
 };
@@ -280,37 +276,6 @@ const styles = StyleSheet.create({
     fontSize: SIZES.s24,
     marginLeft: SCALE(2),
     padding: SIZES.m6,
-  },
-  errorContainer: {
-    alignItems: 'center',
-    alignSelf: 'center',
-    backgroundColor: COLORS.lightGray,
-    borderRadius: SIZES.r4,
-    elevation: 3,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    maxWidth: SIZES.s328,
-    paddingHorizontal: SIZES.m16,
-    paddingVertical: SIZES.m6,
-    position: 'absolute',
-    shadowColor: COLORS.darkGray,
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 10,
-    top: -SCALE(44),
-  },
-  errorIcon: {
-    color: COLORS.error100,
-    fontSize: SIZES.f14,
-    marginRight: SIZES.m10,
-  },
-  errorText: {
-    color: COLORS.error100,
-    fontSize: SIZES.f14,
-    maxWidth: SIZES.s328,
   },
   iconchatbox: {
     color: COLORS.white,

@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   date: {
     color: COLORS.primary70,
     fontSize: SIZES.f12,
-    fontWeight: '600',
+    fontWeight: '500',
   },
   description: {
     color: COLORS.black,
