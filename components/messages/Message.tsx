@@ -21,7 +21,7 @@ type MessageProps = {
     media: any;
     insertedAt: string;
     flowLabel: string | null;
-    interactiveContent: string;
+    interactiveContent: object;
     location: any;
     messageNumber?: any;
     receiver: {
@@ -111,6 +111,8 @@ const Message: React.FC<MessageProps> = ({
           return { color: COLORS.darkGray };
         case 'innerBackground':
           return { backgroundColor: COLORS.primary10 };
+        case 'option':
+          return { alignSelf: 'flex-end' };
         default:
           return {};
       }
@@ -133,7 +135,7 @@ const Message: React.FC<MessageProps> = ({
     Linking.openURL(url);
   };
 
-  let messageBody, media_uri, media_ext;
+  let messageBody, media_uri, media_ext, options;
   switch (message.type) {
     case 'IMAGE':
       media_uri = message.media.url;
@@ -211,6 +213,32 @@ const Message: React.FC<MessageProps> = ({
         </Pressable>
       );
       break;
+    case 'QUICK_REPLY':
+      options = JSON.parse(message.interactiveContent)?.options;
+      messageBody = (
+        <View style={[styles.quickContainer, onRight('option')]}>
+          <Pressable
+            testID="textMessage"
+            style={[styles.quickMessageContainer, onRight('message')]}
+          >
+            <Text style={[styles.text, onRight('text')]}>{message.body}</Text>
+            <Text style={[styles.time, onRight('time')]}>{formattedTime}</Text>
+          </Pressable>
+          <View style={styles.optionsContainer}>
+            {options?.map((option, index) => (
+              <Pressable
+                key={index}
+                testID={`quickOption${index}`}
+                style={styles.optionButton}
+                android_ripple={{ color: COLORS.black005 }}
+              >
+                <Text style={styles.optionText}>{option.title}</Text>
+              </Pressable>
+            ))}
+          </View>
+        </View>
+      );
+      break;
     default:
       messageBody = (
         <Pressable testID="textMessage" style={[styles.container, onRight('message')]}>
@@ -275,6 +303,25 @@ const styles = StyleSheet.create({
     height: SCALE(120),
     width: SCALE(200),
   },
+  optionButton: {
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    backgroundColor: COLORS.primary10,
+    borderRadius: SIZES.r10,
+    justifyContent: 'center',
+    marginVertical: SCALE(2),
+    padding: SIZES.m10,
+    width: '100%',
+  },
+  optionText: {
+    color: COLORS.primary400,
+    fontSize: SIZES.f14,
+    fontWeight: '500',
+    includeFontPadding: false,
+  },
+  optionsContainer: {
+    marginTop: SIZES.m4,
+  },
   playButtonBackground: {
     alignItems: 'center',
     backgroundColor: COLORS.black02,
@@ -282,6 +329,17 @@ const styles = StyleSheet.create({
     height: SIZES.s40,
     justifyContent: 'center',
     width: SIZES.s40,
+  },
+  quickContainer: {
+    alignSelf: 'flex-start',
+    margin: SIZES.m10,
+    maxWidth: '70%',
+  },
+  quickMessageContainer: {
+    backgroundColor: COLORS.primary400,
+    borderRadius: SIZES.r10,
+    borderTopLeftRadius: 0,
+    padding: SIZES.m10,
   },
   stickerContainer: {
     alignSelf: 'flex-start',
