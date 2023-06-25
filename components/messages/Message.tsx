@@ -180,13 +180,12 @@ const Message: React.FC<MessageProps> = ({
         >
           <View style={[styles.docInnerContainer, onRight('innerBackground')]}>
             <AntDesign name="file1" style={[styles.docIcon, onRight('icon')]} />
-            <View style={{ marginHorizontal: SIZES.m10 }}>
-              <Text style={[styles.text, onRight('text')]} numberOfLines={1}>
+            <View>
+              <Text style={[styles.docText, onRight('text')]} numberOfLines={1}>
                 {message.media.caption}
               </Text>
               <Text style={[styles.extensionText, onRight('text')]}>{media_ext}</Text>
             </View>
-            <Octicons name="download" style={[styles.docIcon, onRight('icon')]} />
           </View>
           <Text style={[styles.time, onRight('time')]}>{formattedTime}</Text>
         </Pressable>
@@ -278,14 +277,25 @@ const styles = StyleSheet.create({
   },
   docIcon: {
     color: COLORS.white,
-    fontSize: SIZES.f18,
+    fontSize: SIZES.f20,
+    marginRight: SIZES.m10,
   },
   docInnerContainer: {
     alignItems: 'center',
     backgroundColor: COLORS.black02,
     borderRadius: SIZES.r10,
     flexDirection: 'row',
-    padding: SIZES.m10,
+    paddingLeft: SIZES.m10,
+    paddingRight: SIZES.m20,
+    paddingVertical: SIZES.m12,
+  },
+  docText: {
+    color: COLORS.white,
+    fontSize: SIZES.f14,
+    fontWeight: '500',
+    includeFontPadding: false,
+    letterSpacing: 0.2,
+    textTransform: 'capitalize',
   },
   extensionText: {
     color: COLORS.lightGray,
@@ -300,8 +310,8 @@ const styles = StyleSheet.create({
   },
   location: {
     borderRadius: SIZES.r10,
-    height: SCALE(120),
-    width: SCALE(200),
+    height: SCALE(108),
+    width: SCALE(180),
   },
   optionButton: {
     alignItems: 'center',
