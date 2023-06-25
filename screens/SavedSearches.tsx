@@ -4,11 +4,19 @@ import { FlatList, StyleSheet, Text } from 'react-native';
 
 import SearchBar from '../components/ui/SearchBar';
 import { COLORS, SIZES } from '../constants';
+import { useQuery } from '@apollo/client';
+import { SAVED_SEARCH_QUERY } from '../graphql/queries/Search';
 // import { SAVED_SEARCH_QUERY } from '../graphql/queries/Search';
 
 const SavedSearches = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [savedSearch, setSavedSearch] = useState([]);
+
+  // const variables = {
+  //   filter: { term: searchValue },
+  //   opts: { limit: 1 },
+  // };
+  // const { loading, error, data } = useQuery(SAVED_SEARCH_QUERY, { variables });
 
   const onSearchHandler = async () => {
     try {
@@ -20,6 +28,22 @@ const SavedSearches = () => {
       console.log(error);
     }
   };
+
+  // useEffect(() => {
+  //   if (error) {
+  //     console.log(error);
+  //   }
+  //   if (data) {
+  //     const newSearches = data.search.map((element: any) => {
+  //       return {
+  //         id: element.group?.id,
+  //         name: element.group?.label || 'Unknown Name',
+  //       };
+  //     });
+
+  //     setSavedSearch(newSearches);
+  //   }
+  // }, [data, error]);
 
   return (
     <FlatList

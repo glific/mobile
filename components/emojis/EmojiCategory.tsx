@@ -3,26 +3,13 @@ import { FlatList, StyleSheet } from 'react-native';
 
 import Emoji from './Emoji';
 import { emojisByCategory } from './emojis';
+import { EmojiProps } from '../../constants/types';
 
-interface MessageObjectType {
-  set: React.Dispatch<React.SetStateAction<string>>;
-  value: string | null;
-}
-interface CursorType {
-  set: React.Dispatch<React.SetStateAction<number>>;
-  value: number;
-}
-interface EmojiCategoryProps {
-  category: string;
-  messageObj: MessageObjectType;
-  cursor: CursorType;
-}
-
-const EmojiCategory: React.FC<EmojiCategoryProps> = ({ category, messageObj, cursor }) => {
+const EmojiCategory: React.FC<EmojiProps> = ({ emoji, messageObj, cursor }) => {
   return (
     <FlatList
-      data={emojisByCategory[category]}
-      renderItem={({ item }) => <Emoji item={item} messageObj={messageObj} cursor={cursor} />}
+      data={emojisByCategory[emoji]}
+      renderItem={({ item }) => <Emoji emoji={item} messageObj={messageObj} cursor={cursor} />}
       keyExtractor={(item) => item}
       numColumns={8}
       style={styles.emojiElement}

@@ -15,23 +15,30 @@ type notificationType = {
   time: string;
   type: string;
 };
-
+interface Notification {
+  entity: string;
+  message: string;
+  updatedAt: string;
+  severity: string;
+}
 let Notification: notificationType[] = [];
 
-const formatNotifications = (notifications: object[]): notificationType[] => {
+const formatNotifications = (notifications: Notification[]): notificationType[] => {
   let id = 0;
-  const formattedNotifications: notificationType[] = notifications.map((notification) => {
-    const { entity, message, updatedAt, severity } = notification;
-    const { name, phone } = JSON.parse(entity);
-    id += 1;
-    return {
-      id: id,
-      header: name || phone,
-      message,
-      time: updatedAt,
-      type: severity.replace(/"/g, ''),
-    };
-  });
+  const formattedNotifications: notificationType[] = notifications.map(
+    (notification: Notification) => {
+      const { entity, message, updatedAt, severity } = notification;
+      const { name, phone } = JSON.parse(entity);
+      id += 1;
+      return {
+        id: id,
+        header: name || phone,
+        message,
+        time: updatedAt,
+        type: severity.replace(/"/g, ''),
+      };
+    }
+  );
 
   // Sort the formatted notifications based on time in descending order (recent on first)
   const sortedNotifications = formattedNotifications.sort((a, b) => {
@@ -129,7 +136,7 @@ const styles = StyleSheet.create({
   },
   activeTab: {
     alignContent: 'center',
-    borderBottomColor: COLORS.primary400,
+    borderBottomColor: COLORS.brightGreen,
     borderBottomWidth: SCALE(2),
     height: SIZES.s60,
     justifyContent: 'center',
@@ -146,7 +153,6 @@ const styles = StyleSheet.create({
   },
   navBar: {
     alignItems: 'center',
-    backgroundColor: COLORS.lightGreen,
     borderBottomWidth: SCALE(0.2),
     borderColor: COLORS.darkGray,
     flexDirection: 'row',

@@ -53,7 +53,7 @@ const Login = ({ navigation }: Props) => {
 
       await Storage.storeData('session', JSON.stringify(response.data.data));
       setToken(response.data.data.access_token);
-    } catch (error: any) {
+    } catch (error) {
       setErrorMessage(error.message);
     }
   };

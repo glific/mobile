@@ -2,20 +2,13 @@ import React, { useState } from 'react';
 import categories from './categories';
 import EmojiCategory from './EmojiCategory';
 import TabBar from './TabBar';
+import { CursorType, MessageObjectType } from '../../constants/types';
 
 interface Tab {
   category: string;
   tabLabel: string;
 }
 
-interface MessageObjectType {
-  set: React.Dispatch<React.SetStateAction<string>>;
-  value: string | null;
-}
-interface CursorType {
-  set: React.Dispatch<React.SetStateAction<number>>;
-  value: number;
-}
 interface EmojiPickerProps {
   messageObj: MessageObjectType;
   cursor: CursorType;
@@ -30,7 +23,7 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({ messageObj, cursor }) => {
   return (
     <>
       <TabBar setIndex={setIndex} index={index} routes={routes} />
-      <EmojiCategory category={routes[index]?.key} messageObj={messageObj} cursor={cursor} />
+      <EmojiCategory emoji={routes[index]?.key} messageObj={messageObj} cursor={cursor} />
     </>
   );
 };
