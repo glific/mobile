@@ -7,8 +7,8 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 interface Props {
   selectedDateFrom: Date | null;
   selectedDateTo: Date | null;
-  onSelectDateFrom: () => void;
-  onSelectDateTo: () => void;
+  onSelectDateFrom: (args: Date | null) => void;
+  onSelectDateTo: (args: Date | null) => void;
   label: string;
 }
 
