@@ -12,9 +12,9 @@ import { useMutation } from '@apollo/client';
 import { COLORS, SCALE, SIZES } from '../../constants';
 import { SEND_CONTACT_MESSAGE } from '../../graphql/queries/Contact';
 import EmojiPicker from '../emojis/EmojiPicker';
-import SpeedSendBS from './SpeedSendBS';
-import TemplatesBS from './TemplatesBS';
-import InteractiveMessageBS from './InteractiveMessageBS';
+import SpeedSend from './SpeedSend';
+import Templates from './Templates';
+import InteractiveMessage from './InteractiveMessage';
 import ErrorAlert from '../ui/ErrorAlert';
 
 interface ChatInputProps {
@@ -178,9 +178,9 @@ const ChatInput: React.FC<ChatInputProps> = ({ contact }) => {
             <Text style={styles.optionsText}>Interactive message</Text>
           </Pressable>
 
-          <SpeedSendBS bsRef={speedSendRef} />
-          <TemplatesBS bsRef={templateRef} />
-          <InteractiveMessageBS bsRef={interactiveMessageRef} />
+          <SpeedSend bsRef={speedSendRef} />
+          <Templates bsRef={templateRef} />
+          <InteractiveMessage bsRef={interactiveMessageRef} />
         </View>
       )}
 

@@ -3,7 +3,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { COLORS, SCALE, SIZES } from '../../constants';
-import SearchInputBS from './SearchInputBS';
+import SearchInput from './SearchInput';
 import BottomSheet from '../ui/BottomSheet';
 
 type Props = {
@@ -47,13 +47,13 @@ What help do you want⬇️`,
   },
 ];
 
-const SpeedSendBS = ({ bsRef }: Props) => {
+const SpeedSend = ({ bsRef }: Props) => {
   const [value, setValue] = useState('');
 
   return (
     <BottomSheet refs={bsRef} draggable={false} height={SIZES.s400}>
       <View style={styles.mainContainer}>
-        <SearchInputBS
+        <SearchInput
           value={value}
           handleValue={(value: string) => setValue(value)}
           handleBack={() => bsRef.current.close()}
@@ -79,7 +79,7 @@ const SpeedSendBS = ({ bsRef }: Props) => {
   );
 };
 
-export default SpeedSendBS;
+export default SpeedSend;
 
 const styles = StyleSheet.create({
   mainContainer: {

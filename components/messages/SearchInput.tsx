@@ -3,13 +3,13 @@ import React from 'react';
 import { Entypo } from '@expo/vector-icons';
 import { COLORS, SCALE, SIZES } from '../../constants';
 
-type SearchInputBSProps = {
+type SearchInputProps = {
   value: string;
   handleValue: () => void;
   handleBack: () => void;
 };
 
-const SearchInputBS: React.FC<SearchInputBSProps> = ({ value, handleValue, handleBack }) => {
+const SearchInput: React.FC<SearchInputProps> = ({ value, handleValue, handleBack }) => {
   return (
     <View style={styles.searchContainer}>
       <Entypo
@@ -36,7 +36,7 @@ const SearchInputBS: React.FC<SearchInputBSProps> = ({ value, handleValue, handl
   );
 };
 
-export default SearchInputBS;
+export default SearchInput;
 
 const styles = StyleSheet.create({
   backIcon: {
