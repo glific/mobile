@@ -122,7 +122,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ contact }) => {
           </Pressable>
         </View>
         {showEmoji && (
-          <View style={styles.emojiPanel}>
+          <View testID="emojisTab" style={styles.emojiPanel}>
             <EmojiPicker
               messageObj={{ set: setMessage, value: message }}
               cursor={{ set: setcursor, value: cursor }}

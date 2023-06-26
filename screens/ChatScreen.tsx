@@ -35,7 +35,7 @@ const ChatScreen = ({ route }: Props) => {
       <ChatHeader contact={contact} />
       <View style={styles.mainContainer}>
         <View style={styles.item}>
-          <Text testID="timeLeft" style={styles.time}>
+          <Text VideoThumbnails="timeLeft" style={styles.time}>
             Time left: {getSessionTimeLeft(contact.lastMessageAt)}hrs
           </Text>
         </View>
