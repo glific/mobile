@@ -6,8 +6,8 @@ import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import MultiSelect from '../components/ui/MultiSelect';
 import DateRangeSelect from '../components/ui/DateRangeSelect';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '../constants/types';
+// import { NavigationProp, useNavigation } from '@react-navigation/native';
+// import { RootStackParamList } from '../constants/types';
 
 interface OptionData {
   id: string;
@@ -27,14 +27,13 @@ const options: OptionData[] = [
   { id: '10', label: 'Option 5' },
 ];
 
-const ConversationFilter: React.FC = () => {
+const ConversationFilter = ({ navigation }: any) => {
   const [name, setName] = useState('');
   const [selectLabels, setSelectLabels] = useState<OptionData[]>([]);
   const [selectCollections, setSelectCollections] = useState<OptionData[]>([]);
   const [selectStaffs, setSelectStaffs] = useState<OptionData[]>([]);
   const [dateFrom, setDateFrom] = useState<Date | null>(null);
   const [dateTo, setDateTo] = useState<Date | null>(null);
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const nameChanged = (value: string) => {
     setName(value);

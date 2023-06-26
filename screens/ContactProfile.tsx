@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView, Image } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { COLORS } from '../constants';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '../constants/types';
+// import { NavigationProp, useNavigation } from '@react-navigation/native';
+// import { RootStackParamList } from '../constants/types';
 
 interface Props {
+  navigation: any;
   route: {
     params: {
       contact: {
@@ -17,12 +18,10 @@ interface Props {
   };
 }
 
-const ContactProfile = ({ route }: Props) => {
+const ContactProfile = ({ navigation, route }: Props) => {
   const { contact } = route.params;
 
   const [isMore, setIsMore] = useState(true);
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-
   return (
     <ScrollView style={styles.mainContainer}>
       <View style={styles.headContainer}>

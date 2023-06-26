@@ -5,14 +5,16 @@ import customRender from '../utils/jestRender';
 import ContactProfile from '../screens/ContactProfile';
 
 const contact = {
+  id: '12',
   name: 'John Doe',
   lastMessageAt: '2023-06-15',
 };
 
 describe('ContactProfile', () => {
   test('renders the contact profile with correct information', () => {
+    const navigationMock = { goBack: jest.fn() };
     const { getByTestId, getByText } = customRender(
-      <ContactProfile route={{ params: { contact } }} />
+      <ContactProfile route={{ params: { contact } }} navigation={navigationMock} />
     );
 
     const userProfile = getByTestId('userProfile');
