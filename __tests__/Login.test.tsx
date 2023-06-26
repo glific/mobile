@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent } from '@testing-library/react-native';
+import { fireEvent, waitFor } from '@testing-library/react-native';
 import customRender from '../utils/jestRender';
 
 import Login from '../screens/Login';
@@ -8,21 +8,10 @@ describe('Login screen', () => {
   test('renders correctly', () => {
     const { getByTestId, getByText } = customRender(<Login />);
 
-    const mobileInput = getByTestId('mobileNumber');
-    const passwordInput = getByTestId('password');
-    const loginButton = getByText('LOG IN');
-
-    expect(mobileInput).toBeDefined();
-    expect(passwordInput).toBeDefined();
-    expect(loginButton).toBeDefined();
-    // const { getByTestId, getByPlaceholderText, getByText } = customRender(<Login />);
-
-    // // Check if important components are rendered
-    // expect(getByTestId('mobileNumber')).toBeDefined();
-    // expect(getByTestId('password')).toBeDefined();
-    // expect(getByPlaceholderText('Enter 10 digit phone number')).toBeDefined();
-    // expect(getByPlaceholderText('Password')).toBeDefined();
-    // expect(getByText('LOG IN')).toBeDefined();
+    expect(getByTestId('mobileNumber')).toBeDefined();
+    expect(getByTestId('password')).toBeDefined();
+    expect(getByTestId('forgotPassword')).toBeDefined();
+    expect(getByText('LOG IN')).toBeDefined();
   });
 
   test('updates input values correctly', () => {
@@ -64,19 +53,13 @@ describe('Login screen', () => {
     expect(errorMessage).toBeDefined();
   });
 
-  // test("navigates to Chat screen on successful submit", async () => {
-  //   const navigationMock = { navigate: jest.fn() };
+  test('should navigate to reset password screen', async () => {
+    const navigateMock = jest.fn();
+    const { getByTestId } = customRender(<Login navigation={{ navigate: navigateMock }} />);
 
-  //   const { getByTestId, getByText } = customRender(<Login />);
-
-  //   const mobileInput = getByTestId("mobileNumber");
-  //   const passwordInput = getByTestId("password");
-  //   const continueButton = getByText("Continue");
-
-  //   fireEvent.changeText(mobileInput, "1234567890");
-  //   fireEvent.changeText(passwordInput, "password123");
-
-  //   fireEvent.press(continueButton);
-  //   expect(navigationMock.navigate).toHaveBeenCalledWith("Chat");
-  // });
+    fireEvent.press(getByTestId('forgotPassword'));
+    await waitFor(() => {
+      expect(navigateMock).toHaveBeenCalledWith('ResetPassword');
+    });
+  });
 });
