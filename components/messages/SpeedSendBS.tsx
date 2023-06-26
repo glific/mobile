@@ -51,7 +51,7 @@ const SpeedSendBS = ({ bsRef }: Props) => {
   const [value, setValue] = useState('');
 
   return (
-    <BottomSheet refs={bsRef} draggable={false} height={SCALE(400)}>
+    <BottomSheet refs={bsRef} draggable={false} height={SIZES.s400}>
       <View style={styles.mainContainer}>
         <SearchInputBS
           value={value}
@@ -62,6 +62,7 @@ const SpeedSendBS = ({ bsRef }: Props) => {
           {dummy.map((msg) => (
             <Pressable
               key={msg.id}
+              testID={`quickTemplate${msg.id}`}
               style={styles.messageContainer}
               android_ripple={{ color: COLORS.primary10 }}
             >

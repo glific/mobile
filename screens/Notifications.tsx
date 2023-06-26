@@ -18,7 +18,14 @@ type notificationType = {
   type: string;
 };
 
-const formatNotifications = (notifications: object[]): notificationType[] => {
+interface Notification {
+  entity: string;
+  message: string;
+  updatedAt: string;
+  severity: string;
+}
+
+const formatNotifications = (notifications: Notification[]): notificationType[] => {
   return notifications
     .map(({ entity, message, updatedAt, severity }, index) => {
       const { name, phone } = JSON.parse(entity);

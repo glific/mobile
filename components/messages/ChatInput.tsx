@@ -129,9 +129,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ contact }) => {
             }}
           />
           <MaterialCommunityIcons
-            testID="paperClipIcon"
+            testID="clipIcon"
             name="paperclip"
-            size={23}
             color={COLORS.black}
             style={styles.paperclipicon}
             onPress={() => {
@@ -152,6 +151,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ contact }) => {
       {showOptions && (
         <View testID="optionsTab">
           <Pressable
+            testID="speedSend"
             style={styles.optionsButton}
             android_ripple={{ borderless: false }}
             onPress={() => speedSendRef.current.show()}
@@ -160,6 +160,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ contact }) => {
             <Text style={styles.optionsText}>Speed sends</Text>
           </Pressable>
           <Pressable
+            testID="templates"
             style={styles.optionsButton}
             android_ripple={{ borderless: false }}
             onPress={() => templateRef.current.show()}
@@ -168,6 +169,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ contact }) => {
             <Text style={styles.optionsText}>Templates</Text>
           </Pressable>
           <Pressable
+            testID="interactive"
             style={styles.optionsButton}
             android_ripple={{ borderless: false }}
             onPress={() => interactiveMessageRef.current.show()}

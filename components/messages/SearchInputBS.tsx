@@ -12,7 +12,12 @@ type SearchInputBSProps = {
 const SearchInputBS: React.FC<SearchInputBSProps> = ({ value, handleValue, handleBack }) => {
   return (
     <View style={styles.searchContainer}>
-      <Entypo name="chevron-left" style={styles.backIcon} onPress={handleBack} />
+      <Entypo
+        testID="bsBackIcon"
+        name="chevron-left"
+        style={styles.backIcon}
+        onPress={handleBack}
+      />
       <View style={styles.searchInput}>
         <TextInput
           testID="bsSearch"

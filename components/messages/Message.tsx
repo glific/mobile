@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, Image, StyleSheet, Linking, Pressable, ImageBackground } from 'react-native';
-import { AntDesign, Entypo, Octicons } from '@expo/vector-icons';
+import { AntDesign, Entypo } from '@expo/vector-icons';
 import * as VideoThumbnails from 'expo-video-thumbnails';
 
 import { COLORS, SCALE, SIZES } from '../../constants';
 import AudioPlayer from './AudioPlayer';
 import VideoPlayer from './VideoPlayer';
+import ImageViewer from './ImageViewer';
 
 type MessageProps = {
   isLeft: boolean;
@@ -113,8 +114,6 @@ const Message: React.FC<MessageProps> = ({
           return { backgroundColor: COLORS.primary10 };
         case 'option':
           return { alignSelf: 'flex-end' };
-        default:
-          return {};
       }
     }
   };
@@ -140,7 +139,12 @@ const Message: React.FC<MessageProps> = ({
     case 'IMAGE':
       media_uri = message.media.url;
       messageBody = (
-        <Pressable testID="imageMessage" style={[styles.container, onRight('message')]}>
+        <Pressable
+          testID="imageMessage"
+          style={[styles.container, onRight('message')]}
+          onPress={handleImage}
+        >
+          <ImageViewer message={message} handleImage={handleImage} openImage={openImage} />
           <Image source={{ uri: media_uri }} style={styles.image} />
           <Text style={[styles.time, onRight('time')]}>{formattedTime}</Text>
         </Pressable>
@@ -217,7 +221,7 @@ const Message: React.FC<MessageProps> = ({
       messageBody = (
         <View style={[styles.quickContainer, onRight('option')]}>
           <Pressable
-            testID="textMessage"
+            testID="quickReplyMessage"
             style={[styles.quickMessageContainer, onRight('message')]}
           >
             <Text style={[styles.text, onRight('text')]}>{message.body}</Text>
