@@ -5,11 +5,13 @@ import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { COLORS, SCALE, SIZES } from '../constants/theme';
 
 type notificationType = {
-  id: number;
-  header: string;
-  message: string;
-  time: string;
-  type: string;
+  notification: {
+    id: number;
+    header: string;
+    message: string;
+    time: string;
+    type: string;
+  };
 };
 
 const NotificationItem: React.FC<{ notification: notificationType }> = ({ notification }) => {

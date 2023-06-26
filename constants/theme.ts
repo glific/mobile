@@ -21,6 +21,7 @@ export const COLORS = {
   white: '#ffffff',
   black: '#212121',
   black02: 'rgba(0, 0, 0, 0.2)',
+  black005: 'rgba(0, 0, 0, 0.05)',
   critical: '#767672',
   criticalBackground: '#EAEDEC',
   warning: '#DD1F1F',

@@ -6,6 +6,11 @@ const mockGroups = {
   messages: "No messages",
 };
 
+const mockMessages = {
+  id: '1',
+  body: 'test message',
+};
+
 export const GET_COLLECTIONS_MOCK = [
   {
     request: {
@@ -21,6 +26,7 @@ export const GET_COLLECTIONS_MOCK = [
         search: [
           {
             group: mockGroups,
+            messages: mockMessages,
           },
         ],
       },

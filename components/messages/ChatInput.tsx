@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, TextInput, Pressable, Keyboard } from 'react-native';
 import { FontAwesome, AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import { useMutation } from '@apollo/client';
 
 import { COLORS, SCALE, SIZES } from '../../constants';
@@ -12,17 +11,19 @@ interface ChatInputProps {
   contact: {
     id: number;
     name: string;
+    lastMessageAt: string;
   };
 }
 
 const ChatInput: React.FC<ChatInputProps> = ({ contact }) => {
   const inputRef = useRef<TextInput>(null);
-
   const [message, setMessage] = useState('');
   const [cursor, setcursor] = useState(0);
-
   const [errorMessage, setErrorMessage] = useState('');
-  const [showOptions, setShowOptions] = useState(true);
+
+  const [showOptions, setShowOptions] = useState(false);
+  const [showEmoji, setShowEmoji] = useState(false);
+
   const [createAndSendMessage] = useMutation(SEND_CONTACT_MESSAGE, {
     onCompleted: (data) => {
       console.log(data.createAndSendMessage.message);
@@ -34,8 +35,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ contact }) => {
       setErrorMessage(error.message);
       setInterval(() => {
         setErrorMessage('');
-      }, 5000);
-      // Handle error display or other actions as needed
+      }, 4000);
     },
   });
 
@@ -54,57 +54,46 @@ const ChatInput: React.FC<ChatInputProps> = ({ contact }) => {
     }
   };
 
-  const translateY = useSharedValue(0);
-  useEffect(() => {
-    if (showOptions) {
-      translateY.value = withTiming(SCALE(170));
-    } else {
-      translateY.value = withTiming(0);
-    }
-  }, [showOptions]);
-
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{ translateY: translateY.value }],
-    };
-  });
-
-  const [showEmoji, setShowEmoji] = useState(false);
-
   return (
     <>
-      <Animated.View style={[styles.mainContainer, animatedStyle]}>
+      <View style={styles.mainContainer}>
         <View style={styles.inputContainer}>
           <AntDesign
+            testID="upIcon"
             name="up"
             style={[styles.showIcon, !showOptions && { transform: [{ rotate: '180deg' }] }]}
             onPress={() => {
               setShowOptions(!showOptions);
               setShowEmoji(false);
+              inputRef?.current?.blur();
             }}
           />
           <View style={styles.inputAndEmoji}>
             {showEmoji ? (
               <MaterialCommunityIcons
+                testID="keyboardIcon"
                 name={'keyboard'}
                 style={styles.emoticonButton}
                 onPress={() => {
-                  setShowEmoji(!showEmoji);
-                  inputRef?.current?.blur();
+                  setShowOptions(false);
+                  setShowEmoji(false);
+                  inputRef?.current?.focus();
                 }}
               />
             ) : (
               <MaterialCommunityIcons
+                testID="emojiIcon"
                 name={'emoticon-outline'}
                 style={styles.emoticonButton}
                 onPress={() => {
-                  setShowOptions(true);
-                  setShowEmoji(!showEmoji);
+                  setShowOptions(false);
+                  setShowEmoji(true);
                   inputRef?.current?.blur();
                 }}
               />
             )}
             <TextInput
+              testID="chatInput"
               ref={inputRef}
               multiline
               placeholder={'Start Typing...'}
@@ -119,6 +108,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ contact }) => {
               }}
             />
             <MaterialCommunityIcons
+              testID="paperClipIcon"
               name="paperclip"
               size={23}
               color={COLORS.black}
@@ -126,7 +116,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ contact }) => {
             />
           </View>
 
-          <Pressable style={styles.sendButton} onPress={HandleSendMessage}>
+          <Pressable testID="sendIcon" style={styles.sendButton} onPress={HandleSendMessage}>
             <Ionicons name="chatbox-sharp" style={styles.iconchatbox} />
             <FontAwesome name="send" style={styles.sendicon} />
           </Pressable>
@@ -139,19 +129,23 @@ const ChatInput: React.FC<ChatInputProps> = ({ contact }) => {
             />
           </View>
         )}
-        <Pressable style={styles.optionsContainer} android_ripple={{ borderless: false }}>
-          <MaterialCommunityIcons name="message-flash" style={styles.optionIcon} />
-          <Text style={styles.optionsText}>Speed sends</Text>
-        </Pressable>
-        <Pressable style={styles.optionsContainer} android_ripple={{ borderless: false }}>
-          <MaterialCommunityIcons name="message-star" style={styles.optionIcon} />
-          <Text style={styles.optionsText}>Templates</Text>
-        </Pressable>
-        <Pressable style={styles.optionsContainer} android_ripple={{ borderless: false }}>
-          <MaterialCommunityIcons name="gesture-tap-button" style={styles.optionIcon} />
-          <Text style={styles.optionsText}>Interactive message</Text>
-        </Pressable>
-      </Animated.View>
+        {showOptions && (
+          <View testID="optionsTab">
+            <Pressable style={styles.optionsContainer} android_ripple={{ borderless: false }}>
+              <MaterialCommunityIcons name="message-flash" style={styles.optionIcon} />
+              <Text style={styles.optionsText}>Speed sends</Text>
+            </Pressable>
+            <Pressable style={styles.optionsContainer} android_ripple={{ borderless: false }}>
+              <MaterialCommunityIcons name="message-star" style={styles.optionIcon} />
+              <Text style={styles.optionsText}>Templates</Text>
+            </Pressable>
+            <Pressable style={styles.optionsContainer} android_ripple={{ borderless: false }}>
+              <MaterialCommunityIcons name="gesture-tap-button" style={styles.optionIcon} />
+              <Text style={styles.optionsText}>Interactive message</Text>
+            </Pressable>
+          </View>
+        )}
+      </View>
       {errorMessage && (
         <View style={styles.errorContainer}>
           <MaterialCommunityIcons name="close" style={styles.errorIcon} />
@@ -161,6 +155,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ contact }) => {
     </>
   );
 };
+
+export default ChatInput;
 
 const styles = StyleSheet.create({
   emojiPanel: {
@@ -285,5 +281,3 @@ const styles = StyleSheet.create({
     padding: SIZES.m6,
   },
 });
-
-export default ChatInput;

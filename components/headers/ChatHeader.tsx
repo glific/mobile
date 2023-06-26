@@ -46,7 +46,7 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({ contact }) => {
   return (
     <View style={styles.mainContainer}>
       <AntDesign
-        testID="backButton"
+        testID="backIcon"
         name="arrowleft"
         style={styles.backButton}
         onPress={(): void => navigation.goBack()}
