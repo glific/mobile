@@ -63,6 +63,28 @@ export const SEARCH_CONTACTS_MOCK = [
   },
 ];
 
+export const GET_CONTACT_NO_MESSAGE_MOCK = [
+  {
+    request: {
+      query: GET_CONTACT_MESSAGES,
+      variables: {
+        filter: { id: 1 },
+        contactOpts: { limit: 1 },
+        messageOpts: { limit: 10 },
+      },
+    },
+    result: {
+      data: {
+        search: [
+          {
+            messages: [],
+          },
+        ],
+      },
+    },
+  },
+];
+
 export const GET_CONTACT_MESSAGES_MOCK = [
   {
     request: {
@@ -394,6 +416,47 @@ export const GET_CONTACT_LOCATION_MESSAGE_MOCK = [
                 sendBy: '',
                 sender: { __typename: 'Contact', id: '21' },
                 type: 'LOCATION',
+              },
+            ],
+          },
+        ],
+      },
+    },
+  },
+];
+
+export const GET_CONTACT_QUCIK_REPLY_MESSAGE_MOCK = [
+  {
+    request: {
+      query: GET_CONTACT_MESSAGES,
+      variables: {
+        filter: { id: 1 },
+        contactOpts: { limit: 1 },
+        messageOpts: { limit: 10 },
+      },
+    },
+    result: {
+      data: {
+        search: [
+          {
+            messages: [
+              {
+                __typename: 'Message',
+                body: `test quick reply message`,
+                contextMessage: null,
+                errors: '{}',
+                flowLabel: null,
+                id: '635',
+                insertedAt: '2023-06-25T10:55:41.454724Z',
+                interactiveContent:
+                  '{"type":"quick_reply","options":[{"type":"text","title":"option1"},{"type":"text","title":"option2"}],"content":{"type":"text","text":"test quick reply message","header":"Details Confirmation","caption":""}}',
+                location: null,
+                media: null,
+                messageNumber: 102,
+                receiver: { __typename: 'Contact', id: '22' },
+                sendBy: 'NGO Main Account',
+                sender: { __typename: 'Contact', id: '17' },
+                type: 'QUICK_REPLY',
               },
             ],
           },

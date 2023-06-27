@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, Image, StyleSheet, Linking, Pressable, ImageBackground } from 'react-native';
-import { AntDesign, Entypo, Octicons } from '@expo/vector-icons';
+import { AntDesign, Entypo } from '@expo/vector-icons';
 import * as VideoThumbnails from 'expo-video-thumbnails';
 
 import { COLORS, SCALE, SIZES } from '../../constants';
 import AudioPlayer from './AudioPlayer';
 import VideoPlayer from './VideoPlayer';
+import ImageViewer from './ImageViewer';
 
 type MessageProps = {
   isLeft: boolean;
@@ -21,7 +22,7 @@ type MessageProps = {
     media: any;
     insertedAt: string;
     flowLabel: string | null;
-    interactiveContent: string;
+    interactiveContent: object;
     location: any;
     messageNumber?: any;
     receiver: {
@@ -111,8 +112,8 @@ const Message: React.FC<MessageProps> = ({
           return { color: COLORS.darkGray };
         case 'innerBackground':
           return { backgroundColor: COLORS.primary10 };
-        default:
-          return {};
+        case 'option':
+          return { alignSelf: 'flex-end' };
       }
     }
   };
@@ -133,12 +134,17 @@ const Message: React.FC<MessageProps> = ({
     Linking.openURL(url);
   };
 
-  let messageBody, media_uri, media_ext;
+  let messageBody, media_uri, media_ext, options;
   switch (message.type) {
     case 'IMAGE':
       media_uri = message.media.url;
       messageBody = (
-        <Pressable testID="imageMessage" style={[styles.container, onRight('message')]}>
+        <Pressable
+          testID="imageMessage"
+          style={[styles.container, onRight('message')]}
+          onPress={handleImage}
+        >
+          <ImageViewer message={message} handleImage={handleImage} openImage={openImage} />
           <Image source={{ uri: media_uri }} style={styles.image} />
           <Text style={[styles.time, onRight('time')]}>{formattedTime}</Text>
         </Pressable>
@@ -178,13 +184,12 @@ const Message: React.FC<MessageProps> = ({
         >
           <View style={[styles.docInnerContainer, onRight('innerBackground')]}>
             <AntDesign name="file1" style={[styles.docIcon, onRight('icon')]} />
-            <View style={{ marginHorizontal: SIZES.m10 }}>
-              <Text style={[styles.text, onRight('text')]} numberOfLines={1}>
+            <View>
+              <Text style={[styles.docText, onRight('text')]} numberOfLines={1}>
                 {message.media.caption}
               </Text>
               <Text style={[styles.extensionText, onRight('text')]}>{media_ext}</Text>
             </View>
-            <Octicons name="download" style={[styles.docIcon, onRight('icon')]} />
           </View>
           <Text style={[styles.time, onRight('time')]}>{formattedTime}</Text>
         </Pressable>
@@ -209,6 +214,32 @@ const Message: React.FC<MessageProps> = ({
           <Image source={require('../../assets/location.png')} style={styles.location} />
           <Text style={[styles.time, onRight('time')]}>{formattedTime}</Text>
         </Pressable>
+      );
+      break;
+    case 'QUICK_REPLY':
+      options = JSON.parse(message.interactiveContent)?.options;
+      messageBody = (
+        <View style={[styles.quickContainer, onRight('option')]}>
+          <Pressable
+            testID="quickReplyMessage"
+            style={[styles.quickMessageContainer, onRight('message')]}
+          >
+            <Text style={[styles.text, onRight('text')]}>{message.body}</Text>
+            <Text style={[styles.time, onRight('time')]}>{formattedTime}</Text>
+          </Pressable>
+          <View style={styles.optionsContainer}>
+            {options?.map((option, index) => (
+              <Pressable
+                key={index}
+                testID={`quickOption${index}`}
+                style={styles.optionButton}
+                android_ripple={{ color: COLORS.black005 }}
+              >
+                <Text style={styles.optionText}>{option.title}</Text>
+              </Pressable>
+            ))}
+          </View>
+        </View>
       );
       break;
     default:
@@ -250,14 +281,25 @@ const styles = StyleSheet.create({
   },
   docIcon: {
     color: COLORS.white,
-    fontSize: SIZES.f18,
+    fontSize: SIZES.f20,
+    marginRight: SIZES.m10,
   },
   docInnerContainer: {
     alignItems: 'center',
     backgroundColor: COLORS.black02,
     borderRadius: SIZES.r10,
     flexDirection: 'row',
-    padding: SIZES.m10,
+    paddingLeft: SIZES.m10,
+    paddingRight: SIZES.m20,
+    paddingVertical: SIZES.m12,
+  },
+  docText: {
+    color: COLORS.white,
+    fontSize: SIZES.f14,
+    fontWeight: '500',
+    includeFontPadding: false,
+    letterSpacing: 0.2,
+    textTransform: 'capitalize',
   },
   extensionText: {
     color: COLORS.lightGray,
@@ -272,8 +314,27 @@ const styles = StyleSheet.create({
   },
   location: {
     borderRadius: SIZES.r10,
-    height: SCALE(120),
-    width: SCALE(200),
+    height: SCALE(108),
+    width: SCALE(180),
+  },
+  optionButton: {
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    backgroundColor: COLORS.primary10,
+    borderRadius: SIZES.r10,
+    justifyContent: 'center',
+    marginVertical: SCALE(2),
+    padding: SIZES.m10,
+    width: '100%',
+  },
+  optionText: {
+    color: COLORS.primary400,
+    fontSize: SIZES.f14,
+    fontWeight: '500',
+    includeFontPadding: false,
+  },
+  optionsContainer: {
+    marginTop: SIZES.m4,
   },
   playButtonBackground: {
     alignItems: 'center',
@@ -282,6 +343,17 @@ const styles = StyleSheet.create({
     height: SIZES.s40,
     justifyContent: 'center',
     width: SIZES.s40,
+  },
+  quickContainer: {
+    alignSelf: 'flex-start',
+    margin: SIZES.m10,
+    maxWidth: '70%',
+  },
+  quickMessageContainer: {
+    backgroundColor: COLORS.primary400,
+    borderRadius: SIZES.r10,
+    borderTopLeftRadius: 0,
+    padding: SIZES.m10,
   },
   stickerContainer: {
     alignSelf: 'flex-start',

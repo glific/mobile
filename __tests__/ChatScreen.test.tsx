@@ -10,6 +10,8 @@ import {
   GET_CONTACT_IMAGE_MESSAGE_MOCK,
   GET_CONTACT_LOCATION_MESSAGE_MOCK,
   GET_CONTACT_MESSAGES_MOCK,
+  GET_CONTACT_NO_MESSAGE_MOCK,
+  GET_CONTACT_QUCIK_REPLY_MESSAGE_MOCK,
   GET_CONTACT_STICKER_MESSAGE_MOCK,
   GET_CONTACT_TEXT_MESSAGE_MOCK,
   GET_CONTACT_VIDEO_MESSAGE_MOCK,
@@ -38,8 +40,19 @@ describe('Chat screen', () => {
     expect(getByTestId('upIcon')).toBeDefined();
     expect(getByTestId('emojiIcon')).toBeDefined();
     expect(getByTestId('chatInput')).toBeDefined();
-    expect(getByTestId('paperClipIcon')).toBeDefined();
+    expect(getByTestId('clipIcon')).toBeDefined();
     expect(getByTestId('sendIcon')).toBeDefined();
+  });
+
+  test('renders no message correctly', async () => {
+    const { getByText } = customRender(
+      <ChatScreen route={{ params: { contact: contactMock } }} />,
+      GET_CONTACT_NO_MESSAGE_MOCK
+    );
+    await waitFor(async () => {
+      const testMessage = await getByText('No messages');
+      expect(testMessage).toBeDefined();
+    });
   });
 
   test('renders test message correctly', async () => {
@@ -133,6 +146,22 @@ describe('Chat screen', () => {
     });
   });
 
+  test('renders quick reply message correctly', async () => {
+    const { getByTestId } = customRender(
+      <ChatScreen route={{ params: { contact: contactMock } }} />,
+      GET_CONTACT_QUCIK_REPLY_MESSAGE_MOCK
+    );
+    await waitFor(async () => {
+      const quickReplyMessage = await getByTestId('quickReplyMessage');
+      const quickOption0 = await getByTestId('quickOption0');
+      const quickOption1 = await getByTestId('quickOption1');
+
+      expect(quickReplyMessage).toBeDefined();
+      expect(quickOption0).toBeDefined();
+      expect(quickOption1).toBeDefined();
+    });
+  });
+
   test('should open options tab when press up in chat input', async () => {
     const { getByTestId } = customRender(
       <ChatScreen route={{ params: { contact: contactMock } }} />,
@@ -148,14 +177,42 @@ describe('Chat screen', () => {
     });
   });
 
+  test('should open speed send bottom sheet when press up in chat input options', async () => {
+    const { getByTestId } = customRender(
+      <ChatScreen route={{ params: { contact: contactMock } }} />,
+      GET_CONTACT_MESSAGES_MOCK
+    );
+
+    fireEvent.press(getByTestId('upIcon'));
+
+    await waitFor(async () => {
+      expect(getByTestId('speedSend')).toBeDefined();
+      expect(getByTestId('templates')).toBeDefined();
+      expect(getByTestId('interactive')).toBeDefined();
+
+      fireEvent.press(getByTestId('speedSend'));
+
+      expect(await getByTestId('quickTemplate1')).toBeDefined();
+      expect(await getByTestId('quickTemplate2')).toBeDefined();
+      expect(await getByTestId('quickTemplate3')).toBeDefined();
+      expect(await getByTestId('quickTemplate4')).toBeDefined();
+
+      const bsSearch = getByTestId('bsSearch');
+      fireEvent.changeText(bsSearch, 'test search');
+      expect(bsSearch.props.value).toBe('test search');
+
+      const bsBackIcon = getByTestId('bsBackIcon');
+      fireEvent.press(bsBackIcon);
+    });
+  });
+
   test('should open emojis tab when press emoji in chat input', async () => {
     const { getByTestId } = customRender(
       <ChatScreen route={{ params: { contact: contactMock } }} />,
       GET_CONTACT_MESSAGES_MOCK
     );
 
-    const emojiIcon = getByTestId('emojiIcon');
-    fireEvent.press(emojiIcon);
+    fireEvent.press(getByTestId('emojiIcon'));
 
     await waitFor(async () => {
       const emojisTab = await getByTestId('emojisTab');
@@ -163,6 +220,20 @@ describe('Chat screen', () => {
 
       const keyboardIcon = await getByTestId('keyboardIcon');
       expect(keyboardIcon).toBeDefined();
+    });
+  });
+
+  test('should open attachments tab when press clip in chat input', async () => {
+    const { getByTestId } = customRender(
+      <ChatScreen route={{ params: { contact: contactMock } }} />,
+      GET_CONTACT_MESSAGES_MOCK
+    );
+
+    fireEvent.press(getByTestId('clipIcon'));
+
+    await waitFor(async () => {
+      const emojisTab = await getByTestId('attachmentsTab');
+      expect(emojisTab).toBeDefined();
     });
   });
 });
