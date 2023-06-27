@@ -43,7 +43,6 @@ describe('Server screen', () => {
 
   test('navigates to Login screen on successful submit', async () => {
     const navigateMock = jest.fn();
-    const setURLMock = jest.fn();
     AxiosService.updateServerURL = jest.fn();
 
     const { getByTestId, getByText } = customRender(
@@ -57,7 +56,6 @@ describe('Server screen', () => {
     fireEvent.press(continueButton);
 
     await waitFor(() => {
-      // expect(setURLMock).toBeCalledWith('example.com');
       expect(AxiosService.updateServerURL).toHaveBeenCalledWith('https://api.example.com/api');
       expect(navigateMock).toHaveBeenCalledWith('Login');
     });
