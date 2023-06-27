@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useQuery } from '@apollo/client';
+import moment from 'moment';
 
+// import NotificationHeader from '../components/headers/NotificationHeader';
+import ErrorAlert from '../components/ui/ErrorAlert';
 import NotificationItem from '../components/NotificationItem';
 import { COLORS, SCALE, SIZES } from '../constants/theme';
-import { useQuery } from '@apollo/client';
 import { GET_NOTIFICATIONS } from '../graphql/queries/Notification';
-import moment from 'moment';
 
 type notificationType = {
   id: number;
@@ -16,38 +18,33 @@ type notificationType = {
   type: string;
 };
 
-let Notification: notificationType[] = [];
+interface Notification {
+  entity: string;
+  message: string;
+  updatedAt: string;
+  severity: string;
+}
 
-const formatNotifications = (notifications: object[]): notificationType[] => {
-  let id = 0;
-  const formattedNotifications: notificationType[] = notifications.map((notification) => {
-    const { entity, message, updatedAt, severity } = notification;
-    const { name, phone } = JSON.parse(entity);
-    id += 1;
-    return {
-      id: id,
-      header: name || phone,
-      message,
-      time: updatedAt,
-      type: severity.replace(/"/g, ''),
-    };
-  });
-
-  // Sort the formatted notifications based on time in descending order (recent on first)
-  const sortedNotifications = formattedNotifications.sort((a, b) => {
-    const timeA = Number(moment.utc(a.time).valueOf());
-    const timeB = Number(moment.utc(b.time).valueOf());
-    return timeB - timeA;
-  });
-
-  return sortedNotifications.map((notification) => {
-    const { time, ...rest } = notification;
-    return {
+const formatNotifications = (notifications: Notification[]): notificationType[] => {
+  return notifications
+    .map(({ entity, message, updatedAt, severity }, index) => {
+      const { name, phone } = JSON.parse(entity);
+      const id = index + 1;
+      return {
+        id,
+        header: name || phone,
+        message,
+        time: moment.utc(updatedAt).valueOf(),
+        type: severity.replace(/"/g, ''),
+      };
+    })
+    .sort((a, b) => b.time - a.time)
+    .map(({ time, ...rest }) => ({
       ...rest,
-      time: moment.utc(time).fromNow(), // format time into minutes, hrs, days etc.
-    };
-  });
+      time: moment.utc(time).fromNow(),
+    }));
 };
+
 interface ITab {
   id: number;
   label: string;
@@ -80,25 +77,40 @@ const RenderOption: React.FC<RenderOptionProps> = ({ label, selectedTab, handleP
 };
 
 const Notifications = () => {
+  // const [searchValue, setSearchValue] = useState('');
   const [activeTab, setActiveTab] = useState(Tabs[0]);
-  const [notificationArray, setNotificationArray] = useState(Notification);
+  const [notificationArray, setNotificationArray] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useQuery(GET_NOTIFICATIONS, {
     onCompleted: (data) => {
-      Notification = formatNotifications(data.notifications);
-      setNotificationArray(Notification);
+      const formattedNotifications = formatNotifications(data.notifications);
+      setNotificationArray(formattedNotifications);
+    },
+    onError: (error) => {
+      setErrorMessage(error.message);
+      setInterval(() => {
+        setErrorMessage('');
+      }, 4000);
     },
   });
 
   const handleTabPress = (tab: ITab) => {
     setActiveTab(tab);
-    if (tab.label === 'All') {
-      setNotificationArray(Notification);
-    } else {
-      const filteredArray = Notification.filter((item) => item['type'] === tab.label);
-      setNotificationArray(filteredArray);
-    }
   };
+
+  // const handleSearch = (text: string) => {
+  //   setSearchValue(text);
+  //   // TODO: filter the notification array
+  // };
+
+  // React.useLayoutEffect(() => {
+  //   navigation.setOptions({
+  //     headerRight: () => (
+  //       <NotificationHeader searchValue={searchValue} handleSearch={handleSearch} />
+  //     ),
+  //   });
+  // }, [searchValue]);
 
   return (
     <View style={styles.mainContainer}>
@@ -112,11 +124,15 @@ const Notifications = () => {
           />
         ))}
       </View>
-      <ScrollView>
-        {notificationArray.map((item) => {
-          return <NotificationItem key={item.id} notification={item} />;
-        })}
-      </ScrollView>
+      <FlatList
+        data={notificationArray.filter(
+          (item) => item['type'] === activeTab.label || activeTab.label === 'All'
+        )}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => <NotificationItem key={item.id} notification={item} />}
+        initialNumToRender={10}
+      />
+      {errorMessage !== '' && <ErrorAlert message={errorMessage} />}
     </View>
   );
 };
@@ -125,7 +141,7 @@ export default Notifications;
 
 const styles = StyleSheet.create({
   active: {
-    color: COLORS.primary70,
+    color: COLORS.primary400,
   },
   activeTab: {
     alignContent: 'center',
@@ -146,7 +162,7 @@ const styles = StyleSheet.create({
   },
   navBar: {
     alignItems: 'center',
-    backgroundColor: COLORS.lightGreen,
+    backgroundColor: COLORS.primary10,
     borderBottomWidth: SCALE(0.2),
     borderColor: COLORS.darkGray,
     flexDirection: 'row',
