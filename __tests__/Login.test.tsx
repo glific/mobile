@@ -8,6 +8,7 @@ describe('Login screen', () => {
   test('renders correctly', () => {
     const { getByTestId, getByText } = customRender(<Login />);
 
+    expect(getByTestId('organisationURL')).toBeDefined();
     expect(getByTestId('mobileNumber')).toBeDefined();
     expect(getByTestId('password')).toBeDefined();
     expect(getByTestId('forgotPassword')).toBeDefined();
@@ -60,6 +61,16 @@ describe('Login screen', () => {
     fireEvent.press(getByTestId('forgotPassword'));
     await waitFor(() => {
       expect(navigateMock).toHaveBeenCalledWith('ResetPassword');
+    });
+  });
+
+  test('should navigate to add organisation url screen', async () => {
+    const navigateMock = jest.fn();
+    const { getByTestId } = customRender(<Login navigation={{ navigate: navigateMock }} />);
+
+    fireEvent.press(getByTestId('changeURL'));
+    await waitFor(() => {
+      expect(navigateMock).toHaveBeenCalledWith('Server');
     });
   });
 });

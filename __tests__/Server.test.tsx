@@ -20,12 +20,10 @@ describe('Server screen', () => {
     const { findByTestId, getByTestId } = customRender(<Server />);
 
     const serverUrlInput = getByTestId('server');
-
-    const clearInput = await findByTestId('close');
-
     fireEvent.changeText(serverUrlInput, 'https://example.com');
     expect(serverUrlInput.props.value).toBe('https://example.com');
 
+    const clearInput = await findByTestId('close');
     fireEvent.press(clearInput);
     expect(serverUrlInput.props.value).toBe('');
   });
@@ -45,6 +43,7 @@ describe('Server screen', () => {
 
   test('navigates to Login screen on successful submit', async () => {
     const navigateMock = jest.fn();
+    const setURLMock = jest.fn();
     AxiosService.updateServerURL = jest.fn();
 
     const { getByTestId, getByText } = customRender(
@@ -58,6 +57,7 @@ describe('Server screen', () => {
     fireEvent.press(continueButton);
 
     await waitFor(() => {
+      // expect(setURLMock).toBeCalledWith('example.com');
       expect(AxiosService.updateServerURL).toHaveBeenCalledWith('https://api.example.com/api');
       expect(navigateMock).toHaveBeenCalledWith('Login');
     });

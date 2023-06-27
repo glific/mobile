@@ -7,7 +7,12 @@ import AuthContext from '../config/AuthContext';
 const customRender = (
   component: React.ReactElement,
   mocks = [],
-  authContextValue = { token: 'existing_token', setToken: jest.fn() }
+  authContextValue = {
+    token: 'existing_token',
+    setToken: jest.fn(),
+    orgURL: 'example.com',
+    setURL: jest.fn(),
+  }
 ) => {
   return render(
     <MockedProvider mocks={mocks}>
