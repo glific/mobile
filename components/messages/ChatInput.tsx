@@ -181,7 +181,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ contact }) => {
           <SpeedSend bsRef={speedSendRef} />
           <Templates bsRef={templateRef} />
           <InteractiveMessage bsRef={interactiveMessageRef} />
-        </View>)};
+        </View>)}
+
       {showEmoji && (
         <View testID="emojisTab" style={styles.emojiPanel}>
           <EmojiPicker
