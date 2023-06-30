@@ -65,7 +65,7 @@ describe('Chat screen', () => {
       const contactMenu = await getByTestId('contactChatMenu');
       expect(contactMenu).toBeDefined();
     });
-  });
+  }, 5000);
 
   test('should open contact chat screen menu', async () => {
     const { getByTestId } = customRender(
@@ -77,7 +77,7 @@ describe('Chat screen', () => {
       const contactMenu = await getByTestId('collectionChatMenu');
       expect(contactMenu).toBeDefined();
     });
-  });
+  }, 5000);
 
   test('renders no message correctly', async () => {
     const { getByText } = customRender(
