@@ -2,29 +2,28 @@ import React, { useRef, useState } from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { useQuery } from '@apollo/client';
 
-import { GET_CONTACT_MESSAGES } from '../../graphql/queries/Contact';
+import { GET_MESSAGES } from '../../graphql/queries/Chat';
 import { COLORS, SIZES } from '../../constants';
 import LoadingPage from '../ui/Loading';
 import Message from './Message';
 
 type MessageListProps = {
-  contact: {
-    id: number;
-    name: string;
-  };
+  id: number;
+  conversationType: string;
 };
 
-const MessagesList: React.FC<MessageListProps> = ({ contact }) => {
+const MessagesList: React.FC<MessageListProps> = ({ conversationType, id }) => {
   const scrollView = useRef(null);
   const [openVideo, setOpenVideo] = useState(false);
   const [openImage, setOpenImage] = useState(false);
 
   const variables = {
-    filter: { id: contact.id },
+    filter: { id: id, searchGroup: conversationType === 'collection' },
     contactOpts: { limit: 1 },
     messageOpts: { limit: 10 },
   };
-  const { loading, error, data } = useQuery(GET_CONTACT_MESSAGES, {
+
+  const { loading, error, data } = useQuery(GET_MESSAGES, {
     variables,
     fetchPolicy: 'cache-and-network',
   });
@@ -63,7 +62,7 @@ const MessagesList: React.FC<MessageListProps> = ({ contact }) => {
           <Message
             key={index}
             message={message}
-            isLeft={message?.sender?.id === contact.id}
+            isLeft={conversationType === 'collection' ? false : message?.sender?.id === id}
             handleImage={handleImage}
             handleVideo={handleVideo}
             openImage={openImage}

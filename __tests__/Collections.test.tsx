@@ -1,5 +1,5 @@
 import React from 'react';
-import { waitFor } from '@testing-library/react-native';
+import { fireEvent, waitFor } from '@testing-library/react-native';
 import customRender from '../utils/jestRender';
 
 import Collections from '../screens/Collections';
@@ -22,6 +22,17 @@ describe('Collections Screen', () => {
 
       expect(collectionCard).toBeTruthy();
       expect(testGroup).toBeTruthy();
+    });
+  });
+
+  test('updates search correctly', async () => {
+    const { getByTestId } = customRender(<Collections />, GET_COLLECTIONS_MOCK);
+
+    const searchInput = getByTestId('searchInput');
+    fireEvent.changeText(searchInput, 'test search');
+
+    await waitFor(() => {
+      expect(searchInput.props.value).toBe('test search');
     });
   });
 });
