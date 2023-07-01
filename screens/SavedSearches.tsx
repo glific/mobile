@@ -4,8 +4,6 @@ import { FlatList, StyleSheet, Text } from 'react-native';
 
 import SearchBar from '../components/ui/SearchBar';
 import { COLORS, SIZES } from '../constants';
-import { useQuery } from '@apollo/client';
-import { SAVED_SEARCH_QUERY } from '../graphql/queries/Search';
 // import { SAVED_SEARCH_QUERY } from '../graphql/queries/Search';
 
 const SavedSearches = () => {

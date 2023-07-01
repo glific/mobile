@@ -181,7 +181,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ contact }) => {
           <SpeedSend bsRef={speedSendRef} />
           <Templates bsRef={templateRef} />
           <InteractiveMessage bsRef={interactiveMessageRef} />
-        </View>)}
+        </View>
+      )}
 
       {showEmoji && (
         <View testID="emojisTab" style={styles.emojiPanel}>
@@ -227,10 +228,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ contact }) => {
 export default ChatInput;
 
 const styles = StyleSheet.create({
-  emojiPanel: {
-    height: SCALE(300),
-    width: SIZES.width,
-  },
   attachmentButton: {
     alignItems: 'center',
     backgroundColor: COLORS.white,
@@ -272,8 +269,8 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     width: SCALE(340),
   },
-  emojiContainer: {
-    height: SCALE(250),
+  emojiPanel: {
+    height: SCALE(300),
     width: SIZES.width,
   },
   emojiconButton: {

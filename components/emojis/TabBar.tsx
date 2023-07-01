@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet, Animated } from 'react-native';
-import { COLORS } from '../../constants/theme';
+import { COLORS, SCALE } from '../../constants/theme';
 
 interface Route {
   title: string;
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
   },
   tabIcon: {
-    fontSize: 18,
+    fontSize: SCALE(16),
   },
 });
 

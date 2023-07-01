@@ -3,7 +3,6 @@ import { GET_COLLECTIONS } from '../../graphql/queries/Collection';
 const mockGroups = {
   id: '1',
   label: 'test group',
-  messages: "No messages",
 };
 
 const mockMessages = {
