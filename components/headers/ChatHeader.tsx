@@ -35,7 +35,12 @@ const MenuButton: React.FC<MenuProps> = ({ icon, text, onPress }) => {
   );
 };
 
-const ChatHeader: React.FC<ChatHeaderDataProps> = ({ conversationType, id, displayName, lastMessageAt }) => {
+const ChatHeader: React.FC<ChatHeaderDataProps> = ({
+  conversationType,
+  id,
+  displayName,
+  lastMessageAt,
+}) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [showMenu, setShowMenu] = useState(false);
   const [background] = useState<boolean>(true);

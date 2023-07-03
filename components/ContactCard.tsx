@@ -93,7 +93,6 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   lastSession: {
-    backgroundColor: COLORS.lightGreen,
     color: COLORS.primary100,
     fontSize: SIZES.f12,
     fontWeight: '600',
@@ -128,7 +127,7 @@ const styles = StyleSheet.create({
 
   sessionBorder: {
     alignItems: 'center',
-    backgroundColor: COLORS.lightGreen,
+    backgroundColor: COLORS.primary10,
     borderRadius: SIZES.r14,
     flexDirection: 'row',
     height: SIZES.s24,
