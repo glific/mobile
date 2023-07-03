@@ -1,31 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { useQuery } from '@apollo/client';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import SearchBar from '../components/ui/SearchBar';
 import { GET_COLLECTIONS } from '../graphql/queries/Collection';
 import CollectionCard from '../components/CollectionCard';
 import { COLORS } from '../constants';
+import { ChatEntry } from '../constants/types';
 
-interface CollectionData {
-  id: string;
-  name: string;
-  lastMessageAt: string;
-  lastMessage: string | undefined;
-}
-
-type RootStackParamList = {
-  Contacts: undefined;
-  Collections: undefined;
-  SavedSearches: undefined;
-};
-
-type Props = NativeStackScreenProps<RootStackParamList, 'Collections'>;
-
-const Collections = ({ navigation }: Props) => {
+const Collections = () => {
   const [searchValue, setSearchValue] = useState<string>('');
-  const [collections, setCollections] = useState<CollectionData[]>([]);
+  const [collections, setCollections] = useState<ChatEntry[]>([]);
 
   const variables = {
     filter: { term: searchValue, searchGroup: true },
@@ -50,7 +35,7 @@ const Collections = ({ navigation }: Props) => {
       console.log(error);
     }
     if (data) {
-      const newCollections: CollectionData[] = data.search.map((element: any) => {
+      const newCollections: ChatEntry[] = data.search.map((element: any) => {
         return {
           id: element.group?.id,
           name: element.group?.label || 'Unknown Name',

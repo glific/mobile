@@ -1416,4 +1416,6 @@ export const emojisByCategory = {
     'flag_ss',
     'flag_tc',
   ],
-} as any;
+} as {
+  [key: string]: string[];
+};

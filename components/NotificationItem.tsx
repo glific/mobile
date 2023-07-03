@@ -14,7 +14,7 @@ type notificationType = {
   };
 };
 
-const NotificationItem: React.FC<notificationType> = ({ notification }) => {
+const NotificationItem: React.FC<{ notification: notificationType }> = ({ notification }) => {
   return (
     <View testID="notificationItem" style={styles.mainContainer}>
       <View style={styles.iconContainer}>

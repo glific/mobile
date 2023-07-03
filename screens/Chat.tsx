@@ -1,32 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { useQuery } from '@apollo/client';
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import SearchBar from '../components/ui/SearchBar';
 import ContactCard from '../components/ContactCard';
 import { GET_CONTACTS } from '../graphql/queries/Contact';
 import { COLORS } from '../constants';
-// import Loading from '../components/ui/Loading';
+import { ChatEntry } from '../constants/types';
 
-interface ContactData {
+interface Contact {
   id: string;
-  name: string;
-  lastMessageAt: string;
-  lastMessage: string | undefined;
+  lastMessageAt: string | null;
+  name: string | null;
+  maskedPhone: string | null;
 }
-
-type RootStackParamList = {
-  Contacts: undefined;
-  Collections: undefined;
-  SavedSearches: undefined;
-};
-
-type Props = NativeStackScreenProps<RootStackParamList, 'Contacts'>;
-
-const Chat = ({ navigation }: Props) => {
+interface Message {
+  id: string;
+  body: string;
+}
+interface ContactElement {
+  contact?: Contact;
+  messages: Message[];
+}
+const Chat = () => {
   const [searchValue, setSearchValue] = useState<string>('');
-  const [contacts, setContacts] = useState<ContactData[]>([]);
+  const [contacts, setContacts] = useState<ChatEntry[]>([]);
 
   const variables = {
     filter: { term: searchValue },
@@ -51,13 +49,13 @@ const Chat = ({ navigation }: Props) => {
       console.log(error);
     }
     if (data) {
-      const newContacts: ContactData[] = data.search.map((element: any) => {
-        const messagesLength = element.messages?.length;
+      const newContacts: ChatEntry[] = data.search.map((element: ContactElement) => {
+        const messagesLength = element.messages?.length || 0;
         return {
           id: element.contact?.id,
           name: element.contact?.name || element.contact?.maskedPhone,
           lastMessageAt: element.contact?.lastMessageAt,
-          lastMessage: messagesLength > 0 && element.messages[messagesLength - 1]?.body,
+          lastMessage: messagesLength > 0 ? element.messages[messagesLength - 1]?.body : ' ',
         };
       });
 

@@ -2,25 +2,20 @@ import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 import shortnameToUnicode from './shortnameToUnicode';
+import { EmojiProps } from '../../constants/types';
 
-interface EmojiProps {
-  item: any;
-  messageObj: any;
-  cursor: any;
-}
-
-const Emoji: React.FC<EmojiProps> = ({ item, messageObj, cursor }) => {
+const Emoji: React.FC<EmojiProps> = ({ emoji, messageObj, cursor }) => {
   const handlePress = () => {
     messageObj.set(
-      (prev: any) =>
-        prev.slice(0, cursor?.value) + shortnameToUnicode[`:${item}:`] + prev.slice(cursor?.value)
+      (prev: string) =>
+        prev.slice(0, cursor?.value) + shortnameToUnicode[`:${emoji}:`] + prev.slice(cursor?.value)
     );
     cursor.set(cursor.value + 2);
   };
 
   return (
     <TouchableOpacity onPress={handlePress} style={styles.emojiContainer}>
-      <Text style={styles.emoji}>{shortnameToUnicode[`:${item}:`]}</Text>
+      <Text style={styles.emoji}>{shortnameToUnicode[`:${emoji}:`]}</Text>
     </TouchableOpacity>
   );
 };

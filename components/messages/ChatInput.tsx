@@ -210,7 +210,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
       )}
 
       {showEmoji && (
-        <View testID="emojisTab" style={styles.emojiContainer}>
+        <View testID="emojisTab" style={styles.emojiPanel}>
           <EmojiPicker
             messageObj={{ set: setMessage, value: message }}
             cursor={{ set: setcursor, value: cursor }}
@@ -294,8 +294,8 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     width: SCALE(340),
   },
-  emojiContainer: {
-    height: SCALE(250),
+  emojiPanel: {
+    height: SCALE(300),
     width: SIZES.width,
   },
   emojiconButton: {

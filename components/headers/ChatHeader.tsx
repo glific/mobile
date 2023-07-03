@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Entypo, Ionicons, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 
 import { COLORS, SCALE, SIZES } from '../../constants';
 import { getSessionTimeLeft } from '../../utils/helper';
+import { RootStackParamList } from '../../constants/types';
 
-interface DataProps {
+interface ChatHeaderDataProps {
   conversationType: string;
   id?: number;
   displayName: string;
@@ -34,8 +35,8 @@ const MenuButton: React.FC<MenuProps> = ({ icon, text, onPress }) => {
   );
 };
 
-const ChatHeader: React.FC<DataProps> = ({ conversationType, id, displayName, lastMessageAt }) => {
-  const navigation = useNavigation();
+const ChatHeader: React.FC<ChatHeaderDataProps> = ({ conversationType, id, displayName, lastMessageAt }) => {
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [showMenu, setShowMenu] = useState(false);
   const [background] = useState<boolean>(true);
 

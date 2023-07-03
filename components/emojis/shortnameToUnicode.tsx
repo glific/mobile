@@ -4626,5 +4626,5 @@ const emojis = {
   ':x:': '❌',
   ':yin_yang:': '☯️',
   ':zap:': '⚡',
-} as any;
+} as { [key: string]: string };
 export default emojis;

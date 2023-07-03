@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet, Animated } from 'react-native';
+import { COLORS, SCALE } from '../../constants/theme';
 
 interface Route {
   title: string;
@@ -8,7 +9,7 @@ interface Route {
 interface TabBarProps {
   routes: Route[];
   index: number;
-  setIndex: (index: number) => void;
+  setIndex: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const TabBar: React.FC<TabBarProps> = ({ routes, index, setIndex }) => {
@@ -24,7 +25,7 @@ const TabBar: React.FC<TabBarProps> = ({ routes, index, setIndex }) => {
               setIndex(index);
             }}
           >
-            <Animated.Text style={{ fontSize: 18 }}>{route.title}</Animated.Text>
+            <Animated.Text style={styles.tabIcon}>{route.title}</Animated.Text>
           </TouchableOpacity>
         );
       })}
@@ -34,7 +35,7 @@ const TabBar: React.FC<TabBarProps> = ({ routes, index, setIndex }) => {
 
 const styles = StyleSheet.create({
   container: {
-    borderColor: '#ccc',
+    borderColor: COLORS.faintGray,
     borderLeftWidth: 0,
     borderRightWidth: 0,
     borderTopWidth: 0,
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
   },
   currentTab: {
     alignItems: 'center',
-    borderBottomColor: '#49d52a',
+    borderBottomColor: COLORS.brightGreen,
     borderBottomWidth: 2,
     flex: 1,
     justifyContent: 'center',
@@ -56,6 +57,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     paddingBottom: 5,
+  },
+  tabIcon: {
+    fontSize: SCALE(16),
   },
 });
 

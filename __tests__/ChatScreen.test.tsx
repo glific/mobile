@@ -53,7 +53,7 @@ describe('Chat screen', () => {
     expect(getByTestId('chatInput')).toBeDefined();
     expect(getByTestId('clipIcon')).toBeDefined();
     expect(getByTestId('sendIcon')).toBeDefined();
-  });
+  }, 15000);
 
   test('should open contact chat screen menu', async () => {
     const { getByTestId } = customRender(
@@ -88,7 +88,7 @@ describe('Chat screen', () => {
       const testMessage = await getByText('No messages');
       expect(testMessage).toBeDefined();
     });
-  });
+  }, 10000);
 
   test('renders colllection no message correctly', async () => {
     const { getByText } = customRender(

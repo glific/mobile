@@ -8,7 +8,7 @@ type InputType = 'text' | 'password' | 'number';
 
 interface InputProps {
   label?: string;
-  onUpdateValue: () => void;
+  onUpdateValue: (args: string) => void;
   value: string;
   isError?: boolean;
   secure?: boolean;
