@@ -10,7 +10,8 @@ export type RootStackParamList = {
   Collections: undefined;
   SavedSearches: undefined;
   ConversationFilter: undefined;
-  ContactProfile: { contact: { id: number; name: string } };
+  ContactProfile: { contact: { id: string; name: string } };
+  ChatScreen: { contact: { id: string; name: string } };
 };
 
 export type MessageObjectType = {

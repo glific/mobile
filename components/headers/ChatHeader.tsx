@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Pressable, Image } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Image, Modal, TouchableOpacity } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Entypo, Ionicons, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 
 import { COLORS } from '../../constants';
 import { RootStackParamList } from '../../constants/types';
+import PopupModal from '../messages/FlowPopup';
 
 interface ChatHeaderDataProps {
   contact: {
-    id: number;
+    id: string;
     name: string;
   };
 }
@@ -38,9 +39,16 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({ contact }) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [showMenu, setShowMenu] = useState(false);
   const [background] = useState<boolean>(true);
+  const [showFlowModal, setShowFlowModal] = useState(false);
 
   const handleMenu = () => {
     setShowMenu(!showMenu);
+  };
+  const openFlowModal = () => {
+    setShowFlowModal(true);
+  };
+  const closeFlowModal = () => {
+    setShowFlowModal(false);
   };
 
   return (
@@ -85,6 +93,13 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({ contact }) => {
           <Pressable onPress={handleMenu} style={styles.menuBackground} />
           <View style={styles.menuContainer}>
             <MenuButton
+              text="Start a Flow"
+              icon={<MaterialCommunityIcons name="chat-plus" style={styles.menuIcon} />}
+              onPress={() => {
+                openFlowModal();
+              }}
+            />
+            <MenuButton
               text="Add to Collection"
               icon={<Ionicons name="person-add-sharp" style={styles.menuIcon} />}
               onPress={() => {
@@ -115,6 +130,7 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({ contact }) => {
           </View>
         </>
       )}
+      <PopupModal contactId={contact.id} visible={showFlowModal} onClose={closeFlowModal} />
     </View>
   );
 };
