@@ -88,7 +88,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
     if (message !== '') {
       if (conversationType === 'contact') {
         createAndSendMessage({
-          variables: { input: input },
+          variables: { input },
         });
       } else {
         createAndSendToCollection({
