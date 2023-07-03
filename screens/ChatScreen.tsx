@@ -6,7 +6,7 @@ import MessagesList from '../components/messages/MessageList';
 import ChatInput from '../components/messages/ChatInput';
 import { COLORS, SIZES } from '../constants';
 
-export const getSessionTimeLeft = (time) => {
+export const getSessionTimeLeft = (time: string | number | Date) => {
   const currentTime = new Date();
   const lastMessageTime = new Date(time);
   const timeDifference = lastMessageTime.getTime() + 24 * 60 * 60 * 1000 - currentTime.getTime();

@@ -15,7 +15,7 @@ type MessageListProps = {
 };
 
 const MessagesList: React.FC<MessageListProps> = ({ contact }) => {
-  const scrollView = useRef(null);
+  const scrollView = useRef<ScrollView>(null);
   const [openVideo, setOpenVideo] = useState(false);
   const [openImage, setOpenImage] = useState(false);
 

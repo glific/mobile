@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { View, TextInput, StyleSheet, Pressable, Text } from 'react-native';
 import { COLORS, SIZES, SCALE } from '../../constants';
 import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { RootStackParamList } from '../../constants/types';
 
 interface MenuButtonProps {
   label: string;
@@ -24,7 +25,7 @@ const MenuButton: React.FC<MenuButtonProps> = ({ label, count }) => {
 
 type SearchBarProps = {
   value: string;
-  setSearchValue: () => void;
+  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
   onSearch: () => void;
   showMenu?: boolean;
 };
@@ -35,7 +36,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   onSearch,
   showMenu = false,
 }) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [menuVisible, setMenuVisible] = useState<boolean>(false);
 
   const openMenu = () => setMenuVisible(true);

@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   },
   activeTab: {
     alignContent: 'center',
-    borderBottomColor: COLORS.primary400,
+    borderBottomColor: COLORS.brightGreen,
     borderBottomWidth: SCALE(2),
     height: SIZES.s60,
     justifyContent: 'center',

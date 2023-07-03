@@ -3,13 +3,22 @@ import { View, Text, StyleSheet, Pressable, ScrollView, Image } from 'react-nati
 import { AntDesign } from '@expo/vector-icons';
 import { COLORS } from '../constants';
 
-type Props = {
+interface Props {
   navigation: any;
-  route: any;
-};
+  route: {
+    params: {
+      contact: {
+        id: string;
+        lastMessageAt: string;
+        name: string;
+      };
+    };
+  };
+}
 
 const ContactProfile = ({ navigation, route }: Props) => {
   const { contact } = route.params;
+
   const [isMore, setIsMore] = useState(true);
   return (
     <ScrollView style={styles.mainContainer}>
