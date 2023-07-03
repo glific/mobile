@@ -6,8 +6,6 @@ import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import MultiSelect from '../components/ui/MultiSelect';
 import DateRangeSelect from '../components/ui/DateRangeSelect';
-// import { NavigationProp, useNavigation } from '@react-navigation/native';
-// import { RootStackParamList } from '../constants/types';
 
 interface OptionData {
   id: string;

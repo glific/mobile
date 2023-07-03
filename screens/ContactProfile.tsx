@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView, Image } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { COLORS } from '../constants';
-// import { NavigationProp, useNavigation } from '@react-navigation/native';
-// import { RootStackParamList } from '../constants/types';
 
 interface Props {
   navigation: any;
