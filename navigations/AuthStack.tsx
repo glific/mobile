@@ -10,7 +10,7 @@ import NewPassword from '../screens/NewPassword';
 
 const Stack = createNativeStackNavigator();
 
-const AuthStack = () => {
+const AuthStack = ({ initialScreen }: { initialScreen: string }) => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -19,13 +19,14 @@ const AuthStack = () => {
         contentStyle: { backgroundColor: COLORS.secondary100 },
         animation: 'slide_from_right',
       }}
+      initialRouteName={initialScreen}
     >
+      <Stack.Screen name="Login" component={Login} />
       <Stack.Screen
         name="Server"
         component={Server}
         options={{ title: 'Add your organisation URL' }}
       />
-      <Stack.Screen name="Login" component={Login} />
       <Stack.Screen
         name="ResetPassword"
         component={ResetPassword}
