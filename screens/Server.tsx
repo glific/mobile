@@ -20,7 +20,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Server'>;
 
 const Server = ({ navigation }: Props) => {
   const { setURL, orgURL } = useContext(AuthContext);
-  const [serverURL, setServerURL] = useState(orgURL ? orgURL : ''); // TODO: Remove this initialization when in production staging.tides.coloredcow.com
+  const [serverURL, setServerURL] = useState(orgURL ? orgURL : '');
   const [errorMessage, setErrorMessage] = useState('');
 
   const serverURLChanged = (value: string) => {

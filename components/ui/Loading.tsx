@@ -1,6 +1,6 @@
 import React from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
-import { COLORS, SIZES } from '../../constants';
+import { COLORS, SCALE } from '../../constants';
 
 const Loading = () => {
   return (
@@ -18,8 +18,8 @@ export default Loading;
 const styles = StyleSheet.create({
   container: {
     alignSelf: 'center',
-    marginVertical: SIZES.s50,
     position: 'absolute',
+    top: SCALE(70),
     zIndex: 100,
   },
 });

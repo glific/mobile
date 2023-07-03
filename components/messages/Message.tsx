@@ -50,7 +50,7 @@ const VideoThumbnail = ({ videoUri }: { videoUri: string }) => {
       });
       setThumbnailUrl(uri);
     } catch (error) {
-      console.error('Failed to generate thumbnail:', error);
+      console.log('Failed to generate thumbnail:', error);
     }
   };
 

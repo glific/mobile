@@ -1,4 +1,5 @@
-import { GET_CONTACTS, GET_CONTACT_MESSAGES } from '../../graphql/queries/Contact';
+import { GET_CONTACTS } from '../../graphql/queries/Contact';
+import { GET_MESSAGES } from '../../graphql/queries/Chat';
 
 const mockContacts = {
   id: '1',
@@ -66,9 +67,9 @@ export const SEARCH_CONTACTS_MOCK = [
 export const GET_CONTACT_NO_MESSAGE_MOCK = [
   {
     request: {
-      query: GET_CONTACT_MESSAGES,
+      query: GET_MESSAGES,
       variables: {
-        filter: { id: 1 },
+        filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
         messageOpts: { limit: 10 },
       },
@@ -88,9 +89,9 @@ export const GET_CONTACT_NO_MESSAGE_MOCK = [
 export const GET_CONTACT_MESSAGES_MOCK = [
   {
     request: {
-      query: GET_CONTACT_MESSAGES,
+      query: GET_MESSAGES,
       variables: {
-        filter: { id: 1 },
+        filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
         messageOpts: { limit: 10 },
       },
@@ -128,9 +129,9 @@ export const GET_CONTACT_MESSAGES_MOCK = [
 export const GET_CONTACT_TEXT_MESSAGE_MOCK = [
   {
     request: {
-      query: GET_CONTACT_MESSAGES,
+      query: GET_MESSAGES,
       variables: {
-        filter: { id: 1 },
+        filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
         messageOpts: { limit: 10 },
       },
@@ -168,9 +169,9 @@ export const GET_CONTACT_TEXT_MESSAGE_MOCK = [
 export const GET_CONTACT_IMAGE_MESSAGE_MOCK = [
   {
     request: {
-      query: GET_CONTACT_MESSAGES,
+      query: GET_MESSAGES,
       variables: {
-        filter: { id: 1 },
+        filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
         messageOpts: { limit: 10 },
       },
@@ -212,9 +213,9 @@ export const GET_CONTACT_IMAGE_MESSAGE_MOCK = [
 export const GET_CONTACT_VIDEO_MESSAGE_MOCK = [
   {
     request: {
-      query: GET_CONTACT_MESSAGES,
+      query: GET_MESSAGES,
       variables: {
-        filter: { id: 1 },
+        filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
         messageOpts: { limit: 10 },
       },
@@ -256,9 +257,9 @@ export const GET_CONTACT_VIDEO_MESSAGE_MOCK = [
 export const GET_CONTACT_AUDIO_MESSAGE_MOCK = [
   {
     request: {
-      query: GET_CONTACT_MESSAGES,
+      query: GET_MESSAGES,
       variables: {
-        filter: { id: 1 },
+        filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
         messageOpts: { limit: 10 },
       },
@@ -300,9 +301,9 @@ export const GET_CONTACT_AUDIO_MESSAGE_MOCK = [
 export const GET_CONTACT_DOCUMENT_MESSAGE_MOCK = [
   {
     request: {
-      query: GET_CONTACT_MESSAGES,
+      query: GET_MESSAGES,
       variables: {
-        filter: { id: 1 },
+        filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
         messageOpts: { limit: 10 },
       },
@@ -344,9 +345,9 @@ export const GET_CONTACT_DOCUMENT_MESSAGE_MOCK = [
 export const GET_CONTACT_STICKER_MESSAGE_MOCK = [
   {
     request: {
-      query: GET_CONTACT_MESSAGES,
+      query: GET_MESSAGES,
       variables: {
-        filter: { id: 1 },
+        filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
         messageOpts: { limit: 10 },
       },
@@ -388,9 +389,9 @@ export const GET_CONTACT_STICKER_MESSAGE_MOCK = [
 export const GET_CONTACT_LOCATION_MESSAGE_MOCK = [
   {
     request: {
-      query: GET_CONTACT_MESSAGES,
+      query: GET_MESSAGES,
       variables: {
-        filter: { id: 1 },
+        filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
         messageOpts: { limit: 10 },
       },
@@ -428,9 +429,9 @@ export const GET_CONTACT_LOCATION_MESSAGE_MOCK = [
 export const GET_CONTACT_QUCIK_REPLY_MESSAGE_MOCK = [
   {
     request: {
-      query: GET_CONTACT_MESSAGES,
+      query: GET_MESSAGES,
       variables: {
-        filter: { id: 1 },
+        filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
         messageOpts: { limit: 10 },
       },
