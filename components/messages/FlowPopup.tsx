@@ -2,18 +2,35 @@ import React, { useState } from 'react';
 import { View, Text, Modal, StyleSheet, ToastAndroid, Platform, Alert } from 'react-native';
 import { COLORS, SCALE } from '../../constants/theme';
 import { Picker } from '@react-native-picker/picker';
-import { GET_ALL_FLOWS, START_CONTACT_FLOW } from '../../graphql/queries/Flows';
+import { GET_ALL_FLOWS } from '../../graphql/queries/Flows';
+import { START_COLLECTION_FLOW, START_CONTACT_FLOW } from '../../graphql/mutations/Flows';
 import { useMutation, useQuery } from '@apollo/client';
 import Button from '../ui/Button';
 
 interface FlowProps {
-  contactId: string;
+  id: string;
+  conversationType: string;
   visible: boolean;
   onClose: () => void;
 }
-const PopupModal: React.FC<FlowProps> = ({ contactId, visible, onClose }) => {
+const PopupModal: React.FC<FlowProps> = ({ id, conversationType, visible, onClose }) => {
   const [selectedFlow, setSelectedFlow] = useState('');
-  const [startFlowMutation] = useMutation(START_CONTACT_FLOW);
+
+  const [startFlowMutation] =
+    conversationType == 'contact'
+      ? useMutation(START_CONTACT_FLOW)
+      : useMutation(START_COLLECTION_FLOW);
+  const flowVariable =
+    conversationType == 'contact'
+      ? {
+          flowId: selectedFlow,
+          contactId: id,
+        }
+      : {
+          flowId: selectedFlow,
+          groupId: id,
+        };
+
   const showToast = (message: string) => {
     if (Platform.OS === 'android') {
       ToastAndroid.show(message, ToastAndroid.SHORT);
@@ -21,22 +38,19 @@ const PopupModal: React.FC<FlowProps> = ({ contactId, visible, onClose }) => {
       Alert.alert(message);
     }
   };
+
   const handleStartFlow = async () => {
     try {
       const { data } = await startFlowMutation({
-        variables: {
-          flowId: selectedFlow,
-          contactId: contactId,
-        },
+        variables: flowVariable,
       });
-
       // Show toast message here
       showToast('Flow started successfully!');
-
-      onClose();
     } catch (error) {
+      showToast('Error starting flow!');
       console.error(error);
     }
+    onClose();
   };
   const variables = {
     filter: {
@@ -68,32 +82,41 @@ const PopupModal: React.FC<FlowProps> = ({ contactId, visible, onClose }) => {
     });
   }
   return (
-    <Modal visible={visible} animationType="fade" transparent={true} onRequestClose={onClose}>
+    <Modal
+      testID="popup"
+      visible={visible}
+      animationType="fade"
+      transparent={true}
+      onRequestClose={onClose}
+    >
       <View style={styles.background}>
         <View style={styles.popupContainer}>
-          <Text style={styles.header}>Select Flow</Text>
+          <Text testID="header" style={styles.header}>
+            Select Flow
+          </Text>
           <View style={styles.picker}>
             <Picker
+              testID="flow-picker"
               selectedValue={selectedFlow}
               onValueChange={(itemValue) => setSelectedFlow(itemValue)}
               mode="dropdown"
               prompt="Select a Flow"
             >
-              <Picker.Item label="Select a Flow" value="" />
+              <Picker.Item testID="placeholder" label="Select a Flow" value="" />
               {Object.entries(flowsDict).map(([name, value]) => (
-                <Picker.Item key={value} label={name} value={value} />
+                <Picker.Item testID={name} key={value} label={name} value={value} />
               ))}
             </Picker>
             <Text style={styles.description}>
               The contact will be responded as per the messages planned in the flow.
             </Text>
             <View style={styles.buttonContainer}>
-              <View style={styles.button}>
+              <View testID="cancelButton" style={styles.button}>
                 <Button type="neutral" onPress={onClose}>
                   <Text>CANCEL</Text>
                 </Button>
               </View>
-              <View style={styles.button}>
+              <View testID="startButton" style={styles.button}>
                 <Button onPress={handleStartFlow}>
                   <Text>START</Text>
                 </Button>

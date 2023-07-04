@@ -8,15 +8,3 @@ export const GET_ALL_FLOWS = gql`
     }
   }
 `;
-
-export const START_CONTACT_FLOW = gql`
-  mutation startContactFlow($flowId: ID!, $contactId: ID!) {
-    startContactFlow(flowId: $flowId, contactId: $contactId) {
-      success
-      errors {
-        key
-        message
-      }
-    }
-  }
-`;

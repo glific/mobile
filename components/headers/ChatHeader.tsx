@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Pressable, Image, Modal, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Image } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Entypo, Ionicons, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 
@@ -10,9 +10,9 @@ import PopupModal from '../messages/FlowPopup';
 
 interface ChatHeaderDataProps {
   conversationType: string;
-  id?: number;
+  id: number;
   displayName: string;
-  lastMessageAt?: string;
+  lastMessageAt: string;
 }
 
 interface MenuProps {
@@ -73,13 +73,6 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
           text="Start a flow"
           icon={<MaterialCommunityIcons name="message-cog" style={styles.menuIcon} />}
           onPress={() => {
-            console.log('1');
-          }}
-        />
-        <MenuButton
-          text="Start a Flow"
-          icon={<MaterialCommunityIcons name="chat-plus" style={styles.menuIcon} />}
-          onPress={() => {
             openFlowModal();
           }}
         />
@@ -121,7 +114,7 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
           text="Start a flow"
           icon={<MaterialCommunityIcons name="message-cog" style={styles.menuIcon} />}
           onPress={() => {
-            console.log('1');
+            openFlowModal();
           }}
         />
         <MenuButton
@@ -190,7 +183,12 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
             {menu}
           </>
         )}
-        <PopupModal contactId={id} visible={showFlowModal} onClose={closeFlowModal} />
+        <PopupModal
+          id={id}
+          conversationType={conversationType}
+          visible={showFlowModal}
+          onClose={closeFlowModal}
+        />
       </View>
       {sessionTimeLeft}
     </>

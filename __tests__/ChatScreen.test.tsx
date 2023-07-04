@@ -67,15 +67,15 @@ describe('Chat screen', () => {
     });
   }, 5000);
 
-  test('should open contact chat screen menu', async () => {
+  test('should open Collection chat screen menu', async () => {
     const { getByTestId } = customRender(
       <ChatScreen route={{ params: { ...collectionMock } }} />,
       GET_COLLECTION_NO_MESSAGE_MOCK
     );
     fireEvent.press(getByTestId('menuIcon'));
     await waitFor(async () => {
-      const contactMenu = await getByTestId('collectionChatMenu');
-      expect(contactMenu).toBeDefined();
+      const collectionMenu = await getByTestId('collectionChatMenu');
+      expect(collectionMenu).toBeDefined();
     });
   }, 5000);
 
@@ -143,10 +143,6 @@ describe('Chat screen', () => {
       const videoMessage = await getByTestId('videoMessage');
       expect(videoMessage).toBeDefined();
     });
-    // await waitFor(async () => {
-    //   const videoThumbnail = await getByTestId('videoThumbnail');
-    //   expect(videoThumbnail).toBeDefined();
-    // });
   });
 
   test('renders audio message correctly', async () => {
@@ -293,4 +289,18 @@ describe('Chat screen', () => {
       expect(emojisTab).toBeDefined();
     });
   });
+
+  test('Open Start a Flow Popup Modal', async () => {
+    const { getByTestId, queryByText } = customRender(
+      <ChatScreen route={{ params: { ...contactMock } }} />,
+      GET_CONTACT_MESSAGES_MOCK
+    );
+    fireEvent.press(getByTestId('menuIcon'));
+    const startFlowButton = queryByText('Start a flow');
+    fireEvent.press(startFlowButton);
+    await waitFor(async () => {
+      const popupMenu = await getByTestId('popup');
+      expect(popupMenu).toBeDefined();
+    });
+  }, 5000);
 });
