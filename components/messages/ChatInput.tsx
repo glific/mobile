@@ -10,7 +10,7 @@ import {
 import { useMutation } from '@apollo/client';
 
 import { COLORS, SCALE, SIZES } from '../../constants';
-import { SEND_CONTACT_MESSAGE } from '../../graphql/queries/Contact';
+import { SEND_COLLECTION_MESSAGE, SEND_CONTACT_MESSAGE } from '../../graphql/mutations/Chat';
 import EmojiPicker from '../emojis/EmojiPicker';
 import SpeedSend from './SpeedSend';
 import Templates from './Templates';
@@ -18,14 +18,11 @@ import InteractiveMessage from './InteractiveMessage';
 import ErrorAlert from '../ui/ErrorAlert';
 
 interface ChatInputProps {
-  contact: {
-    id: number;
-    name: string;
-    lastMessageAt: string;
-  };
+  id: number;
+  conversationType: string;
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({ contact }) => {
+const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
   const inputRef = useRef<TextInput>(null);
   const speedSendRef = useRef(null);
   const templateRef = useRef(null);
@@ -38,14 +35,26 @@ const ChatInput: React.FC<ChatInputProps> = ({ contact }) => {
   const [showEmoji, setShowEmoji] = useState(false);
   const [showAttachments, setShowAttachments] = useState(false);
 
+  const [selectedTemplate, setSelectedTemplate] = useState();
+  const [variableParam, setVariableParam] = useState([]);
+
   const [createAndSendMessage] = useMutation(SEND_CONTACT_MESSAGE, {
     onCompleted: (data) => {
       console.log(data.createAndSendMessage.message);
-      setMessage('');
-      Keyboard.dismiss();
     },
     onError: (error) => {
-      Keyboard.dismiss();
+      setErrorMessage(error.message);
+      setInterval(() => {
+        setErrorMessage('');
+      }, 4000);
+    },
+  });
+
+  const [createAndSendToCollection] = useMutation(SEND_COLLECTION_MESSAGE, {
+    onCompleted: () => {
+      console.log('success');
+    },
+    onError: (error) => {
       setErrorMessage(error.message);
       setInterval(() => {
         setErrorMessage('');
@@ -54,22 +63,38 @@ const ChatInput: React.FC<ChatInputProps> = ({ contact }) => {
   });
 
   const HandleSendMessage = () => {
+    setMessage('');
+    Keyboard.dismiss();
     setShowOptions(false);
     setShowEmoji(false);
     inputRef?.current?.blur();
     setShowAttachments(false);
 
+    const input = {
+      body: message,
+      flow: 'OUTBOUND',
+      type: 'TEXT',
+      receiverId: id,
+      // mediaId: null,
+      // interactiveTemplateId: null,
+    };
+
+    if (selectedTemplate) {
+      input.isHsm = selectedTemplate.isHsm;
+      input.templateId = parseInt(selectedTemplate.id, 10);
+      input.params = variableParam;
+    }
+
     if (message !== '') {
-      createAndSendMessage({
-        variables: {
-          input: {
-            body: message,
-            flow: 'OUTBOUND',
-            type: 'TEXT',
-            receiverId: contact.id,
-          },
-        },
-      });
+      if (conversationType === 'contact') {
+        createAndSendMessage({
+          variables: { input },
+        });
+      } else {
+        createAndSendToCollection({
+          variables: { groupId: id, input },
+        });
+      }
     }
   };
 

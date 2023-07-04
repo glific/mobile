@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import formatTime from '../utils/formatTime';
 import { COLORS, SCALE, SIZES } from '../constants';
-import { getSessionTimeLeft } from '../screens/ChatScreen';
+import { getSessionTimeLeft } from '../utils/helper';
 
 export interface ContactProps {
   id: string;
@@ -25,7 +25,10 @@ const Contact: React.FC<ContactProps> = ({ id, name, lastMessageAt, lastMessage 
       testID="contactCard"
       onPress={() =>
         navigation.navigate('ChatScreen', {
-          contact: { id, name, lastMessageAt },
+          id: id,
+          displayName: name,
+          conversationType: 'contact',
+          lastMessageAt: lastMessageAt,
         })
       }
       style={styles.item}
@@ -90,7 +93,6 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   lastSession: {
-    backgroundColor: COLORS.lightGreen,
     color: COLORS.primary100,
     fontSize: SIZES.f12,
     fontWeight: '600',
@@ -125,7 +127,7 @@ const styles = StyleSheet.create({
 
   sessionBorder: {
     alignItems: 'center',
-    backgroundColor: COLORS.lightGreen,
+    backgroundColor: COLORS.primary10,
     borderRadius: SIZES.r14,
     flexDirection: 'row',
     height: SIZES.s24,

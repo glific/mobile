@@ -19,7 +19,7 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
 const Login = ({ navigation }: Props) => {
-  const { setToken } = useContext(AuthContext);
+  const { setToken, orgURL } = useContext(AuthContext);
   const [enteredMobile, setEnteredMobile] = useState('');
   const [enteredPassword, setEnteredPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -67,6 +67,13 @@ const Login = ({ navigation }: Props) => {
   return (
     <View style={styles.mainContainer}>
       <View style={styles.inputContainer}>
+        <View testID="organisationURL" style={styles.headerContainer}>
+          <Text style={styles.orgLabel}>Organisation URL</Text>
+          <Text style={styles.urlText}>{orgURL}</Text>
+          <Pressable testID="changeURL" onPress={() => navigation.navigate('Server')}>
+            <Text style={styles.textButton}>Change</Text>
+          </Pressable>
+        </View>
         <Text style={[styles.numberLabel, errorMessage && styles.errorLabel]}>
           Enter your WhatsApp number
         </Text>
@@ -98,7 +105,7 @@ const Login = ({ navigation }: Props) => {
           style={styles.forgotPasswordContainer}
           onPress={() => navigation.navigate('ResetPassword')}
         >
-          <Text style={styles.forgotPassword}>Forgot password?</Text>
+          <Text style={styles.textButton}>Forgot password?</Text>
         </Pressable>
         {errorDisplay}
       </View>
@@ -127,13 +134,19 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     paddingLeft: SCALE(2),
   },
-  forgotPassword: {
-    color: COLORS.primary100,
-    fontSize: SIZES.f14,
-  },
   forgotPasswordContainer: {
     alignSelf: 'flex-end',
     marginTop: SIZES.m6,
+  },
+  headerContainer: {
+    backgroundColor: COLORS.primary10,
+    borderRadius: SIZES.r10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: SIZES.m16,
+    paddingBottom: SIZES.m12,
+    paddingHorizontal: SIZES.m10,
+    paddingTop: SIZES.m12,
   },
   inputContainer: { paddingHorizontal: SIZES.m20 },
   mainContainer: {
@@ -144,6 +157,15 @@ const styles = StyleSheet.create({
   numberLabel: {
     fontSize: SIZES.f16,
     paddingBottom: SIZES.m10,
+  },
+  orgLabel: {
+    color: COLORS.primary70,
+    fontSize: SIZES.f14,
+    fontWeight: '500',
+    left: SIZES.m6,
+    paddingBottom: SIZES.m10,
+    position: 'absolute',
+    top: -SIZES.m10,
   },
   phoneInput: {
     backgroundColor: COLORS.white,
@@ -162,5 +184,13 @@ const styles = StyleSheet.create({
     height: SIZES.s48,
     marginBottom: SIZES.m20,
     width: '100%',
+  },
+  textButton: {
+    color: COLORS.primary100,
+    fontSize: SIZES.f14,
+  },
+  urlText: {
+    color: COLORS.black,
+    fontSize: SIZES.f14,
   },
 });

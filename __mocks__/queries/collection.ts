@@ -1,3 +1,4 @@
+import { GET_MESSAGES } from '../../graphql/queries/Chat';
 import { GET_COLLECTIONS } from '../../graphql/queries/Collection';
 
 const mockGroups = {
@@ -26,6 +27,68 @@ export const GET_COLLECTIONS_MOCK = [
           {
             group: mockGroups,
             messages: mockMessages,
+          },
+        ],
+      },
+    },
+  },
+];
+
+export const GET_COLLECTION_NO_MESSAGE_MOCK = [
+  {
+    request: {
+      query: GET_MESSAGES,
+      variables: {
+        filter: { id: 1, searchGroup: true },
+        contactOpts: { limit: 1 },
+        messageOpts: { limit: 10 },
+      },
+    },
+    result: {
+      data: {
+        search: [
+          {
+            messages: [],
+          },
+        ],
+      },
+    },
+  },
+];
+
+export const GET_COLLECTION_TEXT_MESSAGE_MOCK = [
+  {
+    request: {
+      query: GET_MESSAGES,
+      variables: {
+        filter: { id: 1, searchGroup: true },
+        contactOpts: { limit: 1 },
+        messageOpts: { limit: 10 },
+      },
+    },
+    result: {
+      data: {
+        search: [
+          {
+            messages: [
+              {
+                __typename: 'Message',
+                body: 'text message',
+                contextMessage: null,
+                errors: '{}',
+                flowLabel: null,
+                id: '568',
+                insertedAt: '2023-06-20T07:27:26.164270Z',
+                interactiveContent: '{}',
+                location: null,
+                media: null,
+                messageNumber: 29,
+                receiver: { __typename: 'Contact', id: '17' },
+                sendBy: '',
+                sender: { __typename: 'Contact', id: '21' },
+                type: 'TEXT',
+              },
+            ],
           },
         ],
       },

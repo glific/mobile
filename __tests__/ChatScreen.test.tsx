@@ -16,23 +16,34 @@ import {
   GET_CONTACT_TEXT_MESSAGE_MOCK,
   GET_CONTACT_VIDEO_MESSAGE_MOCK,
 } from '../__mocks__/queries/contact';
+import {
+  GET_COLLECTION_NO_MESSAGE_MOCK,
+  GET_COLLECTION_TEXT_MESSAGE_MOCK,
+} from '../__mocks__/queries/collection';
 
 const contactMock = {
   id: 1,
-  name: 'John Doe',
+  displayName: 'test contact name',
+  conversationType: 'contact',
   lastMessageAt: '2023-06-23T10:00:00.000Z',
+};
+
+const collectionMock = {
+  id: 1,
+  displayName: 'test collection name',
+  conversationType: 'collection',
 };
 
 describe('Chat screen', () => {
   test('renders chat header & input correctly', async () => {
     const { getByTestId, getByText } = customRender(
-      <ChatScreen route={{ params: { contact: contactMock } }} />,
-      GET_CONTACT_MESSAGES_MOCK
+      <ChatScreen route={{ params: { ...contactMock } }} />,
+      GET_CONTACT_NO_MESSAGE_MOCK
     );
 
     expect(getByTestId('backIcon')).toBeDefined();
     expect(getByTestId('userProfile')).toBeDefined();
-    expect(getByText('John Doe')).toBeDefined();
+    expect(getByText('test contact name')).toBeDefined();
     expect(getByTestId('menuIcon')).toBeDefined();
 
     expect(getByTestId('loadingIndicator')).toBeDefined();
@@ -44,9 +55,33 @@ describe('Chat screen', () => {
     expect(getByTestId('sendIcon')).toBeDefined();
   }, 15000);
 
+  test('should open contact chat screen menu', async () => {
+    const { getByTestId } = customRender(
+      <ChatScreen route={{ params: { ...contactMock } }} />,
+      GET_CONTACT_NO_MESSAGE_MOCK
+    );
+    fireEvent.press(getByTestId('menuIcon'));
+    await waitFor(async () => {
+      const contactMenu = await getByTestId('contactChatMenu');
+      expect(contactMenu).toBeDefined();
+    });
+  }, 5000);
+
+  test('should open contact chat screen menu', async () => {
+    const { getByTestId } = customRender(
+      <ChatScreen route={{ params: { ...collectionMock } }} />,
+      GET_COLLECTION_NO_MESSAGE_MOCK
+    );
+    fireEvent.press(getByTestId('menuIcon'));
+    await waitFor(async () => {
+      const contactMenu = await getByTestId('collectionChatMenu');
+      expect(contactMenu).toBeDefined();
+    });
+  }, 5000);
+
   test('renders no message correctly', async () => {
     const { getByText } = customRender(
-      <ChatScreen route={{ params: { contact: contactMock } }} />,
+      <ChatScreen route={{ params: { ...contactMock } }} />,
       GET_CONTACT_NO_MESSAGE_MOCK
     );
     await waitFor(async () => {
@@ -55,10 +90,32 @@ describe('Chat screen', () => {
     });
   }, 10000);
 
+  test('renders colllection no message correctly', async () => {
+    const { getByText } = customRender(
+      <ChatScreen route={{ params: { ...collectionMock } }} />,
+      GET_COLLECTION_NO_MESSAGE_MOCK
+    );
+    await waitFor(async () => {
+      const testMessage = await getByText('No messages');
+      expect(testMessage).toBeDefined();
+    });
+  });
+
   test('renders test message correctly', async () => {
     const { getByTestId } = customRender(
-      <ChatScreen route={{ params: { contact: contactMock } }} />,
+      <ChatScreen route={{ params: { ...contactMock } }} />,
       GET_CONTACT_TEXT_MESSAGE_MOCK
+    );
+    await waitFor(async () => {
+      const testMessage = await getByTestId('textMessage');
+      expect(testMessage).toBeDefined();
+    });
+  });
+
+  test('renders collection test message correctly', async () => {
+    const { getByTestId } = customRender(
+      <ChatScreen route={{ params: { ...collectionMock } }} />,
+      GET_COLLECTION_TEXT_MESSAGE_MOCK
     );
     await waitFor(async () => {
       const testMessage = await getByTestId('textMessage');
@@ -68,7 +125,7 @@ describe('Chat screen', () => {
 
   test('renders image message correctly', async () => {
     const { getByTestId } = customRender(
-      <ChatScreen route={{ params: { contact: contactMock } }} />,
+      <ChatScreen route={{ params: { ...contactMock } }} />,
       GET_CONTACT_IMAGE_MESSAGE_MOCK
     );
     await waitFor(async () => {
@@ -79,7 +136,7 @@ describe('Chat screen', () => {
 
   test('renders video message correctly', async () => {
     const { getByTestId } = customRender(
-      <ChatScreen route={{ params: { contact: contactMock } }} />,
+      <ChatScreen route={{ params: { ...contactMock } }} />,
       GET_CONTACT_VIDEO_MESSAGE_MOCK
     );
     await waitFor(async () => {
@@ -94,7 +151,7 @@ describe('Chat screen', () => {
 
   test('renders audio message correctly', async () => {
     const { getByTestId } = customRender(
-      <ChatScreen route={{ params: { contact: contactMock } }} />,
+      <ChatScreen route={{ params: { ...contactMock } }} />,
       GET_CONTACT_AUDIO_MESSAGE_MOCK
     );
     await waitFor(async () => {
@@ -105,7 +162,7 @@ describe('Chat screen', () => {
 
   test('renders document message correctly', async () => {
     const { getByTestId } = customRender(
-      <ChatScreen route={{ params: { contact: contactMock } }} />,
+      <ChatScreen route={{ params: { ...contactMock } }} />,
       GET_CONTACT_DOCUMENT_MESSAGE_MOCK
     );
     await waitFor(async () => {
@@ -121,7 +178,7 @@ describe('Chat screen', () => {
 
   test('renders sticker message correctly', async () => {
     const { getByTestId } = customRender(
-      <ChatScreen route={{ params: { contact: contactMock } }} />,
+      <ChatScreen route={{ params: { ...contactMock } }} />,
       GET_CONTACT_STICKER_MESSAGE_MOCK
     );
     await waitFor(async () => {
@@ -132,7 +189,7 @@ describe('Chat screen', () => {
 
   test('renders location message correctly', async () => {
     const { getByTestId } = customRender(
-      <ChatScreen route={{ params: { contact: contactMock } }} />,
+      <ChatScreen route={{ params: { ...contactMock } }} />,
       GET_CONTACT_LOCATION_MESSAGE_MOCK
     );
     await waitFor(async () => {
@@ -148,7 +205,7 @@ describe('Chat screen', () => {
 
   test('renders quick reply message correctly', async () => {
     const { getByTestId } = customRender(
-      <ChatScreen route={{ params: { contact: contactMock } }} />,
+      <ChatScreen route={{ params: { ...contactMock } }} />,
       GET_CONTACT_QUCIK_REPLY_MESSAGE_MOCK
     );
     await waitFor(async () => {
@@ -164,7 +221,7 @@ describe('Chat screen', () => {
 
   test('should open options tab when press up in chat input', async () => {
     const { getByTestId } = customRender(
-      <ChatScreen route={{ params: { contact: contactMock } }} />,
+      <ChatScreen route={{ params: { ...contactMock } }} />,
       GET_CONTACT_MESSAGES_MOCK
     );
 
@@ -179,7 +236,7 @@ describe('Chat screen', () => {
 
   test('should open speed send bottom sheet when press up in chat input options', async () => {
     const { getByTestId } = customRender(
-      <ChatScreen route={{ params: { contact: contactMock } }} />,
+      <ChatScreen route={{ params: { ...contactMock } }} />,
       GET_CONTACT_MESSAGES_MOCK
     );
 
@@ -208,7 +265,7 @@ describe('Chat screen', () => {
 
   test('should open emojis tab when press emoji in chat input', async () => {
     const { getByTestId } = customRender(
-      <ChatScreen route={{ params: { contact: contactMock } }} />,
+      <ChatScreen route={{ params: { ...contactMock } }} />,
       GET_CONTACT_MESSAGES_MOCK
     );
 
@@ -225,7 +282,7 @@ describe('Chat screen', () => {
 
   test('should open attachments tab when press clip in chat input', async () => {
     const { getByTestId } = customRender(
-      <ChatScreen route={{ params: { contact: contactMock } }} />,
+      <ChatScreen route={{ params: { ...contactMock } }} />,
       GET_CONTACT_MESSAGES_MOCK
     );
 

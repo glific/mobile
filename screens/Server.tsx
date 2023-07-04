@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
@@ -8,6 +8,8 @@ import { COLORS, SIZES } from '../constants';
 import { validateUrl } from '../utils/helper';
 import InstructionCard from '../components/InstructionCard';
 import AxiosService from '../config/axios';
+import Storage from '../utils/asyncStorage';
+import AuthContext from '../config/AuthContext';
 
 type RootStackParamList = {
   Server: undefined;
@@ -17,7 +19,8 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList, 'Server'>;
 
 const Server = ({ navigation }: Props) => {
-  const [serverURL, setServerURL] = useState('staging.tides.coloredcow.com'); // TODO: Remove this initialization when in production
+  const { setURL, orgURL } = useContext(AuthContext);
+  const [serverURL, setServerURL] = useState(orgURL ? orgURL : '');
   const [errorMessage, setErrorMessage] = useState('');
 
   const serverURLChanged = (value: string) => {
@@ -31,6 +34,8 @@ const Server = ({ navigation }: Props) => {
       return;
     }
 
+    await Storage.storeData('orgnisationUrl', serverURL);
+    setURL(serverURL);
     await AxiosService.updateServerURL(`https://api.${serverURL}/api`);
     navigation.navigate('Login');
   };

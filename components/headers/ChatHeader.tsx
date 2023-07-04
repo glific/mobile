@@ -3,15 +3,16 @@ import { View, Text, StyleSheet, Pressable, Image, Modal, TouchableOpacity } fro
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Entypo, Ionicons, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 
-import { COLORS } from '../../constants';
+import { COLORS, SCALE, SIZES } from '../../constants';
+import { getSessionTimeLeft } from '../../utils/helper';
 import { RootStackParamList } from '../../constants/types';
 import PopupModal from '../messages/FlowPopup';
 
 interface ChatHeaderDataProps {
-  contact: {
-    id: string;
-    name: string;
-  };
+  conversationType: string;
+  id?: number;
+  displayName: string;
+  lastMessageAt?: string;
 }
 
 interface MenuProps {
@@ -35,7 +36,12 @@ const MenuButton: React.FC<MenuProps> = ({ icon, text, onPress }) => {
   );
 };
 
-const ChatHeader: React.FC<ChatHeaderDataProps> = ({ contact }) => {
+const ChatHeader: React.FC<ChatHeaderDataProps> = ({
+  conversationType,
+  id,
+  displayName,
+  lastMessageAt,
+}) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [showMenu, setShowMenu] = useState(false);
   const [background] = useState<boolean>(true);
@@ -51,87 +57,143 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({ contact }) => {
     setShowFlowModal(false);
   };
 
-  return (
-    <View style={styles.mainContainer}>
-      <AntDesign
-        testID="backIcon"
-        name="arrowleft"
-        style={styles.backButton}
-        onPress={(): void => navigation.goBack()}
-      />
-      <Pressable
-        style={styles.innerContainer}
-        android_ripple={{ color: COLORS.primary70 }}
-        onPress={() => navigation.navigate('ContactProfile', { contact })}
-      >
-        <View>
-          <Image
-            testID="userProfile"
-            source={require('../../assets/icon.png')}
-            style={styles.avatar}
-          />
-          <View
-            style={[
-              styles.circle,
-              { backgroundColor: background ? COLORS.primary100 : COLORS.darkGray }, // TODO: for online status
-            ]}
-          />
-        </View>
-        <Text testID="userName" style={styles.nameText}>
-          {contact.name}
+  let menu;
+  let sessionTimeLeft;
+  if (conversationType === 'contact') {
+    sessionTimeLeft = (
+      <View style={styles.sessionContainer}>
+        <Text testID="timeLeft" style={styles.time}>
+          Time left: {getSessionTimeLeft(lastMessageAt)}hrs
         </Text>
-      </Pressable>
-      <Pressable
-        onPress={handleMenu}
-        style={styles.threeDotIconContainer}
-        android_ripple={{ borderless: true }}
-      >
-        <Entypo testID="menuIcon" name="dots-three-vertical" style={styles.threeDotIcon} />
-      </Pressable>
-      {showMenu && (
-        <>
-          <Pressable onPress={handleMenu} style={styles.menuBackground} />
-          <View style={styles.menuContainer}>
-            <MenuButton
-              text="Start a Flow"
-              icon={<MaterialCommunityIcons name="chat-plus" style={styles.menuIcon} />}
-              onPress={() => {
-                openFlowModal();
-              }}
+      </View>
+    );
+    menu = (
+      <View testID={'contactChatMenu'} style={styles.menuContainer}>
+        <MenuButton
+          text="Start a flow"
+          icon={<MaterialCommunityIcons name="message-cog" style={styles.menuIcon} />}
+          onPress={() => {
+            console.log('1');
+          }}
+        />
+        <MenuButton
+          text="Start a Flow"
+          icon={<MaterialCommunityIcons name="chat-plus" style={styles.menuIcon} />}
+          onPress={() => {
+            openFlowModal();
+          }}
+        />
+        <MenuButton
+          text="Add to Collection"
+          icon={<Ionicons name="person-add-sharp" style={styles.menuIcon} />}
+          onPress={() => {
+            console.log('1');
+          }}
+        />
+        <MenuButton
+          text="Clear Conversation"
+          icon={<MaterialCommunityIcons name="message-bulleted-off" style={styles.menuIcon} />}
+          onPress={() => {
+            console.log('2');
+          }}
+        />
+        <MenuButton
+          text="Terminate Flows"
+          icon={<MaterialCommunityIcons name="hand-back-right-off" style={styles.menuIcon} />}
+          onPress={() => {
+            console.log('3');
+          }}
+        />
+        <MenuButton
+          text="Block Contact"
+          icon={<Entypo name="block" style={[styles.menuIcon, { color: COLORS.error100 }]} />}
+          onPress={() => {
+            console.log('4');
+          }}
+        />
+      </View>
+    );
+  } else {
+    sessionTimeLeft = <></>;
+    menu = (
+      <View testID={'collectionChatMenu'} style={styles.menuContainer}>
+        <MenuButton
+          text="Start a flow"
+          icon={<MaterialCommunityIcons name="message-cog" style={styles.menuIcon} />}
+          onPress={() => {
+            console.log('1');
+          }}
+        />
+        <MenuButton
+          text="Add contact"
+          icon={<Ionicons name="person-add-sharp" style={styles.menuIcon} />}
+          onPress={() => {
+            console.log('1');
+          }}
+        />
+      </View>
+    );
+  }
+
+  return (
+    <>
+      <View style={styles.mainContainer}>
+        <AntDesign
+          testID="backIcon"
+          name="arrowleft"
+          style={styles.backButton}
+          onPress={(): void => navigation.goBack()}
+        />
+        <Pressable
+          testID="profileButton"
+          style={styles.innerContainer}
+          android_ripple={{ color: COLORS.primary70 }}
+          onPress={() =>
+            navigation.navigate('ContactProfile', {
+              contact: {
+                id: id,
+                conversationType: conversationType,
+                name: displayName,
+                lastMessageAt: lastMessageAt,
+              },
+            })
+          }
+        >
+          <View>
+            <Image
+              testID="userProfile"
+              source={require('../../assets/icon.png')}
+              style={styles.avatar}
             />
-            <MenuButton
-              text="Add to Collection"
-              icon={<Ionicons name="person-add-sharp" style={styles.menuIcon} />}
-              onPress={() => {
-                console.log('1');
-              }}
-            />
-            <MenuButton
-              text="Clear Conversation"
-              icon={<MaterialCommunityIcons name="message-bulleted-off" style={styles.menuIcon} />}
-              onPress={() => {
-                console.log('2');
-              }}
-            />
-            <MenuButton
-              text="Terminate Flows"
-              icon={<MaterialCommunityIcons name="hand-back-right-off" style={styles.menuIcon} />}
-              onPress={() => {
-                console.log('3');
-              }}
-            />
-            <MenuButton
-              text="Block Contact"
-              icon={<Entypo name="block" style={[styles.menuIcon, { color: COLORS.error100 }]} />}
-              onPress={() => {
-                console.log('4');
-              }}
+            <View
+              style={[
+                styles.circle,
+                { backgroundColor: background ? COLORS.primary100 : COLORS.darkGray }, // TODO: for online status
+              ]}
             />
           </View>
-        </>
-      )}
-      <PopupModal contactId={contact.id} visible={showFlowModal} onClose={closeFlowModal} />
-    </View>
+          <Text testID="userName" style={styles.nameText} numberOfLines={1}>
+            {displayName}
+          </Text>
+        </Pressable>
+        <Pressable
+          testID="menuIcon"
+          onPress={handleMenu}
+          style={styles.threeDotIconContainer}
+          android_ripple={{ borderless: true }}
+        >
+          <Entypo name="dots-three-vertical" style={styles.threeDotIcon} />
+        </Pressable>
+        {showMenu && (
+          <>
+            <Pressable onPress={handleMenu} style={styles.menuBackground} />
+            {menu}
+          </>
+        )}
+        <PopupModal contactId={id} visible={showFlowModal} onClose={closeFlowModal} />
+      </View>
+      {sessionTimeLeft}
+    </>
   );
 };
 
@@ -139,25 +201,25 @@ export default ChatHeader;
 
 const styles = StyleSheet.create({
   avatar: {
-    borderRadius: 20,
-    height: 40,
-    width: 40,
+    borderRadius: SIZES.r20,
+    height: SIZES.s40,
+    width: SIZES.s40,
   },
   backButton: {
     alignSelf: 'center',
     color: COLORS.white,
-    fontSize: 22,
-    paddingHorizontal: 10,
+    fontSize: SCALE(22),
+    paddingHorizontal: SIZES.m10,
   },
   circle: {
     borderColor: COLORS.primary400,
-    borderRadius: 7.5,
+    borderRadius: SIZES.r10,
     borderWidth: 2,
     bottom: -4,
-    height: 15,
+    height: SIZES.f14,
     position: 'absolute',
     right: -4,
-    width: 15,
+    width: SIZES.f14,
   },
   innerContainer: {
     alignItems: 'center',
@@ -168,61 +230,71 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: COLORS.primary400,
     flexDirection: 'row',
-    height: 60,
+    height: SIZES.s60,
     padding: '2%',
     width: '100%',
-    zIndex: 50,
+    zIndex: 10,
   },
   menuBackground: {
-    height: 800,
+    height: SIZES.height,
     position: 'absolute',
     right: 0,
     top: 0,
-    width: 500,
+    width: SIZES.width,
   },
   menuButton: {
     alignItems: 'center',
     flexDirection: 'row',
-    height: 40,
-    paddingHorizontal: 12,
+    height: SIZES.s40,
+    paddingHorizontal: SIZES.m10,
     width: '100%',
   },
   menuContainer: {
     backgroundColor: COLORS.white,
-    borderRadius: 4,
-    bottom: -180,
+    borderRadius: SIZES.r4,
     elevation: 4,
-    height: 190,
     justifyContent: 'space-around',
-    paddingVertical: 10,
+    paddingVertical: SIZES.m10,
     position: 'absolute',
-    right: 16,
+    right: SIZES.m16,
     shadowColor: COLORS.black,
     shadowOffset: { height: 4, width: 0 },
     shadowRadius: 4,
-    width: 220,
+    top: SIZES.s44,
+    width: SCALE(210),
   },
   menuIcon: {
     color: COLORS.primary100,
-    fontSize: 22,
-    marginRight: 10,
+    fontSize: SIZES.s20,
+    marginRight: SIZES.m10,
   },
   menuText: {
     color: COLORS.black,
-    fontSize: 16,
+    fontSize: SIZES.f16,
+    includeFontPadding: false,
   },
   nameText: {
     color: COLORS.white,
-    fontSize: 18,
+    flex: 1,
+    fontSize: SIZES.f18,
     fontWeight: '500',
-    letterSpacing: 1,
-    marginLeft: 10,
+    marginLeft: SIZES.m10,
+  },
+  sessionContainer: {
+    alignItems: 'center',
+    backgroundColor: COLORS.lightGray,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    padding: SIZES.m6,
   },
   threeDotIcon: {
     color: COLORS.white,
-    fontSize: 20,
+    fontSize: SIZES.f20,
   },
   threeDotIconContainer: {
-    paddingHorizontal: 6,
+    paddingHorizontal: SIZES.m6,
+  },
+  time: {
+    fontSize: SIZES.f14,
   },
 });

@@ -20,12 +20,10 @@ describe('Server screen', () => {
     const { findByTestId, getByTestId } = customRender(<Server />);
 
     const serverUrlInput = getByTestId('server');
-
-    const clearInput = await findByTestId('close');
-
     fireEvent.changeText(serverUrlInput, 'https://example.com');
     expect(serverUrlInput.props.value).toBe('https://example.com');
 
+    const clearInput = await findByTestId('close');
     fireEvent.press(clearInput);
     expect(serverUrlInput.props.value).toBe('');
   });

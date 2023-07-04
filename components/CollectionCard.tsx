@@ -16,7 +16,9 @@ const CollectionCard: React.FC<CollectionCardProps> = ({ id, name }) => {
       testID="collectionCard"
       onPress={() =>
         navigation.navigate('ChatScreen', {
-          contact: { id, name },
+          id: id,
+          displayName: name,
+          conversationType: 'collection',
         })
       }
       style={styles.item}
