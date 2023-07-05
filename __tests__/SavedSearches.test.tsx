@@ -1,50 +1,33 @@
 import React from 'react';
-import { fireEvent, waitFor } from '@testing-library/react-native';
 import customRender from '../utils/jestRender';
 
 import SavedSearches from '../screens/SavedSearches';
+import { NO_SAVED_SEARCH_MOCK, SAVED_SEARCH_MOCK } from '../__mocks__/queries/search';
+import { waitFor } from '@testing-library/react-native';
 
 describe('Saved Searches Screen', () => {
-  test('renders the saved searches screen', () => {
-    const { getByTestId, getByText } = customRender(<SavedSearches />);
+  test('renders the no saved searches screen', async () => {
+    const { getByTestId, getByText } = customRender(<SavedSearches />, NO_SAVED_SEARCH_MOCK);
 
     const searchInput = getByTestId('searchInput');
-    const savedSearchesText = getByText('No Saved Searches');
-
     expect(searchInput).toBeDefined();
-    expect(savedSearchesText).toBeDefined();
-  });
-
-  test('should search when searchValue not empty', async () => {
-    const consoleSpy = jest.spyOn(console, 'log');
-    const { getByTestId } = customRender(<SavedSearches />);
-
-    const searchInput = getByTestId('searchInput');
-    const searchButton = getByTestId('searchIcon');
-
-    fireEvent.changeText(searchInput, 'example search');
-    fireEvent.press(searchButton);
 
     await waitFor(() => {
-      expect(consoleSpy).toHaveBeenCalledWith('example search');
+      const savedSearchText = getByText('No Saved Searches');
+      expect(savedSearchText).toBeDefined();
     });
-    consoleSpy.mockRestore();
   });
 
-  test('should not search when searchValue empty', async () => {
-    const consoleSpy = jest.spyOn(console, 'log');
-    const { getByTestId } = customRender(<SavedSearches />);
+  test('renders the saved searches screen', async () => {
+    const { getByTestId } = customRender(<SavedSearches />, SAVED_SEARCH_MOCK);
 
-    const searchInput = getByTestId('searchInput');
-    const searchButton = getByTestId('searchIcon');
+    expect(getByTestId('searchInput')).toBeDefined();
+    expect(getByTestId('loadingIndicator')).toBeDefined();
 
-    fireEvent.changeText(searchInput, '');
-    fireEvent.press(searchButton);
-
-    await waitFor(() => {
-      expect(consoleSpy).not.toHaveBeenCalled();
-    });
-    consoleSpy.mockRestore();
+    // await waitFor(() => {
+    //   const savedSearches = getByText('test search');
+    //   expect(savedSearches).toBeDefined();
+    // });
   });
 
   // test('should check when saved searches', async () => {})

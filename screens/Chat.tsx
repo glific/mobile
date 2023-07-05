@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, Text } from 'react-native';
 import { useQuery } from '@apollo/client';
 
 import SearchBar from '../components/ui/SearchBar';
 import ContactCard from '../components/ContactCard';
 import { GET_CONTACTS } from '../graphql/queries/Contact';
-import { COLORS } from '../constants';
+import { COLORS, SIZES } from '../constants';
 import { ChatEntry } from '../constants/types';
+import Loading from '../components/ui/Loading';
 
 interface Contact {
   id: string;
@@ -23,25 +24,17 @@ interface ContactElement {
   messages: Message[];
 }
 const Chat = () => {
-  const [searchValue, setSearchValue] = useState<string>('');
   const [contacts, setContacts] = useState<ChatEntry[]>([]);
-
-  const variables = {
-    filter: { term: searchValue },
+  const [searchVariable, setSearchVariable] = useState({
+    filter: {},
     messageOpts: { limit: 1 },
     contactOpts: { limit: 10 },
-  };
-  const { error, data } = useQuery(GET_CONTACTS, { variables });
+  });
+
+  const { loading, error, data, refetch } = useQuery(GET_CONTACTS, { variables: searchVariable });
 
   async function onSearchHandler() {
-    try {
-      if (searchValue == '') return;
-
-      // TODO:
-      console.log(searchValue);
-    } catch (error) {
-      console.log(error);
-    }
+    refetch(searchVariable);
   }
 
   useEffect(() => {
@@ -76,16 +69,16 @@ const Chat = () => {
         />
       )}
       ListHeaderComponent={
-        <SearchBar
-          value={searchValue}
-          setSearchValue={(value) => setSearchValue(value)}
-          onSearch={onSearchHandler}
-          showMenu
-        />
+        <>
+          <SearchBar setSearchVariable={setSearchVariable} onSearch={onSearchHandler} showMenu />
+          {loading && <Loading />}
+        </>
       }
+      ListEmptyComponent={() => !loading && <Text style={styles.emptyText}>No contact</Text>}
       stickyHeaderIndices={[0]}
       stickyHeaderHiddenOnScroll={true}
       style={styles.mainContainer}
+      contentContainerStyle={styles.contentContainer}
     />
   );
 };
@@ -93,8 +86,19 @@ const Chat = () => {
 export default Chat;
 
 const styles = StyleSheet.create({
+  contentContainer: {
+    flexGrow: 1,
+  },
+  emptyText: {
+    alignSelf: 'center',
+    color: COLORS.darkGray,
+    fontSize: SIZES.f14,
+    fontWeight: '500',
+    marginTop: SIZES.m16,
+  },
   mainContainer: {
     backgroundColor: COLORS.white,
     flex: 1,
+    overflow: 'visible',
   },
 });

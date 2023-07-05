@@ -1,51 +1,110 @@
-import React, { useState } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { View, TextInput, StyleSheet, Pressable, Text } from 'react-native';
-import { COLORS, SIZES, SCALE } from '../../constants';
-import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
+import { useQuery } from '@apollo/client';
+
+import { SAVED_SEARCH_QUERY, SEARCHES_COUNT } from '../../graphql/queries/Search';
 import { RootStackParamList } from '../../constants/types';
+import { numberToAbbreviation } from '../../utils/helper';
+import { COLORS, SIZES, SCALE } from '../../constants';
+import AuthContext from '../../config/AuthContext';
 
 interface MenuButtonProps {
   label: string;
   count: number;
 }
 
-const MenuButton: React.FC<MenuButtonProps> = ({ label, count }) => {
+const MenuButton: React.FC<MenuButtonProps> = ({ label, count, onPress, active }) => {
+  const countStr = numberToAbbreviation(count);
   return (
     <Pressable
-      onPress={() => console.log('')}
-      style={styles.menu}
+      onPress={onPress}
+      style={[styles.menu, active && styles.activeMenu]}
       android_ripple={{ color: COLORS.primary10 }}
     >
       <Text style={styles.menuText}>{label}</Text>
-      <Text style={styles.menuText}>{`(${count})`}</Text>
+      <Text style={styles.menuText}>{countStr}</Text>
     </Pressable>
   );
 };
 
 type SearchBarProps = {
-  value: string;
-  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+  setSearchVariable: (args: object) => void;
   onSearch: () => void;
   showMenu?: boolean;
+  collectionTab?: boolean;
 };
 
 const SearchBar: React.FC<SearchBarProps> = ({
-  value,
-  setSearchValue,
+  setSearchVariable,
   onSearch,
   showMenu = false,
+  collectionTab = false,
 }) => {
+  const { user } = useContext(AuthContext);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
+  const [searchValue, setSearchValue] = useState<string>('');
   const [menuVisible, setMenuVisible] = useState<boolean>(false);
+  const [fixedSearches, setFixedSearches] = useState([]);
+  const [searchesCount, setSearchesCount] = useState({});
+  const [selectedSearchId, setSelectedSearchId] = useState('1');
 
   const openMenu = () => setMenuVisible(true);
   const closeMenu = () => setMenuVisible(false);
 
+  const queryVariables = {
+    filter: { isReserved: true },
+    opts: {},
+  };
+  const { loading, error, refetch } = useQuery(SAVED_SEARCH_QUERY, {
+    variables: queryVariables,
+    onCompleted: (data) => {
+      setFixedSearches(data.savedSearches);
+    },
+  });
+
+  const countVariables = { organizationId: user?.organization?.id };
+  const { data: countData } = useQuery(SEARCHES_COUNT, { variables: countVariables });
+
+  useEffect(() => {
+    if (countData) {
+      const collectionStats = JSON.parse(countData.collectionStats);
+      if (collectionStats[countVariables.organizationId]) {
+        setSearchesCount(collectionStats[countVariables.organizationId]);
+      }
+    }
+  }, [countData]);
+
+  const handleStatusSearch = (item) => {
+    setSearchValue('');
+    setSelectedSearchId(item.id);
+    const variables = JSON.parse(item.args);
+    setSearchVariable(variables);
+    closeMenu();
+    onSearch();
+  };
+
+  const handleTermSearch = () => {
+    setSelectedSearchId('0');
+    setSearchVariable({
+      filter: { term: searchValue, searchGroup: collectionTab },
+      messageOpts: { limit: 20 },
+      contactOpts: { limit: 25 },
+    });
+    onSearch();
+  };
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.inputContainer}>
-        <AntDesign testID="searchIcon" name="search1" style={styles.icon} onPress={onSearch} />
+        <AntDesign
+          testID="searchIcon"
+          name="search1"
+          style={styles.icon}
+          onPress={handleTermSearch}
+        />
         <TextInput
           testID="searchInput"
           style={styles.input}
@@ -53,10 +112,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
           keyboardType="default"
           placeholder="Search"
           onChangeText={setSearchValue}
-          value={value}
+          value={searchValue}
           cursorColor={COLORS.darkGray}
           selectionColor={COLORS.darkGray}
           underlineColorAndroid="transparent"
+          onSubmitEditing={handleTermSearch}
         />
         <Ionicons
           testID="filterIcon"
@@ -74,11 +134,15 @@ const SearchBar: React.FC<SearchBarProps> = ({
         <>
           <Pressable onPress={closeMenu} style={styles.menuBackground} />
           <View style={styles.menuContainer} testID="menuCard">
-            <MenuButton label="All" count={1} />
-            <MenuButton label="Unread" count={4} />
-            <MenuButton label="Not responded" count={35} />
-            <MenuButton label="Opt in" count={0} />
-            <MenuButton label="Opt out" count={10} />
+            {fixedSearches.map((item) => (
+              <MenuButton
+                key={item.id}
+                label={item.shortcode}
+                count={searchesCount[item.shortcode] ? searchesCount[item.shortcode] : 0}
+                onPress={() => handleStatusSearch(item)}
+                active={item.id === selectedSearchId}
+              />
+            ))}
           </View>
         </>
       )}
@@ -89,6 +153,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
 export default SearchBar;
 
 const styles = StyleSheet.create({
+  activeMenu: {
+    backgroundColor: COLORS.primary10,
+    borderRadius: SIZES.r4,
+  },
   icon: {
     color: COLORS.darkGray,
     fontSize: SIZES.f20,
@@ -125,7 +193,6 @@ const styles = StyleSheet.create({
     height: SIZES.s40,
     justifyContent: 'space-between',
     paddingHorizontal: SIZES.m12,
-    width: SCALE(180),
   },
   menuBackground: {
     height: SIZES.height,
@@ -138,14 +205,15 @@ const styles = StyleSheet.create({
   menuContainer: {
     backgroundColor: COLORS.white,
     borderRadius: SIZES.r4,
-    bottom: -SCALE(210),
     elevation: SIZES.r4,
-    paddingVertical: SIZES.m12,
+    paddingHorizontal: SIZES.m2,
+    paddingVertical: SIZES.m8,
     position: 'absolute',
     right: SIZES.m16,
     shadowColor: COLORS.black,
     shadowOffset: { height: SIZES.r4, width: 0 },
     shadowRadius: SIZES.r4,
+    top: SIZES.s60,
     width: SCALE(180),
     zIndex: 10,
   },
