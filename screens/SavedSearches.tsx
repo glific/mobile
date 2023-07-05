@@ -32,21 +32,23 @@ const SavedSearches = () => {
   }, [data, error]);
 
   return (
-    <FlatList
-      data={savedSearch}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item }) => <Text key={item.id}>{item.label}</Text>}
-      ListHeaderComponent={
-        <>
+    <>
+      <FlatList
+        data={savedSearch}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => <Text key={item.id}>{item.label}</Text>}
+        ListHeaderComponent={
           <SearchBar setSearchVariable={setSearchVariable} onSearch={onSearchHandler} />
-          {loading && <Loading />}
-        </>
-      }
-      ListEmptyComponent={() => !loading && <Text style={styles.emptyText}>No Saved Searches</Text>}
-      stickyHeaderIndices={[0]}
-      stickyHeaderHiddenOnScroll={true}
-      style={styles.mainContainer}
-    />
+        }
+        ListEmptyComponent={() =>
+          !loading && <Text style={styles.emptyText}>No Saved Searches</Text>
+        }
+        stickyHeaderIndices={[0]}
+        stickyHeaderHiddenOnScroll={true}
+        style={styles.mainContainer}
+      />
+      {loading && <Loading />}
+    </>
   );
 };
 

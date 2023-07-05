@@ -57,29 +57,29 @@ const Chat = () => {
   }, [data, error]);
 
   return (
-    <FlatList
-      data={contacts}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item }) => (
-        <ContactCard
-          id={item.id}
-          name={item.name}
-          lastMessage={item.lastMessage}
-          lastMessageAt={item.lastMessageAt}
-        />
-      )}
-      ListHeaderComponent={
-        <>
+    <>
+      <FlatList
+        data={contacts}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <ContactCard
+            id={item.id}
+            name={item.name}
+            lastMessage={item.lastMessage}
+            lastMessageAt={item.lastMessageAt}
+          />
+        )}
+        ListHeaderComponent={
           <SearchBar setSearchVariable={setSearchVariable} onSearch={onSearchHandler} showMenu />
-          {loading && <Loading />}
-        </>
-      }
-      ListEmptyComponent={() => !loading && <Text style={styles.emptyText}>No contact</Text>}
-      stickyHeaderIndices={[0]}
-      stickyHeaderHiddenOnScroll={true}
-      style={styles.mainContainer}
-      contentContainerStyle={styles.contentContainer}
-    />
+        }
+        ListEmptyComponent={() => !loading && <Text style={styles.emptyText}>No contact</Text>}
+        stickyHeaderIndices={[0]}
+        stickyHeaderHiddenOnScroll={true}
+        style={styles.mainContainer}
+        contentContainerStyle={styles.contentContainer}
+      />
+      {loading && <Loading />}
+    </>
   );
 };
 

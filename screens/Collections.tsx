@@ -42,25 +42,25 @@ const Collections = () => {
   }, [data, error]);
 
   return (
-    <FlatList
-      data={collections}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item }) => <CollectionCard id={item.id} name={item.name} />}
-      ListHeaderComponent={
-        <>
+    <>
+      <FlatList
+        data={collections}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => <CollectionCard id={item.id} name={item.name} />}
+        ListHeaderComponent={
           <SearchBar
             setSearchVariable={setSearchVariable}
             onSearch={onSearchHandler}
             collectionTab
           />
-          {loading && <Loading />}
-        </>
-      }
-      ListEmptyComponent={() => !loading && <Text style={styles.emptyText}>No collection</Text>}
-      stickyHeaderIndices={[0]}
-      stickyHeaderHiddenOnScroll={true}
-      style={styles.mainContainer}
-    />
+        }
+        ListEmptyComponent={() => !loading && <Text style={styles.emptyText}>No collection</Text>}
+        stickyHeaderIndices={[0]}
+        stickyHeaderHiddenOnScroll={true}
+        style={styles.mainContainer}
+      />
+      {loading && <Loading />}
+    </>
   );
 };
 

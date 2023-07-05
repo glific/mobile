@@ -9,10 +9,13 @@ import { RootStackParamList } from '../../constants/types';
 import { numberToAbbreviation } from '../../utils/helper';
 import { COLORS, SIZES, SCALE } from '../../constants';
 import AuthContext from '../../config/AuthContext';
+import Loading from './Loading';
 
 interface MenuButtonProps {
   label: string;
   count: number;
+  onPress: () => void;
+  active: boolean;
 }
 
 const MenuButton: React.FC<MenuButtonProps> = ({ label, count, onPress, active }) => {
@@ -58,7 +61,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
     filter: { isReserved: true },
     opts: {},
   };
-  const { loading, error, refetch } = useQuery(SAVED_SEARCH_QUERY, {
+  const {
+    loading: menuLoading,
+    error,
+    refetch,
+  } = useQuery(SAVED_SEARCH_QUERY, {
     variables: queryVariables,
     onCompleted: (data) => {
       setFixedSearches(data.savedSearches);
@@ -134,15 +141,21 @@ const SearchBar: React.FC<SearchBarProps> = ({
         <>
           <Pressable onPress={closeMenu} style={styles.menuBackground} />
           <View style={styles.menuContainer} testID="menuCard">
-            {fixedSearches.map((item) => (
-              <MenuButton
-                key={item.id}
-                label={item.shortcode}
-                count={searchesCount[item.shortcode] ? searchesCount[item.shortcode] : 0}
-                onPress={() => handleStatusSearch(item)}
-                active={item.id === selectedSearchId}
-              />
-            ))}
+            {menuLoading ? (
+              <Loading size={'small'} color={COLORS.darkGray} />
+            ) : (
+              <>
+                {fixedSearches.map((item) => (
+                  <MenuButton
+                    key={item.id}
+                    label={item.shortcode}
+                    count={searchesCount[item.shortcode] ? searchesCount[item.shortcode] : 0}
+                    onPress={() => handleStatusSearch(item)}
+                    active={item.id === selectedSearchId}
+                  />
+                ))}
+              </>
+            )}
           </View>
         </>
       )}
