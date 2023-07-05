@@ -8,15 +8,11 @@ import { GET_COLLECTIONS_MOCK } from '../__mocks__/queries/collection';
 describe('Collections Screen', () => {
   test('renders the Collections screen', async () => {
     const { getByTestId, findByText } = customRender(<Collections />, GET_COLLECTIONS_MOCK);
-    const searchInput = getByTestId('searchInput');
-    const searchIcon = getByTestId('searchIcon');
-    const filterIcon = getByTestId('filterIcon');
+    expect(getByTestId('searchInput'));
+    expect(getByTestId('searchIcon'));
+    expect(getByTestId('filterIcon'));
 
     await waitFor(async () => {
-      expect(searchInput).toBeDefined();
-      expect(searchIcon).toBeDefined();
-      expect(filterIcon).toBeDefined();
-
       const collectionCard = await getByTestId('collectionCard');
       const testGroup = await findByText('test group');
 

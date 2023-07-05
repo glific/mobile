@@ -1,14 +1,16 @@
-import React, { useState, useContext, useRef } from 'react';
+import React, { useState, useContext, useRef, useEffect } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import PhoneInput from 'react-native-phone-number-input';
+import { useLazyQuery } from '@apollo/client';
 
+import { GET_CURRENT_USER } from '../graphql/queries/Account';
 import { COLORS, SCALE, SIZES } from '../constants';
+import AuthContext from '../config/AuthContext';
+import Storage from '../utils/asyncStorage';
+import AxiosService from '../config/axios';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
-import Storage from '../utils/asyncStorage';
-import AuthContext from '../config/AuthContext';
-import AxiosService from '../config/axios';
 
 type RootStackParamList = {
   Login: undefined;
@@ -19,12 +21,37 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
 const Login = ({ navigation }: Props) => {
-  const { setToken, orgURL } = useContext(AuthContext);
+  const { setToken, orgURL, setUser } = useContext(AuthContext);
   const [enteredMobile, setEnteredMobile] = useState('');
   const [enteredPassword, setEnteredPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const phoneInput = useRef<PhoneInput>(null);
+
+  const [getCurrentUser, { data: userData, error: userError }] = useLazyQuery(GET_CURRENT_USER);
+
+  useEffect(() => {
+    const setUserData = async () => {
+      if (userData) {
+        const { user } = userData.currentUser;
+        const userCopy = JSON.parse(JSON.stringify(user));
+        userCopy.roles = user.accessRoles;
+        await Storage.storeData('glific_user', JSON.stringify(userCopy));
+        setUser(userCopy);
+      }
+      if (userError) {
+        setErrorMessage(
+          'Your account is not approved yet. Please contact your organisation admin.'
+        );
+        await Storage.removeData('session');
+        await Storage.removeData('glific_user');
+        setToken(null);
+        setUser(null);
+      }
+    };
+
+    setUserData();
+  }, [userData, userError]);
 
   const updateInputValueHandler = (inputType: string, enteredValue: string) => {
     switch (inputType) {
@@ -53,6 +80,7 @@ const Login = ({ navigation }: Props) => {
       });
 
       await Storage.storeData('session', JSON.stringify(response.data.data));
+      await getCurrentUser();
       setToken(response.data.data.access_token);
     } catch (error) {
       setErrorMessage(error.message);

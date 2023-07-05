@@ -16,6 +16,7 @@ module.exports = {
     '!**/App.tsx',
     '!**/.eslintrc.js',
   ],
+  coverageReporters: ['html', 'text', 'text-summary', 'cobertura'],
   setupFilesAfterEnv: [
     '@testing-library/jest-native/extend-expect',
     '<rootDir>/config/jest.ts',

@@ -1,33 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, Text } from 'react-native';
 import { useQuery } from '@apollo/client';
 
 import SearchBar from '../components/ui/SearchBar';
 import { GET_COLLECTIONS } from '../graphql/queries/Collection';
 import CollectionCard from '../components/CollectionCard';
-import { COLORS } from '../constants';
+import { COLORS, SIZES } from '../constants';
 import { ChatEntry } from '../constants/types';
+import Loading from '../components/ui/Loading';
 
 const Collections = () => {
-  const [searchValue, setSearchValue] = useState<string>('');
   const [collections, setCollections] = useState<ChatEntry[]>([]);
-
-  const variables = {
-    filter: { term: searchValue, searchGroup: true },
+  const [searchVariable, setSearchVariable] = useState({
+    filter: { searchGroup: true },
     messageOpts: { limit: 1 },
     contactOpts: { limit: 10 },
-  };
-  const { error, data } = useQuery(GET_COLLECTIONS, { variables });
+  });
+
+  const { loading, error, data, refetch } = useQuery(GET_COLLECTIONS, {
+    variables: searchVariable,
+  });
 
   async function onSearchHandler() {
-    try {
-      if (searchValue == '') return;
-
-      // TODO:
-      console.log(searchValue);
-    } catch (error) {
-      console.log(error);
-    }
+    refetch(searchVariable);
   }
 
   useEffect(() => {
@@ -47,27 +42,38 @@ const Collections = () => {
   }, [data, error]);
 
   return (
-    <FlatList
-      data={collections}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item }) => <CollectionCard id={item.id} name={item.name} />}
-      ListHeaderComponent={
-        <SearchBar
-          value={searchValue}
-          setSearchValue={(value) => setSearchValue(value)}
-          onSearch={onSearchHandler}
-        />
-      }
-      stickyHeaderIndices={[0]}
-      stickyHeaderHiddenOnScroll={true}
-      style={styles.mainContainer}
-    />
+    <>
+      <FlatList
+        data={collections}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => <CollectionCard id={item.id} name={item.name} />}
+        ListHeaderComponent={
+          <SearchBar
+            setSearchVariable={setSearchVariable}
+            onSearch={onSearchHandler}
+            collectionTab
+          />
+        }
+        ListEmptyComponent={() => !loading && <Text style={styles.emptyText}>No collection</Text>}
+        stickyHeaderIndices={[0]}
+        stickyHeaderHiddenOnScroll={true}
+        style={styles.mainContainer}
+      />
+      {loading && <Loading />}
+    </>
   );
 };
 
 export default Collections;
 
 const styles = StyleSheet.create({
+  emptyText: {
+    alignSelf: 'center',
+    color: COLORS.darkGray,
+    fontSize: SIZES.f14,
+    fontWeight: '500',
+    marginTop: SIZES.m16,
+  },
   mainContainer: {
     backgroundColor: COLORS.white,
     flex: 1,

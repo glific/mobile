@@ -11,3 +11,9 @@ export const SAVED_SEARCH_QUERY = gql`
     }
   }
 `;
+
+export const SEARCHES_COUNT = gql`
+  query count($organizationId: ID!) {
+    collectionStats(organizationId: $organizationId)
+  }
+`;

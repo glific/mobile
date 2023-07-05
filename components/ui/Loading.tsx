@@ -1,15 +1,17 @@
 import React from 'react';
-import { ActivityIndicator, StyleSheet } from 'react-native';
-import { COLORS, SCALE } from '../../constants';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { COLORS } from '../../constants';
 
-const Loading = () => {
+type LoadingProps = {
+  color?: string;
+  size?: 'large' | 'small';
+};
+
+const Loading: React.FC<LoadingProps> = ({ color = COLORS.primary400, size = 'large' }) => {
   return (
-    <ActivityIndicator
-      testID="loadingIndicator"
-      size="large"
-      color={COLORS.primary400}
-      style={styles.container}
-    />
+    <View style={styles.container}>
+      <ActivityIndicator testID="loadingIndicator" size={size} color={color} />
+    </View>
   );
 };
 
@@ -17,9 +19,13 @@ export default Loading;
 
 const styles = StyleSheet.create({
   container: {
-    alignSelf: 'center',
+    alignItems: 'center',
+    bottom: 0,
+    justifyContent: 'center',
+    left: 0,
     position: 'absolute',
-    top: SCALE(70),
+    right: 0,
+    top: 0,
     zIndex: 100,
   },
 });
