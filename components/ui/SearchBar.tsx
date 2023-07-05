@@ -33,7 +33,7 @@ const MenuButton: React.FC<MenuButtonProps> = ({ label, count, onPress, active }
 };
 
 type SearchBarProps = {
-  setSearchVariable: (args: object) => void;
+  setSearchVariable: () => void;
   onSearch: () => void;
   showMenu?: boolean;
   collectionTab?: boolean;

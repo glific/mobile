@@ -31,7 +31,6 @@
     "expo-video-thumbnails": "^7.2.1",
     "graphql": "^15.8.0",
     "moment": "^2.29.4",
-    "npx": "^10.2.2",
     "react": "18.2.0",
     "react-native": "0.71.8",
     "react-native-dotenv": "^3.4.8",
