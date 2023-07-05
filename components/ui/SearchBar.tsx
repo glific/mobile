@@ -61,14 +61,13 @@ const SearchBar: React.FC<SearchBarProps> = ({
     filter: { isReserved: true },
     opts: {},
   };
-  const {
-    loading: menuLoading,
-    error,
-    refetch,
-  } = useQuery(SAVED_SEARCH_QUERY, {
+  const { loading: menuLoading } = useQuery(SAVED_SEARCH_QUERY, {
     variables: queryVariables,
     onCompleted: (data) => {
       setFixedSearches(data.savedSearches);
+    },
+    onError: (error) => {
+      console.log(error);
     },
   });
 
