@@ -51,6 +51,7 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
     setShowMenu(!showMenu);
   };
   const openFlowModal = () => {
+    setShowMenu(!showMenu);
     setShowFlowModal(true);
   };
   const closeFlowModal = () => {

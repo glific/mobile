@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, Modal, StyleSheet, ToastAndroid, Platform, Alert } from 'react-native';
+import { View, Text, Modal, StyleSheet } from 'react-native';
 import { COLORS, SCALE } from '../../constants/theme';
 import { Picker } from '@react-native-picker/picker';
 import { GET_ALL_FLOWS } from '../../graphql/queries/Flows';
 import { START_COLLECTION_FLOW, START_CONTACT_FLOW } from '../../graphql/mutations/Flows';
 import { useMutation, useQuery } from '@apollo/client';
 import Button from '../ui/Button';
-
+import { showToast } from '../../utils/showToast';
 interface FlowProps {
   id: string;
   conversationType: string;
@@ -16,27 +16,14 @@ interface FlowProps {
 const PopupModal: React.FC<FlowProps> = ({ id, conversationType, visible, onClose }) => {
   const [selectedFlow, setSelectedFlow] = useState('');
 
-  const [startFlowMutation] =
-    conversationType == 'contact'
-      ? useMutation(START_CONTACT_FLOW)
-      : useMutation(START_COLLECTION_FLOW);
-  const flowVariable =
-    conversationType == 'contact'
-      ? {
-          flowId: selectedFlow,
-          contactId: id,
-        }
-      : {
-          flowId: selectedFlow,
-          groupId: id,
-        };
+  const isContactType = conversationType == 'contact';
+  const [startFlowMutation] = useMutation(
+    isContactType ? START_CONTACT_FLOW : START_COLLECTION_FLOW
+  );
 
-  const showToast = (message: string) => {
-    if (Platform.OS === 'android') {
-      ToastAndroid.show(message, ToastAndroid.SHORT);
-    } else {
-      Alert.alert(message);
-    }
+  const flowVariable = {
+    flowId: selectedFlow,
+    ...(isContactType ? { contactId: id } : { groupId: id }),
   };
 
   const handleStartFlow = async () => {
