@@ -1,28 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useQuery } from '@apollo/client';
 
-import LoadingPage from '../ui/Loading';
-import { COLORS, SIZES } from '../../constants';
 import { BSP_BALANCE } from '../../graphql/queries/Account';
+import { COLORS, SIZES } from '../../constants';
+import Loading from '../ui/Loading';
 
 const Wallet = () => {
-  const { loading, data } = useQuery(BSP_BALANCE);
+  const [balance, setBalance] = useState('');
+  const [error, setError] = useState('');
 
-  if (loading) {
-    return <LoadingPage />;
-  }
-
-  let balance;
-
-  if (data && data.bspbalance) {
-    balance = JSON.parse(data.bspbalance).balance;
-    balance = parseFloat(balance).toFixed(2);
-  }
+  const { loading } = useQuery(BSP_BALANCE, {
+    onCompleted: (data) => {
+      const balance = JSON.parse(data.bspbalance).balance;
+      setError('');
+      setBalance(parseFloat(balance).toFixed(2));
+    },
+    onError: () => {
+      setError('Please check gupshup settings');
+    },
+  });
 
   return (
-    <View style={styles.walletContainer}>
+    <View style={[styles.walletContainer, error !== '' && styles.errorContainer]}>
       <View style={styles.innerContainer}>
         <MaterialCommunityIcons
           name="wallet-outline"
@@ -30,9 +31,15 @@ const Wallet = () => {
           color="white"
           style={styles.walletIcon}
         />
-        <Text style={styles.walletText}>Your Wallet Balance</Text>
+        <Text style={styles.walletText}>{error !== '' ? error : 'Your Wallet Balance'}</Text>
       </View>
-      <Text style={styles.dollarText}>$ {balance}</Text>
+      {error === '' ? (
+        loading ? (
+          <Loading size="small" color={COLORS.white} relative />
+        ) : (
+          <Text style={styles.dollarText}>$ {balance}</Text>
+        )
+      ) : null}
     </View>
   );
 };
@@ -44,6 +51,9 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: SIZES.f14,
     fontWeight: '800',
+  },
+  errorContainer: {
+    backgroundColor: COLORS.error100,
   },
   innerContainer: {
     alignItems: 'center',

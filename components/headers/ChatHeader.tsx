@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Pressable, Image } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Entypo, Ionicons, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 
@@ -144,18 +144,14 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
             })
           }
         >
-          <View>
-            <Image
-              testID="userProfile"
-              source={require('../../assets/icon.png')}
-              style={styles.avatar}
-            />
+          <View testID="userProfile" style={styles.avatar}>
             <View
               style={[
                 styles.circle,
                 { backgroundColor: background ? COLORS.primary100 : COLORS.darkGray }, // TODO: for online status
               ]}
             />
+            <Text style={styles.avatartext}>{displayName.charAt(0)}</Text>
           </View>
           <Text testID="userName" style={styles.nameText} numberOfLines={1}>
             {displayName}
@@ -185,9 +181,19 @@ export default ChatHeader;
 
 const styles = StyleSheet.create({
   avatar: {
+    alignItems: 'center',
+    backgroundColor: COLORS.lightGray,
     borderRadius: SIZES.r20,
+    flexDirection: 'row',
     height: SIZES.s40,
+    justifyContent: 'center',
     width: SIZES.s40,
+  },
+  avatartext: {
+    color: COLORS.primary400,
+    fontSize: SIZES.f18,
+    fontWeight: '500',
+    includeFontPadding: false,
   },
   backButton: {
     alignSelf: 'center',

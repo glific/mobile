@@ -4,42 +4,6 @@ import { TokenRefreshLink } from 'apollo-link-token-refresh';
 import Storage from '../utils/asyncStorage';
 import AxiosService from './axios';
 
-async function checkAuthStatusService() {
-  const sessionValue = await Storage.getData('session');
-  if (sessionValue === null) {
-    return false;
-  }
-
-  const parsedSessionValue = JSON.parse(sessionValue);
-  const tokenExpiryTimeFromSession = parsedSessionValue.token_expiry_time;
-  if (!tokenExpiryTimeFromSession) {
-    return false;
-  }
-  const tokenExpiryTime = new Date(tokenExpiryTimeFromSession);
-  return tokenExpiryTime > new Date();
-}
-
-async function renewAuthToken() {
-  const sessionValue = await Storage.getData('session');
-  if (sessionValue === null) {
-    console.log('No session value');
-  }
-
-  const parsedSessionValue = await JSON.parse(sessionValue);
-  const renewalToken = parsedSessionValue.renewal_token;
-
-  const Client = await AxiosService.createAxiosInstance();
-  try {
-    return Client.post('/v1/session/renew', null, {
-      headers: {
-        Authorization: renewalToken,
-      },
-    });
-  } catch (error) {
-    console.log('Renew token error: ', error);
-  }
-}
-
 // Fetches the uri dynamically
 async function customFetch(uri, options) {
   const serverURL = await Storage.getData('serverURL');
@@ -72,8 +36,37 @@ const authLink = new ApolloLink((operation, forward) => {
 
 const refreshLink: any = new TokenRefreshLink({
   accessTokenField: 'access_token',
-  isTokenValidOrUndefined: () => checkAuthStatusService(),
-  fetchAccessToken: async () => renewAuthToken(),
+  isTokenValidOrUndefined: async () => {
+    const sessionValue = await Storage.getData('session');
+    if (sessionValue === null) {
+      return false;
+    }
+
+    const parsedSessionValue = JSON.parse(sessionValue);
+    const tokenExpiryTimeFromSession = parsedSessionValue.token_expiry_time;
+    if (!tokenExpiryTimeFromSession) {
+      return false;
+    }
+    const tokenExpiryTime = new Date(tokenExpiryTimeFromSession);
+    return tokenExpiryTime > new Date();
+  },
+  fetchAccessToken: async () => {
+    const sessionValue = await Storage.getData('session');
+    if (sessionValue === null) {
+      console.log('No session value');
+      return new Error('No session value');
+    }
+
+    const parsedSessionValue = await JSON.parse(sessionValue);
+    const renewalToken = parsedSessionValue.renewal_token;
+
+    const Client = await AxiosService.createAxiosInstance();
+    return Client.post('/v1/session/renew', null, {
+      headers: {
+        Authorization: renewalToken,
+      },
+    });
+  },
   handleResponse: (_operation, accessTokenField) => async (response: any) => {
     const tokenResponse: any = [];
 

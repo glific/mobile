@@ -3,6 +3,7 @@ export type ChatEntry = {
   name: string;
   lastMessageAt: string;
   lastMessage: string | undefined;
+  isOrgRead: boolean;
 };
 
 export type RootStackParamList = {
