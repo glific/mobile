@@ -1,7 +1,8 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { COLORS, SCALE, SIZES } from '../constants';
+import { RootStackParamList } from '../constants/types';
 
 export interface CollectionCardProps {
   id: string;
@@ -9,8 +10,7 @@ export interface CollectionCardProps {
 }
 
 const CollectionCard: React.FC<CollectionCardProps> = ({ id, name }) => {
-  const navigation = useNavigation();
-
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   return (
     <Pressable
       testID="collectionCard"

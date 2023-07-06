@@ -6,12 +6,13 @@ import { Entypo, Ionicons, MaterialCommunityIcons, AntDesign } from '@expo/vecto
 import { COLORS, SCALE, SIZES } from '../../constants';
 import { getSessionTimeLeft } from '../../utils/helper';
 import { RootStackParamList } from '../../constants/types';
+import PopupModal from '../messages/FlowPopup';
 
 interface ChatHeaderDataProps {
   conversationType: string;
-  id?: number;
+  id: number;
   displayName: string;
-  lastMessageAt?: string;
+  lastMessageAt: string;
 }
 
 interface MenuProps {
@@ -44,9 +45,17 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [showMenu, setShowMenu] = useState(false);
   const [background] = useState<boolean>(true);
+  const [showFlowModal, setShowFlowModal] = useState(false);
 
   const handleMenu = () => {
     setShowMenu(!showMenu);
+  };
+  const openFlowModal = () => {
+    setShowMenu(!showMenu);
+    setShowFlowModal(true);
+  };
+  const closeFlowModal = () => {
+    setShowFlowModal(false);
   };
 
   let menu;
@@ -65,7 +74,7 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
           text="Start a flow"
           icon={<MaterialCommunityIcons name="message-cog" style={styles.menuIcon} />}
           onPress={() => {
-            console.log('1');
+            openFlowModal();
           }}
         />
         <MenuButton
@@ -106,7 +115,7 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
           text="Start a flow"
           icon={<MaterialCommunityIcons name="message-cog" style={styles.menuIcon} />}
           onPress={() => {
-            console.log('1');
+            openFlowModal();
           }}
         />
         <MenuButton
@@ -175,6 +184,12 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
             {menu}
           </>
         )}
+        <PopupModal
+          id={id}
+          conversationType={conversationType}
+          visible={showFlowModal}
+          onClose={closeFlowModal}
+        />
       </View>
       {sessionTimeLeft}
     </>
