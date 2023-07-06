@@ -13,7 +13,7 @@ export const NO_SEARCH_CONTACTS_MOCK = [
     request: {
       query: GET_CONTACTS,
       variables: {
-        filter: { term: '' },
+        filter: {},
         messageOpts: { limit: 1 },
         contactOpts: { limit: 10 },
       },

@@ -19,12 +19,12 @@ type MessageProps = {
     type: string;
     body: string;
     contextMessage: any;
-    media: any;
+    media: object | null;
     insertedAt: string;
     flowLabel: string | null;
     interactiveContent: object;
-    location: any;
-    messageNumber?: any;
+    location: object | null;
+    messageNumber?: number;
     receiver: {
       id: number;
     };

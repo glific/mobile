@@ -15,3 +15,16 @@ export const getSessionTimeLeft = (time: string) => {
   const hours = Math.max(Math.ceil(moment.duration(timeDifference).asHours()), 0);
   return Math.min(hours, 24);
 };
+
+export const numberToAbbreviation = (numberString: string) => {
+  const number = parseInt(numberString, 10);
+  let abbreviation = '';
+  if (number < 1000) {
+    abbreviation = number.toString();
+  } else if (number >= 1000 && number < 1000000) {
+    abbreviation = `${(number / 1000).toFixed(0)}k`;
+  } else if (number >= 1000000 && number < 1000000000) {
+    abbreviation = `${(number / 1000000).toFixed(0)}m`;
+  }
+  return abbreviation;
+};
