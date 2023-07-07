@@ -1,6 +1,6 @@
 import { ApolloClient, InMemoryCache, ApolloLink, HttpLink } from '@apollo/client';
 import { TokenRefreshLink } from 'apollo-link-token-refresh';
-
+import { setContext } from '@apollo/link-context';
 import Storage from '../utils/asyncStorage';
 import AxiosService from './axios';
 
@@ -22,19 +22,19 @@ async function fetchToken() {
 }
 
 // Create an ApolloLink instance
-const authLink = new ApolloLink((operation, forward) => {
-  return fetchToken().then((token) => {
-    operation.setContext(({ headers = {} }) => ({
-      headers: {
-        ...headers,
-        Authorization: token,
-      },
-    }));
-    return forward(operation);
-  });
+const authLink = setContext(async (_, { headers }) => {
+  // get auth token
+  const accessToken = await fetchToken();
+
+  return {
+    headers: {
+      ...headers,
+      authorization: accessToken || '',
+    },
+  };
 });
 
-const refreshLink: any = new TokenRefreshLink({
+const refreshLink = new TokenRefreshLink({
   accessTokenField: 'access_token',
   isTokenValidOrUndefined: async () => {
     const sessionValue = await Storage.getData('session');
@@ -48,15 +48,12 @@ const refreshLink: any = new TokenRefreshLink({
       return false;
     }
     const tokenExpiryTime = new Date(tokenExpiryTimeFromSession);
+    tokenExpiryTime.setMinutes(tokenExpiryTime.getMinutes() - 29);
+    tokenExpiryTime.setSeconds(tokenExpiryTime.getSeconds() - 50);
     return tokenExpiryTime > new Date();
   },
   fetchAccessToken: async () => {
     const sessionValue = await Storage.getData('session');
-    if (sessionValue === null) {
-      console.log('No session value');
-      return new Error('No session value');
-    }
-
     const parsedSessionValue = await JSON.parse(sessionValue);
     const renewalToken = parsedSessionValue.renewal_token;
 
@@ -65,10 +62,15 @@ const refreshLink: any = new TokenRefreshLink({
       headers: {
         Authorization: renewalToken,
       },
-    });
+    })
+      .then((response) => response)
+      .catch((err) => console.log('axios error', err));
   },
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  handleFetch: () => {},
   handleResponse: (_operation, accessTokenField) => async (response: any) => {
     const tokenResponse: any = [];
+    console.log(response);
 
     if (response.data) {
       await Storage.storeData('session', JSON.stringify(response.data.data));
