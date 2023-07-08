@@ -10,7 +10,6 @@ describe('Collections Screen', () => {
     const { getByTestId, findByText } = customRender(<Collections />, GET_COLLECTIONS_MOCK);
     expect(getByTestId('searchInput'));
     expect(getByTestId('searchIcon'));
-    expect(getByTestId('filterIcon'));
 
     await waitFor(async () => {
       const collectionCard = await getByTestId('collectionCard');

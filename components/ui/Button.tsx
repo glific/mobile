@@ -1,6 +1,8 @@
 import React, { ReactElement } from 'react';
 import { Pressable, StyleSheet, Text } from 'react-native';
+
 import { COLORS, SIZES } from '../../constants';
+import Loading from './Loading';
 
 type ButtonType = 'positive' | 'neutral' | 'negative';
 
@@ -9,9 +11,16 @@ export interface ButtonProps {
   onPress: () => void;
   disable?: boolean;
   type?: ButtonType;
+  loading?: boolean;
 }
 
-const Button = ({ children, onPress, disable = false, type = 'positive' }: ButtonProps) => {
+const Button = ({
+  children,
+  onPress,
+  disable = false,
+  type = 'positive',
+  loading = false,
+}: ButtonProps) => {
   const buttonTypeStyle = (component: string) => {
     if (component === 'container') {
       return {
@@ -39,6 +48,7 @@ const Button = ({ children, onPress, disable = false, type = 'positive' }: Butto
       disabled={disable}
     >
       <Text style={[styles.buttonText, buttonTypeStyle('text')]}>{children}</Text>
+      {loading && <Loading color={COLORS.white} size="small" relative />}
     </Pressable>
   );
 };
@@ -51,6 +61,7 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.r20,
     elevation: 2,
     flex: 1,
+    flexDirection: 'row',
     height: SIZES.s40,
     justifyContent: 'center',
     paddingHorizontal: SIZES.m12,

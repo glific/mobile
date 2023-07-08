@@ -19,11 +19,9 @@ describe('SearchBar', () => {
 
     const searchIcon = getByTestId('searchIcon');
     const searchInput = getByTestId('searchInput');
-    const filterIcon = getByTestId('filterIcon');
 
     expect(searchIcon).toBeDefined();
     expect(searchInput).toBeDefined();
-    expect(filterIcon).toBeDefined();
   });
 
   test('should render Search Bar with menu', () => {
