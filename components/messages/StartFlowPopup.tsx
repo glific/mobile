@@ -70,7 +70,7 @@ const StartFlowPopup: React.FC<FlowProps> = ({ id, conversationType, visible, on
   }
   return (
     <Modal
-      testID="popup"
+      testID="startFlowPopup"
       visible={visible}
       animationType="fade"
       transparent={true}

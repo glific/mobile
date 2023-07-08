@@ -31,7 +31,7 @@ const TerminateFlowPopup: React.FC<TerminateFlowProps> = ({ id, visible, onClose
 
   return (
     <Modal
-      testID="popup"
+      testID="terminateFlowpopup"
       visible={visible}
       animationType="fade"
       transparent={true}

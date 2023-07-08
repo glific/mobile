@@ -299,7 +299,7 @@ describe('Chat screen', () => {
     const startFlowButton = queryByText('Start a flow');
     fireEvent.press(startFlowButton);
     await waitFor(async () => {
-      const popupMenu = await getByTestId('popup');
+      const popupMenu = await getByTestId('startFlowPopup');
       expect(popupMenu).toBeDefined();
     });
   }, 5000);
