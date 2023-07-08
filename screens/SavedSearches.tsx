@@ -78,14 +78,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: '4%',
     width: '100%',
   },
+  mainContainer: {
+    backgroundColor: COLORS.white,
+    flex: 1,
+  },
   name: {
     color: COLORS.black,
     fontSize: SIZES.f16,
     fontWeight: '600',
     marginLeft: SIZES.m16,
-  },
-  mainContainer: {
-    backgroundColor: COLORS.white,
-    flex: 1,
   },
 });
