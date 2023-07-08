@@ -16,7 +16,7 @@ export const GET_COLLECTIONS_MOCK = [
     request: {
       query: GET_COLLECTIONS,
       variables: {
-        filter: { term: '', searchGroup: true },
+        filter: { searchGroup: true },
         messageOpts: { limit: 1 },
         contactOpts: { limit: 10 },
       },

@@ -11,15 +11,12 @@ describe('Chat screen', () => {
     const searchInput = getByTestId('searchInput');
     const searchIcon = getByTestId('searchIcon');
     const filterIcon = getByTestId('filterIcon');
-
+    expect(searchInput).toBeDefined();
+    expect(searchIcon).toBeDefined();
+    expect(filterIcon).toBeDefined();
     await waitFor(async () => {
-      expect(searchInput).toBeDefined();
-      expect(searchIcon).toBeDefined();
-      expect(filterIcon).toBeDefined();
-
       const testName = await findByText('test');
       const testLastMessage = await findByText('test message');
-
       expect(testName).toBeTruthy();
       expect(testLastMessage).toBeTruthy();
     });
@@ -27,10 +24,8 @@ describe('Chat screen', () => {
 
   test('updates search correctly', async () => {
     const { getByTestId } = customRender(<Chat />, SEARCH_CONTACTS_MOCK);
-
     const searchInput = getByTestId('searchInput');
     fireEvent.changeText(searchInput, 'test search');
-
     await waitFor(() => {
       expect(searchInput.props.value).toBe('test search');
     });
@@ -39,16 +34,13 @@ describe('Chat screen', () => {
   test('should test when search and filter icon pressed', async () => {
     const navigateMock = jest.fn();
     const mockOnSearchHandler = jest.fn();
-
     const { getByTestId } = customRender(
       <Chat navigation={{ navigate: navigateMock }} />,
       NO_SEARCH_CONTACTS_MOCK
     );
-
     const searchIcon = getByTestId('searchIcon');
     fireEvent.press(searchIcon);
     expect(mockOnSearchHandler).toBeTruthy();
-
     // const filterIcon = getByTestId('filterIcon');
     // fireEvent.press(filterIcon);
     // expect(navigateMock).toHaveBeenCalledWith('ConversationFilter');

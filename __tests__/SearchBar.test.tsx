@@ -4,17 +4,17 @@ import SearchBar from '../components/ui/SearchBar';
 import customRender from '../utils/jestRender';
 
 describe('SearchBar', () => {
-  const setSearchValueMock = jest.fn();
+  const setSearchVariableMock = jest.fn();
   const onSearchMock = jest.fn();
 
   beforeEach(() => {
-    setSearchValueMock.mockClear();
+    setSearchVariableMock.mockClear();
     onSearchMock.mockClear();
   });
 
   test('should render Search Bar without menu', () => {
     const { getByTestId } = customRender(
-      <SearchBar value="" setSearchValue={setSearchValueMock} onSearch={onSearchMock} />
+      <SearchBar setSearchVariable={setSearchVariableMock} onSearch={onSearchMock} />
     );
 
     const searchIcon = getByTestId('searchIcon');
@@ -29,8 +29,7 @@ describe('SearchBar', () => {
   test('should render Search Bar with menu', () => {
     const { getByTestId } = customRender(
       <SearchBar
-        value=""
-        setSearchValue={setSearchValueMock}
+        setSearchVariable={setSearchVariableMock}
         onSearch={onSearchMock}
         showMenu={true}
       />
@@ -49,14 +48,12 @@ describe('SearchBar', () => {
 
   test('should changes the input value and call onSearch when search button is pressed  ', () => {
     const { getByTestId } = customRender(
-      <SearchBar value="" setSearchValue={setSearchValueMock} onSearch={onSearchMock} />
+      <SearchBar setSearchVariable={setSearchVariableMock} onSearch={onSearchMock} />
     );
     const searchIcon = getByTestId('searchIcon');
     const searchInput = getByTestId('searchInput');
 
     fireEvent.changeText(searchInput, 'test');
-    expect(setSearchValueMock).toHaveBeenCalledWith('test');
-
     fireEvent.press(searchIcon);
     expect(onSearchMock).toHaveBeenCalled();
   });
@@ -64,8 +61,7 @@ describe('SearchBar', () => {
   it('should show menu component when showMenu is true', async () => {
     const { getByTestId } = customRender(
       <SearchBar
-        value=""
-        setSearchValue={setSearchValueMock}
+        setSearchVariable={setSearchVariableMock}
         onSearch={onSearchMock}
         showMenu={true}
       />

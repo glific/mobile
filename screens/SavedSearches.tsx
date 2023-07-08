@@ -1,65 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FlatList, StyleSheet, Text } from 'react-native';
-// import { useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 
 import SearchBar from '../components/ui/SearchBar';
 import { COLORS, SIZES } from '../constants';
-// import { SAVED_SEARCH_QUERY } from '../graphql/queries/Search';
+import { SAVED_SEARCH_QUERY } from '../graphql/queries/Search';
+import Loading from '../components/ui/Loading';
 
 const SavedSearches = () => {
-  const [searchValue, setSearchValue] = useState<string>('');
   const [savedSearch, setSavedSearch] = useState([]);
+  const [searchVariable, setSearchVariable] = useState({
+    filter: {},
+    opts: { limit: 10 },
+  });
 
-  // const variables = {
-  //   filter: { term: searchValue },
-  //   opts: { limit: 1 },
-  // };
-  // const { loading, error, data } = useQuery(SAVED_SEARCH_QUERY, { variables });
+  const { loading, error, data, refetch } = useQuery(SAVED_SEARCH_QUERY, {
+    variables: searchVariable,
+  });
 
-  const onSearchHandler = async () => {
-    try {
-      if (searchValue == '') return;
+  async function onSearchHandler() {
+    refetch(searchVariable);
+  }
 
-      // TODO:
-      console.log(searchValue);
-    } catch (error) {
+  useEffect(() => {
+    if (error) {
       console.log(error);
     }
-  };
-
-  // useEffect(() => {
-  //   if (error) {
-  //     console.log(error);
-  //   }
-  //   if (data) {
-  //     const newSearches = data.search.map((element: any) => {
-  //       return {
-  //         id: element.group?.id,
-  //         name: element.group?.label || 'Unknown Name',
-  //       };
-  //     });
-
-  //     setSavedSearch(newSearches);
-  //   }
-  // }, [data, error]);
+    if (data) {
+      setSavedSearch(data.savedSearches);
+    }
+  }, [data, error]);
 
   return (
-    <FlatList
-      data={savedSearch}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item }) => <Text>Saved Search</Text>}
-      ListHeaderComponent={
-        <SearchBar
-          value={searchValue}
-          setSearchValue={(value) => setSearchValue(value)}
-          onSearch={onSearchHandler}
-        />
-      }
-      ListEmptyComponent={<Text style={styles.emptyText}>No Saved Searches</Text>}
-      stickyHeaderIndices={[0]}
-      stickyHeaderHiddenOnScroll={true}
-      style={styles.mainContainer}
-    />
+    <>
+      <FlatList
+        data={savedSearch}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => <Text key={item.id}>{item.label}</Text>}
+        ListHeaderComponent={
+          <SearchBar setSearchVariable={setSearchVariable} onSearch={onSearchHandler} />
+        }
+        ListEmptyComponent={() =>
+          !loading && <Text style={styles.emptyText}>No Saved Searches</Text>
+        }
+        stickyHeaderIndices={[0]}
+        stickyHeaderHiddenOnScroll={true}
+        style={styles.mainContainer}
+      />
+      {loading && <Loading />}
+    </>
   );
 };
 
