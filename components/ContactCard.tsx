@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     width: SIZES.f14,
   },
   readName: {
-    color: COLORS.faintGray,
+    color: COLORS.darkGray,
   },
   sessionBorder: {
     alignItems: 'center',
