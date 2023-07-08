@@ -6,6 +6,7 @@ const mockContacts = {
   name: 'test',
   maskedPhone: '12*****90',
   lastMessageAt: '2021-08-10T12:00:00.000Z',
+  isOrgRead: true,
 };
 
 export const NO_SEARCH_CONTACTS_MOCK = [
