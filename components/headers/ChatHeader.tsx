@@ -6,7 +6,8 @@ import { Entypo, Ionicons, MaterialCommunityIcons, AntDesign } from '@expo/vecto
 import { COLORS, SCALE, SIZES } from '../../constants';
 import { getSessionTimeLeft } from '../../utils/helper';
 import { RootStackParamList } from '../../constants/types';
-import PopupModal from '../messages/FlowPopup';
+import StartFlowPopup from '../messages/StartFlowPopup';
+import TerminateFlowPopup from '../messages/TerminateFlowPopup';
 
 interface ChatHeaderDataProps {
   conversationType: string;
@@ -45,17 +46,24 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [showMenu, setShowMenu] = useState(false);
   const [background] = useState<boolean>(true);
-  const [showFlowModal, setShowFlowModal] = useState(false);
+  const [showStartFlowModal, setShowStartFlowModal] = useState(false);
+  const [showTerminateFlowModal, setshowTerminateFlowModal] = useState(false);
 
   const handleMenu = () => {
     setShowMenu(!showMenu);
   };
   const openFlowModal = () => {
     setShowMenu(!showMenu);
-    setShowFlowModal(true);
+    setShowStartFlowModal(true);
   };
   const closeFlowModal = () => {
-    setShowFlowModal(false);
+    setShowStartFlowModal(false);
+    setshowTerminateFlowModal(false);
+  };
+
+  const openTerminateFlowModal = () => {
+    setShowMenu(!showMenu);
+    setshowTerminateFlowModal(true);
   };
 
   let menu;
@@ -95,7 +103,7 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
           text="Terminate Flows"
           icon={<MaterialCommunityIcons name="hand-back-right-off" style={styles.menuIcon} />}
           onPress={() => {
-            console.log('3');
+            openTerminateFlowModal();
           }}
         />
         <MenuButton
@@ -184,12 +192,13 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
             {menu}
           </>
         )}
-        <PopupModal
+        <StartFlowPopup
           id={id}
           conversationType={conversationType}
-          visible={showFlowModal}
+          visible={showStartFlowModal}
           onClose={closeFlowModal}
         />
+        <TerminateFlowPopup id={id} visible={showTerminateFlowModal} onClose={closeFlowModal} />
       </View>
       {sessionTimeLeft}
     </>

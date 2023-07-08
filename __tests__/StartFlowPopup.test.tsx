@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent } from '@testing-library/react-native';
-import PopupModal from '../components/messages/FlowPopup';
+import StartFlowPopup from '../components/messages/StartFlowPopup';
 import customRender from '../utils/jestRender';
 
 const contactProp = {
@@ -10,9 +10,9 @@ const contactProp = {
   onClose: jest.fn(),
 };
 
-describe('PopupModal', () => {
+describe('StartFlowPopup', () => {
   test('renders correctly', () => {
-    const { getByTestId } = customRender(<PopupModal {...contactProp} />);
+    const { getByTestId } = customRender(<StartFlowPopup {...contactProp} />);
     expect(getByTestId('header')).toBeDefined();
     expect(getByTestId('cancelButton')).toBeDefined();
     expect(getByTestId('startButton')).toBeDefined();
@@ -20,7 +20,7 @@ describe('PopupModal', () => {
   });
 
   test('calls onClose when cancel button is pressed', async () => {
-    const { getByText } = customRender(<PopupModal {...contactProp} />);
+    const { getByText } = customRender(<StartFlowPopup {...contactProp} />);
     fireEvent.press(getByText('CANCEL'));
     expect(contactProp.onClose).toHaveBeenCalled();
   });

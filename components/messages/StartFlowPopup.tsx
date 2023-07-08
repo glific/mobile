@@ -13,7 +13,7 @@ interface FlowProps {
   visible: boolean;
   onClose: () => void;
 }
-const PopupModal: React.FC<FlowProps> = ({ id, conversationType, visible, onClose }) => {
+const StartFlowPopup: React.FC<FlowProps> = ({ id, conversationType, visible, onClose }) => {
   const [selectedFlow, setSelectedFlow] = useState('');
 
   const isContactType = conversationType == 'contact';
@@ -116,7 +116,7 @@ const PopupModal: React.FC<FlowProps> = ({ id, conversationType, visible, onClos
   );
 };
 
-export default PopupModal;
+export default StartFlowPopup;
 
 const styles = StyleSheet.create({
   background: {
