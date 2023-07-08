@@ -84,6 +84,10 @@ const Notifications = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const { loading } = useQuery(GET_NOTIFICATIONS, {
+    variables: {
+      opts: { limit: 20, offset: 0, order: 'DESC', orderWith: 'updated_at' },
+    },
+    fetchPolicy: 'network-only',
     onCompleted: (data) => {
       const formattedNotifications = formatNotifications(data.notifications);
       setNotificationArray(formattedNotifications);

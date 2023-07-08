@@ -154,12 +154,6 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
           }
         >
           <View testID="userProfile" style={styles.avatar}>
-            <View
-              style={[
-                styles.circle,
-                { backgroundColor: background ? COLORS.primary100 : COLORS.darkGray }, // TODO: for online status
-              ]}
-            />
             <Text style={styles.avatartext}>{displayName.charAt(0)}</Text>
           </View>
           <Text testID="userName" style={styles.nameText} numberOfLines={1}>

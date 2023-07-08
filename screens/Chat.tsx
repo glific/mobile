@@ -29,10 +29,13 @@ const Chat = () => {
   const [searchVariable, setSearchVariable] = useState({
     filter: {},
     messageOpts: { limit: 1 },
-    contactOpts: { limit: 10 },
+    contactOpts: { limit: 20 },
   });
 
-  const { loading, error, data, refetch } = useQuery(GET_CONTACTS, { variables: searchVariable });
+  const { loading, error, data, refetch } = useQuery(GET_CONTACTS, {
+    variables: searchVariable,
+    fetchPolicy: 'network-only',
+  });
 
   async function onSearchHandler() {
     refetch(searchVariable);

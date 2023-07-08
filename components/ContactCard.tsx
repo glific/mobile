@@ -40,8 +40,8 @@ const Contact: React.FC<ContactProps> = ({ id, name, lastMessageAt, lastMessage,
         <Text style={styles.avatartext}>{name.charAt(0)}</Text>
       </View>
       <View style={styles.mainbody}>
-        <Text style={styles.name}>{name}</Text>
-        <Text style={styles.lastMsg} numberOfLines={1}>
+        <Text style={[styles.name, isOrgRead && styles.readName]}>{name}</Text>
+        <Text style={[styles.lastMsg, isOrgRead && styles.readName]} numberOfLines={1}>
           {lastMessage}
         </Text>
       </View>
@@ -127,6 +127,9 @@ const styles = StyleSheet.create({
     right: -SIZES.m4,
     top: -0,
     width: SIZES.f14,
+  },
+  readName: {
+    color: COLORS.faintGray,
   },
   sessionBorder: {
     alignItems: 'center',
