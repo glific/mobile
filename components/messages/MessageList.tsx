@@ -20,7 +20,7 @@ const MessagesList: React.FC<MessageListProps> = ({ conversationType, id }) => {
   const variables = {
     filter: { id: id, searchGroup: conversationType === 'collection' },
     contactOpts: { limit: 1 },
-    messageOpts: { limit: 10 },
+    messageOpts: { limit: 20 },
   };
 
   const { loading, error, data } = useQuery(GET_MESSAGES, {

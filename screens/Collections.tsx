@@ -14,7 +14,7 @@ const Collections = () => {
   const [searchVariable, setSearchVariable] = useState({
     filter: { searchGroup: true },
     messageOpts: { limit: 1 },
-    contactOpts: { limit: 10 },
+    contactOpts: { limit: 20 },
   });
 
   const { loading, error, data, refetch } = useQuery(GET_COLLECTIONS, {

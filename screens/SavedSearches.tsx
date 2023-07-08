@@ -11,7 +11,7 @@ const SavedSearches = () => {
   const [savedSearch, setSavedSearch] = useState([]);
   const [searchVariable, setSearchVariable] = useState({
     filter: {},
-    opts: { limit: 10 },
+    opts: { limit: 20 },
   });
 
   const { loading, error, data, refetch } = useQuery(SAVED_SEARCH_QUERY, {
