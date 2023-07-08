@@ -60,7 +60,6 @@ const refreshLink = new TokenRefreshLink({
     <T>(_operation: Operation<T>, accessTokenField: string) =>
     async (response: Response<T>): Promise<T | any> => {
       const tokenResponse: any = [];
-      console.log(response);
 
       if (response) {
         await Storage.storeData('session', JSON.stringify(response.data));

@@ -44,7 +44,6 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
 }) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [showMenu, setShowMenu] = useState(false);
-  const [background] = useState<boolean>(true);
   const [showFlowModal, setShowFlowModal] = useState(false);
 
   const handleMenu = () => {
@@ -154,12 +153,6 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
           }
         >
           <View testID="userProfile" style={styles.avatar}>
-            <View
-              style={[
-                styles.circle,
-                { backgroundColor: background ? COLORS.primary100 : COLORS.darkGray }, // TODO: for online status
-              ]}
-            />
             <Text style={styles.avatartext}>{displayName.charAt(0)}</Text>
           </View>
           <Text testID="userName" style={styles.nameText} numberOfLines={1}>
@@ -215,16 +208,6 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: SCALE(22),
     paddingHorizontal: SIZES.m10,
-  },
-  circle: {
-    borderColor: COLORS.primary400,
-    borderRadius: SIZES.r10,
-    borderWidth: 2,
-    bottom: -4,
-    height: SIZES.f14,
-    position: 'absolute',
-    right: -4,
-    width: SIZES.f14,
   },
   innerContainer: {
     alignItems: 'center',

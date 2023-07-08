@@ -16,7 +16,7 @@ export const NO_SEARCH_CONTACTS_MOCK = [
       variables: {
         filter: {},
         messageOpts: { limit: 1 },
-        contactOpts: { limit: 10 },
+        contactOpts: { limit: 20 },
       },
     },
     result: {
@@ -44,7 +44,7 @@ export const SEARCH_CONTACTS_MOCK = [
       variables: {
         filter: { term: 'test search' },
         messageOpts: { limit: 1 },
-        contactOpts: { limit: 10 },
+        contactOpts: { limit: 20 },
       },
     },
     result: {
@@ -72,7 +72,7 @@ export const GET_CONTACT_NO_MESSAGE_MOCK = [
       variables: {
         filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
-        messageOpts: { limit: 10 },
+        messageOpts: { limit: 20 },
       },
     },
     result: {
@@ -94,7 +94,7 @@ export const GET_CONTACT_MESSAGES_MOCK = [
       variables: {
         filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
-        messageOpts: { limit: 10 },
+        messageOpts: { limit: 20 },
       },
     },
     result: {
@@ -134,7 +134,7 @@ export const GET_CONTACT_TEXT_MESSAGE_MOCK = [
       variables: {
         filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
-        messageOpts: { limit: 10 },
+        messageOpts: { limit: 20 },
       },
     },
     result: {
@@ -174,7 +174,7 @@ export const GET_CONTACT_IMAGE_MESSAGE_MOCK = [
       variables: {
         filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
-        messageOpts: { limit: 10 },
+        messageOpts: { limit: 20 },
       },
     },
     result: {
@@ -218,7 +218,7 @@ export const GET_CONTACT_VIDEO_MESSAGE_MOCK = [
       variables: {
         filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
-        messageOpts: { limit: 10 },
+        messageOpts: { limit: 20 },
       },
     },
     result: {
@@ -262,7 +262,7 @@ export const GET_CONTACT_AUDIO_MESSAGE_MOCK = [
       variables: {
         filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
-        messageOpts: { limit: 10 },
+        messageOpts: { limit: 20 },
       },
     },
     result: {
@@ -306,7 +306,7 @@ export const GET_CONTACT_DOCUMENT_MESSAGE_MOCK = [
       variables: {
         filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
-        messageOpts: { limit: 10 },
+        messageOpts: { limit: 20 },
       },
     },
     result: {
@@ -350,7 +350,7 @@ export const GET_CONTACT_STICKER_MESSAGE_MOCK = [
       variables: {
         filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
-        messageOpts: { limit: 10 },
+        messageOpts: { limit: 20 },
       },
     },
     result: {
@@ -394,7 +394,7 @@ export const GET_CONTACT_LOCATION_MESSAGE_MOCK = [
       variables: {
         filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
-        messageOpts: { limit: 10 },
+        messageOpts: { limit: 20 },
       },
     },
     result: {
@@ -434,7 +434,7 @@ export const GET_CONTACT_QUCIK_REPLY_MESSAGE_MOCK = [
       variables: {
         filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
-        messageOpts: { limit: 10 },
+        messageOpts: { limit: 20 },
       },
     },
     result: {

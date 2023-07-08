@@ -25,7 +25,7 @@ describe('Notifications Screen', () => {
     {
       request: {
         query: GET_NOTIFICATIONS,
-        variables: {},
+        variables: { opts: { limit: 20, offset: 0, order: 'DESC', orderWith: 'updated_at' } },
       },
       result: {
         data: {

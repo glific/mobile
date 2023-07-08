@@ -20,7 +20,7 @@ const MessagesList: React.FC<MessageListProps> = ({ conversationType, id }) => {
   const variables = {
     filter: { id: id, searchGroup: conversationType === 'collection' },
     contactOpts: { limit: 1 },
-    messageOpts: { limit: 10 },
+    messageOpts: { limit: 20 },
   };
 
   const { loading, error, data } = useQuery(GET_MESSAGES, {
@@ -70,7 +70,7 @@ const MessagesList: React.FC<MessageListProps> = ({ conversationType, id }) => {
           />
         ))
       ) : (
-        <Text>No messages</Text>
+        <Text style={styles.emptyText}>No messages</Text>
       )}
     </ScrollView>
   );
@@ -83,5 +83,12 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     flex: 1,
     marginBottom: SIZES.m65,
+  },
+  emptyText: {
+    alignSelf: 'center',
+    color: COLORS.darkGray,
+    fontSize: SIZES.f14,
+    fontWeight: '500',
+    marginTop: SIZES.m16,
   },
 });
