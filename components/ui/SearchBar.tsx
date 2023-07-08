@@ -124,12 +124,14 @@ const SearchBar: React.FC<SearchBarProps> = ({
           underlineColorAndroid="transparent"
           onSubmitEditing={handleTermSearch}
         />
-        <Ionicons
-          testID="filterIcon"
-          name="filter-outline"
-          style={styles.icon}
-          onPress={() => navigation.navigate('ConversationFilter')}
-        />
+        {showMenu && (
+          <Ionicons
+            testID="filterIcon"
+            name="filter-outline"
+            style={styles.icon}
+            onPress={() => navigation.navigate('ConversationFilter')}
+          />
+        )}
       </View>
       {showMenu && (
         <Pressable testID="menuIcon" onPress={openMenu} style={styles.menuIconContainer}>

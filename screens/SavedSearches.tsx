@@ -36,7 +36,11 @@ const SavedSearches = () => {
       <FlatList
         data={savedSearch}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <Text key={item.id}>{item.label}</Text>}
+        renderItem={({ item }) => (
+          <Text style={styles.searches} key={item.id}>
+            {item.label}
+          </Text>
+        )}
         ListHeaderComponent={
           <SearchBar setSearchVariable={setSearchVariable} onSearch={onSearchHandler} />
         }
@@ -65,5 +69,13 @@ const styles = StyleSheet.create({
   mainContainer: {
     backgroundColor: COLORS.white,
     flex: 1,
+  },
+  searches: {
+    backgroundColor: COLORS.secondary100,
+    color: COLORS.black,
+    fontSize: SIZES.f14,
+    marginVertical: SIZES.m2,
+    paddingHorizontal: SIZES.m12,
+    paddingVertical: SIZES.m16,
   },
 });
