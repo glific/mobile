@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "glific",
+    "name": "Glific",
     "slug": "glific",
-    "version": "0.0.3",
+    "version": "0.0.5",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -21,7 +21,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.glific",
-      "versionCode": 2
+      "versionCode": 3
     },
     "web": {
       "favicon": "./assets/favicon.png"
