@@ -21,7 +21,7 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
 const Login = ({ navigation }: Props) => {
-  const { setToken, orgURL, setUser } = useContext(AuthContext);
+  const { setToken, setUser, orgName } = useContext(AuthContext);
   const [enteredMobile, setEnteredMobile] = useState('');
   const [enteredPassword, setEnteredPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -86,7 +86,7 @@ const Login = ({ navigation }: Props) => {
       setLoading(false);
       setToken(response.data.data.access_token);
     } catch (error) {
-      setErrorMessage(error.message);
+      setErrorMessage('Incorrect login credentials!');
       setLoading(false);
     }
   };
@@ -100,15 +100,12 @@ const Login = ({ navigation }: Props) => {
     <View style={styles.mainContainer}>
       <View style={styles.inputContainer}>
         <View testID="organisationURL" style={styles.headerContainer}>
-          <Text style={styles.orgLabel}>Organisation URL</Text>
-          <Text style={styles.urlText}>{orgURL}</Text>
+          <Text style={styles.urlText}>{orgName}</Text>
           <Pressable testID="changeURL" onPress={() => navigation.navigate('Server')}>
             <Text style={styles.textButton}>Change</Text>
           </Pressable>
         </View>
-        <Text style={[styles.numberLabel, errorMessage && styles.errorLabel]}>
-          Enter your WhatsApp number
-        </Text>
+        <Text style={styles.numberLabel}>Enter your WhatsApp number</Text>
         <PhoneInput
           testID="mobileNumber"
           ref={phoneInput}
@@ -129,7 +126,6 @@ const Login = ({ navigation }: Props) => {
           onUpdateValue={(text) => updateInputValueHandler('password', text)}
           secure={showPassword ? false : true}
           onShowPassword={() => setShowPassword(!showPassword)}
-          isError={errorMessage ? true : false}
           type="password"
         />
         <Pressable
@@ -165,6 +161,7 @@ const styles = StyleSheet.create({
   },
   errorLabel: {
     color: COLORS.error100,
+    fontSize: SIZES.f14,
   },
   flagButtonStyle: {
     justifyContent: 'flex-start',
@@ -194,15 +191,6 @@ const styles = StyleSheet.create({
     fontSize: SIZES.f16,
     paddingBottom: SIZES.m10,
   },
-  orgLabel: {
-    color: COLORS.primary70,
-    fontSize: SIZES.f14,
-    fontWeight: '500',
-    left: SIZES.m6,
-    paddingBottom: SIZES.m10,
-    position: 'absolute',
-    top: -SIZES.m10,
-  },
   phoneInput: {
     backgroundColor: COLORS.white,
     borderRadius: SIZES.r10,
@@ -226,7 +214,8 @@ const styles = StyleSheet.create({
     fontSize: SIZES.f14,
   },
   urlText: {
-    color: COLORS.black,
-    fontSize: SIZES.f14,
+    color: COLORS.primary400,
+    fontSize: SIZES.f16,
+    fontWeight: '500',
   },
 });

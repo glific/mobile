@@ -13,6 +13,7 @@ export default function App() {
   const [token, setToken] = useState(null);
   const [orgURL, setURL] = useState(null);
   const [user, setUser] = useState(null);
+  const [orgName, setOrgName] = useState(null);
   const appIsReady = useAppResources(setToken, setURL, setUser);
 
   if (!appIsReady) {
@@ -20,7 +21,9 @@ export default function App() {
   }
 
   return (
-    <AuthContext.Provider value={{ token, setToken, orgURL, setURL, user, setUser }}>
+    <AuthContext.Provider
+      value={{ token, setToken, orgURL, setURL, user, setUser, orgName, setOrgName }}
+    >
       <ApolloProvider client={client}>
         <SafeAreaView style={styles.container}>
           <StatusBar backgroundColor={COLORS.primary400} />

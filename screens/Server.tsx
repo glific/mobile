@@ -19,7 +19,8 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList, 'Server'>;
 
 const Server = ({ navigation }: Props) => {
-  const { setURL, orgURL } = useContext(AuthContext);
+  const { setURL, orgURL, setOrgName } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
   const [serverURL, setServerURL] = useState(orgURL ? orgURL : '');
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -29,15 +30,26 @@ const Server = ({ navigation }: Props) => {
   };
 
   const onSubmitHandler = async () => {
-    if (!serverURL || !validateUrl(`https://api.${serverURL}/api`)) {
+    if (!serverURL || !validateUrl(`https://api.${serverURL}.tides.coloredcow.com/api`)) {
       setErrorMessage('Please enter valid server url');
       return;
     }
 
     await Storage.storeData('orgnisationUrl', serverURL);
     setURL(serverURL);
-    await AxiosService.updateServerURL(`https://api.${serverURL}/api`);
-    navigation.navigate('Login');
+    await AxiosService.updateServerURL(`https://api.${serverURL}.tides.coloredcow.com/api`);
+
+    try {
+      setLoading(true);
+      const Client = await AxiosService.createAxiosInstance();
+      const response = await Client.post('/v1/session/name');
+      setOrgName(response?.data?.data?.name);
+      setLoading(false);
+      navigation.navigate('Login');
+    } catch (error) {
+      setErrorMessage('Sorry! Unable to find this organization');
+      setLoading(false);
+    }
   };
 
   let errorDisplay;
@@ -53,15 +65,17 @@ const Server = ({ navigation }: Props) => {
           label="Enter or paste URL here"
           onUpdateValue={serverURLChanged}
           value={serverURL}
-          isError={errorMessage ? true : false}
           keyboardType="url"
-          placeholder="smilefoundation.org/..."
+          placeholder="shortcode"
         />
+        <Text style={styles.previewUrl}>
+          {serverURL ? serverURL : 'shortcode'}.tides.coloredcow.com
+        </Text>
         {errorDisplay}
       </View>
       <InstructionCard />
       <View style={styles.buttonContainer}>
-        <Button onPress={onSubmitHandler}>
+        <Button disable={!serverURL} onPress={onSubmitHandler} loading={loading}>
           <Text>CONTINUE</Text>
         </Button>
       </View>
@@ -80,11 +94,19 @@ const styles = StyleSheet.create({
   },
   errorLabel: {
     color: COLORS.error100,
+    fontSize: SIZES.f14,
   },
   inputContainer: { paddingHorizontal: SIZES.m20 },
   mainContainer: {
     backgroundColor: COLORS.white,
     flex: 1,
     paddingTop: SIZES.m24,
+  },
+  previewUrl: {
+    color: COLORS.darkGray,
+    fontSize: SIZES.f12,
+    marginBottom: SIZES.m4,
+    marginHorizontal: SIZES.m10,
+    marginTop: -SIZES.m6,
   },
 });
