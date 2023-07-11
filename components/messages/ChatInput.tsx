@@ -383,7 +383,8 @@ const styles = StyleSheet.create({
   },
   showIcon: {
     color: COLORS.black,
-    fontSize: SIZES.f16,
-    padding: SIZES.m6,
+    fontSize: SIZES.f18,
+    paddingHorizontal: SIZES.m6,
+    paddingVertical: SIZES.m12,
   },
 });

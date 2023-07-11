@@ -10,7 +10,6 @@ interface InputProps {
   label?: string;
   onUpdateValue: (args: string) => void;
   value: string;
-  isError?: boolean;
   secure?: boolean;
   keyboardType?: KeyboardTypeOptions;
   placeholder: string;
@@ -26,18 +25,17 @@ const Input = ({
   secure = false,
   onUpdateValue,
   value,
-  isError = false,
   testID,
   onShowPassword,
   type = 'text',
 }: InputProps) => {
   return (
     <View style={styles.inputContainer}>
-      {label && <Text style={[styles.label, isError && styles.errorLabel]}>{label}</Text>}
+      {label && <Text style={styles.label}>{label}</Text>}
       <View style={styles.inputBox}>
         <TextInput
           testID={testID}
-          style={[styles.input, isError && styles.errorLabel]}
+          style={styles.input}
           autoCapitalize="none"
           keyboardType={keyboardType}
           secureTextEntry={secure}
@@ -76,9 +74,6 @@ const styles = StyleSheet.create({
   clearIcon: {
     color: COLORS.darkGray,
     fontSize: SIZES.f16,
-  },
-  errorLabel: {
-    color: COLORS.error100,
   },
   input: {
     flex: 1,

@@ -70,7 +70,7 @@ const ConversationFilter = ({ navigation }: any) => {
           options={options}
           selectedOptions={selectLabels}
           onSelectOption={handleSelectLabel}
-          label="Includes Labels"
+          label="Include Labels"
           placeHolder="Age group"
         />
         <MultiSelect

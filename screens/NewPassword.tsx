@@ -55,7 +55,6 @@ const NewPassword = ({ navigation }: Props) => {
           onUpdateValue={(text) => handleOnchange('newPassword', text)}
           secure={inputs.showNewPassword ? false : true}
           onShowPassword={() => handleOnchange('showNewPassword', !inputs.showNewPassword)}
-          isError={errorMessage ? true : false}
           type="password"
         />
         <Input
@@ -66,7 +65,6 @@ const NewPassword = ({ navigation }: Props) => {
           onUpdateValue={(text) => handleOnchange('confirmPassword', text)}
           secure={inputs.showConfirmPassword ? false : true}
           onShowPassword={() => handleOnchange('showConfirmPassword', !inputs.showConfirmPassword)}
-          isError={errorMessage ? true : false}
           type="password"
         />
         {errorDisplay}
