@@ -23,3 +23,15 @@ export const START_COLLECTION_FLOW = gql`
     }
   }
 `;
+
+export const TERMINATE_FLOW = gql`
+  mutation terminateContactFlows($contactId: ID!) {
+    terminateContactFlows(contactId: $contactId) {
+      success
+      errors {
+        key
+        message
+      }
+    }
+  }
+`;

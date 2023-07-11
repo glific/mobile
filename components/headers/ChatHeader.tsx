@@ -6,7 +6,8 @@ import { Entypo, Ionicons, MaterialCommunityIcons, AntDesign } from '@expo/vecto
 import { COLORS, SCALE, SIZES } from '../../constants';
 import { getSessionTimeLeft } from '../../utils/helper';
 import { RootStackParamList } from '../../constants/types';
-import PopupModal from '../messages/FlowPopup';
+import StartFlowPopup from '../messages/StartFlowPopup';
+import ChatPopup from '../messages/ChatPopup';
 
 interface ChatHeaderDataProps {
   conversationType: string;
@@ -44,17 +45,25 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
 }) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [showMenu, setShowMenu] = useState(false);
-  const [showFlowModal, setShowFlowModal] = useState(false);
-
+  const [showStartFlowModal, setShowStartFlowModal] = useState(false);
+  const [popupTask, setpopupTask] = useState('');
+  const [showTerminateFlowModal, setshowTerminateFlowModal] = useState(false);
   const handleMenu = () => {
     setShowMenu(!showMenu);
   };
   const openFlowModal = () => {
     setShowMenu(!showMenu);
-    setShowFlowModal(true);
+    setShowStartFlowModal(true);
   };
   const closeFlowModal = () => {
-    setShowFlowModal(false);
+    setShowStartFlowModal(false);
+    setshowTerminateFlowModal(false);
+  };
+
+  const openTerminateFlowModal = (task: string) => {
+    setpopupTask(task);
+    setShowMenu(!showMenu);
+    setshowTerminateFlowModal(true);
   };
 
   let menu;
@@ -87,14 +96,14 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
           text="Clear Conversation"
           icon={<MaterialCommunityIcons name="message-bulleted-off" style={styles.menuIcon} />}
           onPress={() => {
-            console.log('2');
+            openTerminateFlowModal('clear');
           }}
         />
         <MenuButton
           text="Terminate Flows"
           icon={<MaterialCommunityIcons name="hand-back-right-off" style={styles.menuIcon} />}
           onPress={() => {
-            console.log('3');
+            openTerminateFlowModal('terminate');
           }}
         />
         <MenuButton
@@ -173,10 +182,16 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
             {menu}
           </>
         )}
-        <PopupModal
+        <StartFlowPopup
           id={id}
           conversationType={conversationType}
-          visible={showFlowModal}
+          visible={showStartFlowModal}
+          onClose={closeFlowModal}
+        />
+        <ChatPopup
+          id={id}
+          visible={showTerminateFlowModal}
+          task={popupTask}
           onClose={closeFlowModal}
         />
       </View>
