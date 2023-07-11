@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Modal, StyleSheet } from 'react-native';
-import { COLORS, SCALE } from '../../constants/theme';
+import { COLORS, SCALE, SIZES } from '../../constants/theme';
 import { Picker } from '@react-native-picker/picker';
 import { GET_ALL_FLOWS } from '../../graphql/queries/Flows';
 import { START_COLLECTION_FLOW, START_CONTACT_FLOW } from '../../graphql/mutations/Flows';
@@ -94,6 +94,8 @@ const StartFlowPopup: React.FC<FlowProps> = ({ id, conversationType, visible, on
                 <Picker.Item testID={name} key={value} label={name} value={value} />
               ))}
             </Picker>
+          </View>
+          <View>
             <Text style={styles.description}>
               The contact will be responded as per the messages planned in the flow.
             </Text>
@@ -129,7 +131,6 @@ const styles = StyleSheet.create({
     height: 40,
     marginHorizontal: 10,
     marginTop: 24,
-    width: 100,
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -142,22 +143,20 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 17,
     fontWeight: '500',
+    marginBottom: SIZES.m10,
   },
   picker: {
     borderColor: COLORS.black,
     borderRadius: 10,
     borderWidth: 1,
-    height: 50,
-    marginBottom: 14,
-    marginTop: 24,
+    height: 60,
     width: 270,
   },
   popupContainer: {
     backgroundColor: COLORS.white,
     borderRadius: 10,
-    height: 270,
-    paddingHorizontal: SCALE(30),
-    paddingVertical: SCALE(40),
+    paddingHorizontal: SCALE(20),
+    paddingVertical: SCALE(20),
     width: 330,
   },
 });

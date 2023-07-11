@@ -9,6 +9,7 @@ import ErrorAlert from '../components/ui/ErrorAlert';
 import NotificationItem from '../components/NotificationItem';
 import { COLORS, SCALE, SIZES } from '../constants/theme';
 import { GET_NOTIFICATIONS } from '../graphql/queries/Notification';
+import Loading from '../components/ui/Loading';
 
 type notificationType = {
   id: number;
@@ -82,7 +83,11 @@ const Notifications = () => {
   const [notificationArray, setNotificationArray] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
 
-  useQuery(GET_NOTIFICATIONS, {
+  const { loading } = useQuery(GET_NOTIFICATIONS, {
+    variables: {
+      opts: { limit: 20, offset: 0, order: 'DESC', orderWith: 'updated_at' },
+    },
+    fetchPolicy: 'network-only',
     onCompleted: (data) => {
       const formattedNotifications = formatNotifications(data.notifications);
       setNotificationArray(formattedNotifications);
@@ -124,14 +129,20 @@ const Notifications = () => {
           />
         ))}
       </View>
-      <FlatList
-        data={notificationArray.filter(
-          (item) => item['type'] === activeTab.label || activeTab.label === 'All'
-        )}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <NotificationItem key={item.id} notification={item} />}
-        initialNumToRender={10}
-      />
+      <>
+        <FlatList
+          data={notificationArray.filter(
+            (item) => item['type'] === activeTab.label || activeTab.label === 'All'
+          )}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => <NotificationItem key={item.id} notification={item} />}
+          ListEmptyComponent={() =>
+            !loading && <Text style={styles.emptyText}>No notification</Text>
+          }
+          initialNumToRender={10}
+        />
+        {loading && <Loading />}
+      </>
       {errorMessage !== '' && <ErrorAlert message={errorMessage} />}
     </View>
   );
@@ -145,11 +156,18 @@ const styles = StyleSheet.create({
   },
   activeTab: {
     alignContent: 'center',
-    borderBottomColor: COLORS.brightGreen,
+    borderBottomColor: COLORS.primary400,
     borderBottomWidth: SCALE(2),
     height: SIZES.s60,
     justifyContent: 'center',
     marginHorizontal: SIZES.m16,
+  },
+  emptyText: {
+    alignSelf: 'center',
+    color: COLORS.darkGray,
+    fontSize: SIZES.f14,
+    fontWeight: '500',
+    marginTop: SIZES.m16,
   },
   inActiveTab: {
     alignContent: 'center',

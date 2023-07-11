@@ -25,6 +25,7 @@ const Login = ({ navigation }: Props) => {
   const [enteredMobile, setEnteredMobile] = useState('');
   const [enteredPassword, setEnteredPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const phoneInput = useRef<PhoneInput>(null);
 
@@ -66,6 +67,7 @@ const Login = ({ navigation }: Props) => {
 
   const onSubmitHandler = async () => {
     try {
+      setLoading(true);
       if (enteredMobile == '' || enteredPassword == '') {
         throw new Error('Please enter mobile number and password!');
       }
@@ -81,9 +83,11 @@ const Login = ({ navigation }: Props) => {
 
       await Storage.storeData('session', JSON.stringify(response.data.data));
       await getCurrentUser();
+      setLoading(false);
       setToken(response.data.data.access_token);
     } catch (error) {
       setErrorMessage(error.message);
+      setLoading(false);
     }
   };
 
@@ -138,7 +142,11 @@ const Login = ({ navigation }: Props) => {
         {errorDisplay}
       </View>
       <View style={styles.buttonContainer}>
-        <Button disable={!enteredMobile && !enteredPassword} onPress={onSubmitHandler}>
+        <Button
+          disable={!enteredMobile && !enteredPassword}
+          onPress={onSubmitHandler}
+          loading={loading}
+        >
           <Text>LOG IN</Text>
         </Button>
       </View>

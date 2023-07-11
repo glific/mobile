@@ -108,7 +108,7 @@ export default AppDrawer;
 
 const styles = StyleSheet.create({
   drawerItemIcon: {
-    fontSize: SIZES.s24,
+    fontSize: SIZES.s18,
     marginLeft: SIZES.m12,
   },
 });

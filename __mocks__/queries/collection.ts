@@ -18,7 +18,7 @@ export const GET_COLLECTIONS_MOCK = [
       variables: {
         filter: { searchGroup: true },
         messageOpts: { limit: 1 },
-        contactOpts: { limit: 10 },
+        contactOpts: { limit: 20 },
       },
     },
     result: {
@@ -41,7 +41,7 @@ export const GET_COLLECTION_NO_MESSAGE_MOCK = [
       variables: {
         filter: { id: 1, searchGroup: true },
         contactOpts: { limit: 1 },
-        messageOpts: { limit: 10 },
+        messageOpts: { limit: 20 },
       },
     },
     result: {
@@ -63,7 +63,7 @@ export const GET_COLLECTION_TEXT_MESSAGE_MOCK = [
       variables: {
         filter: { id: 1, searchGroup: true },
         contactOpts: { limit: 1 },
-        messageOpts: { limit: 10 },
+        messageOpts: { limit: 20 },
       },
     },
     result: {

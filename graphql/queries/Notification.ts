@@ -7,8 +7,8 @@ export const GET_NOTIFICATIONS_COUNT = gql`
 `;
 
 export const GET_NOTIFICATIONS = gql`
-  query notifications($filter: NotificationFilter) {
-    notifications(filter: $filter) {
+  query notifications($filter: NotificationFilter, $opts: Opts) {
+    notifications(filter: $filter, opts: $opts) {
       entity
       message
       severity

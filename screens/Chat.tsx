@@ -14,6 +14,7 @@ interface Contact {
   lastMessageAt: string | null;
   name: string | null;
   maskedPhone: string | null;
+  isOrgRead: boolean;
 }
 interface Message {
   id: string;
@@ -28,10 +29,13 @@ const Chat = () => {
   const [searchVariable, setSearchVariable] = useState({
     filter: {},
     messageOpts: { limit: 1 },
-    contactOpts: { limit: 10 },
+    contactOpts: { limit: 20 },
   });
 
-  const { loading, error, data, refetch } = useQuery(GET_CONTACTS, { variables: searchVariable });
+  const { loading, error, data, refetch } = useQuery(GET_CONTACTS, {
+    variables: searchVariable,
+    fetchPolicy: 'network-only',
+  });
 
   async function onSearchHandler() {
     refetch(searchVariable);
@@ -49,6 +53,7 @@ const Chat = () => {
           name: element.contact?.name || element.contact?.maskedPhone,
           lastMessageAt: element.contact?.lastMessageAt,
           lastMessage: messagesLength > 0 ? element.messages[messagesLength - 1]?.body : ' ',
+          isOrgRead: element.contact?.isOrgRead,
         };
       });
 
@@ -67,6 +72,7 @@ const Chat = () => {
             name={item.name}
             lastMessage={item.lastMessage}
             lastMessageAt={item.lastMessageAt}
+            isOrgRead={item.isOrgRead}
           />
         )}
         ListHeaderComponent={

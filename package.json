@@ -1,6 +1,6 @@
 {
-  "name": "mobile",
-  "version": "1.0.0",
+  "name": "glific",
+  "version": "0.0.5",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
@@ -14,6 +14,8 @@
   },
   "dependencies": {
     "@apollo/client": "^3.7.14",
+    "@apollo/link-context": "^2.0.0-beta.3",
+    "@apollo/link-error": "^2.0.0-beta.3",
     "@expo/vector-icons": "^13.0.0",
     "@react-native-async-storage/async-storage": "1.17.11",
     "@react-native-community/datetimepicker": "6.7.3",
@@ -24,6 +26,7 @@
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
     "@types/axios": "^0.14.0",
+    "apollo-link-token-refresh": "^0.6.0",
     "axios": "^1.4.0",
     "expo": "~48.0.5",
     "expo-av": "^13.2.1",

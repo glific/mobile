@@ -8,6 +8,7 @@ export const GET_CONTACTS = gql`
         name
         maskedPhone
         lastMessageAt
+        isOrgRead
       }
       messages {
         id

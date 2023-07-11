@@ -3,7 +3,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react-native';
 import customRender from '../utils/jestRender';
 
 import Chat from '../screens/Chat';
-import { NO_SEARCH_CONTACTS_MOCK, SEARCH_CONTACTS_MOCK } from '../__mocks__/queries/contact';
+import { NO_SEARCH_CONTACTS_MOCK } from '../__mocks__/queries/contact';
 
 describe('Chat screen', () => {
   test('renders correctly', async () => {
@@ -23,7 +23,7 @@ describe('Chat screen', () => {
   });
 
   test('updates search correctly', async () => {
-    const { getByTestId } = customRender(<Chat />, SEARCH_CONTACTS_MOCK);
+    const { getByTestId } = customRender(<Chat />, NO_SEARCH_CONTACTS_MOCK);
     const searchInput = getByTestId('searchInput');
     fireEvent.changeText(searchInput, 'test search');
     await waitFor(() => {

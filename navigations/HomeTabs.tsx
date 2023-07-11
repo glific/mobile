@@ -13,7 +13,6 @@ const HomeTabs = () => {
     <Tab.Navigator
       initialRouteName="Contacts"
       screenOptions={{
-        swipeEnabled: false,
         tabBarStyle: {
           backgroundColor: COLORS.primary10,
           elevation: 0,

@@ -20,14 +20,14 @@ export default function App() {
   }
 
   return (
-    <ApolloProvider client={client}>
-      <SafeAreaView style={styles.container}>
-        <AuthContext.Provider value={{ token, setToken, orgURL, setURL, user, setUser }}>
+    <AuthContext.Provider value={{ token, setToken, orgURL, setURL, user, setUser }}>
+      <ApolloProvider client={client}>
+        <SafeAreaView style={styles.container}>
           <StatusBar backgroundColor={COLORS.primary400} />
           <Navigation />
-        </AuthContext.Provider>
-      </SafeAreaView>
-    </ApolloProvider>
+        </SafeAreaView>
+      </ApolloProvider>
+    </AuthContext.Provider>
   );
 }
 

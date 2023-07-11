@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, StyleSheet, Text } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { useQuery } from '@apollo/client';
 
 import SearchBar from '../components/ui/SearchBar';
-import { COLORS, SIZES } from '../constants';
+import { COLORS, SCALE, SIZES } from '../constants';
 import { SAVED_SEARCH_QUERY } from '../graphql/queries/Search';
 import Loading from '../components/ui/Loading';
 
@@ -11,7 +11,7 @@ const SavedSearches = () => {
   const [savedSearch, setSavedSearch] = useState([]);
   const [searchVariable, setSearchVariable] = useState({
     filter: {},
-    opts: { limit: 10 },
+    opts: { limit: 20 },
   });
 
   const { loading, error, data, refetch } = useQuery(SAVED_SEARCH_QUERY, {
@@ -36,7 +36,13 @@ const SavedSearches = () => {
       <FlatList
         data={savedSearch}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <Text key={item.id}>{item.label}</Text>}
+        renderItem={({ item }) => (
+          <View style={styles.item}>
+            <Text style={styles.name} key={item.id}>
+              {item.label}
+            </Text>
+          </View>
+        )}
         ListHeaderComponent={
           <SearchBar setSearchVariable={setSearchVariable} onSearch={onSearchHandler} />
         }
@@ -62,8 +68,24 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginTop: SIZES.m16,
   },
+  item: {
+    alignItems: 'center',
+    backgroundColor: COLORS.white,
+    borderBottomWidth: SCALE(0.25),
+    borderColor: COLORS.darkGray,
+    flexDirection: 'row',
+    height: SIZES.s70,
+    paddingHorizontal: '4%',
+    width: '100%',
+  },
   mainContainer: {
     backgroundColor: COLORS.white,
     flex: 1,
+  },
+  name: {
+    color: COLORS.black,
+    fontSize: SIZES.f16,
+    fontWeight: '600',
+    marginLeft: SIZES.m16,
   },
 });

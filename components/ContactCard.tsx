@@ -11,9 +11,10 @@ export interface ContactProps {
   name: string;
   lastMessageAt: string;
   lastMessage: string | undefined;
+  isOrgRead: boolean;
 }
 
-const Contact: React.FC<ContactProps> = ({ id, name, lastMessageAt, lastMessage }) => {
+const Contact: React.FC<ContactProps> = ({ id, name, lastMessageAt, lastMessage, isOrgRead }) => {
   const navigation = useNavigation();
 
   const lastSessiontime = getSessionTimeLeft(lastMessageAt);
@@ -35,12 +36,12 @@ const Contact: React.FC<ContactProps> = ({ id, name, lastMessageAt, lastMessage 
       android_ripple={{ color: COLORS.primary10 }}
     >
       <View style={styles.avatar}>
-        <View style={styles.onlineIndicator} />
+        <View style={[styles.onlineIndicator, isOrgRead && styles.offlineIndicator]} />
         <Text style={styles.avatartext}>{name.charAt(0)}</Text>
       </View>
       <View style={styles.mainbody}>
-        <Text style={styles.name}>{name}</Text>
-        <Text style={styles.lastMsg} numberOfLines={1}>
+        <Text style={[styles.name, isOrgRead && styles.readName]}>{name}</Text>
+        <Text style={[styles.lastMsg, isOrgRead && styles.readName]} numberOfLines={1}>
           {lastMessage}
         </Text>
       </View>
@@ -113,6 +114,9 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginLeft: SIZES.m16,
   },
+  offlineIndicator: {
+    backgroundColor: COLORS.darkGray,
+  },
   onlineIndicator: {
     backgroundColor: COLORS.primary100,
     borderColor: COLORS.white,
@@ -124,7 +128,9 @@ const styles = StyleSheet.create({
     top: -0,
     width: SIZES.f14,
   },
-
+  readName: {
+    color: COLORS.darkGray,
+  },
   sessionBorder: {
     alignItems: 'center',
     backgroundColor: COLORS.primary10,
