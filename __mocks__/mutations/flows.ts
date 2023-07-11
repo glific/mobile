@@ -4,7 +4,7 @@ export const TERMINATE_FLOW_MOCK = [
     {
       request: {
         query: TERMINATE_FLOW,
-        variables: { contactId: 'mockContactId' },
+        variables: { contactId: '123' },
       },
       result: {
         data: {

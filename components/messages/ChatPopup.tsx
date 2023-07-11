@@ -5,15 +5,32 @@ import { COLORS, SCALE } from '../../constants/theme';
 import { useMutation } from '@apollo/client';
 import { TERMINATE_FLOW } from '../../graphql/mutations/Flows';
 import { showToast } from '../../utils/showToast';
+import { CLEAR_MESSAGES } from '../../graphql/mutations/Chat';
 
-interface TerminateFlowProps {
+interface ChatPopupProps {
   id: string;
   visible: boolean;
+  task: string;
   onClose: () => void;
 }
 
-const TerminateFlowPopup: React.FC<TerminateFlowProps> = ({ id, visible, onClose }) => {
-  const [terminateFlowMutation] = useMutation(TERMINATE_FLOW);
+const ChatPopup: React.FC<ChatPopupProps> = ({ id, visible, task, onClose }) => {
+  const [terminateFlowMutation] = useMutation(
+    task == 'terminate' ? TERMINATE_FLOW : CLEAR_MESSAGES
+  );
+  const header =
+    task == 'terminate'
+      ? 'Terminate Flows!'
+      : 'Are you sure you want to clear all conversation for this contact?';
+  const description =
+    task == 'terminate'
+      ? 'All active flows for the contact will be stopped. They can initiate a flow via keyword or you will need to do it manually.'
+      : 'All the conversation data for this contact will be deleted permanently from Glific. This action cannot be undone. However, you should be able to access it in reports if you have backup configuration enabled.';
+  const cancelText = task == 'terminate' ? 'CANCEL' : 'LATER';
+  const successToast =
+    task == 'terminate' ? 'Flow terminated successfully!' : 'Conversation cleared successfully!';
+  const errorToast =
+    task == 'terminate' ? 'Error terminating flow!' : 'Error clearing conversation!';
 
   const handleTerminateFlow = async () => {
     try {
@@ -21,9 +38,9 @@ const TerminateFlowPopup: React.FC<TerminateFlowProps> = ({ id, visible, onClose
         variables: { contactId: id },
       });
 
-    //   showToast('Flow terminated successfully!');
+      showToast(successToast);
     } catch (error) {
-    //   showToast('Error terminating flow!');
+      showToast(errorToast);
       console.error(error);
     }
     onClose();
@@ -40,16 +57,13 @@ const TerminateFlowPopup: React.FC<TerminateFlowProps> = ({ id, visible, onClose
       <View style={styles.background}>
         <View style={styles.popupContainer}>
           <Text testID="header" style={styles.header}>
-            Terminate flows!
+            {header}
           </Text>
-          <Text style={styles.description}>
-            All active flows for the contact will be stopped. They can initiate a flow via keyword
-            or you will need to do it manually.
-          </Text>
+          <Text style={styles.description}>{description}</Text>
           <View style={styles.buttonContainer}>
             <View testID="cancelButton" style={styles.button}>
               <Button type="neutral" onPress={onClose}>
-                <Text>CANCEL</Text>
+                <Text>{cancelText}</Text>
               </Button>
             </View>
             <View testID="yesButton" style={styles.button}>
@@ -64,7 +78,7 @@ const TerminateFlowPopup: React.FC<TerminateFlowProps> = ({ id, visible, onClose
   );
 };
 
-export default TerminateFlowPopup;
+export default ChatPopup;
 
 const styles = StyleSheet.create({
   background: {
@@ -94,7 +108,6 @@ const styles = StyleSheet.create({
   popupContainer: {
     backgroundColor: COLORS.white,
     borderRadius: 10,
-    height: 220,
     paddingHorizontal: SCALE(30),
     paddingVertical: SCALE(40),
     width: 330,

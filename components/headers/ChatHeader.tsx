@@ -7,7 +7,7 @@ import { COLORS, SCALE, SIZES } from '../../constants';
 import { getSessionTimeLeft } from '../../utils/helper';
 import { RootStackParamList } from '../../constants/types';
 import StartFlowPopup from '../messages/StartFlowPopup';
-import TerminateFlowPopup from '../messages/TerminateFlowPopup';
+import ChatPopup from '../messages/ChatPopup';
 
 interface ChatHeaderDataProps {
   conversationType: string;
@@ -47,8 +47,8 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
   const [showMenu, setShowMenu] = useState(false);
   const [background] = useState<boolean>(true);
   const [showStartFlowModal, setShowStartFlowModal] = useState(false);
+  const [popupTask, setpopupTask] = useState('');
   const [showTerminateFlowModal, setshowTerminateFlowModal] = useState(false);
-
   const handleMenu = () => {
     setShowMenu(!showMenu);
   };
@@ -61,7 +61,8 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
     setshowTerminateFlowModal(false);
   };
 
-  const openTerminateFlowModal = () => {
+  const openTerminateFlowModal = (task: string) => {
+    setpopupTask(task);
     setShowMenu(!showMenu);
     setshowTerminateFlowModal(true);
   };
@@ -96,14 +97,14 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
           text="Clear Conversation"
           icon={<MaterialCommunityIcons name="message-bulleted-off" style={styles.menuIcon} />}
           onPress={() => {
-            console.log('2');
+            openTerminateFlowModal('clear');
           }}
         />
         <MenuButton
           text="Terminate Flows"
           icon={<MaterialCommunityIcons name="hand-back-right-off" style={styles.menuIcon} />}
           onPress={() => {
-            openTerminateFlowModal();
+            openTerminateFlowModal('terminate');
           }}
         />
         <MenuButton
@@ -198,7 +199,12 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
           visible={showStartFlowModal}
           onClose={closeFlowModal}
         />
-        <TerminateFlowPopup id={id} visible={showTerminateFlowModal} onClose={closeFlowModal} />
+        <ChatPopup
+          id={id}
+          visible={showTerminateFlowModal}
+          task={popupTask}
+          onClose={closeFlowModal}
+        />
       </View>
       {sessionTimeLeft}
     </>

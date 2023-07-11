@@ -32,3 +32,15 @@ export const SEND_COLLECTION_MESSAGE = gql`
     }
   }
 `;
+
+export const CLEAR_MESSAGES = gql`
+  mutation clearMessages($contactId: ID!) {
+    clearMessages(contactId: $contactId) {
+      success
+      errors {
+        key
+        message
+      }
+    }
+  }
+`;
