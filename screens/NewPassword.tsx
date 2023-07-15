@@ -34,7 +34,7 @@ const NewPassword = ({ navigation }: Props) => {
       }
 
       navigation.navigate('Login');
-    } catch (error: any) {
+    } catch (error: unknown) {
       setErrorMessage(error.message);
     }
   };

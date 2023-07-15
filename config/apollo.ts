@@ -25,7 +25,7 @@ async function fetchToken(): Promise<string> {
 const refreshLink = new TokenRefreshLink({
   accessTokenField: 'access_token',
   isTokenValidOrUndefined: async () => {
-    const sessionValue = await Storage.getData('session');
+    const sessionValue = await Storage.getData('glific_session');
     if (sessionValue === null) return false;
 
     const parsedSessionValue = JSON.parse(sessionValue);
@@ -58,8 +58,8 @@ const refreshLink = new TokenRefreshLink({
   handleFetch: () => {},
   handleResponse:
     <T>(_operation: Operation<T>, accessTokenField: string) =>
-    async (response: Response<T>): Promise<T | any> => {
-      const tokenResponse: any = [];
+    async (response: Response<T>): Promise<T | unknown> => {
+      const tokenResponse: unknown = [];
 
       if (response) {
         await Storage.storeData('glific_session', JSON.stringify(response.data));

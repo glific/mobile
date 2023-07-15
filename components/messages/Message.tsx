@@ -18,7 +18,7 @@ type MessageProps = {
     id: number;
     type: string;
     body: string;
-    contextMessage: any;
+    contextMessage: unknown;
     media: object | null;
     insertedAt: string;
     flowLabel: string | null;
@@ -31,7 +31,7 @@ type MessageProps = {
     sender: {
       id: number;
     };
-    errors: any;
+    errors: unknown;
     sendBy: string;
   };
 };

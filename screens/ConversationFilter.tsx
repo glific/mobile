@@ -25,7 +25,7 @@ const options: OptionData[] = [
   { id: '10', label: 'Option 5' },
 ];
 
-const ConversationFilter = ({ navigation }: any) => {
+const ConversationFilter = ({ navigation }: unknown) => {
   const [name, setName] = useState('');
   const [selectLabels, setSelectLabels] = useState<OptionData[]>([]);
   const [selectCollections, setSelectCollections] = useState<OptionData[]>([]);
