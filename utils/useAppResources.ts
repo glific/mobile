@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import Storage from './asyncStorage';
 
-function useAppResources(setToken, setURL, setUser) {
+function useAppResources(setToken, setOrg, setUser) {
   const [appIsReady, setAppIsReady] = useState(false);
 
   useEffect(() => {
@@ -10,15 +10,16 @@ function useAppResources(setToken, setURL, setUser) {
       try {
         SplashScreen.preventAutoHideAsync();
 
-        const sessionValue = await Storage.getData('session');
+        const sessionValue = await Storage.getData('glific_session');
         if (sessionValue !== null) {
           const parsedSessionValue = JSON.parse(sessionValue);
           setToken(parsedSessionValue.access_token);
         }
 
-        const orgURL = await Storage.getData('orgnisationUrl');
-        if (orgURL !== null) {
-          setURL(orgURL);
+        const orgValue = await Storage.getData('glific_orgnisation');
+        if (orgValue !== null) {
+          const parsedOrgValue = JSON.parse(orgValue);
+          setOrg(parsedOrgValue);
         }
 
         const user = await Storage.getData('glific_user');

@@ -21,7 +21,7 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
 const Login = ({ navigation }: Props) => {
-  const { setToken, setUser, orgName } = useContext(AuthContext);
+  const { setToken, setUser, org } = useContext(AuthContext);
   const [enteredMobile, setEnteredMobile] = useState('');
   const [enteredPassword, setEnteredPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -44,7 +44,7 @@ const Login = ({ navigation }: Props) => {
         setErrorMessage(
           'Your account is not approved yet. Please contact your organisation admin.'
         );
-        await Storage.removeData('session');
+        await Storage.removeData('glific_session');
         await Storage.removeData('glific_user');
         setToken(null);
         setUser(null);
@@ -81,7 +81,7 @@ const Login = ({ navigation }: Props) => {
         },
       });
 
-      await Storage.storeData('session', JSON.stringify(response.data.data));
+      await Storage.storeData('glific_session', JSON.stringify(response.data.data));
       await getCurrentUser();
       setLoading(false);
       setToken(response.data.data.access_token);
@@ -100,7 +100,7 @@ const Login = ({ navigation }: Props) => {
     <View style={styles.mainContainer}>
       <View style={styles.inputContainer}>
         <View testID="organisationURL" style={styles.headerContainer}>
-          <Text style={styles.urlText}>{orgName}</Text>
+          <Text style={styles.urlText}>{org.name}</Text>
           <Pressable testID="changeURL" onPress={() => navigation.navigate('Server')}>
             <Text style={styles.textButton}>Change</Text>
           </Pressable>

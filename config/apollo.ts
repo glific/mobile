@@ -13,7 +13,7 @@ async function customFetch(uri: string, options: RequestInit) {
 
 // Async function to fetch the token
 async function fetchToken(): Promise<string> {
-  const sessionValue = await Storage.getData('session');
+  const sessionValue = await Storage.getData('glific_session');
   let token = '';
   if (sessionValue !== null) {
     const parsedSessionValue = JSON.parse(sessionValue);
@@ -37,7 +37,7 @@ const refreshLink = new TokenRefreshLink({
     return isValidToken;
   },
   fetchAccessToken: async () => {
-    const sessionValue = await Storage.getData('session');
+    const sessionValue = await Storage.getData('glific_session');
     if (!sessionValue) return null;
 
     const parsedSessionValue = await JSON.parse(sessionValue);
@@ -62,7 +62,7 @@ const refreshLink = new TokenRefreshLink({
       const tokenResponse: any = [];
 
       if (response) {
-        await Storage.storeData('session', JSON.stringify(response.data));
+        await Storage.storeData('glific_session', JSON.stringify(response.data));
         tokenResponse[accessTokenField] = response.data.access_token;
       }
       return tokenResponse;

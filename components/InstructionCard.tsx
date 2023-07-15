@@ -9,7 +9,9 @@ const InstructionCard = () => {
       <View style={styles.frontCard}>
         <Text style={styles.titleText}>How to do?</Text>
         <Text style={styles.bodyText}>1. Open your Glific web app</Text>
-        <Text style={styles.bodyText}>2. Copy & paste the web URL into the Input field</Text>
+        <Text style={styles.bodyText}>
+          2. Find the short code of your orgnisation and copy & paste it into the Input field
+        </Text>
       </View>
     </View>
   );

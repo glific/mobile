@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
     fontSize: SIZES.f16,
     fontWeight: '500',
     includeFontPadding: false,
+    marginRight: SIZES.m4,
     textAlign: 'center',
   },
   pressed: {
