@@ -5,7 +5,6 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import { COLORS, SIZES } from '../constants';
-import { validateUrl } from '../utils/helper';
 import InstructionCard from '../components/InstructionCard';
 import AxiosService from '../config/axios';
 import Storage from '../utils/asyncStorage';
@@ -32,7 +31,7 @@ const Server = ({ navigation }: Props) => {
   const onSubmitHandler = async () => {
     const orgUrl = `https://api.${serverCode}.tides.coloredcow.com/api`;
 
-    if (!serverCode || !validateUrl(orgUrl)) {
+    if (serverCode.length < 2) {
       setErrorMessage('Please enter valid organization code');
       return;
     }
@@ -40,8 +39,8 @@ const Server = ({ navigation }: Props) => {
     await AxiosService.updateServerURL(orgUrl);
     try {
       setLoading(true);
-      const Client = await AxiosService.createAxiosInstance();
-      const response = await Client.post('/v1/session/name');
+      const client = await AxiosService.createAxiosInstance();
+      const response = await client.post('/v1/session/name');
 
       const orgData = {
         url: orgUrl,
@@ -49,6 +48,7 @@ const Server = ({ navigation }: Props) => {
         name: response?.data?.data?.name,
       };
       await Storage.storeData('glific_orgnisation', JSON.stringify(orgData));
+
       setOrg(orgData);
       setLoading(false);
       navigation.navigate('Login');

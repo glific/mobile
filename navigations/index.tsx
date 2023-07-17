@@ -10,7 +10,7 @@ const Navigation = () => {
 
   return (
     <NavigationContainer>
-      {token ? <AppStack /> : <AuthStack initialScreen={!org.name ? 'Server' : 'Login'} />}
+      {token ? <AppStack /> : <AuthStack initialScreen={!org ? 'Server' : 'Login'} />}
     </NavigationContainer>
   );
 };

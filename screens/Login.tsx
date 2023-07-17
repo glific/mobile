@@ -29,30 +29,22 @@ const Login = ({ navigation }: Props) => {
   const [showPassword, setShowPassword] = useState(false);
   const phoneInput = useRef<PhoneInput>(null);
 
-  const [getCurrentUser, { data: userData, error: userError }] = useLazyQuery(GET_CURRENT_USER);
-
-  useEffect(() => {
-    const setUserData = async () => {
-      if (userData) {
-        const { user } = userData.currentUser;
-        const userCopy = JSON.parse(JSON.stringify(user));
-        userCopy.roles = user.accessRoles;
-        await Storage.storeData('glific_user', JSON.stringify(userCopy));
-        setUser(userCopy);
-      }
-      if (userError) {
-        setErrorMessage(
-          'Your account is not approved yet. Please contact your organisation admin.'
-        );
-        await Storage.removeData('glific_session');
-        await Storage.removeData('glific_user');
-        setToken(null);
-        setUser(null);
-      }
-    };
-
-    setUserData();
-  }, [userData, userError]);
+  const [getCurrentUser] = useLazyQuery(GET_CURRENT_USER, {
+    onCompleted(data) {
+      const { user } = data.currentUser;
+      const userCopy = JSON.parse(JSON.stringify(user));
+      userCopy.roles = user.accessRoles;
+      Storage.storeData('glific_user', JSON.stringify(userCopy));
+      setUser(userCopy);
+    },
+    onError() {
+      setErrorMessage('Your account is not approved yet. Please contact your organisation admin.');
+      Storage.removeData('glific_session');
+      Storage.removeData('glific_user');
+      setToken(null);
+      setUser(null);
+    },
+  });
 
   const updateInputValueHandler = (inputType: string, enteredValue: string) => {
     switch (inputType) {
@@ -68,9 +60,6 @@ const Login = ({ navigation }: Props) => {
   const onSubmitHandler = async () => {
     try {
       setLoading(true);
-      if (enteredMobile == '' || enteredPassword == '') {
-        throw new Error('Please enter mobile number and password!');
-      }
       const Client = await AxiosService.createAxiosInstance();
       const countryCode = phoneInput.current?.getCallingCode();
 
@@ -100,7 +89,7 @@ const Login = ({ navigation }: Props) => {
     <View style={styles.mainContainer}>
       <View style={styles.inputContainer}>
         <View testID="organisationURL" style={styles.headerContainer}>
-          <Text style={styles.urlText}>{org.name}</Text>
+          <Text style={styles.urlText}>{org ? org.name : ''}</Text>
           <Pressable testID="changeURL" onPress={() => navigation.navigate('Server')}>
             <Text style={styles.textButton}>Change</Text>
           </Pressable>
