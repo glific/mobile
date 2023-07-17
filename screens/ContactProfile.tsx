@@ -4,7 +4,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { COLORS } from '../constants';
 
 interface Props {
-  navigation: any;
+  navigation: unknown;
   route: {
     params: {
       contact: {

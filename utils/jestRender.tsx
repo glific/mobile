@@ -10,8 +10,12 @@ const customRender = (
   authContextValue = {
     token: 'existing_token',
     setToken: jest.fn(),
-    orgURL: 'example.com',
-    setURL: jest.fn(),
+    org: {
+      url: 'https://api.example.tides.coloredcow.com/api',
+      shortcode: 'example',
+      name: 'Example Organization',
+    },
+    setOrg: jest.fn(),
     user: {
       accessRoles: [{ id: '1', label: 'Admin' }],
       contact: { id: '1' },

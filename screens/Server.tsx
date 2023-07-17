@@ -5,7 +5,6 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import { COLORS, SIZES } from '../constants';
-import { validateUrl } from '../utils/helper';
 import InstructionCard from '../components/InstructionCard';
 import AxiosService from '../config/axios';
 import Storage from '../utils/asyncStorage';
@@ -19,31 +18,38 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList, 'Server'>;
 
 const Server = ({ navigation }: Props) => {
-  const { setURL, orgURL, setOrgName } = useContext(AuthContext);
+  const { org, setOrg } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
-  const [serverURL, setServerURL] = useState(orgURL ? orgURL : '');
+  const [serverCode, setServerCode] = useState(org && org.shortcode ? org.shortcode : '');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const serverURLChanged = (value: string) => {
-    setServerURL(value);
+  const serverCodeChanged = (value: string) => {
+    setServerCode(value);
     setErrorMessage('');
   };
 
   const onSubmitHandler = async () => {
-    if (!serverURL || !validateUrl(`https://api.${serverURL}.tides.coloredcow.com/api`)) {
-      setErrorMessage('Please enter valid server url');
+    const orgUrl = `https://api.${serverCode}.tides.coloredcow.com/api`;
+
+    if (serverCode.length < 2) {
+      setErrorMessage('Please enter valid organization code');
       return;
     }
 
-    await Storage.storeData('orgnisationUrl', serverURL);
-    setURL(serverURL);
-    await AxiosService.updateServerURL(`https://api.${serverURL}.tides.coloredcow.com/api`);
-
+    await AxiosService.updateServerURL(orgUrl);
     try {
       setLoading(true);
-      const Client = await AxiosService.createAxiosInstance();
-      const response = await Client.post('/v1/session/name');
-      setOrgName(response?.data?.data?.name);
+      const client = await AxiosService.createAxiosInstance();
+      const response = await client.post('/v1/session/name');
+
+      const orgData = {
+        url: orgUrl,
+        shortcode: serverCode,
+        name: response?.data?.data?.name,
+      };
+      await Storage.storeData('glific_orgnisation', JSON.stringify(orgData));
+
+      setOrg(orgData);
       setLoading(false);
       navigation.navigate('Login');
     } catch (error) {
@@ -63,19 +69,19 @@ const Server = ({ navigation }: Props) => {
         <Input
           testID="server"
           label="Enter or paste URL here"
-          onUpdateValue={serverURLChanged}
-          value={serverURL}
+          onUpdateValue={serverCodeChanged}
+          value={serverCode}
           keyboardType="url"
           placeholder="shortcode"
         />
         <Text style={styles.previewUrl}>
-          {serverURL ? serverURL : 'shortcode'}.tides.coloredcow.com
+          {serverCode ? serverCode : 'shortcode'}.tides.coloredcow.com
         </Text>
         {errorDisplay}
       </View>
       <InstructionCard />
       <View style={styles.buttonContainer}>
-        <Button disable={!serverURL} onPress={onSubmitHandler} loading={loading}>
+        <Button disable={!serverCode} onPress={onSubmitHandler} loading={loading}>
           <Text>CONTINUE</Text>
         </Button>
       </View>

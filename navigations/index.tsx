@@ -6,11 +6,11 @@ import AppStack from './AppStack';
 import AuthContext from '../config/AuthContext';
 
 const Navigation = () => {
-  const { token, orgURL } = useContext(AuthContext);
+  const { token, org } = useContext(AuthContext);
 
   return (
     <NavigationContainer>
-      {token ? <AppStack /> : <AuthStack initialScreen={!orgURL ? 'Server' : 'Login'} />}
+      {token ? <AppStack /> : <AuthStack initialScreen={!org ? 'Server' : 'Login'} />}
     </NavigationContainer>
   );
 };
