@@ -34,7 +34,7 @@ const PopupAlert = () => {
   }, [alert]);
 
   return (
-    <Pressable disabled={alert && alert.disable} onPress={closeAlert} style={styles.mainContainer}>
+    <Pressable disabled={alert.disable} onPress={closeAlert} style={styles.mainContainer}>
       <Animated.View
         style={[
           styles.alertContainer,
@@ -52,7 +52,7 @@ const PopupAlert = () => {
         ]}
       >
         <View style={styles.iconContainer}>
-          {alert && alert.error ? (
+          {alert.error ? (
             <Ionicons name="close-circle" style={styles.icon} color={COLORS.error100} />
           ) : (
             <Ionicons name="checkmark-circle" style={styles.icon} color={COLORS.primary100} />
