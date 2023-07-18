@@ -21,7 +21,7 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
 const Login = ({ navigation }: Props) => {
-  const { setToken, setUser, org } = useContext(AuthContext);
+  const { setToken, setUser, org, setAlert } = useContext(AuthContext);
   const [enteredMobile, setEnteredMobile] = useState('');
   const [enteredPassword, setEnteredPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -73,6 +73,12 @@ const Login = ({ navigation }: Props) => {
       await Storage.storeData('glific_session', JSON.stringify(response.data.data));
       await getCurrentUser();
       setLoading(false);
+      setAlert({
+        error: false,
+        title: 'Login Successful!',
+        message: 'You  have successfully logged into your Glific Mobile',
+        disable: true,
+      });
       setToken(response.data.data.access_token);
     } catch (error) {
       setErrorMessage('Incorrect login credentials!');
