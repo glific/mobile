@@ -7,8 +7,11 @@ import AxiosService from './axios';
 
 // Fetches the uri dynamically
 async function customFetch(uri: string, options: RequestInit) {
-  const serverURL = await Storage.getData('serverURL');
-  return await fetch(serverURL, options);
+  const orgValue = await Storage.getData('glific_orgnisation');
+  if (orgValue !== null) {
+    const parsedOrgValue = JSON.parse(orgValue);
+    return await fetch(parsedOrgValue.url, options);
+  }
 }
 
 // Async function to fetch the token
