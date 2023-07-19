@@ -4,7 +4,7 @@ import { StyleSheet, View, ScrollView } from 'react-native';
 import FieldValue from '../components/ui/FieldValue';
 import { COLORS, SIZES } from '../constants';
 
-const MoreInfo = () => {
+const ContactInfo = () => {
   return (
     <ScrollView style={styles.mainContainer}>
       <View style={styles.bodyContainer}>
@@ -19,7 +19,7 @@ const MoreInfo = () => {
   );
 };
 
-export default MoreInfo;
+export default ContactInfo;
 
 const styles = StyleSheet.create({
   bodyContainer: {

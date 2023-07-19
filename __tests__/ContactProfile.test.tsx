@@ -45,7 +45,7 @@ describe('ContactProfile', () => {
     expect(navigationMock.goBack).toHaveBeenCalled();
 
     fireEvent.press(getByText('View Info'));
-    expect(navigationMock.navigate).toHaveBeenCalledWith('MoreInformation');
+    expect(navigationMock.navigate).toHaveBeenCalledWith('ContactInformation');
 
     fireEvent.press(getByText('Contact History'));
     expect(navigationMock.navigate).toHaveBeenCalledWith('ContactHistory');

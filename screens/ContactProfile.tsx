@@ -59,7 +59,7 @@ const ContactProfile = ({ navigation, route }: Props) => {
       <View style={styles.rowContainer}>
         <Pressable
           style={styles.tabButton}
-          onPress={() => navigation.navigate('MoreInformation')}
+          onPress={() => navigation.navigate('ContactInformation')}
           android_ripple={{ color: COLORS.black005 }}
         >
           <Text style={styles.tabButtonText}>View Info</Text>

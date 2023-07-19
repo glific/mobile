@@ -7,7 +7,7 @@ import ChatScreen from '../screens/ChatScreen';
 import ContactProfile from '../screens/ContactProfile';
 import ConversationFilter from '../screens/ConversationFilter';
 import ContactHistory from '../screens/ContactHistory';
-import MoreInfo from '../screens/MoreInfo';
+import ContactInfo from '../screens/ContactInfo';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,8 +26,8 @@ const AppStack = () => {
       <Stack.Screen name="ChatScreen" component={ChatScreen} />
       <Stack.Screen name="ContactProfile" component={ContactProfile} />
       <Stack.Screen
-        name="MoreInformation"
-        component={MoreInfo}
+        name="ContactInformation"
+        component={ContactInfo}
         options={{
           headerShown: true,
           title: 'More Information',

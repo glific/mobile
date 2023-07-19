@@ -1,11 +1,11 @@
 import React from 'react';
 import customRender from '../utils/jestRender';
 
-import MoreInfo from '../screens/MoreInfo';
+import ContactInfo from '../screens/ContactInfo';
 
 describe('More Information', () => {
   test('renders the more information screen', () => {
-    const { getByTestId } = customRender(<MoreInfo />);
+    const { getByTestId } = customRender(<ContactInfo />);
 
     expect(getByTestId('Provider status')).toBeDefined();
     expect(getByTestId('Status')).toBeDefined();
