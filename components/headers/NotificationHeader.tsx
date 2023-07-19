@@ -4,17 +4,22 @@ import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { COLORS, SCALE, SIZES } from '../../constants';
 
 type NotificationHeaderProps = {
-  searchValue: string;
   handleSearch: (value: string) => void;
   // onSearch: () => void;
 };
 
-const NotificationHeader: React.FC<NotificationHeaderProps> = ({ searchValue, handleSearch }) => {
+const NotificationHeader: React.FC<NotificationHeaderProps> = ({ handleSearch }) => {
   const [searchVisible, setSearchVisible] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
 
   const handleCloseSearch = () => {
     handleSearch('');
     setSearchVisible(false);
+  };
+
+  const handleInputChange = (value: string) => {
+    setSearchValue(value);
+    handleSearch(value);
   };
 
   return (
@@ -33,8 +38,10 @@ const NotificationHeader: React.FC<NotificationHeaderProps> = ({ searchValue, ha
             <TextInput
               testID="searchInput"
               style={styles.input}
+              autoCapitalize="none"
+              keyboardType="default"
               value={searchValue}
-              onChangeText={handleSearch}
+              onChangeText={handleInputChange}
               autoFocus
               placeholder="Search"
               cursorColor={COLORS.darkGray}
