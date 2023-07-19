@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, Text, View, Animated } from 'react-native';
 
 import { COLORS, SIZES } from '../../constants';
 import AuthContext from '../../config/AuthContext';
-import { Ionicons } from '@expo/vector-icons';
+import { Feather, Ionicons } from '@expo/vector-icons';
 
 const PopupAlert = () => {
   const { alert, setAlert } = useContext(AuthContext);
@@ -51,11 +51,16 @@ const PopupAlert = () => {
           },
         ]}
       >
-        <View style={styles.iconContainer}>
+        <View
+          style={[
+            styles.iconContainer,
+            { backgroundColor: alert.error ? COLORS.error100 : COLORS.primary100 },
+          ]}
+        >
           {alert.error ? (
-            <Ionicons name="close-circle" style={styles.icon} color={COLORS.error100} />
+            <Ionicons name="close" style={styles.icon} />
           ) : (
-            <Ionicons name="checkmark-circle" style={styles.icon} color={COLORS.primary100} />
+            <Feather name="check" style={styles.icon} />
           )}
         </View>
         <Text style={styles.title}>{alert.title}</Text>
@@ -77,15 +82,18 @@ const styles = StyleSheet.create({
     width: SIZES.s328,
   },
   icon: {
-    fontSize: SIZES.s60,
+    color: COLORS.white,
+    fontSize: SIZES.s44,
     includeFontPadding: false,
   },
   iconContainer: {
     alignItems: 'center',
-    borderRadius: SIZES.m30,
+    borderRadius: SIZES.s30,
+    height: SIZES.s60,
     justifyContent: 'center',
     marginBottom: SIZES.m12,
     marginTop: -SIZES.m30,
+    width: SIZES.s60,
   },
   mainContainer: {
     alignItems: 'center',

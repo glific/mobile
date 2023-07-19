@@ -76,7 +76,7 @@ const Login = ({ navigation }: Props) => {
       setAlert({
         error: false,
         title: 'Login Successful!',
-        message: 'You  have successfully logged into your Glific Mobile',
+        message: 'You  have successfully logged into your Glific mobile app',
         disable: true,
       });
       setToken(response.data.data.access_token);
