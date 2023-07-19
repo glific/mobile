@@ -6,23 +6,27 @@ import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import MultiSelect from '../components/ui/MultiSelect';
 import DateRangeSelect from '../components/ui/DateRangeSelect';
+import { GET_ALL_FLOW_LABELS } from '../graphql/queries/Flows';
+import { useQuery } from '@apollo/client';
+import { GET_COLLECTIONS_LIST } from '../graphql/queries/Collection';
+import { GET_USERS } from '../graphql/queries/User';
 
 interface OptionData {
   id: string;
-  label: string;
+  name: string;
 }
 
 const options: OptionData[] = [
-  { id: '1', label: 'Age Group 11 to 14' },
-  { id: '2', label: 'Age Group  15 to 18' },
-  { id: '3', label: 'Hindi' },
-  { id: '4', label: 'Hindi' },
-  { id: '5', label: 'Age Group  15 to 18' },
-  { id: '6', label: 'Age Group  15 to 18' },
-  { id: '7', label: 'Hindi' },
-  { id: '8', label: 'English' },
-  { id: '9', label: 'English' },
-  { id: '10', label: 'Option 5' },
+  { id: '1', name: 'Age Group 11 to 14' },
+  { id: '2', name: 'Age Group  15 to 18' },
+  { id: '3', name: 'Hindi' },
+  { id: '4', name: 'Hindi' },
+  { id: '5', name: 'Age Group  15 to 18' },
+  { id: '6', name: 'Age Group  15 to 18' },
+  { id: '7', name: 'Hindi' },
+  { id: '8', name: 'English' },
+  { id: '9', name: 'English' },
+  { id: '10', name: 'Option 5' },
 ];
 
 const ConversationFilter = ({ navigation }: unknown) => {
@@ -32,6 +36,27 @@ const ConversationFilter = ({ navigation }: unknown) => {
   const [selectStaffs, setSelectStaffs] = useState<OptionData[]>([]);
   const [dateFrom, setDateFrom] = useState<Date | null>(null);
   const [dateTo, setDateTo] = useState<Date | null>(null);
+
+  const { data: labelList } = useQuery(GET_ALL_FLOW_LABELS, {
+    variables: {
+      filter: {},
+      opts: { limit: null, offset: 0, order: 'ASC' },
+    },
+  });
+
+  const { data: collectionList } = useQuery(GET_COLLECTIONS_LIST, {
+    variables: {
+      filter: {},
+      opts: { limit: null, offset: 0, order: 'ASC' },
+    },
+  });
+
+  const { data: userList } = useQuery(GET_USERS, {
+    variables: {
+      filter: {},
+      opts: { limit: null, offset: 0, order: 'ASC' },
+    },
+  });
 
   const nameChanged = (value: string) => {
     setName(value);
@@ -67,7 +92,7 @@ const ConversationFilter = ({ navigation }: unknown) => {
         />
         <MultiSelect
           testID="labelSelect"
-          options={options}
+          options={labelList?.flowLabels}
           selectedOptions={selectLabels}
           onSelectOption={handleSelectLabel}
           label="Include Labels"
@@ -75,7 +100,7 @@ const ConversationFilter = ({ navigation }: unknown) => {
         />
         <MultiSelect
           testID="collectionSelect"
-          options={options}
+          options={collectionList?.groups}
           selectedOptions={selectCollections}
           onSelectOption={handleSelectCollection}
           label="Includes Collections"
@@ -83,7 +108,7 @@ const ConversationFilter = ({ navigation }: unknown) => {
         />
         <MultiSelect
           testID="staffSelect"
-          options={options}
+          options={userList?.users}
           selectedOptions={selectStaffs}
           onSelectOption={handleSelectStaff}
           label="Includes Staffs"
