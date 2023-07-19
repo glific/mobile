@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Pressable, ScrollView, Image } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import { COLORS } from '../constants';
+import { COLORS, SCALE, SIZES } from '../constants';
+import FieldValue from '../components/ui/FieldValue';
 
 interface Props {
   navigation: unknown;
@@ -9,8 +10,8 @@ interface Props {
     params: {
       contact: {
         id: string;
-        lastMessageAt: string;
         name: string;
+        lastMessageAt: string;
       };
     };
   };
@@ -19,59 +20,56 @@ interface Props {
 const ContactProfile = ({ navigation, route }: Props) => {
   const { contact } = route.params;
 
-  const [isMore, setIsMore] = useState(true);
   return (
     <ScrollView style={styles.mainContainer}>
-      <View style={styles.headContainer}>
-        <AntDesign
-          testID="backButton"
-          name="arrowleft"
-          style={styles.backButton}
-          onPress={(): void => navigation.goBack()}
-        />
-        <Pressable style={styles.innerContainer} android_ripple={{ color: COLORS.primary70 }}>
-          <View>
-            <Image
-              testID="userProfile"
-              source={require('../assets/icon.png')}
-              style={styles.avatar}
-            />
+      <View style={styles.headerContainer}>
+        <View style={styles.upperContainer}>
+          <AntDesign
+            testID="backIcon"
+            name="arrowleft"
+            style={styles.backButton}
+            onPress={(): void => navigation.goBack()}
+          />
+          <Text testID={'sessionTimer'} style={styles.sessionText}>
+            Session Timer: 0
+          </Text>
+        </View>
+        <View style={styles.lowerContainer}>
+          <View testID="userProfile" style={styles.avatar}>
+            <Text style={styles.avatartext}>{contact.name.charAt(0)}</Text>
           </View>
-          <Text testID="userName" style={styles.nameText}>
+          <Text testID="userName" style={styles.nameText} numberOfLines={1}>
             {contact.name}
           </Text>
-        </Pressable>
-      </View>
-      <View style={styles.subContainer}>
-        <Text style={styles.heading}>Profile</Text>
-        <Text style={styles.subHeading}>Name</Text>
-        <Text style={styles.text}>{contact.name}</Text>
-        <Text style={styles.subHeading}>Status</Text>
-        <Text style={styles.text}>Valid contact</Text>
-        <Text style={styles.subHeading}>Provider status</Text>
-        <Text style={styles.text}>Can send template messages</Text>
-        <Text style={styles.subHeading}>Language</Text>
-        <Text style={styles.text}>English</Text>
-      </View>
-      <View style={styles.subContainer}>
-        <View style={styles.detailsContainer}>
-          <Text style={styles.heading}>Details</Text>
-          <Text style={styles.session}>Session timer: 0</Text>
         </View>
-        <Text style={styles.subHeading}>Phone</Text>
-        <Text style={styles.text}>+919876543210</Text>
-        <Text style={styles.subHeading}>Collections</Text>
-        <Text style={styles.text}>Optin contact</Text>
-        <Text style={styles.subHeading}>Assigned to</Text>
-        <Text style={styles.text}>None</Text>
-        <Text style={styles.subHeading}>Status</Text>
-        <Text style={styles.text}>Optin via WA on {contact.lastMessageAt}</Text>
       </View>
-      <View style={styles.subContainer}>
-        <Text style={styles.heading}>Contact history</Text>
-        <Pressable style={styles.viewButton} onPress={() => setIsMore(!isMore)}>
-          <Text style={styles.viewText}>{isMore ? 'View More' : 'View Less'}</Text>
-          <AntDesign name={isMore ? 'down' : 'up'} style={styles.arrow} />
+
+      <View style={styles.bodyContainer}>
+        <View style={styles.rowContainer}>
+          <FieldValue field={'Phone'} value={'+919876543210'} />
+          <FieldValue field={'Assigned to'} value={'None'} />
+        </View>
+        <View style={styles.rowContainer}>
+          <FieldValue field={'Language'} value={'English'} />
+          <FieldValue field={'Status'} value={'Valid Contact'} />
+        </View>
+        <FieldValue field={'Collections'} value={'Optin contacts'} />
+      </View>
+
+      <View style={styles.rowContainer}>
+        <Pressable
+          style={styles.tabButton}
+          onPress={() => navigation.navigate('MoreInformation')}
+          android_ripple={{ color: COLORS.black005 }}
+        >
+          <Text style={styles.tabButtonText}>View Info</Text>
+        </Pressable>
+        <Pressable
+          style={styles.tabButton}
+          onPress={() => navigation.navigate('ContactHistory')}
+          android_ripple={{ color: COLORS.black005 }}
+        >
+          <Text style={styles.tabButtonText}>Contact History</Text>
         </Pressable>
       </View>
     </ScrollView>
@@ -81,85 +79,84 @@ const ContactProfile = ({ navigation, route }: Props) => {
 export default ContactProfile;
 
 const styles = StyleSheet.create({
-  arrow: {
-    color: COLORS.darkGray,
-  },
   avatar: {
-    borderRadius: 20,
-    height: 40,
-    width: 40,
+    alignItems: 'center',
+    backgroundColor: COLORS.lightGray,
+    borderRadius: SIZES.m24,
+    flexDirection: 'row',
+    height: SIZES.s48,
+    justifyContent: 'center',
+    width: SIZES.s48,
+  },
+  avatartext: {
+    color: COLORS.primary400,
+    fontSize: SIZES.f18,
+    fontWeight: '500',
+    includeFontPadding: false,
   },
   backButton: {
     alignSelf: 'center',
     color: COLORS.white,
-    fontSize: 22,
-    paddingHorizontal: 10,
+    fontSize: SCALE(22),
+    paddingRight: SIZES.m10,
   },
-  detailsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  bodyContainer: {
+    marginTop: SIZES.m4,
+    paddingHorizontal: SIZES.m16,
+    paddingVertical: SIZES.m20,
   },
-  headContainer: {
+  headerContainer: {
     alignItems: 'center',
     backgroundColor: COLORS.primary400,
-    flexDirection: 'row',
-    height: 60,
-    padding: '2%',
+    height: SCALE(130),
+    padding: SIZES.m16,
     width: '100%',
-    zIndex: 50,
   },
-  heading: {
-    color: COLORS.darkGray,
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  innerContainer: {
+  lowerContainer: {
     alignItems: 'center',
     flex: 1,
     flexDirection: 'row',
+    width: '100%',
   },
   mainContainer: {
+    backgroundColor: COLORS.white,
     flex: 1,
   },
   nameText: {
     color: COLORS.white,
-    fontSize: 18,
+    fontSize: SIZES.f20,
     fontWeight: '500',
     letterSpacing: 1,
-    marginLeft: 10,
+    marginLeft: SIZES.m10,
   },
-  session: {
-    color: COLORS.darkGray,
-    fontWeight: 'bold',
-    marginTop: 4,
-  },
-  subContainer: {
-    backgroundColor: COLORS.white,
-    flexDirection: 'column',
-    marginTop: 3,
-    padding: 20,
-  },
-  subHeading: {
-    color: COLORS.darkGray,
-    fontWeight: '500',
-    marginTop: 20,
-  },
-  text: {
-    color: COLORS.black,
-    fontWeight: '800',
-  },
-  viewButton: {
-    alignItems: 'center',
+  rowContainer: {
+    flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center',
-    margin: 20,
   },
-  viewText: {
-    color: COLORS.darkGray,
-    fontSize: 16,
-    fontWeight: 'bold',
-    letterSpacing: 0.25,
-    lineHeight: 21,
-    margin: 5,
+  sessionText: {
+    color: COLORS.white,
+    fontSize: SIZES.f12,
+  },
+  tabButton: {
+    alignItems: 'center',
+    backgroundColor: COLORS.primary10,
+    borderRadius: SIZES.m30,
+    height: SIZES.s36,
+    justifyContent: 'center',
+    marginLeft: SIZES.m16,
+    paddingHorizontal: SIZES.m16,
+  },
+  tabButtonText: {
+    color: COLORS.primary400,
+    fontSize: SIZES.f12,
+    fontWeight: '500',
+    includeFontPadding: false,
+  },
+  upperContainer: {
+    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
   },
 });
