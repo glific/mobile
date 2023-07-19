@@ -20,7 +20,6 @@ import {
   GET_COLLECTION_NO_MESSAGE_MOCK,
   GET_COLLECTION_TEXT_MESSAGE_MOCK,
 } from '../__mocks__/queries/collection';
-import { TERMINATE_FLOW_MOCK } from '../__mocks__/mutations/flows';
 
 const contactMock = {
   id: 1,

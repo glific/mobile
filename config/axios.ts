@@ -6,17 +6,27 @@ class AxiosService {
   private static baseURL: string | null = null;
 
   static async createAxiosInstance(): Promise<AxiosInstance> {
-    const serverURL = await Storage.getData('serverURL');
-    AxiosService.baseURL = serverURL;
+    if (!AxiosService.baseURL) {
+      const orgValue = await Storage.getData('glific_orgnisation');
+      if (orgValue) {
+        const parsedOrgValue = JSON.parse(orgValue);
+        AxiosService.baseURL = parsedOrgValue.url;
+      }
+    }
     AxiosService.instance = axios.create({
-      baseURL: serverURL,
+      baseURL: AxiosService.baseURL,
     });
     return AxiosService.instance;
   }
 
   static async updateServerURL(url: string): Promise<void> {
     AxiosService.baseURL = url;
-    await Storage.storeData('serverURL', url);
+    const orgValue = await Storage.getData('glific_orgnisation');
+    if (orgValue) {
+      const parsedOrgValue = JSON.parse(orgValue);
+      const updatedOrgValue = JSON.stringify({ ...parsedOrgValue, url });
+      await Storage.storeData('glific_orgnisation', updatedOrgValue);
+    }
   }
 
   static getServerURL() {

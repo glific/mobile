@@ -139,7 +139,6 @@ const styles = StyleSheet.create({
   description: {
     color: COLORS.black,
     fontSize: SIZES.f14,
-    letterHeight: SIZES.f16,
   },
   popupContainer: {
     backgroundColor: COLORS.white,
