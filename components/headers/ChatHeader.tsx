@@ -110,7 +110,7 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
           text="Block Contact"
           icon={<Entypo name="block" style={[styles.menuIcon, { color: COLORS.error100 }]} />}
           onPress={() => {
-            console.log('4');
+            openTerminateFlowModal('block');
           }}
         />
       </View>

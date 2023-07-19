@@ -3,6 +3,7 @@ import { fireEvent, waitFor } from '@testing-library/react-native';
 import customRender from '../utils/jestRender';
 import ChatPopup from '../components/messages/ChatPopup';
 import { TERMINATE_FLOW_MOCK } from '../__mocks__/mutations/flows';
+
 const chatPopupProp = {
   id: '123',
   visible: true,
@@ -13,7 +14,7 @@ const chatPopupProp = {
 describe('ChatPopup', () => {
   test('renders correctly', () => {
     const { getByTestId } = customRender(<ChatPopup {...chatPopupProp} />, TERMINATE_FLOW_MOCK);
-    expect(getByTestId('header')).toBeDefined();
+    expect(getByTestId('chatPopup')).toBeDefined();
     expect(getByTestId('cancelButton')).toBeDefined();
     expect(getByTestId('yesButton')).toBeDefined();
   });

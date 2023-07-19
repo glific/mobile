@@ -20,6 +20,7 @@ import {
   GET_COLLECTION_NO_MESSAGE_MOCK,
   GET_COLLECTION_TEXT_MESSAGE_MOCK,
 } from '../__mocks__/queries/collection';
+import { TERMINATE_FLOW_MOCK } from '../__mocks__/mutations/flows';
 
 const contactMock = {
   id: 1,
@@ -290,17 +291,80 @@ describe('Chat screen', () => {
     });
   });
 
-  test('Open Start a Flow Popup Modal', async () => {
+  test('should start a flow', async () => {
     const { getByTestId, queryByText } = customRender(
       <ChatScreen route={{ params: { ...contactMock } }} />,
       GET_CONTACT_MESSAGES_MOCK
     );
+
     fireEvent.press(getByTestId('menuIcon'));
-    const startFlowButton = queryByText('Start a flow');
-    fireEvent.press(startFlowButton);
+
+    await waitFor(async () => {
+      const startFlowButton = await queryByText('Start a flow');
+      fireEvent.press(startFlowButton);
+    });
+
     await waitFor(async () => {
       const popupMenu = await getByTestId('startFlowPopup');
+      const flowPicker = await getByTestId('flow-picker');
+
       expect(popupMenu).toBeDefined();
+      expect(flowPicker).toBeDefined();
+
+      fireEvent.press(flowPicker);
+    });
+  }, 5000);
+
+  test('should terminate a flow', async () => {
+    const { getByTestId, queryByText } = customRender(
+      <ChatScreen route={{ params: { ...contactMock } }} />,
+      GET_CONTACT_MESSAGES_MOCK
+    );
+
+    fireEvent.press(getByTestId('menuIcon'));
+
+    await waitFor(async () => {
+      const terminateFlowButton = queryByText('Terminate Flows');
+      fireEvent.press(terminateFlowButton);
+    });
+
+    await waitFor(async () => {
+      expect(getByTestId('chatPopup')).toBeDefined();
+    });
+  }, 5000);
+
+  test('should clear conversation', async () => {
+    const { getByTestId, queryByText } = customRender(
+      <ChatScreen route={{ params: { ...contactMock } }} />,
+      GET_CONTACT_MESSAGES_MOCK
+    );
+
+    fireEvent.press(getByTestId('menuIcon'));
+
+    await waitFor(async () => {
+      const clearConversationButton = queryByText('Clear Conversation');
+      fireEvent.press(clearConversationButton);
+    });
+
+    await waitFor(async () => {
+      expect(getByTestId('chatPopup')).toBeDefined();
+    });
+  }, 5000);
+  test('should block contact', async () => {
+    const { getByTestId, queryByText } = customRender(
+      <ChatScreen route={{ params: { ...contactMock } }} />,
+      GET_CONTACT_MESSAGES_MOCK
+    );
+
+    fireEvent.press(getByTestId('menuIcon'));
+
+    await waitFor(async () => {
+      const blockContactButton = queryByText('Block Contact');
+      fireEvent.press(blockContactButton);
+    });
+
+    await waitFor(async () => {
+      expect(getByTestId('chatPopup')).toBeDefined();
     });
   }, 5000);
 });

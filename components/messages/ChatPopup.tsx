@@ -1,11 +1,13 @@
 import React from 'react';
 import { View, Text, Modal, StyleSheet } from 'react-native';
-import Button from '../ui/Button';
-import { COLORS, SCALE } from '../../constants/theme';
 import { useMutation } from '@apollo/client';
-import { TERMINATE_FLOW } from '../../graphql/mutations/Flows';
+
+import Button from '../ui/Button';
 import { showToast } from '../../utils/showToast';
+import { COLORS, SCALE, SIZES } from '../../constants/theme';
+import { TERMINATE_FLOW } from '../../graphql/mutations/Flows';
 import { CLEAR_MESSAGES } from '../../graphql/mutations/Chat';
+import { BLOCK_CONTACT } from '../../graphql/mutations/Contact';
 
 interface ChatPopupProps {
   id: string;
@@ -14,60 +16,96 @@ interface ChatPopupProps {
   onClose: () => void;
 }
 
+type PopupDataType = {
+  title: string;
+  description: string;
+  cancelText: string;
+  successToast: string;
+  errorToast: string;
+};
+
+const getPopupData = (task: string) => {
+  switch (task) {
+    case 'terminate':
+      return {
+        title: 'Terminate Flows!',
+        description:
+          'All active flows for the contact will be stopped. They can initiate a flow via keyword or you will need to do it manually.',
+        cancelText: 'CANCEL',
+        successToast: 'Flow terminated successfully!',
+        errorToast: 'Error terminating flow!',
+      };
+    case 'clear':
+      return {
+        title: 'Are you sure you want to clear all conversation for this contact?',
+        description:
+          'All the conversation data for this contact will be deleted permanently from Glific. This action cannot be undone. However, you should be able to access it in reports if you have backup configuration enabled.',
+        cancelText: 'CANCEL',
+        successToast: 'Conversation cleared successfully!',
+        errorToast: 'Error clearing conversation!',
+      };
+    case 'block':
+      return {
+        title: 'Do you want to block this contact?',
+        description: 'You will not be able to view their chats and interact with them again.',
+        cancelText: 'CANCEL',
+        successToast: 'Contact blocked successfully!',
+        errorToast: 'Error blocking contact!',
+      };
+    default:
+      return {
+        title: 'Alert',
+        description: '',
+        cancelText: 'CANCEL',
+        successToast: '',
+        errorToast: '',
+      };
+  }
+};
+
 const ChatPopup: React.FC<ChatPopupProps> = ({ id, visible, task, onClose }) => {
-  const [terminateFlowMutation] = useMutation(
-    task == 'terminate' ? TERMINATE_FLOW : CLEAR_MESSAGES
-  );
-  const header =
-    task == 'terminate'
-      ? 'Terminate Flows!'
-      : 'Are you sure you want to clear all conversation for this contact?';
-  const description =
-    task == 'terminate'
-      ? 'All active flows for the contact will be stopped. They can initiate a flow via keyword or you will need to do it manually.'
-      : 'All the conversation data for this contact will be deleted permanently from Glific. This action cannot be undone. However, you should be able to access it in reports if you have backup configuration enabled.';
-  const cancelText = task == 'terminate' ? 'CANCEL' : 'LATER';
-  const successToast =
-    task == 'terminate' ? 'Flow terminated successfully!' : 'Conversation cleared successfully!';
-  const errorToast =
-    task == 'terminate' ? 'Error terminating flow!' : 'Error clearing conversation!';
-
-  const handleTerminateFlow = async () => {
-    try {
-      const { data } = await terminateFlowMutation({
-        variables: { contactId: id },
-      });
-
-      showToast(successToast);
-    } catch (error) {
-      showToast(errorToast);
-      console.error(error);
+  const popupData: PopupDataType = getPopupData(task);
+  const [runMutation] = useMutation(
+    task === 'terminate' ? TERMINATE_FLOW : task === 'block' ? BLOCK_CONTACT : CLEAR_MESSAGES,
+    {
+      onCompleted: () => {
+        showToast(popupData.successToast);
+        onClose();
+      },
+      onError: (error) => {
+        showToast(popupData.errorToast);
+        console.error(error);
+        onClose();
+      },
     }
-    onClose();
+  );
+
+  const handleYes = async () => {
+    const variables = {
+      contactId: id,
+      ...(task === 'block' ? { input: { status: 'BLOCKED' } } : {}),
+    };
+    runMutation({ variables });
   };
 
   return (
-    <Modal
-      testID="terminateFlowpopup"
-      visible={visible}
-      animationType="fade"
-      transparent={true}
-      onRequestClose={onClose}
-    >
+    <Modal visible={visible} animationType="fade" transparent={true} onRequestClose={onClose}>
       <View style={styles.background}>
-        <View style={styles.popupContainer}>
-          <Text testID="header" style={styles.header}>
-            {header}
+        <View testID="chatPopup" style={styles.popupContainer}>
+          <Text testID="popupTitle" style={styles.title}>
+            {popupData.title}
           </Text>
-          <Text style={styles.description}>{description}</Text>
+          <Text testID="popupBody" style={styles.description}>
+            {popupData.description}
+          </Text>
           <View style={styles.buttonContainer}>
             <View testID="cancelButton" style={styles.button}>
               <Button type="neutral" onPress={onClose}>
-                <Text>{cancelText}</Text>
+                <Text>{popupData.cancelText}</Text>
               </Button>
             </View>
             <View testID="yesButton" style={styles.button}>
-              <Button type="negative" onPress={handleTerminateFlow}>
+              <Button type="negative" onPress={handleYes}>
                 <Text>YES</Text>
               </Button>
             </View>
@@ -83,33 +121,37 @@ export default ChatPopup;
 const styles = StyleSheet.create({
   background: {
     alignItems: 'center',
-    backgroundColor: COLORS.black087,
+    backgroundColor: COLORS.black08,
     flex: 1,
     justifyContent: 'center',
   },
   button: {
-    height: 40,
-    marginHorizontal: 10,
-    marginTop: 24,
-    width: 100,
+    height: SIZES.s40,
+    marginLeft: SIZES.m10,
+
+    width: SCALE(90),
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    marginTop: SIZES.m24,
   },
   description: {
     color: COLORS.black,
-    marginTop: 14,
-  },
-  header: {
-    fontSize: 17,
-    fontWeight: '500',
+    fontSize: SIZES.f14,
+    letterHeight: SIZES.f16,
   },
   popupContainer: {
     backgroundColor: COLORS.white,
-    borderRadius: 10,
-    paddingHorizontal: SCALE(30),
-    paddingVertical: SCALE(40),
-    width: 330,
+    borderRadius: SIZES.r10,
+    paddingHorizontal: SIZES.m16,
+    paddingVertical: SIZES.m20,
+    rowGap: SIZES.m16,
+    width: SIZES.s328,
+  },
+  title: {
+    color: COLORS.black,
+    fontSize: SIZES.f18,
+    fontWeight: '700',
   },
 });
