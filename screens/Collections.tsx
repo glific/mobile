@@ -30,7 +30,7 @@ const Collections = () => {
       console.log(error);
     }
     if (data) {
-      const newCollections: ChatEntry[] = data.search.map((element: any) => {
+      const newCollections: ChatEntry[] = data.search.map((element: unknown) => {
         return {
           id: element.group?.id,
           name: element.group?.label || 'Unknown Name',

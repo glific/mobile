@@ -7,13 +7,16 @@ import AxiosService from './axios';
 
 // Fetches the uri dynamically
 async function customFetch(uri: string, options: RequestInit) {
-  const serverURL = await Storage.getData('serverURL');
-  return await fetch(serverURL, options);
+  const orgValue = await Storage.getData('glific_orgnisation');
+  if (orgValue !== null) {
+    const parsedOrgValue = JSON.parse(orgValue);
+    return await fetch(parsedOrgValue.url, options);
+  }
 }
 
 // Async function to fetch the token
 async function fetchToken(): Promise<string> {
-  const sessionValue = await Storage.getData('session');
+  const sessionValue = await Storage.getData('glific_session');
   let token = '';
   if (sessionValue !== null) {
     const parsedSessionValue = JSON.parse(sessionValue);
@@ -25,7 +28,7 @@ async function fetchToken(): Promise<string> {
 const refreshLink = new TokenRefreshLink({
   accessTokenField: 'access_token',
   isTokenValidOrUndefined: async () => {
-    const sessionValue = await Storage.getData('session');
+    const sessionValue = await Storage.getData('glific_session');
     if (sessionValue === null) return false;
 
     const parsedSessionValue = JSON.parse(sessionValue);
@@ -37,7 +40,7 @@ const refreshLink = new TokenRefreshLink({
     return isValidToken;
   },
   fetchAccessToken: async () => {
-    const sessionValue = await Storage.getData('session');
+    const sessionValue = await Storage.getData('glific_session');
     if (!sessionValue) return null;
 
     const parsedSessionValue = await JSON.parse(sessionValue);
@@ -58,11 +61,11 @@ const refreshLink = new TokenRefreshLink({
   handleFetch: () => {},
   handleResponse:
     <T>(_operation: Operation<T>, accessTokenField: string) =>
-    async (response: Response<T>): Promise<T | any> => {
-      const tokenResponse: any = [];
+    async (response: Response<T>): Promise<T | unknown> => {
+      const tokenResponse: unknown = [];
 
       if (response) {
-        await Storage.storeData('session', JSON.stringify(response.data));
+        await Storage.storeData('glific_session', JSON.stringify(response.data));
         tokenResponse[accessTokenField] = response.data.access_token;
       }
       return tokenResponse;

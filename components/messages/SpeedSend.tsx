@@ -7,7 +7,7 @@ import SearchInput from './SearchInput';
 import BottomSheet from '../ui/BottomSheet';
 
 type Props = {
-  bsRef: RefObject<any>;
+  bsRef: RefObject<unknown>;
 };
 
 const dummy = [

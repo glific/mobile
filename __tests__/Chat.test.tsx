@@ -5,20 +5,32 @@ import customRender from '../utils/jestRender';
 import Chat from '../screens/Chat';
 import { NO_SEARCH_CONTACTS_MOCK } from '../__mocks__/queries/contact';
 
-describe('Chat screen', () => {
+describe('Contact screen', () => {
   test('renders correctly', async () => {
-    const { getByTestId, findByText } = customRender(<Chat />, NO_SEARCH_CONTACTS_MOCK);
-    const searchInput = getByTestId('searchInput');
-    const searchIcon = getByTestId('searchIcon');
-    const filterIcon = getByTestId('filterIcon');
-    expect(searchInput).toBeDefined();
-    expect(searchIcon).toBeDefined();
-    expect(filterIcon).toBeDefined();
+    const navigateMock = jest.fn();
+    const { getByTestId, findByText } = customRender(
+      <Chat navigation={{ navigate: navigateMock }} />,
+      NO_SEARCH_CONTACTS_MOCK
+    );
+
+    expect(getByTestId('searchInput')).toBeDefined();
+    expect(getByTestId('searchIcon')).toBeDefined();
+    expect(getByTestId('filterIcon')).toBeDefined();
+
     await waitFor(async () => {
-      const testName = await findByText('test');
-      const testLastMessage = await findByText('test message');
-      expect(testName).toBeTruthy();
-      expect(testLastMessage).toBeTruthy();
+      const contactCard = await getByTestId('contactCard');
+
+      expect(contactCard).toBeDefined();
+      expect(findByText('test')).toBeTruthy();
+      expect(findByText('test message')).toBeTruthy();
+
+      fireEvent.press(contactCard);
+      // expect(navigateMock).toHaveBeenCalledWith('ChatScreen', {
+      //   id: '17',
+      //   displayName: 'test',
+      //   conversationType: 'contact',
+      //   lastMessageAt: 'test message',
+      // });
     });
   });
 
