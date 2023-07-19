@@ -108,14 +108,14 @@ const styles = StyleSheet.create({
   headerContainer: {
     alignItems: 'center',
     backgroundColor: COLORS.primary400,
-    height: SCALE(130),
-    padding: SIZES.m16,
+    paddingHorizontal: SIZES.m16,
     width: '100%',
   },
   lowerContainer: {
     alignItems: 'center',
     flex: 1,
     flexDirection: 'row',
+    marginBottom: SIZES.m8,
     width: '100%',
   },
   mainContainer: {
@@ -156,6 +156,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     flexDirection: 'row',
+    height: SIZES.s50,
     justifyContent: 'space-between',
     width: '100%',
   },
