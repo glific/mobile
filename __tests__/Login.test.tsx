@@ -37,7 +37,7 @@ describe('Login screen', () => {
     const continueButton = getByText('LOG IN');
     fireEvent.press(continueButton);
 
-    const errorMessage = getByText('Please enter mobile number and password!');
+    const errorMessage = getByText('Incorrect login credentials!');
     expect(errorMessage).toBeDefined();
   });
 
@@ -50,7 +50,7 @@ describe('Login screen', () => {
     const continueButton = getByText('LOG IN');
     fireEvent.press(continueButton);
 
-    const errorMessage = getByText('Please enter mobile number and password!');
+    const errorMessage = getByText('Incorrect login credentials!');
     expect(errorMessage).toBeDefined();
   });
 

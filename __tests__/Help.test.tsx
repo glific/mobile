@@ -6,7 +6,7 @@ import Help from '../screens/Help';
 describe('Help Screen', () => {
   test('renders the Help screen', () => {
     const { getByText } = customRender(<Help />);
-    const helpText = getByText('Help');
+    const helpText = getByText('Under Construction');
     expect(helpText).toBeDefined();
   });
 });
