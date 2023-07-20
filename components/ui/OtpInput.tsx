@@ -5,6 +5,7 @@ import { COLORS, SIZES, SCALE } from '../../constants';
 export interface OtpInputProps {
   label: string;
   value: string;
+  // eslint-disable-next-line no-unused-vars
   onUpdateValue: (text: string) => void;
   onFocus: () => void;
   isError: boolean;
