@@ -12,12 +12,12 @@ import { AntDesign } from '@expo/vector-icons';
 import { COLORS, SIZES } from '../../constants';
 
 type Props = {
-  refs: any;
+  refs: unknown;
   height: number;
   children: React.ReactNode;
   backgroundColor?: string;
   closeButton?: boolean;
-  sheetStyle?: any;
+  sheetStyle?: unknown;
   draggable?: boolean;
   outSideTouchCancel?: boolean;
 };

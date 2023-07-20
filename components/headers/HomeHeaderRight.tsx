@@ -1,23 +1,21 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS, SCALE, SIZES } from '../../constants';
 import { useQuery } from '@apollo/client';
+
+import { COLORS, SCALE, SIZES } from '../../constants';
 import { GET_NOTIFICATIONS_COUNT } from '../../graphql/queries/Notification';
+
 const variables = {
   filter: {
     is_read: false,
   },
 };
 
-interface HomeHeaderProps {
-  navigation: {
-    navigate: (text: string) => void;
-  };
-}
-
-const HomeHeaderRight: React.FC<HomeHeaderProps> = ({ navigation }) => {
+const HomeHeaderRight = () => {
   const [notificationCount, setNotificationCount] = useState(0);
+  const navigation = useNavigation();
 
   useQuery(GET_NOTIFICATIONS_COUNT, {
     variables,

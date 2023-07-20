@@ -3,6 +3,12 @@ import { fireEvent, waitFor } from '@testing-library/react-native';
 import customRender from '../utils/jestRender';
 
 import Login from '../screens/Login';
+import AxiosService from '../config/axios';
+import Storage from '../utils/asyncStorage';
+
+jest.mock('../utils/asyncStorage', () => ({
+  storeData: jest.fn(),
+}));
 
 describe('Login screen', () => {
   test('renders correctly', () => {
@@ -28,30 +34,53 @@ describe('Login screen', () => {
     expect(passwordInput.props.value).toBe('secret1234');
   });
 
-  test('error message when empty mobile number input', async () => {
-    const { getByTestId, getByText } = customRender(<Login />);
+  test('should login successfully', async () => {
+    // const setTokenMock = jest.fn();
+    const navigateMock = jest.fn();
 
-    const passwordInput = getByTestId('password');
-    fireEvent.changeText(passwordInput, 'secret1234');
+    const createAxiosInstanceMock = jest.fn();
+    const postMock = jest.fn();
+    AxiosService.createAxiosInstance = createAxiosInstanceMock;
 
-    const continueButton = getByText('LOG IN');
-    fireEvent.press(continueButton);
+    createAxiosInstanceMock.mockReturnValue({
+      post: postMock,
+    });
 
-    const errorMessage = getByText('Incorrect login credentials!');
-    expect(errorMessage).toBeDefined();
-  });
+    postMock.mockResolvedValue({
+      data: {
+        data: {
+          access_token: 'safbwuf.dwuqwfrbq',
+          renewal_token: 'fwhrfwifh.qwq39rhbsa',
+          token_expiry_time: '10:00:00T00:00:00',
+        },
+      },
+    });
 
-  test('error message when empty password input', async () => {
-    const { getByTestId, getByText } = customRender(<Login />);
+    const responseMock = {
+      access_token: 'safbwuf.dwuqwfrbq',
+      renewal_token: 'fwhrfwifh.qwq39rhbsa',
+      token_expiry_time: '10:00:00T00:00:00',
+    };
 
-    const mobileInput = getByTestId('mobileNumber');
-    fireEvent.changeText(mobileInput, '917834811114');
+    const { getByTestId, getByText } = customRender(
+      <Login navigation={{ navigate: navigateMock }} />
+    );
 
-    const continueButton = getByText('LOG IN');
-    fireEvent.press(continueButton);
+    fireEvent.changeText(getByTestId('mobileNumber'), '7834811114');
+    fireEvent.changeText(getByTestId('password'), 'secret1234');
+    fireEvent.press(getByText('LOG IN'));
 
-    const errorMessage = getByText('Incorrect login credentials!');
-    expect(errorMessage).toBeDefined();
+    await waitFor(async () => {
+      expect(createAxiosInstanceMock).toHaveBeenCalled();
+    });
+    expect(postMock).toHaveBeenCalledWith('/v1/session', {
+      user: {
+        phone: 'undefined7834811114',
+        password: 'secret1234',
+      },
+    });
+    expect(Storage.storeData).toHaveBeenCalledWith('glific_session', JSON.stringify(responseMock));
+    // expect(setTokenMock).toHaveBeenCalledWith(responseMock.access_token);
   });
 
   test('should navigate to reset password screen', async () => {

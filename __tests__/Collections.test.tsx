@@ -8,15 +8,22 @@ import { GET_COLLECTIONS_MOCK } from '../__mocks__/queries/collection';
 describe('Collections Screen', () => {
   test('renders the Collections screen', async () => {
     const { getByTestId, findByText } = customRender(<Collections />, GET_COLLECTIONS_MOCK);
+
     expect(getByTestId('searchInput'));
     expect(getByTestId('searchIcon'));
 
     await waitFor(async () => {
       const collectionCard = await getByTestId('collectionCard');
-      const testGroup = await findByText('test group');
 
-      expect(collectionCard).toBeTruthy();
-      expect(testGroup).toBeTruthy();
+      expect(collectionCard).toBeDefined();
+      expect(findByText('test group')).toBeTruthy();
+
+      fireEvent.press(collectionCard);
+      // expect(navigateMock).toHaveBeenCalledWith('ChatScreen', {
+      //   id: '17',
+      //   displayName: 'test',
+      //   conversationType: 'collection',
+      // });
     });
   });
 

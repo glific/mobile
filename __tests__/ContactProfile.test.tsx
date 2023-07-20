@@ -4,7 +4,7 @@ import customRender from '../utils/jestRender';
 
 import ContactProfile from '../screens/ContactProfile';
 
-const contact = {
+const contactMock = {
   id: '12',
   name: 'John Doe',
   lastMessageAt: '2023-06-15',
@@ -12,43 +12,42 @@ const contact = {
 
 describe('ContactProfile', () => {
   test('renders the contact profile with correct information', () => {
-    const navigationMock = { goBack: jest.fn() };
     const { getByTestId, getByText } = customRender(
-      <ContactProfile route={{ params: { contact } }} navigation={navigationMock} />
+      <ContactProfile route={{ params: { contact: contactMock } }} />
     );
 
-    const userProfile = getByTestId('userProfile');
+    expect(getByTestId('backIcon')).toBeDefined();
+    expect(getByTestId('sessionTimer')).toBeDefined();
+    expect(getByTestId('userProfile')).toBeDefined();
     const userName = getByTestId('userName');
-    const viewMoreButton = getByText('View More');
+    expect(userName.props.children).toBe(contactMock.name);
 
-    expect(userProfile).toBeDefined();
-    expect(userName.props.children).toBe(contact.name);
-    expect(viewMoreButton).toBeDefined();
+    expect(getByTestId('Phone')).toBeDefined();
+    expect(getByTestId('Assigned to')).toBeDefined();
+    expect(getByTestId('Language')).toBeDefined();
+    expect(getByTestId('Status')).toBeDefined();
+    expect(getByTestId('Collections')).toBeDefined();
 
-    // Additional assertions for other contact details
-    const statusText = getByText('Valid contact');
-    const languageText = getByText('English');
-    const phoneText = getByText('+919876543210');
-    const collectionsText = getByText('Optin contact');
-    const assignedToText = getByText('None');
-    const statusMessageText = getByText(`Optin via WA on ${contact.lastMessageAt}`);
-
-    expect(statusText).toBeDefined();
-    expect(languageText).toBeDefined();
-    expect(phoneText).toBeDefined();
-    expect(collectionsText).toBeDefined();
-    expect(assignedToText).toBeDefined();
-    expect(statusMessageText).toBeDefined();
+    expect(getByText('View Info')).toBeDefined();
+    expect(getByText('Contact History')).toBeDefined();
   });
 
   test('calls the navigation.goBack() function when the back button is pressed', () => {
-    const navigationMock = { goBack: jest.fn() };
-    const { getByTestId } = customRender(
-      <ContactProfile navigation={navigationMock} route={{ params: { contact } }} />
+    const navigationMock = {
+      navigate: jest.fn(),
+      goBack: jest.fn(),
+    };
+    const { getByTestId, getByText } = customRender(
+      <ContactProfile navigation={navigationMock} route={{ params: { contact: contactMock } }} />
     );
 
-    const backButton = getByTestId('backButton');
-    fireEvent.press(backButton);
+    fireEvent.press(getByTestId('backIcon'));
     expect(navigationMock.goBack).toHaveBeenCalled();
+
+    fireEvent.press(getByText('View Info'));
+    expect(navigationMock.navigate).toHaveBeenCalledWith('ContactInformation');
+
+    fireEvent.press(getByText('Contact History'));
+    expect(navigationMock.navigate).toHaveBeenCalledWith('ContactHistory');
   });
 });
