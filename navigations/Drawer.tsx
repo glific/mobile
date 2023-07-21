@@ -11,6 +11,7 @@ import HomeHeaderRight from '../components/headers/HomeHeaderRight';
 import CustomDrawer from '../components/navigation/CustomDrawer';
 import { COLORS, SCALE, SIZES } from '../constants';
 import NotificationHeader from '../components/headers/NotificationHeader';
+import Notifications from '../screens/Notifications';
 
 const Drawer = createDrawerNavigator();
 
@@ -69,7 +70,9 @@ const AppDrawer = () => {
               color={color}
             />
           ),
-          headerRight: () => <NotificationHeader handleSearch={handleSearch} />,
+          headerRight: () => (
+            <NotificationHeader searchValue={notificationSearch} handleSearch={handleSearch} />
+          ),
         }}
       >
         {() => <Notifications searchValue={notificationSearch} />}
