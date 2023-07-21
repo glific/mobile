@@ -9,7 +9,9 @@ import {
   GET_CONTACT_DOCUMENT_MESSAGE_MOCK,
   GET_CONTACT_IMAGE_MESSAGE_MOCK,
   GET_CONTACT_LOCATION_MESSAGE_MOCK,
+  GET_CONTACT_MESSAGES_FLOW_MOCK,
   GET_CONTACT_MESSAGES_MOCK,
+  GET_CONTACT_MESSAGES_POPUPS_MOCK,
   GET_CONTACT_NO_MESSAGE_MOCK,
   GET_CONTACT_QUCIK_REPLY_MESSAGE_MOCK,
   GET_CONTACT_STICKER_MESSAGE_MOCK,
@@ -290,17 +292,100 @@ describe('Chat screen', () => {
     });
   });
 
-  test('Open Start a Flow Popup Modal', async () => {
+  test('should start a flow', async () => {
     const { getByTestId, queryByText } = customRender(
       <ChatScreen route={{ params: { ...contactMock } }} />,
-      GET_CONTACT_MESSAGES_MOCK
+      GET_CONTACT_MESSAGES_FLOW_MOCK
     );
+
     fireEvent.press(getByTestId('menuIcon'));
-    const startFlowButton = queryByText('Start a flow');
-    fireEvent.press(startFlowButton);
+
+    await waitFor(async () => {
+      const startFlowButton = await queryByText('Start a flow');
+      fireEvent.press(startFlowButton);
+    });
+
     await waitFor(async () => {
       const popupMenu = await getByTestId('startFlowPopup');
+      const flowPicker = await getByTestId('flow-picker');
+
       expect(popupMenu).toBeDefined();
+      expect(flowPicker).toBeDefined();
+
+      expect(flowPicker.props.selectedIndex).toStrictEqual(0);
+
+      const startButton = await queryByText('START');
+      expect(startButton).toBeDefined();
+      fireEvent.press(startButton);
+    });
+  }, 5000);
+
+  test('should terminate a flow', async () => {
+    const { getByTestId, queryByText } = customRender(
+      <ChatScreen route={{ params: { ...contactMock } }} />,
+      GET_CONTACT_MESSAGES_POPUPS_MOCK
+    );
+
+    fireEvent.press(getByTestId('menuIcon'));
+
+    await waitFor(async () => {
+      const terminateFlowButton = queryByText('Terminate Flows');
+      fireEvent.press(terminateFlowButton);
+    });
+
+    await waitFor(async () => {
+      expect(getByTestId('chatPopup')).toBeDefined();
+      expect(getByTestId('cancelButton')).toBeDefined();
+
+      const yesButton = await queryByText('YES');
+      expect(yesButton).toBeDefined();
+      fireEvent.press(yesButton);
+    });
+  }, 5000);
+
+  test('should clear conversation', async () => {
+    const { getByTestId, queryByText } = customRender(
+      <ChatScreen route={{ params: { ...contactMock } }} />,
+      GET_CONTACT_MESSAGES_POPUPS_MOCK
+    );
+
+    fireEvent.press(getByTestId('menuIcon'));
+
+    await waitFor(async () => {
+      const clearConversationButton = queryByText('Clear Conversation');
+      fireEvent.press(clearConversationButton);
+    });
+
+    await waitFor(async () => {
+      expect(getByTestId('chatPopup')).toBeDefined();
+      expect(getByTestId('cancelButton')).toBeDefined();
+
+      const yesButton = await queryByText('YES');
+      expect(yesButton).toBeDefined();
+      fireEvent.press(yesButton);
+    });
+  }, 5000);
+
+  test('should block contact', async () => {
+    const { getByTestId, queryByText } = customRender(
+      <ChatScreen route={{ params: { ...contactMock } }} />,
+      GET_CONTACT_MESSAGES_POPUPS_MOCK
+    );
+
+    fireEvent.press(getByTestId('menuIcon'));
+
+    await waitFor(async () => {
+      const blockContactButton = queryByText('Block Contact');
+      fireEvent.press(blockContactButton);
+    });
+
+    await waitFor(async () => {
+      expect(getByTestId('chatPopup')).toBeDefined();
+      expect(getByTestId('cancelButton')).toBeDefined();
+
+      const yesButton = await queryByText('YES');
+      expect(yesButton).toBeDefined();
+      fireEvent.press(yesButton);
     });
   }, 5000);
 });

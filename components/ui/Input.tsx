@@ -8,6 +8,7 @@ type InputType = 'text' | 'password' | 'number';
 
 interface InputProps {
   label?: string;
+  // eslint-disable-next-line no-unused-vars
   onUpdateValue: (args: string) => void;
   value: string;
   secure?: boolean;

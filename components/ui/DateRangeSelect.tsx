@@ -7,7 +7,9 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 interface Props {
   selectedDateFrom: Date | null;
   selectedDateTo: Date | null;
+  // eslint-disable-next-line no-unused-vars
   onSelectDateFrom: (args: Date | null) => void;
+  // eslint-disable-next-line no-unused-vars
   onSelectDateTo: (args: Date | null) => void;
   label: string;
 }

@@ -9,6 +9,15 @@ import { RootStackParamList } from '../../constants/types';
 import StartFlowPopup from '../messages/StartFlowPopup';
 import ChatPopup from '../messages/ChatPopup';
 
+import {
+  START_COLLECTION_FLOW,
+  START_CONTACT_FLOW,
+  TERMINATE_FLOW,
+} from '../../graphql/mutations/Flows';
+import { CLEAR_MESSAGES } from '../../graphql/mutations/Chat';
+import { BLOCK_CONTACT } from '../../graphql/mutations/Contact';
+import { getPopupData } from '../../constants/popupsData';
+
 interface ChatHeaderDataProps {
   conversationType: string;
   id: number;
@@ -46,29 +55,56 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [showMenu, setShowMenu] = useState(false);
   const [showStartFlowModal, setShowStartFlowModal] = useState(false);
+
   const [popupTask, setpopupTask] = useState('');
-  const [showTerminateFlowModal, setshowTerminateFlowModal] = useState(false);
+  const [showChatPopup, setShowChatPopup] = useState(false);
+
+  const isContactType = conversationType == 'contact';
+
   const handleMenu = () => {
     setShowMenu(!showMenu);
   };
+
   const openFlowModal = () => {
     setShowMenu(!showMenu);
     setShowStartFlowModal(true);
   };
-  const closeFlowModal = () => {
-    setShowStartFlowModal(false);
-    setshowTerminateFlowModal(false);
-  };
 
-  const openTerminateFlowModal = (task: string) => {
+  const openPopupTaskModal = (task: string) => {
     setpopupTask(task);
     setShowMenu(!showMenu);
-    setshowTerminateFlowModal(true);
+    setShowChatPopup(true);
   };
+
+  const closePopups = () => {
+    setShowStartFlowModal(false);
+    setShowChatPopup(false);
+  };
+
+  const popupData = getPopupData(popupTask);
+  const variables = {
+    contactId: id,
+    ...(popupTask === 'block' ? { input: { status: 'BLOCKED' } } : {}),
+  };
+  let mutation;
+  switch (popupTask) {
+    case 'terminate':
+      mutation = TERMINATE_FLOW;
+      break;
+    case 'block':
+      mutation = BLOCK_CONTACT;
+      break;
+    case 'clear':
+      mutation = CLEAR_MESSAGES;
+      break;
+    default:
+      mutation = CLEAR_MESSAGES;
+      break;
+  }
 
   let menu;
   let sessionTimeLeft;
-  if (conversationType === 'contact') {
+  if (isContactType) {
     sessionTimeLeft = (
       <View style={styles.sessionContainer}>
         <Text testID="timeLeft" style={styles.time}>
@@ -96,21 +132,21 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
           text="Clear Conversation"
           icon={<MaterialCommunityIcons name="message-bulleted-off" style={styles.menuIcon} />}
           onPress={() => {
-            openTerminateFlowModal('clear');
+            openPopupTaskModal('clear');
           }}
         />
         <MenuButton
           text="Terminate Flows"
           icon={<MaterialCommunityIcons name="hand-back-right-off" style={styles.menuIcon} />}
           onPress={() => {
-            openTerminateFlowModal('terminate');
+            openPopupTaskModal('terminate');
           }}
         />
         <MenuButton
           text="Block Contact"
           icon={<Entypo name="block" style={[styles.menuIcon, { color: COLORS.error100 }]} />}
           onPress={() => {
-            console.log('4');
+            openPopupTaskModal('block');
           }}
         />
       </View>
@@ -183,16 +219,17 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
           </>
         )}
         <StartFlowPopup
-          id={id}
-          conversationType={conversationType}
           visible={showStartFlowModal}
-          onClose={closeFlowModal}
+          onClose={closePopups}
+          variables={isContactType ? { contactId: id } : { groupId: id }}
+          mutation={isContactType ? START_CONTACT_FLOW : START_COLLECTION_FLOW}
         />
         <ChatPopup
-          id={id}
-          visible={showTerminateFlowModal}
-          task={popupTask}
-          onClose={closeFlowModal}
+          visible={showChatPopup}
+          onClose={closePopups}
+          popupData={popupData}
+          variables={variables}
+          mutation={mutation}
         />
       </View>
       {sessionTimeLeft}

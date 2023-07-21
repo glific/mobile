@@ -5,6 +5,7 @@ import { COLORS, SCALE, SIZES } from '../../constants';
 
 type NotificationHeaderProps = {
   searchValue: string;
+  // eslint-disable-next-line no-unused-vars
   handleSearch: (value: string) => void;
   // onSearch: () => void;
 };
