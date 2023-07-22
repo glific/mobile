@@ -31,7 +31,7 @@ const HomeHeaderRight = () => {
         style={styles.iconContainer}
         android_ripple={{ borderless: true }}
       >
-        <Ionicons name="notifications-outline" style={styles.icon} />
+        <Ionicons testID="notificationIcon" name="notifications-outline" style={styles.icon} />
         {notificationCount.toString() !== '0' && (
           <View style={styles.badge}>
             <Text style={styles.badgeText}>{notificationCount}</Text>

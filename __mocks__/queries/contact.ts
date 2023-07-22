@@ -1,5 +1,13 @@
 import { GET_CONTACTS } from '../../graphql/queries/Contact';
 import { GET_MESSAGES } from '../../graphql/queries/Chat';
+import {
+  START_COLLECTION_FLOW,
+  START_CONTACT_FLOW,
+  TERMINATE_FLOW,
+} from '../../graphql/mutations/Flows';
+import { CLEAR_MESSAGES } from '../../graphql/mutations/Chat';
+import { BLOCK_CONTACT } from '../../graphql/mutations/Contact';
+import { GET_ALL_FLOWS } from '../../graphql/queries/Flows';
 
 const mockContacts = {
   id: '1',
@@ -461,6 +469,193 @@ export const GET_CONTACT_QUCIK_REPLY_MESSAGE_MOCK = [
                 type: 'QUICK_REPLY',
               },
             ],
+          },
+        ],
+      },
+    },
+  },
+];
+
+export const GET_CONTACT_MESSAGES_POPUPS_MOCK = [
+  {
+    request: {
+      query: GET_MESSAGES,
+      variables: {
+        filter: { id: 1, searchGroup: false },
+        contactOpts: { limit: 1 },
+        messageOpts: { limit: 20 },
+      },
+    },
+    result: {
+      data: {
+        search: [
+          {
+            messages: [
+              {
+                __typename: 'Message',
+                body: 'hello',
+                contextMessage: null,
+                errors: '{}',
+                flowLabel: null,
+                id: '601',
+                insertedAt: '2023-06-21T06:41:25.029490Z',
+                interactiveContent: '{}',
+                location: null,
+                media: null,
+                messageNumber: 36,
+                receiver: { __typename: 'Contact', id: '21' },
+                sendBy: 'NGO Main Account',
+                sender: { __typename: 'Contact', id: '17' },
+                type: 'TEXT',
+              },
+            ],
+          },
+        ],
+      },
+    },
+  },
+  {
+    request: {
+      query: TERMINATE_FLOW,
+      variables: { contactId: '123' },
+    },
+    result: {
+      data: {
+        terminateContactFlows: {
+          success: true,
+          errors: null,
+        },
+      },
+    },
+  },
+  {
+    request: {
+      query: CLEAR_MESSAGES,
+      variables: { contactId: '123' },
+    },
+    result: {
+      data: {
+        clearMessages: {
+          success: true,
+          errors: null,
+        },
+      },
+    },
+  },
+  {
+    request: {
+      query: BLOCK_CONTACT,
+      variables: { contactId: '123', input: { status: 'BLOCKED' } },
+    },
+    result: {
+      data: {
+        updateContact: {
+          contact: {
+            id: '123',
+            name: 'John',
+            phone: '123456789',
+            language: {
+              id: '1',
+              label: 'English',
+            },
+          },
+        },
+      },
+    },
+  },
+];
+
+export const GET_CONTACT_MESSAGES_FLOW_MOCK = [
+  {
+    request: {
+      query: GET_MESSAGES,
+      variables: {
+        filter: { id: 1, searchGroup: false },
+        contactOpts: { limit: 1 },
+        messageOpts: { limit: 20 },
+      },
+    },
+    result: {
+      data: {
+        search: [
+          {
+            messages: [
+              {
+                __typename: 'Message',
+                body: 'hello',
+                contextMessage: null,
+                errors: '{}',
+                flowLabel: null,
+                id: '601',
+                insertedAt: '2023-06-21T06:41:25.029490Z',
+                interactiveContent: '{}',
+                location: null,
+                media: null,
+                messageNumber: 36,
+                receiver: { __typename: 'Contact', id: '21' },
+                sendBy: 'NGO Main Account',
+                sender: { __typename: 'Contact', id: '17' },
+                type: 'TEXT',
+              },
+            ],
+          },
+        ],
+      },
+    },
+  },
+  {
+    request: {
+      query: START_COLLECTION_FLOW,
+      variables: { flowId: '1', groupId: '123' },
+    },
+    result: {
+      data: {
+        startGroupFlow: {
+          success: true,
+          errors: null,
+        },
+      },
+    },
+  },
+  {
+    request: {
+      query: START_CONTACT_FLOW,
+      variables: { flowId: '1', contactId: '123' },
+    },
+    result: {
+      data: {
+        startContactFlow: {
+          success: true,
+          errors: null,
+        },
+      },
+    },
+  },
+  {
+    request: {
+      query: GET_ALL_FLOWS,
+      variables: {
+        filter: {
+          status: 'published',
+          isActive: true,
+        },
+        opts: {
+          limit: null,
+          offset: 0,
+          order: 'ASC',
+        },
+      },
+    },
+    result: {
+      data: {
+        flows: [
+          {
+            id: '1',
+            name: 'flow_1',
+          },
+          {
+            id: '2',
+            name: 'flow_2',
           },
         ],
       },

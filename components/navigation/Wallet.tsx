@@ -26,6 +26,7 @@ const Wallet = () => {
     <View style={[styles.walletContainer, error !== '' && styles.errorContainer]}>
       <View style={styles.innerContainer}>
         <MaterialCommunityIcons
+          testID="walletIcon"
           name="wallet-outline"
           size={24}
           color="white"
