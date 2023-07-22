@@ -92,7 +92,7 @@ export default DateRangeSelect;
 
 const styles = StyleSheet.create({
   calendarIcon: {
-    color: COLORS.primary400,
+    color: COLORS.darkGray,
     fontSize: SIZES.f18,
   },
   dateButton: {

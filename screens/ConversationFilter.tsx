@@ -1,35 +1,31 @@
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { NavigationProp, RouteProp } from '@react-navigation/native';
+import { useQuery } from '@apollo/client';
 
-import { COLORS, SCALE, SIZES } from '../constants';
-import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
+import Button from '../components/ui/Button';
+import { COLORS, SCALE, SIZES } from '../constants';
 import MultiSelect from '../components/ui/MultiSelect';
 import DateRangeSelect from '../components/ui/DateRangeSelect';
 import { GET_ALL_FLOW_LABELS } from '../graphql/queries/Flows';
-import { useQuery } from '@apollo/client';
 import { GET_COLLECTIONS_LIST } from '../graphql/queries/Collection';
 import { GET_USERS } from '../graphql/queries/User';
+import { RootStackParamList } from '../constants/types';
 
 interface OptionData {
   id: string;
   name: string;
 }
 
-const options: OptionData[] = [
-  { id: '1', name: 'Age Group 11 to 14' },
-  { id: '2', name: 'Age Group  15 to 18' },
-  { id: '3', name: 'Hindi' },
-  { id: '4', name: 'Hindi' },
-  { id: '5', name: 'Age Group  15 to 18' },
-  { id: '6', name: 'Age Group  15 to 18' },
-  { id: '7', name: 'Hindi' },
-  { id: '8', name: 'English' },
-  { id: '9', name: 'English' },
-  { id: '10', name: 'Option 5' },
-];
+interface ConversationFilterProps {
+  navigation: NavigationProp<RootStackParamList, 'ConversationFilter'>;
+  route: RouteProp<RootStackParamList, 'ConversationFilter'>;
+}
 
-const ConversationFilter = ({ navigation }: unknown) => {
+const ConversationFilter: React.FC<ConversationFilterProps> = ({ navigation, route }) => {
+  const { onGoBack } = route.params;
+
   const [name, setName] = useState('');
   const [selectLabels, setSelectLabels] = useState<OptionData[]>([]);
   const [selectCollections, setSelectCollections] = useState<OptionData[]>([]);
@@ -78,6 +74,43 @@ const ConversationFilter = ({ navigation }: unknown) => {
     setDateTo(date);
   };
 
+  const handleSearch = () => {
+    const groups = selectCollections.map((group) => {
+      return group.id;
+    });
+    const labels = selectLabels.map((label) => {
+      return label.id;
+    });
+    const users = selectStaffs.map((user) => {
+      return user.id;
+    });
+
+    onGoBack({
+      filter: {
+        term: name,
+        includeLabels: labels,
+        includeGroups: groups,
+        includeUsers: users,
+        dateRange: {
+          from: dateFrom,
+          to: dateTo,
+        },
+      },
+      contactOpts: { limit: 25 },
+      messageOpts: { limit: 1 },
+    });
+    navigation.goBack();
+  };
+
+  const handleCancel = () => {
+    setSelectLabels([]);
+    setSelectCollections([]);
+    setSelectStaffs([]);
+    setDateFrom(null);
+    setDateTo(null);
+    navigation.goBack();
+  };
+
   return (
     <>
       <ScrollView style={styles.mainContainer}>
@@ -124,12 +157,12 @@ const ConversationFilter = ({ navigation }: unknown) => {
         <View style={{ marginBottom: SCALE(100) }} />
       </ScrollView>
       <View style={styles.buttonContainer}>
-        <Button onPress={() => navigation.goBack()} type="neutral">
+        <Button onPress={handleCancel} type="neutral">
           <Text>CANCEL</Text>
         </Button>
         <View style={styles.divideSpace} />
-        <Button disable={true} onPress={() => navigation.goBack()}>
-          <Text>APPLY</Text>
+        <Button onPress={handleSearch}>
+          <Text>SEARCH</Text>
         </Button>
       </View>
     </>

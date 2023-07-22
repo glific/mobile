@@ -79,7 +79,7 @@ const MultiSelect: React.FC<Props> = ({
         transparent={true}
         onRequestClose={toggleModal}
       >
-        <Pressable style={styles.modalBackdrop} onPress={toggleModal}>
+        <Pressable testID="closeSelect" style={styles.modalBackdrop} onPress={toggleModal}>
           <View style={styles.modalContent}>
             <Text style={styles.modalLabel}>{label}</Text>
             <ScrollView>
@@ -123,9 +123,10 @@ const styles = StyleSheet.create({
     marginRight: SIZES.m8,
   },
   dropIcon: {
-    color: COLORS.black,
+    color: COLORS.darkGray,
     fontSize: SIZES.f12,
-    marginTop: SIZES.m18,
+    includeFontPadding: false,
+    marginTop: SIZES.m16,
   },
   dropdownButton: {
     alignItems: 'flex-start',

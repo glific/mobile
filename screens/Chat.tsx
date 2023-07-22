@@ -24,6 +24,7 @@ interface ContactElement {
   contact?: Contact;
   messages: Message[];
 }
+
 const Chat = () => {
   const [contacts, setContacts] = useState<ChatEntry[]>([]);
   const [searchVariable, setSearchVariable] = useState({
@@ -50,7 +51,7 @@ const Chat = () => {
         const messagesLength = element.messages?.length || 0;
         return {
           id: element.contact?.id,
-          name: element.contact?.name || element.contact?.maskedPhone,
+          name: element.contact?.name ? element.contact.name : element.contact?.maskedPhone,
           lastMessageAt: element.contact?.lastMessageAt,
           lastMessage: messagesLength > 0 ? element.messages[messagesLength - 1]?.body : ' ',
           isOrgRead: element.contact?.isOrgRead,
