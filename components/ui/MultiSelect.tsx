@@ -12,6 +12,7 @@ interface Props {
   testID?: string;
   options: Option[];
   selectedOptions: Option[];
+  // eslint-disable-next-line no-unused-vars
   onSelectOption: (options: Option[]) => void;
   label: string;
   placeHolder: string;

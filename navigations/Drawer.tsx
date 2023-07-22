@@ -7,6 +7,7 @@ import HomeTabs from './HomeTabs';
 import Help from '../screens/Help';
 import Setting from '../screens/Setting';
 import MyAccount from '../screens/MyAccount';
+import Notifications from '../screens/Notifications';
 import HomeHeaderRight from '../components/headers/HomeHeaderRight';
 import CustomDrawer from '../components/navigation/CustomDrawer';
 import { COLORS, SCALE, SIZES } from '../constants';
@@ -52,6 +53,19 @@ const AppDrawer = () => {
             ),
             headerRight: () => <HomeHeaderRight navigation={navigation} />,
           };
+        }}
+      />
+      <Drawer.Screen
+        name="Notifications"
+        component={Notifications}
+        options={{
+          drawerIcon: ({ color }) => (
+            <Ionicons
+              name="ios-notifications-outline"
+              style={styles.drawerItemIcon}
+              color={color}
+            />
+          ),
         }}
       />
       <Drawer.Screen
