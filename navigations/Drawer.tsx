@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -10,10 +10,16 @@ import MyAccount from '../screens/MyAccount';
 import HomeHeaderRight from '../components/headers/HomeHeaderRight';
 import CustomDrawer from '../components/navigation/CustomDrawer';
 import { COLORS, SCALE, SIZES } from '../constants';
+import NotificationHeader from '../components/headers/NotificationHeader';
+import Notifications from '../screens/Notifications';
 
 const Drawer = createDrawerNavigator();
 
 const AppDrawer = () => {
+  const [notificationSearch, setNotificationSearch] = useState('');
+  const handleSearch = (searchValue: string) => {
+    setNotificationSearch(searchValue);
+  };
   return (
     <Drawer.Navigator
       initialRouteName="Chat"
@@ -54,6 +60,23 @@ const AppDrawer = () => {
           };
         }}
       />
+      <Drawer.Screen
+        name="Notifications"
+        options={{
+          drawerIcon: ({ color }) => (
+            <Ionicons
+              name="ios-notifications-outline"
+              style={styles.drawerItemIcon}
+              color={color}
+            />
+          ),
+          headerRight: () => (
+            <NotificationHeader searchValue={notificationSearch} handleSearch={handleSearch} />
+          ),
+        }}
+      >
+        {() => <Notifications searchValue={notificationSearch} />}
+      </Drawer.Screen>
       <Drawer.Screen
         name="MyAccount"
         component={MyAccount}
