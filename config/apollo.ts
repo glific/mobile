@@ -1,18 +1,30 @@
 import { ApolloClient, InMemoryCache, ApolloLink, HttpLink, Operation } from '@apollo/client';
 import { TokenRefreshLink } from 'apollo-link-token-refresh';
 import { setContext } from '@apollo/link-context';
+import { createClient } from 'graphql-ws';
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
+import { RetryLink } from '@apollo/client/link/retry';
+import { hasSubscription } from '@jumpn/utils-graphql';
 
 import Storage from '../utils/asyncStorage';
 import AxiosService from './axios';
 
 // Fetches the uri dynamically
 async function customFetch(uri: string, options: RequestInit) {
-  const orgValue = await Storage.getData('glific_orgnisation');
+  const orgValue = await Storage.getData('glific_organisation');
   if (orgValue !== null) {
     const parsedOrgValue = JSON.parse(orgValue);
     return await fetch(parsedOrgValue.url, options);
   }
 }
+const getWsUrl = async (): Promise<string> => {
+  const orgValue = await Storage.getData('glific_organisation');
+  if (orgValue !== null) {
+    const parsedOrgValue = JSON.parse(orgValue);
+    return parsedOrgValue.wsUrl;
+  }
+  return '';
+};
 
 // Async function to fetch the token
 async function fetchToken(): Promise<string> {
@@ -75,6 +87,42 @@ const refreshLink = new TokenRefreshLink({
   },
 });
 
+export const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        contactHistory: {
+          keyArgs: false,
+
+          merge(existing, incoming, { args }: any) {
+            if (args.opts.offset === 0) {
+              return incoming;
+            }
+            return [...existing, ...incoming];
+          },
+        },
+      },
+    },
+  },
+});
+
+const retryIf = (error: any) => {
+  const doNotRetryCodes = [500, 400, 401];
+  return !!error && !doNotRetryCodes.includes(error.statusCode);
+};
+
+const retryLink = new RetryLink({
+  delay: {
+    initial: 300,
+    max: Infinity,
+    jitter: true,
+  },
+  attempts: {
+    max: 5,
+    retryIf,
+  },
+});
+
 // Create an ApolloLink instance
 const authLink = setContext(async (_, { headers }) => {
   const accessToken = await fetchToken();
@@ -88,7 +136,22 @@ const authLink = setContext(async (_, { headers }) => {
 
 const httpLink = new HttpLink({ fetch: customFetch });
 
+const wsLink = new GraphQLWsLink(
+  createClient({
+    url: getWsUrl,
+    connectionParams: {
+      authToken: fetchToken(),
+    },
+  })
+);
+
+const link = retryLink.split(
+  (operation) => hasSubscription(operation.query),
+  wsLink,
+  ApolloLink.from([refreshLink, authLink, httpLink])
+);
+
 export const client = new ApolloClient({
-  link: ApolloLink.from([refreshLink, authLink, httpLink]),
-  cache: new InMemoryCache(),
+  link: link,
+  cache: cache,
 });
