@@ -14,3 +14,13 @@ export const GET_COLLECTIONS = gql`
     }
   }
 `;
+
+export const GET_COLLECTIONS_LIST = gql`
+  query groups($filter: GroupFilter, $opts: Opts) {
+    groups(filter: $filter, opts: $opts) {
+      id
+      label
+      isRestricted
+    }
+  }
+`;

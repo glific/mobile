@@ -8,3 +8,12 @@ export const GET_ALL_FLOWS = gql`
     }
   }
 `;
+
+export const GET_ALL_FLOW_LABELS = gql`
+  query flowLabels($filter: FlowLabelFilter, $opts: Opts) {
+    flowLabels(filter: $filter, opts: $opts) {
+      id
+      name
+    }
+  }
+`;

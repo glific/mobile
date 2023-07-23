@@ -5,13 +5,15 @@ import { COLORS, SCALE, SIZES } from '../../constants';
 
 interface Option {
   id: string;
-  label: string;
+  name?: string;
+  label?: string;
 }
 
 interface Props {
   testID?: string;
   options: Option[];
   selectedOptions: Option[];
+  // eslint-disable-next-line no-unused-vars
   onSelectOption: (options: Option[]) => void;
   label: string;
   placeHolder: string;
@@ -63,7 +65,7 @@ const MultiSelect: React.FC<Props> = ({
                 style={({ pressed }) => [styles.tag, pressed && styles.tagPressed]}
                 onPress={() => handleTagRemove(option)}
               >
-                <Text style={styles.tagText}>{option.label}</Text>
+                <Text style={styles.tagText}>{option.name ? option.name : option.label}</Text>
                 <AntDesign name="close" style={styles.tagCloseIcon} />
               </Pressable>
             ))}
@@ -77,11 +79,11 @@ const MultiSelect: React.FC<Props> = ({
         transparent={true}
         onRequestClose={toggleModal}
       >
-        <Pressable style={styles.modalBackdrop} onPress={toggleModal}>
+        <Pressable testID="closeSelect" style={styles.modalBackdrop} onPress={toggleModal}>
           <View style={styles.modalContent}>
             <Text style={styles.modalLabel}>{label}</Text>
             <ScrollView>
-              {options.map((option) => (
+              {options?.map((option) => (
                 <Pressable
                   key={option.id}
                   style={[
@@ -99,7 +101,9 @@ const MultiSelect: React.FC<Props> = ({
                       style={styles.checkBoxIcon}
                     />
                   )}
-                  <Text style={styles.optionButtonText}>{option.label}</Text>
+                  <Text style={styles.optionButtonText}>
+                    {option.name ? option.name : option.label}
+                  </Text>
                 </Pressable>
               ))}
             </ScrollView>
@@ -119,9 +123,10 @@ const styles = StyleSheet.create({
     marginRight: SIZES.m8,
   },
   dropIcon: {
-    color: COLORS.black,
+    color: COLORS.darkGray,
     fontSize: SIZES.f12,
-    marginTop: SIZES.m18,
+    includeFontPadding: false,
+    marginTop: SIZES.m16,
   },
   dropdownButton: {
     alignItems: 'flex-start',
@@ -195,17 +200,18 @@ const styles = StyleSheet.create({
     paddingVertical: SIZES.m8,
   },
   tagCloseIcon: {
-    color: COLORS.darkGray,
+    color: COLORS.primary70,
     fontSize: SIZES.f12,
   },
   tagPressed: {
     opacity: 0.7,
   },
   tagText: {
-    color: COLORS.black,
+    color: COLORS.primary70,
     fontSize: SIZES.f12,
-    fontWeight: '400',
+    fontWeight: '500',
     marginRight: SIZES.m6,
+    textAlign: 'center',
   },
   tagsContainer: {
     flexDirection: 'row',
