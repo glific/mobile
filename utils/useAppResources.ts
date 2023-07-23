@@ -16,7 +16,7 @@ function useAppResources(setToken, setOrg, setUser) {
           setToken(parsedSessionValue.access_token);
         }
 
-        const orgValue = await Storage.getData('glific_orgnisation');
+        const orgValue = await Storage.getData('glific_organisation');
         if (orgValue !== null) {
           const parsedOrgValue = JSON.parse(orgValue);
           setOrg(parsedOrgValue);
