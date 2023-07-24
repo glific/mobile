@@ -87,25 +87,6 @@ const refreshLink = new TokenRefreshLink({
   },
 });
 
-export const cache = new InMemoryCache({
-  typePolicies: {
-    Query: {
-      fields: {
-        contactHistory: {
-          keyArgs: false,
-
-          merge(existing, incoming, { args }: any) {
-            if (args.opts.offset === 0) {
-              return incoming;
-            }
-            return [...existing, ...incoming];
-          },
-        },
-      },
-    },
-  },
-});
-
 const retryIf = (error: any) => {
   const doNotRetryCodes = [500, 400, 401];
   return !!error && !doNotRetryCodes.includes(error.statusCode);
@@ -139,8 +120,9 @@ const httpLink = new HttpLink({ fetch: customFetch });
 const wsLink = new GraphQLWsLink(
   createClient({
     url: getWsUrl,
-    connectionParams: {
-      authToken: fetchToken(),
+    connectionParams: async () => {
+      const token = await fetchToken();
+      return { authToken: token };
     },
   })
 );
@@ -153,5 +135,5 @@ const link = retryLink.split(
 
 export const client = new ApolloClient({
   link: link,
-  cache: cache,
+  cache: new InMemoryCache(),
 });
