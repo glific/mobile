@@ -6,7 +6,7 @@ import { SIZES } from '../../constants';
 import SearchInput from './SearchInput';
 
 type Props = {
-  bsRef: RefObject<any>;
+  bsRef: RefObject<unknown>;
 };
 
 const SpeedSend = ({ bsRef }: Props) => {

@@ -5,6 +5,7 @@ import { GET_NOTIFICATIONS } from '../graphql/queries/Notification';
 import { fireEvent, waitFor } from '@testing-library/react-native';
 
 describe('Notifications Screen', () => {
+  const searchVal = '';
   const mockNotifications = [
     {
       __typename__: 'Notification',
@@ -25,7 +26,10 @@ describe('Notifications Screen', () => {
     {
       request: {
         query: GET_NOTIFICATIONS,
-        variables: { opts: { limit: 20, offset: 0, order: 'DESC', orderWith: 'updated_at' } },
+        variables: {
+          opts: { limit: 20, offset: 0, order: 'DESC', orderWith: 'updated_at' },
+          filter: { message: searchVal },
+        },
       },
       result: {
         data: {
@@ -36,7 +40,10 @@ describe('Notifications Screen', () => {
   ];
 
   test('renders the Notifications screen', async () => {
-    const { getAllByText } = customRender(<Notifications navigation={undefined} />, mocks);
+    const { getAllByText } = customRender(
+      <Notifications searchValue={searchVal} navigation={undefined} />,
+      mocks
+    );
 
     // search for element with John Doe
     await waitFor(() => getAllByText('John Doe'));

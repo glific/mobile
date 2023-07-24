@@ -4,7 +4,6 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useApolloClient, useMutation, useQuery } from '@apollo/client';
 import moment from 'moment';
 
-// import NotificationHeader from '../components/headers/NotificationHeader';
 import ErrorAlert from '../components/ui/ErrorAlert';
 import NotificationItem from '../components/NotificationItem';
 import { COLORS, SCALE, SIZES } from '../constants/theme';
@@ -78,9 +77,12 @@ const RenderOption: React.FC<RenderOptionProps> = ({ label, selectedTab, handleP
   );
 };
 
-const Notifications = () => {
+type NotificationProps = {
+  searchValue: string;
+};
+
+const Notifications: React.FC<NotificationProps> = ({ searchValue }) => {
   const client = useApolloClient();
-  // const [searchValue, setSearchValue] = useState('');
   const [activeTab, setActiveTab] = useState(Tabs[0]);
   const [notificationArray, setNotificationArray] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
@@ -88,6 +90,7 @@ const Notifications = () => {
   const { loading } = useQuery(GET_NOTIFICATIONS, {
     variables: {
       opts: { limit: 20, offset: 0, order: 'DESC', orderWith: 'updated_at' },
+      filter: { message: searchValue },
     },
     fetchPolicy: 'network-only',
     onCompleted: (data) => {
@@ -105,19 +108,6 @@ const Notifications = () => {
   const handleTabPress = (tab: ITab) => {
     setActiveTab(tab);
   };
-
-  // const handleSearch = (text: string) => {
-  //   setSearchValue(text);
-  //   // TODO: filter the notification array
-  // };
-
-  // React.useLayoutEffect(() => {
-  //   navigation.setOptions({
-  //     headerRight: () => (
-  //       <NotificationHeader searchValue={searchValue} handleSearch={handleSearch} />
-  //     ),
-  //   });
-  // }, [searchValue]);
 
   const [markNotificationAsRead] = useMutation(MARK_NOTIFICATIONS_AS_READ, {
     onCompleted: (data) => {

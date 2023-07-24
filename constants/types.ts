@@ -10,7 +10,8 @@ export type RootStackParamList = {
   Contacts: undefined;
   Collections: undefined;
   SavedSearches: undefined;
-  ConversationFilter: undefined;
+  // eslint-disable-next-line no-unused-vars
+  ConversationFilter: { onGoBack: (data: object) => void };
   ContactProfile: {
     contact: {
       id: number;

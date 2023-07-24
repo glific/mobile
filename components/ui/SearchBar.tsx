@@ -33,7 +33,8 @@ const MenuButton: React.FC<MenuButtonProps> = ({ label, count, onPress, active }
 };
 
 type SearchBarProps = {
-  setSearchVariable: () => void;
+  // eslint-disable-next-line no-unused-vars
+  setSearchVariable: (variables: object) => void;
   onSearch: () => void;
   showMenu?: boolean;
   collectionTab?: boolean;
@@ -50,6 +51,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   const [searchValue, setSearchValue] = useState<string>('');
   const [menuVisible, setMenuVisible] = useState<boolean>(false);
+  const [isAdvancedSearch, setIsAdvancedSearch] = useState<boolean>(false);
   const [fixedSearches, setFixedSearches] = useState([]);
   const [searchesCount, setSearchesCount] = useState({});
   const [selectedSearchId, setSelectedSearchId] = useState('1');
@@ -83,8 +85,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
     }
   }, [countData]);
 
-  const handleStatusSearch = (item) => {
+  const handleStatusSearch = (item: object) => {
     setSearchValue('');
+    setIsAdvancedSearch(false);
     setSelectedSearchId(item.id);
     const variables = JSON.parse(item.args);
     setSearchVariable(variables);
@@ -94,11 +97,21 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   const handleTermSearch = () => {
     setSelectedSearchId('0');
+    setIsAdvancedSearch(false);
     setSearchVariable({
       filter: { term: searchValue, searchGroup: collectionTab },
-      messageOpts: { limit: 20 },
+      messageOpts: { limit: 1 },
       contactOpts: { limit: 25 },
     });
+    onSearch();
+  };
+
+  const handleAdvanceSearch = (variables: object) => {
+    setSearchValue('');
+    setSelectedSearchId('0');
+    setIsAdvancedSearch(true);
+    setSearchVariable(variables);
+    closeMenu();
     onSearch();
   };
 
@@ -125,12 +138,17 @@ const SearchBar: React.FC<SearchBarProps> = ({
           onSubmitEditing={handleTermSearch}
         />
         {showMenu && (
-          <Ionicons
-            testID="filterIcon"
-            name="filter-outline"
-            style={styles.icon}
-            onPress={() => navigation.navigate('ConversationFilter')}
-          />
+          <View>
+            <Ionicons
+              testID="filterIcon"
+              name="filter-outline"
+              style={[styles.icon, isAdvancedSearch && { color: COLORS.primary100 }]}
+              onPress={() =>
+                navigation.navigate('ConversationFilter', { onGoBack: handleAdvanceSearch })
+              }
+            />
+            {isAdvancedSearch && <View style={styles.advancedSearchActive} />}
+          </View>
         )}
       </View>
       {showMenu && (
@@ -170,6 +188,17 @@ const styles = StyleSheet.create({
   activeMenu: {
     backgroundColor: COLORS.primary10,
     borderRadius: SIZES.r4,
+  },
+  advancedSearchActive: {
+    backgroundColor: COLORS.primary100,
+    borderColor: COLORS.white,
+    borderRadius: SIZES.r10,
+    borderWidth: SIZES.m2,
+    height: SIZES.m10,
+    position: 'absolute',
+    right: -SIZES.m2,
+    top: 0,
+    width: SIZES.m10,
   },
   icon: {
     color: COLORS.darkGray,

@@ -8,6 +8,9 @@ import {
 import { CLEAR_MESSAGES } from '../../graphql/mutations/Chat';
 import { BLOCK_CONTACT } from '../../graphql/mutations/Contact';
 import { GET_ALL_FLOWS } from '../../graphql/queries/Flows';
+import { GET_COLLECTIONS_LIST } from '../../graphql/queries/Collection';
+import { GET_USERS } from '../../graphql/queries/User';
+import { GET_ALL_FLOW_LABELS } from '../../graphql/queries/Flows';
 
 const mockContacts = {
   id: '1',
@@ -657,6 +660,75 @@ export const GET_CONTACT_MESSAGES_FLOW_MOCK = [
             id: '2',
             name: 'flow_2',
           },
+        ],
+      },
+    },
+  },
+];
+
+export const GET_OPTIONS_MOCK = [
+  {
+    request: {
+      query: GET_COLLECTIONS_LIST,
+      variables: {
+        filter: {},
+        opts: {
+          limit: null,
+          offset: 0,
+          order: 'ASC',
+        },
+      },
+    },
+    result: {
+      data: {
+        groups: [
+          { id: 1, label: 'Group 1', isRestricted: false },
+          { id: 2, label: 'Group 2', isRestricted: false },
+          { id: 3, label: 'Group 3', isRestricted: false },
+        ],
+      },
+    },
+  },
+  {
+    request: {
+      query: GET_ALL_FLOW_LABELS,
+      variables: {
+        filter: {},
+        opts: {
+          limit: null,
+          offset: 0,
+          order: 'ASC',
+        },
+      },
+    },
+    result: {
+      data: {
+        flowLabels: [
+          { id: 1, name: 'Flow 1' },
+          { id: 2, name: 'Flow 2' },
+          { id: 3, name: 'Flow 3' },
+        ],
+      },
+    },
+  },
+  {
+    request: {
+      query: GET_USERS,
+      variables: {
+        filter: {},
+        opts: {
+          limit: null,
+          offset: 0,
+          order: 'ASC',
+        },
+      },
+    },
+    result: {
+      data: {
+        users: [
+          { id: 1, label: 'User 1' },
+          { id: 2, label: 'User 2' },
+          { id: 3, label: 'User 3' },
         ],
       },
     },

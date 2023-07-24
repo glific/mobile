@@ -18,6 +18,10 @@ const NotificationHeader: React.FC<NotificationHeaderProps> = ({ searchValue, ha
     setSearchVisible(false);
   };
 
+  const handleInputChange = (value: string) => {
+    handleSearch(value);
+  };
+
   return (
     <View style={styles.mainContainer}>
       {!searchVisible ? (
@@ -34,8 +38,10 @@ const NotificationHeader: React.FC<NotificationHeaderProps> = ({ searchValue, ha
             <TextInput
               testID="searchInput"
               style={styles.input}
+              autoCapitalize="none"
+              keyboardType="default"
               value={searchValue}
-              onChangeText={handleSearch}
+              onChangeText={handleInputChange}
               autoFocus
               placeholder="Search"
               cursorColor={COLORS.darkGray}
