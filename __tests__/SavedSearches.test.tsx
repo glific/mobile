@@ -16,19 +16,17 @@ describe('Saved Searches Screen', () => {
       const savedSearchText = getByText('No Saved Searches');
       expect(savedSearchText).toBeDefined();
     });
-  });
+  }, 5000);
 
   test('renders the saved searches screen', async () => {
-    const { getByTestId } = customRender(<SavedSearches />, SAVED_SEARCH_MOCK);
+    const { getByTestId, getByText } = customRender(<SavedSearches />, SAVED_SEARCH_MOCK);
 
     expect(getByTestId('searchInput')).toBeDefined();
     expect(getByTestId('loadingIndicator')).toBeDefined();
 
-    // await waitFor(() => {
-    //   const savedSearches = getByText('test search');
-    //   expect(savedSearches).toBeDefined();
-    // });
-  });
-
-  // test('should check when saved searches', async () => {})
+    await waitFor(async () => {
+      const savedSearches = await getByText('test search');
+      expect(savedSearches).toBeDefined();
+    });
+  }, 5000);
 });

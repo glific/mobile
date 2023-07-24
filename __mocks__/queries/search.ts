@@ -5,10 +5,8 @@ export const SAVED_SEARCH_MOCK = [
     request: {
       query: SAVED_SEARCH_QUERY,
       variables: {
-        filter: {
-          isReversed: true,
-        },
-        opts: {},
+        filter: {},
+        opts: { limit: 20 },
       },
     },
     result: {
@@ -32,10 +30,8 @@ export const NO_SAVED_SEARCH_MOCK = [
     request: {
       query: SAVED_SEARCH_QUERY,
       variables: {
-        filter: {
-          isReversed: true,
-        },
-        opts: {},
+        filter: {},
+        opts: { limit: 20 },
       },
     },
     result: {
