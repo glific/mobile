@@ -14,10 +14,12 @@ const Collections = () => {
   const [searchVariable, setSearchVariable] = useState({
     filter: { searchGroup: true },
     messageOpts: { limit: 1 },
-    contactOpts: { limit: 20 },
+    contactOpts: { limit: 10, offset: 0 },
   });
+  const [pageNo, setPageNo] = useState(1);
+  const [noMoreItems, setNoMoreItems] = useState(false);
 
-  const { loading, error, data, refetch } = useQuery(GET_COLLECTIONS, {
+  const { loading, error, data, refetch, fetchMore } = useQuery(GET_COLLECTIONS, {
     variables: searchVariable,
   });
 
@@ -25,11 +27,15 @@ const Collections = () => {
     refetch(searchVariable);
   }
 
+  const handleSetSearchVariable = (variable) => {
+    setPageNo(1);
+    setNoMoreItems(false);
+    setSearchVariable(variable);
+  };
+
   useEffect(() => {
-    if (error) {
-      console.log(error);
-    }
-    if (data) {
+    if (error) console.log(error);
+    if (!loading && data) {
       const newCollections: ChatEntry[] = data.search.map((element: unknown) => {
         return {
           id: element.group?.id,
@@ -41,15 +47,41 @@ const Collections = () => {
     }
   }, [data, error]);
 
+  const handleLoadMore = () => {
+    if (loading || noMoreItems) return;
+
+    fetchMore({
+      variables: {
+        filter: searchVariable.filter,
+        messageOpts: searchVariable.messageOpts,
+        contactOpts: { ...searchVariable.contactOpts, offset: pageNo * 10 },
+      },
+      updateQuery: (prev, { fetchMoreResult }) => {
+        if (!fetchMoreResult?.search?.length) {
+          setNoMoreItems(true);
+          return prev;
+        } else {
+          if (fetchMoreResult.search.length < 10) setNoMoreItems(true);
+          setPageNo(pageNo + 1);
+          return {
+            search: [...prev.search, ...fetchMoreResult.search],
+          };
+        }
+      },
+    });
+  };
+
   return (
     <>
       <FlatList
         data={collections}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <CollectionCard id={item.id} name={item.name} />}
+        keyExtractor={(item) => item.id + item.name}
+        renderItem={({ item, index }) => (
+          <CollectionCard key={index} id={item.id} name={item.name} />
+        )}
         ListHeaderComponent={
           <SearchBar
-            setSearchVariable={setSearchVariable}
+            setSearchVariable={handleSetSearchVariable}
             onSearch={onSearchHandler}
             collectionTab
           />
@@ -58,6 +90,8 @@ const Collections = () => {
         stickyHeaderIndices={[0]}
         stickyHeaderHiddenOnScroll={true}
         style={styles.mainContainer}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.1}
       />
       {loading && <Loading />}
     </>

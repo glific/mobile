@@ -7,10 +7,10 @@ import {
 } from '../../graphql/mutations/Flows';
 import { CLEAR_MESSAGES } from '../../graphql/mutations/Chat';
 import { BLOCK_CONTACT } from '../../graphql/mutations/Contact';
-import { GET_ALL_FLOWS } from '../../graphql/queries/Flows';
+import { GET_ALL_FLOWS, GET_ALL_FLOW_LABELS } from '../../graphql/queries/Flows';
 import { GET_COLLECTIONS_LIST } from '../../graphql/queries/Collection';
 import { GET_USERS } from '../../graphql/queries/User';
-import { GET_ALL_FLOW_LABELS } from '../../graphql/queries/Flows';
+import { SAVED_SEARCH_QUERY, SEARCHES_COUNT } from '../../graphql/queries/Search';
 
 const mockContacts = {
   id: '1',
@@ -27,7 +27,7 @@ export const NO_SEARCH_CONTACTS_MOCK = [
       variables: {
         filter: {},
         messageOpts: { limit: 1 },
-        contactOpts: { limit: 20 },
+        contactOpts: { limit: 10, offset: 0 },
       },
     },
     result: {
@@ -44,6 +44,41 @@ export const NO_SEARCH_CONTACTS_MOCK = [
           },
         ],
       },
+    },
+  },
+  {
+    request: {
+      query: SAVED_SEARCH_QUERY,
+      variables: {
+        filter: { isReserved: true },
+        opts: {},
+      },
+    },
+    result: {
+      data: {
+        search: [
+          {
+            savedSearches: [
+              {
+                id: '1',
+                args: '{}',
+                shortcode: 'ts',
+                label: 'test search',
+                isReserved: true,
+              },
+            ],
+          },
+        ],
+      },
+    },
+  },
+  {
+    request: {
+      query: SEARCHES_COUNT,
+      variables: { organizationId: 1 },
+    },
+    result: {
+      data: '{collectionStats: {"1": {ts: 10}}}',
     },
   },
 ];
