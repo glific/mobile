@@ -1,3 +1,4 @@
+import { MARK_NOTIFICATIONS_AS_READ } from '../../graphql/mutations/Notification';
 import { GET_NOTIFICATIONS, GET_NOTIFICATIONS_COUNT } from '../../graphql/queries/Notification';
 
 export const GET_NOTIFICATIONS_COUNT_MOCK = [
@@ -17,8 +18,19 @@ export const GET_NOTIFICATIONS_COUNT_MOCK = [
     },
   },
 ];
+const markAsRead = {
+  request: {
+    query: MARK_NOTIFICATIONS_AS_READ,
+  },
+  result: {
+    data: {
+      markNotificationAsRead: true,
+    },
+  },
+};
 
 export const GET_NOTIFICATIONS_MOCK = [
+  markAsRead,
   {
     request: {
       query: GET_NOTIFICATIONS,
