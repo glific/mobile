@@ -1,16 +1,4 @@
-import { MARK_NOTIFICATIONS_AS_READ } from '../../graphql/mutations/Notification';
 import { SAVED_SEARCH_QUERY, SEARCHES_COUNT } from '../../graphql/queries/Search';
-
-const markAsRead = {
-  request: {
-    query: MARK_NOTIFICATIONS_AS_READ,
-  },
-  result: {
-    data: {
-      markNotificationAsRead: true,
-    },
-  },
-};
 
 const collectionStats = {
   request: {
@@ -48,7 +36,6 @@ const reservedSavedSearchQuery = {
 };
 
 export const SAVED_SEARCH_MOCK = [
-  markAsRead,
   collectionStats,
   reservedSavedSearchQuery,
   {

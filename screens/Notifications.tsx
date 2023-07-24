@@ -126,9 +126,7 @@ const Notifications: React.FC<NotificationProps> = ({ searchValue }) => {
   });
 
   useEffect(() => {
-    setTimeout(() => {
-      markNotificationAsRead();
-    }, 2000);
+    markNotificationAsRead();
   }, []);
 
   return (
