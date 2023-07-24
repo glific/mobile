@@ -7,7 +7,6 @@ type NotificationHeaderProps = {
   searchValue: string;
   // eslint-disable-next-line no-unused-vars
   handleSearch: (value: string) => void;
-  // onSearch: () => void;
 };
 
 const NotificationHeader: React.FC<NotificationHeaderProps> = ({ searchValue, handleSearch }) => {
@@ -49,7 +48,12 @@ const NotificationHeader: React.FC<NotificationHeaderProps> = ({ searchValue, ha
               underlineColorAndroid="transparent"
             />
           </View>
-          <MaterialIcons name="close" style={styles.rightIcon} onPress={handleCloseSearch} />
+          <MaterialIcons
+            testID="searchClose"
+            name="close"
+            style={styles.rightIcon}
+            onPress={handleCloseSearch}
+          />
         </View>
       )}
     </View>
