@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useQuery } from '@apollo/client';
+import { useApolloClient, useMutation, useQuery } from '@apollo/client';
 import moment from 'moment';
 
-// import NotificationHeader from '../components/headers/NotificationHeader';
 import ErrorAlert from '../components/ui/ErrorAlert';
 import NotificationItem from '../components/NotificationItem';
 import { COLORS, SCALE, SIZES } from '../constants/theme';
-import { GET_NOTIFICATIONS } from '../graphql/queries/Notification';
+import { GET_NOTIFICATIONS, GET_NOTIFICATIONS_COUNT } from '../graphql/queries/Notification';
+import { MARK_NOTIFICATIONS_AS_READ } from '../graphql/mutations/Notification';
 import Loading from '../components/ui/Loading';
 
 type notificationType = {
@@ -76,10 +76,13 @@ const RenderOption: React.FC<RenderOptionProps> = ({ label, selectedTab, handleP
     </TouchableOpacity>
   );
 };
+
 type NotificationProps = {
   searchValue: string;
 };
+
 const Notifications: React.FC<NotificationProps> = ({ searchValue }) => {
+  const client = useApolloClient();
   const [activeTab, setActiveTab] = useState(Tabs[0]);
   const [notificationArray, setNotificationArray] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
@@ -106,6 +109,26 @@ const Notifications: React.FC<NotificationProps> = ({ searchValue }) => {
     setActiveTab(tab);
   };
 
+  const [markNotificationAsRead] = useMutation(MARK_NOTIFICATIONS_AS_READ, {
+    onCompleted: (data) => {
+      if (data.markNotificationAsRead) {
+        client.writeQuery({
+          query: GET_NOTIFICATIONS_COUNT,
+          variables: {
+            filter: {
+              is_read: false,
+            },
+          },
+          data: { countNotifications: 0 },
+        });
+      }
+    },
+  });
+
+  useEffect(() => {
+    markNotificationAsRead();
+  }, []);
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.navBar}>
@@ -129,6 +152,7 @@ const Notifications: React.FC<NotificationProps> = ({ searchValue }) => {
             !loading && <Text style={styles.emptyText}>No notification</Text>
           }
           initialNumToRender={10}
+          style={styles.innerContainer}
         />
         {loading && <Loading />}
       </>
@@ -163,6 +187,10 @@ const styles = StyleSheet.create({
     height: SIZES.s60,
     justifyContent: 'center',
     marginHorizontal: SIZES.m16,
+  },
+  innerContainer: {
+    backgroundColor: COLORS.white,
+    flex: 1,
   },
   mainContainer: {
     flex: 1,

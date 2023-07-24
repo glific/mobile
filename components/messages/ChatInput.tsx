@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, StyleSheet, TextInput, Pressable, Keyboard } from 'react-native';
+import { View, StyleSheet, TextInput, Pressable, Keyboard } from 'react-native';
 import {
   FontAwesome,
   Ionicons,
@@ -16,6 +16,7 @@ import SpeedSend from './SpeedSend';
 import Templates from './Templates';
 import InteractiveMessage from './InteractiveMessage';
 import ErrorAlert from '../ui/ErrorAlert';
+import MessageOptions from './MessageOptions';
 
 interface ChatInputProps {
   id: number;
@@ -174,35 +175,12 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
       </View>
 
       {showOptions && (
-        <View testID="optionsTab">
-          <Pressable
-            testID="speedSend"
-            style={styles.optionsButton}
-            android_ripple={{ borderless: false }}
-            onPress={() => speedSendRef.current.show()}
-          >
-            <MaterialCommunityIcons name="message-flash" style={styles.optionIcon} />
-            <Text style={styles.optionsText}>Speed sends</Text>
-          </Pressable>
-          <Pressable
-            testID="templates"
-            style={styles.optionsButton}
-            android_ripple={{ borderless: false }}
-            onPress={() => templateRef.current.show()}
-          >
-            <MaterialCommunityIcons name="message-star" style={styles.optionIcon} />
-            <Text style={styles.optionsText}>Templates</Text>
-          </Pressable>
-          <Pressable
-            testID="interactive"
-            style={styles.optionsButton}
-            android_ripple={{ borderless: false }}
-            onPress={() => interactiveMessageRef.current.show()}
-          >
-            <MaterialCommunityIcons name="gesture-tap-button" style={styles.optionIcon} />
-            <Text style={styles.optionsText}>Interactive message</Text>
-          </Pressable>
-
+        <View>
+          <MessageOptions
+            onSpeedSend={() => speedSendRef.current.show()}
+            onTemplates={() => templateRef.current.show()}
+            onInteractiveMessage={() => interactiveMessageRef.current.show()}
+          />
           <SpeedSend bsRef={speedSendRef} />
           <Templates bsRef={templateRef} />
           <InteractiveMessage bsRef={interactiveMessageRef} />
@@ -339,25 +317,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     width: '100%',
-  },
-  optionIcon: {
-    color: COLORS.primary400,
-    fontSize: SIZES.m24,
-  },
-  optionsButton: {
-    alignItems: 'center',
-    borderBottomWidth: 0.2,
-    borderColor: COLORS.darkGray,
-    flexDirection: 'row',
-    paddingHorizontal: SIZES.m24,
-    paddingVertical: SIZES.m16,
-    width: '100%',
-  },
-  optionsText: {
-    fontSize: SIZES.f14,
-    fontWeight: '500',
-    includeFontPadding: false,
-    marginLeft: SIZES.m16,
   },
   paperclipicon: {
     color: COLORS.black,

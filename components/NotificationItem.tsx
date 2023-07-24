@@ -1,8 +1,9 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useRef } from 'react';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { COLORS, SCALE, SIZES } from '../constants/theme';
+import NotificationBottomSheet from './NotificationBottomSheet';
 
 type notificationType = {
   notification: {
@@ -14,40 +15,49 @@ type notificationType = {
   };
 };
 
-const NotificationItem: React.FC<{ notification: notificationType }> = ({ notification }) => {
+const NotificationItem: React.FC<notificationType> = ({ notification }) => {
+  const notificationRef = useRef(null);
   return (
-    <View testID="notificationItem" style={styles.mainContainer}>
-      <View style={styles.iconContainer}>
-        {notification.type === 'Info' ? (
-          <View style={styles.typeInfo}>
-            <MaterialCommunityIcons
-              name="message-text-outline"
-              style={styles.icon}
-              color={COLORS.info}
-            />
-          </View>
-        ) : (
-          <>
-            {notification.type === 'Critical' ? (
-              <View style={styles.typeCritical}>
-                <AntDesign name="setting" style={styles.icon} color={COLORS.critical} />
-              </View>
-            ) : (
-              <View style={styles.typeWarning}>
-                <AntDesign name="warning" style={styles.icon} color={COLORS.warning} />
-              </View>
-            )}
-          </>
-        )}
-      </View>
-      <View style={styles.detailsContainer}>
-        <Text style={styles.title}>{notification.header}</Text>
-        <Text numberOfLines={3} style={styles.description}>
-          {notification.message}
-        </Text>
-        <Text style={styles.date}>{notification.time}</Text>
-      </View>
-    </View>
+    <>
+      <Pressable
+        testID="notificationItem"
+        style={styles.mainContainer}
+        android_ripple={{ color: COLORS.black005 }}
+        onPress={() => notificationRef.current.show()}
+      >
+        <View style={styles.iconContainer}>
+          {notification.type === 'Info' ? (
+            <View style={styles.typeInfo}>
+              <MaterialCommunityIcons
+                name="message-text-outline"
+                style={styles.icon}
+                color={COLORS.info}
+              />
+            </View>
+          ) : (
+            <>
+              {notification.type === 'Critical' ? (
+                <View style={styles.typeCritical}>
+                  <AntDesign name="setting" style={styles.icon} color={COLORS.critical} />
+                </View>
+              ) : (
+                <View style={styles.typeWarning}>
+                  <AntDesign name="warning" style={styles.icon} color={COLORS.warning} />
+                </View>
+              )}
+            </>
+          )}
+        </View>
+        <View style={styles.detailsContainer}>
+          <Text style={styles.title}>{notification.header}</Text>
+          <Text numberOfLines={3} style={styles.description}>
+            {notification.message}
+          </Text>
+          <Text style={styles.date}>{notification.time}</Text>
+        </View>
+      </Pressable>
+      <NotificationBottomSheet bsRef={notificationRef} notification={notification} />
+    </>
   );
 };
 
@@ -63,6 +73,7 @@ const styles = StyleSheet.create({
     color: COLORS.black,
     fontSize: SIZES.f14,
     marginBottom: SIZES.m10,
+    opacity: 0.8,
   },
   detailsContainer: {
     flex: 1,
@@ -76,6 +87,7 @@ const styles = StyleSheet.create({
   },
   mainContainer: {
     alignItems: 'center',
+    backgroundColor: COLORS.white,
     borderBottomColor: COLORS.darkGray,
     borderBottomWidth: SCALE(0.2),
     flexDirection: 'row',
