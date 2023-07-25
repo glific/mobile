@@ -33,6 +33,7 @@ const CustomDrawer: React.FC<DrawerContentProps> = (props) => {
 
   const LogoutHandler = async () => {
     await Storage.removeData('glific_session');
+    await Storage.removeData('glific_user');
     setToken(null);
   };
 

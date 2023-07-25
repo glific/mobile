@@ -30,7 +30,7 @@ const Server = ({ navigation }: Props) => {
 
   const onSubmitHandler = async () => {
     const orgUrl = `https://api.${serverCode}.tides.coloredcow.com/api`;
-
+    const wsUrl = `wss://api.${serverCode}.tides.coloredcow.com/socket`;
     if (serverCode.length < 2) {
       setErrorMessage('Please enter valid organization code');
       return;
@@ -44,10 +44,11 @@ const Server = ({ navigation }: Props) => {
 
       const orgData = {
         url: orgUrl,
+        wsUrl: wsUrl,
         shortcode: serverCode,
         name: response?.data?.data?.name,
       };
-      await Storage.storeData('glific_orgnisation', JSON.stringify(orgData));
+      await Storage.storeData('glific_organisation', JSON.stringify(orgData));
 
       setOrg(orgData);
       setLoading(false);

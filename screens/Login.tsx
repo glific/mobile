@@ -30,6 +30,7 @@ const Login = ({ navigation }: Props) => {
   const phoneInput = useRef<PhoneInput>(null);
 
   const [getCurrentUser] = useLazyQuery(GET_CURRENT_USER, {
+    fetchPolicy: 'network-only',
     onCompleted(data) {
       const { user } = data.currentUser;
       const userCopy = JSON.parse(JSON.stringify(user));

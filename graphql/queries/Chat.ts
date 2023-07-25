@@ -3,6 +3,10 @@ import { gql } from '@apollo/client';
 export const GET_MESSAGES = gql`
   query search($filter: SearchFilter!, $contactOpts: Opts!, $messageOpts: Opts!) {
     search(filter: $filter, contactOpts: $contactOpts, messageOpts: $messageOpts) {
+      contact {
+        id
+        name
+      }
       messages {
         id
         body

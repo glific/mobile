@@ -67,6 +67,7 @@ describe('Server screen', () => {
 
     const responseMock = {
       url: 'https://api.example.tides.coloredcow.com/api',
+      wsUrl: 'wss://api.example.tides.coloredcow.com/socket',
       shortcode: 'example',
       name: 'Example Organization',
     };
@@ -88,7 +89,7 @@ describe('Server screen', () => {
     expect(postMock).toHaveBeenCalledWith('/v1/session/name');
 
     expect(Storage.storeData).toHaveBeenCalledWith(
-      'glific_orgnisation',
+      'glific_organisation',
       JSON.stringify(responseMock)
     );
     // expect(setOrgMock).toHaveBeenCalledWith(responseMock);
