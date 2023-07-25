@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useContext } from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
-import { useQuery, useSubscription } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 
 import { GET_MESSAGES } from '../../graphql/queries/Chat';
 import { COLORS, SIZES } from '../../constants';
@@ -55,9 +55,16 @@ export const getSubscriptionDetails = (action: string, subscriptionData: any) =>
   };
 };
 
-const updateConversations = (cachedConversations: any, subscriptionData: any, action: string) => {
+const updateConversations = (
+  cachedConversations: any,
+  subscriptionData: any,
+  action: string,
+  id: any
+) => {
   // if there is no message data then return previous conversations
-  if (!subscriptionData.data) {
+  // or if the chat of sender is not open on the screen
+  // then don't update the cache
+  if (!subscriptionData.data || subscriptionData.data.receivedMessage.sender.id !== id) {
     return cachedConversations;
   }
   // let's return early incase we don't have cached conversations
@@ -147,7 +154,7 @@ const MessagesList: React.FC<MessageListProps> = ({ conversationType, id }) => {
         document: MESSAGE_RECEIVED_SUBSCRIPTION,
         variables: subscriptionVariables,
         updateQuery: (prev, { subscriptionData }) =>
-          updateConversations(prev, subscriptionData, 'RECEIVED'),
+          updateConversations(prev, subscriptionData, 'RECEIVED', id),
       });
 
       // message sent subscription
@@ -155,7 +162,7 @@ const MessagesList: React.FC<MessageListProps> = ({ conversationType, id }) => {
         document: MESSAGE_SENT_SUBSCRIPTION,
         variables: subscriptionVariables,
         updateQuery: (prev, { subscriptionData }) =>
-          updateConversations(prev, subscriptionData, 'SENT'),
+          updateConversations(prev, subscriptionData, 'SENT', id),
       });
     }
   }, [subscribeToMore]);
@@ -172,7 +179,6 @@ const MessagesList: React.FC<MessageListProps> = ({ conversationType, id }) => {
   if (data && data.search && data.search[0] && data.search[0].messages) {
     dataArray = [...data.search[0].messages].reverse();
   }
-
   const handleVideo = () => {
     setOpenVideo(!openVideo);
   };
