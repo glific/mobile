@@ -36,6 +36,7 @@ const Chat = () => {
   const [noMoreItems, setNoMoreItems] = useState(false);
 
   const { loading, error, data, refetch, fetchMore } = useQuery(GET_CONTACTS, {
+    fetchPolicy: 'network-only',
     variables: searchVariable,
   });
 

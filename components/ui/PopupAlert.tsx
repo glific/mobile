@@ -10,9 +10,8 @@ const PopupAlert = () => {
   const animation = useRef(new Animated.Value(0)).current;
 
   const closeAlert = () => {
-    setTimeout(() => {
-      setAlert(null);
-    }, 1);
+    setAlert(null);
+
     Animated.timing(animation, {
       toValue: 0,
       duration: 100,
@@ -29,7 +28,7 @@ const PopupAlert = () => {
     if (alert?.disable) {
       setTimeout(() => {
         closeAlert();
-      }, 3000);
+      }, 2000);
     }
   }, [alert]);
 

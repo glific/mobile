@@ -69,7 +69,7 @@ const Server = ({ navigation }: Props) => {
       <View style={styles.inputContainer}>
         <Input
           testID="server"
-          label="Enter or paste URL here"
+          label="Enter or paste shortcode here"
           onUpdateValue={serverCodeChanged}
           value={serverCode}
           keyboardType="url"

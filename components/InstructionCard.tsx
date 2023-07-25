@@ -10,8 +10,9 @@ const InstructionCard = () => {
         <Text style={styles.titleText}>How to do?</Text>
         <Text style={styles.bodyText}>1. Open your Glific web app</Text>
         <Text style={styles.bodyText}>
-          2. Find the short code of your orgnisation and copy & paste it into the Input field
+          2. Find the short code of your orgnisation in the URL (text before tides.coloredcow.com)
         </Text>
+        <Text style={styles.bodyText}>3. Copy & paste it into the Input field</Text>
       </View>
     </View>
   );
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.primary50,
     borderRadius: SIZES.r10,
     borderWidth: SCALE(0.75),
-    height: SCALE(112),
+    height: SCALE(142),
     justifyContent: 'center',
     paddingHorizontal: SIZES.m20,
     width: '98.6%',
