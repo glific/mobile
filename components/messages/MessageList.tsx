@@ -64,7 +64,8 @@ const updateConversations = (
   // if there is no message data then return previous conversations
   // or if the chat of sender is not open on the screen
   // then don't update the cache
-  if (!subscriptionData.data || subscriptionData.data.receivedMessage.sender.id !== id) {
+
+  if (!subscriptionData.data) {
     return cachedConversations;
   }
   // let's return early incase we don't have cached conversations
@@ -77,6 +78,10 @@ const updateConversations = (
     action,
     subscriptionData
   );
+
+  if (contactId !== id) {
+    return null;
+  }
 
   // loop through the cached conversations and find if contact exists
   let conversationIndex = 0;
