@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, screen, waitFor } from '@testing-library/react-native';
+import { fireEvent, waitFor } from '@testing-library/react-native';
 import customRender from '../utils/jestRender';
 
 import Chat from '../screens/Chat';
@@ -60,10 +60,10 @@ describe('Contact screen', () => {
 
   test('should test menu is visible on press or not ', async () => {
     const { getByTestId } = customRender(<Chat />, NO_SEARCH_CONTACTS_MOCK);
+    fireEvent.press(getByTestId('menuIcon'));
     await waitFor(() => {
-      fireEvent.press(getByTestId('menuIcon'));
+      const menu = getByTestId('menuCard');
+      expect(menu).toBeTruthy();
     });
-    const menu = screen.queryByTestId('menuCard');
-    expect(menu).toBeTruthy();
   });
 });

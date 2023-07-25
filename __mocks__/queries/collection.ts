@@ -18,7 +18,7 @@ export const GET_COLLECTIONS_MOCK = [
       variables: {
         filter: { searchGroup: true },
         messageOpts: { limit: 1 },
-        contactOpts: { limit: 20 },
+        contactOpts: { limit: 10, offset: 0 },
       },
     },
     result: {

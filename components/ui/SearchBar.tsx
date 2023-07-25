@@ -90,7 +90,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
     setIsAdvancedSearch(false);
     setSelectedSearchId(item.id);
     const variables = JSON.parse(item.args);
-    setSearchVariable(variables);
+    setSearchVariable({
+      ...variables,
+      messageOpts: { limit: 1 },
+      contactOpts: { limit: 10, offset: 0 },
+    });
     closeMenu();
     onSearch();
   };
@@ -101,7 +105,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
     setSearchVariable({
       filter: { term: searchValue, searchGroup: collectionTab },
       messageOpts: { limit: 1 },
-      contactOpts: { limit: 25 },
+      contactOpts: { limit: 10, offset: 0 },
     });
     onSearch();
   };
