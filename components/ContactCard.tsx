@@ -45,9 +45,8 @@ const Contact: React.FC<ContactProps> = ({ id, name, lastMessageAt, lastMessage,
   const client = useApolloClient();
   const [markAsRead] = useMutation(MARK_AS_READ, {
     onCompleted: (data) => {
-      console.log(data);
       if (data.markContactMessagesAsRead) {
-        // updateContactCache(client, id);
+        updateContactCache(client, id);
       }
     },
   });
@@ -63,8 +62,7 @@ const Contact: React.FC<ContactProps> = ({ id, name, lastMessageAt, lastMessage,
           conversationType: 'contact',
           lastMessageAt: lastMessageAt,
         });
-      }
-      }
+      }}
       style={styles.item}
       android_ripple={{ color: COLORS.primary10 }}
     >
@@ -88,7 +86,7 @@ const Contact: React.FC<ContactProps> = ({ id, name, lastMessageAt, lastMessage,
           </Text>
         </View>
       </View>
-    </Pressable >
+    </Pressable>
   );
 };
 
