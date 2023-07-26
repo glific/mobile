@@ -115,7 +115,7 @@ const Chat = () => {
             showMenu
           />
         }
-        ListEmptyComponent={() => !loading && <Text style={styles.emptyText}>No contact</Text>}
+        ListEmptyComponent={<>{!loading && <Text style={styles.emptyText}>No contact</Text>}</>}
         stickyHeaderIndices={[0]}
         stickyHeaderHiddenOnScroll={true}
         style={styles.mainContainer}

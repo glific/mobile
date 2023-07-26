@@ -84,24 +84,15 @@ type NotificationProps = {
 const Notifications: React.FC<NotificationProps> = ({ searchValue }) => {
   const client = useApolloClient();
   const [activeTab, setActiveTab] = useState(Tabs[0]);
-  const [notificationArray, setNotificationArray] = useState([]);
+  const [notificationArray, setNotificationArray] = useState<notificationType[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
+  const [pageNo, setPageNo] = useState(1);
+  const [noMoreItems, setNoMoreItems] = useState(false);
 
-  const { loading } = useQuery(GET_NOTIFICATIONS, {
+  const { loading, data, error, fetchMore } = useQuery(GET_NOTIFICATIONS, {
     variables: {
-      opts: { limit: 20, offset: 0, order: 'DESC', orderWith: 'updated_at' },
       filter: { message: searchValue },
-    },
-    fetchPolicy: 'network-only',
-    onCompleted: (data) => {
-      const formattedNotifications = formatNotifications(data.notifications);
-      setNotificationArray(formattedNotifications);
-    },
-    onError: (error) => {
-      setErrorMessage(error.message);
-      setInterval(() => {
-        setErrorMessage('');
-      }, 4000);
+      opts: { limit: 10, offset: 0, order: 'DESC', orderWith: 'updated_at' },
     },
   });
 
@@ -126,8 +117,43 @@ const Notifications: React.FC<NotificationProps> = ({ searchValue }) => {
   });
 
   useEffect(() => {
-    markNotificationAsRead();
-  }, []);
+    if (error) {
+      console.log(error);
+      setErrorMessage(error.message);
+      setInterval(() => {
+        setErrorMessage('');
+      }, 4000);
+    }
+    if (!loading && data) {
+      markNotificationAsRead();
+      const formattedNotifications = formatNotifications(data.notifications);
+      setNotificationArray(formattedNotifications);
+      console.log(formattedNotifications.length);
+    }
+  }, [data, error]);
+
+  const handleLoadMore = () => {
+    if (loading || noMoreItems) return;
+
+    fetchMore({
+      variables: {
+        filter: { message: searchValue },
+        opts: { limit: 10, offset: pageNo * 10, order: 'DESC', orderWith: 'updated_at' },
+      },
+      updateQuery: (prev, { fetchMoreResult }) => {
+        if (!fetchMoreResult?.notifications?.length) {
+          setNoMoreItems(true);
+          return prev;
+        } else {
+          if (fetchMoreResult.notifications.length < 10) setNoMoreItems(true);
+          setPageNo(pageNo + 1);
+          return {
+            notifications: [...prev.notifications, ...fetchMoreResult.notifications],
+          };
+        }
+      },
+    });
+  };
 
   return (
     <View style={styles.mainContainer}>
@@ -148,11 +174,13 @@ const Notifications: React.FC<NotificationProps> = ({ searchValue }) => {
           )}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => <NotificationItem key={item.id} notification={item} />}
-          ListEmptyComponent={() =>
-            !loading && <Text style={styles.emptyText}>No notification</Text>
+          ListEmptyComponent={
+            <>{!loading && <Text style={styles.emptyText}>No notification</Text>}</>
           }
           initialNumToRender={10}
           style={styles.innerContainer}
+          onEndReached={handleLoadMore}
+          onEndReachedThreshold={0.1}
         />
         {loading && <Loading />}
       </>

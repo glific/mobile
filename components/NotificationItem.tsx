@@ -15,7 +15,7 @@ type notificationType = {
   };
 };
 
-const NotificationItem: React.FC<notificationType> = ({ notification }) => {
+const NotificationItem: React.FC<notificationType> = React.memo(({ notification }) => {
   const notificationRef = useRef(null);
   return (
     <>
@@ -59,8 +59,9 @@ const NotificationItem: React.FC<notificationType> = ({ notification }) => {
       <NotificationBottomSheet bsRef={notificationRef} notification={notification} />
     </>
   );
-};
+});
 
+NotificationItem.displayName = 'NotificationItem';
 export default NotificationItem;
 
 const styles = StyleSheet.create({
