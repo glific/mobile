@@ -44,3 +44,15 @@ export const CLEAR_MESSAGES = gql`
     }
   }
 `;
+
+export const CONTACT_FRAGMENT = gql`
+  fragment isOrgRead on Contact {
+    isOrgRead
+  }
+`;
+
+export const MARK_AS_READ = gql`
+  mutation markContactMessagesAsRead($contactId: Gid!) {
+    markContactMessagesAsRead(contactId: $contactId)
+  }
+`;

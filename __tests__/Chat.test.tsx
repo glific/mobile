@@ -4,13 +4,14 @@ import customRender from '../utils/jestRender';
 
 import Chat from '../screens/Chat';
 import { NO_SEARCH_CONTACTS_MOCK } from '../__mocks__/queries/contact';
+import { MARK_AS_READ_MOCK } from '../__mocks__/mutations/chats';
 
 describe('Contact screen', () => {
   test('renders correctly', async () => {
     const navigateMock = jest.fn();
     const { getByTestId, findByText } = customRender(
       <Chat navigation={{ navigate: navigateMock }} />,
-      NO_SEARCH_CONTACTS_MOCK
+      [...NO_SEARCH_CONTACTS_MOCK, MARK_AS_READ_MOCK]
     );
 
     expect(getByTestId('searchInput')).toBeDefined();
@@ -25,12 +26,6 @@ describe('Contact screen', () => {
       expect(findByText('test message')).toBeTruthy();
 
       fireEvent.press(contactCard);
-      // expect(navigateMock).toHaveBeenCalledWith('ChatScreen', {
-      //   id: '17',
-      //   displayName: 'test',
-      //   conversationType: 'contact',
-      //   lastMessageAt: 'test message',
-      // });
     });
   });
 
