@@ -22,13 +22,10 @@ const updateContactCache = (client: any, id: any) => {
     fragment: CONTACT_FRAGMENT,
   });
   if (contact) {
-    const contactCopy = JSON.parse(JSON.stringify(contact));
-
-    contactCopy.isOrgRead = true;
     client.writeFragment({
       id: `Contact:${id}`,
       fragment: CONTACT_FRAGMENT,
-      data: contactCopy,
+      data: { ...contact, isOrgRead: true },
     });
   }
 
