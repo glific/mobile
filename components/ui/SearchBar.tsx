@@ -1,7 +1,7 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { View, TextInput, StyleSheet, Pressable, Text } from 'react-native';
+import { View, TextInput, StyleSheet, Pressable, Text, ScrollView } from 'react-native';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
-import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { useQuery } from '@apollo/client';
 
 import { SAVED_SEARCH_QUERY, SEARCHES_COUNT } from '../../graphql/queries/Search';
@@ -20,14 +20,24 @@ interface MenuButtonProps {
 
 const MenuButton: React.FC<MenuButtonProps> = ({ label, count, onPress, active }) => {
   const countStr = numberToAbbreviation(count);
+  const activeStyle = (type: string) => {
+    if (active && type === 'button')
+      return {
+        backgroundColor: COLORS.primary400,
+      };
+    else if (active && type === 'text')
+      return {
+        color: COLORS.white,
+      };
+  };
   return (
     <Pressable
       onPress={onPress}
-      style={[styles.menu, active && styles.activeMenu]}
+      style={[styles.menu, activeStyle('button')]}
       android_ripple={{ color: COLORS.primary10 }}
     >
-      <Text style={styles.menuText}>{label}</Text>
-      <Text style={styles.menuText}>{countStr}</Text>
+      <Text style={[styles.menuText, activeStyle('text')]}>{label}</Text>
+      <Text style={[styles.menuText, activeStyle('text')]}>({countStr})</Text>
     </Pressable>
   );
 };
@@ -50,14 +60,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const [searchValue, setSearchValue] = useState<string>('');
-  const [menuVisible, setMenuVisible] = useState<boolean>(false);
   const [isAdvancedSearch, setIsAdvancedSearch] = useState<boolean>(false);
   const [fixedSearches, setFixedSearches] = useState([]);
   const [searchesCount, setSearchesCount] = useState({});
   const [selectedSearchId, setSelectedSearchId] = useState('1');
-
-  const openMenu = () => setMenuVisible(true);
-  const closeMenu = () => setMenuVisible(false);
 
   const queryVariables = {
     filter: { isReserved: true },
@@ -78,6 +84,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   useEffect(() => {
     if (countData) {
+      console.log(countData);
       const collectionStats = JSON.parse(countData.collectionStats);
       if (collectionStats[countVariables.organizationId]) {
         setSearchesCount(collectionStats[countVariables.organizationId]);
@@ -95,7 +102,6 @@ const SearchBar: React.FC<SearchBarProps> = ({
       messageOpts: { limit: 1 },
       contactOpts: { limit: 10, offset: 0 },
     });
-    closeMenu();
     onSearch();
   };
 
@@ -115,7 +121,6 @@ const SearchBar: React.FC<SearchBarProps> = ({
     setSelectedSearchId('0');
     setIsAdvancedSearch(true);
     setSearchVariable(variables);
-    closeMenu();
     onSearch();
   };
 
@@ -156,31 +161,28 @@ const SearchBar: React.FC<SearchBarProps> = ({
         )}
       </View>
       {showMenu && (
-        <Pressable testID="menuIcon" onPress={openMenu} style={styles.menuIconContainer}>
-          <Entypo name="dots-three-vertical" style={styles.menuIcon} />
-        </Pressable>
-      )}
-      {menuVisible && (
-        <>
-          <Pressable onPress={closeMenu} style={styles.menuBackground} />
-          <View style={styles.menuContainer} testID="menuCard">
-            {menuLoading ? (
-              <Loading size={'small'} color={COLORS.darkGray} />
-            ) : (
-              <>
-                {fixedSearches.map((item) => (
-                  <MenuButton
-                    key={item.id}
-                    label={item.shortcode}
-                    count={searchesCount[item.shortcode] ? searchesCount[item.shortcode] : 0}
-                    onPress={() => handleStatusSearch(item)}
-                    active={item.id === selectedSearchId}
-                  />
-                ))}
-              </>
-            )}
-          </View>
-        </>
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          style={styles.menuContainer}
+          testID="filtersContainer"
+        >
+          {menuLoading ? (
+            <Loading size={'small'} color={COLORS.darkGray} />
+          ) : (
+            <>
+              {fixedSearches.map((item) => (
+                <MenuButton
+                  key={item.id}
+                  label={item.shortcode}
+                  count={searchesCount[item.shortcode] ? searchesCount[item.shortcode] : 0}
+                  onPress={() => handleStatusSearch(item)}
+                  active={item.id === selectedSearchId}
+                />
+              ))}
+            </>
+          )}
+        </ScrollView>
       )}
     </View>
   );
@@ -189,10 +191,6 @@ const SearchBar: React.FC<SearchBarProps> = ({
 export default SearchBar;
 
 const styles = StyleSheet.create({
-  activeMenu: {
-    backgroundColor: COLORS.primary10,
-    borderRadius: SIZES.r4,
-  },
   advancedSearchActive: {
     backgroundColor: COLORS.primary100,
     borderColor: COLORS.white,
@@ -220,7 +218,6 @@ const styles = StyleSheet.create({
     borderColor: COLORS.darkGray,
     borderRadius: SIZES.r10,
     borderWidth: SCALE(0.75),
-    flex: 1,
     flexDirection: 'row',
     minWidth: '80%',
     paddingHorizontal: SIZES.m10,
@@ -229,57 +226,29 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderBottomWidth: SCALE(0.2),
     borderColor: COLORS.darkGray,
-    flexDirection: 'row',
-    paddingHorizontal: SIZES.m12,
-    paddingVertical: SIZES.m12,
+    padding: SIZES.m12,
     width: SIZES.width,
   },
   menu: {
     alignItems: 'center',
+    borderColor: COLORS.darkGray,
+    borderRadius: SIZES.r20,
+    borderWidth: 0.75,
+    columnGap: SIZES.m2,
     flexDirection: 'row',
-    height: SIZES.s40,
+    height: SIZES.s30,
     justifyContent: 'space-between',
+    marginRight: SIZES.m4,
     paddingHorizontal: SIZES.m12,
   },
-  menuBackground: {
-    height: SIZES.height,
-    position: 'absolute',
-    right: -0,
-    top: -0,
-    width: SIZES.width,
-    zIndex: 10,
-  },
   menuContainer: {
-    backgroundColor: COLORS.white,
-    borderRadius: SIZES.r4,
-    elevation: SIZES.r4,
-    paddingHorizontal: SIZES.m2,
-    paddingVertical: SIZES.m8,
-    position: 'absolute',
-    right: SIZES.m16,
-    shadowColor: COLORS.black,
-    shadowOffset: { height: SIZES.r4, width: 0 },
-    shadowRadius: SIZES.r4,
-    top: SIZES.s60,
-    width: SCALE(180),
-    zIndex: 10,
-  },
-  menuIcon: {
-    color: COLORS.darkGray,
-    fontSize: SIZES.f16,
-  },
-  menuIconContainer: {
-    alignItems: 'center',
-    borderColor: COLORS.darkGray,
-    borderRadius: SIZES.r10,
-    borderWidth: SCALE(0.75),
-    height: SCALE(45),
-    justifyContent: 'center',
-    marginLeft: SIZES.m6,
-    width: SCALE(45),
+    paddingTop: SIZES.m8,
+    width: '100%',
   },
   menuText: {
-    color: COLORS.black,
-    fontSize: SIZES.f14,
+    color: COLORS.darkGray,
+    fontSize: SIZES.f12,
+    fontWeight: '500',
+    includeFontPadding: false,
   },
 });

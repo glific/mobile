@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FlatList, StyleSheet, Text } from 'react-native';
 import { useQuery } from '@apollo/client';
 
@@ -19,8 +19,21 @@ const Collections = () => {
   const [pageNo, setPageNo] = useState(1);
   const [noMoreItems, setNoMoreItems] = useState(false);
 
-  const { loading, error, data, refetch, fetchMore } = useQuery(GET_COLLECTIONS, {
+  const { loading, refetch, fetchMore } = useQuery(GET_COLLECTIONS, {
     variables: searchVariable,
+    onCompleted(data) {
+      const newCollections: ChatEntry[] = data.search.map((element: unknown) => {
+        return {
+          id: element.group?.id,
+          name: element.group?.label || 'Unknown Name',
+        };
+      });
+
+      setCollections(newCollections);
+    },
+    onError(error) {
+      console.log(error);
+    },
   });
 
   async function onSearchHandler() {
@@ -32,20 +45,6 @@ const Collections = () => {
     setNoMoreItems(false);
     setSearchVariable(variable);
   };
-
-  useEffect(() => {
-    if (error) console.log(error);
-    if (!loading && data) {
-      const newCollections: ChatEntry[] = data.search.map((element: unknown) => {
-        return {
-          id: element.group?.id,
-          name: element.group?.label || 'Unknown Name',
-        };
-      });
-
-      setCollections(newCollections);
-    }
-  }, [data, error]);
 
   const handleLoadMore = () => {
     if (loading || noMoreItems) return;
@@ -86,7 +85,7 @@ const Collections = () => {
             collectionTab
           />
         }
-        ListEmptyComponent={() => !loading && <Text style={styles.emptyText}>No collection</Text>}
+        ListEmptyComponent={!loading && <Text style={styles.emptyText}>No collection</Text>}
         stickyHeaderIndices={[0]}
         stickyHeaderHiddenOnScroll={true}
         style={styles.mainContainer}

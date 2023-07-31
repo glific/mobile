@@ -23,7 +23,7 @@ const Contact: React.FC<ContactProps> = ({ id, name, lastMessageAt, lastMessage,
 
   return (
     <Pressable
-      testID="contactCard"
+      testID={`contactCard${id}`}
       onPress={() =>
         navigation.navigate('ChatScreen', {
           id: id,

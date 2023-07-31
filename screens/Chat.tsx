@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { FlatList, StyleSheet, Text } from 'react-native';
 import { useQuery } from '@apollo/client';
 
@@ -35,25 +35,9 @@ const Chat = () => {
   const [pageNo, setPageNo] = useState(1);
   const [noMoreItems, setNoMoreItems] = useState(false);
 
-  const { loading, error, data, refetch, fetchMore } = useQuery(GET_CONTACTS, {
-    fetchPolicy: 'network-only',
+  const { loading, refetch, fetchMore } = useQuery(GET_CONTACTS, {
     variables: searchVariable,
-  });
-
-  async function onSearchHandler() {
-    refetch(searchVariable);
-  }
-
-  const handleSetSearchVariable = (variable) => {
-    setPageNo(1);
-    setNoMoreItems(false);
-    setSearchVariable(variable);
-  };
-
-  useEffect(() => {
-    if (error) console.log(error);
-
-    if (!loading && data) {
+    onCompleted(data) {
       const newContacts: ChatEntry[] = data.search.map((element: ContactElement) => {
         const messagesLength = element.messages?.length || 0;
         return {
@@ -66,8 +50,21 @@ const Chat = () => {
       });
 
       setContacts(newContacts);
-    }
-  }, [data, error]);
+    },
+    onError(error) {
+      console.log(error);
+    },
+  });
+
+  async function onSearchHandler() {
+    refetch(searchVariable);
+  }
+
+  const handleSetSearchVariable = (variable) => {
+    setPageNo(1);
+    setNoMoreItems(false);
+    setSearchVariable(variable);
+  };
 
   const handleLoadMore = () => {
     if (loading || noMoreItems) return;
@@ -115,7 +112,7 @@ const Chat = () => {
             showMenu
           />
         }
-        ListEmptyComponent={() => !loading && <Text style={styles.emptyText}>No contact</Text>}
+        ListEmptyComponent={!loading && <Text style={styles.emptyText}>No contact</Text>}
         stickyHeaderIndices={[0]}
         stickyHeaderHiddenOnScroll={true}
         style={styles.mainContainer}
