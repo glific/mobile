@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable prettier/prettier */
+import React, { useState, useEffect, useContext } from 'react';
 import { FlatList, StyleSheet, Text } from 'react-native';
 import { useQuery } from '@apollo/client';
 
@@ -8,6 +9,70 @@ import { GET_CONTACTS } from '../graphql/queries/Contact';
 import { COLORS, SIZES } from '../constants';
 import { ChatEntry } from '../constants/types';
 import Loading from '../components/ui/Loading';
+import AuthContext from '../config/AuthContext';
+import { MESSAGE_RECEIVED_SUBSCRIPTION, MESSAGE_SENT_SUBSCRIPTION } from '../graphql/subscriptions/Chat';
+
+const updateContactList = (cachedConversations: any, subscriptionData: any, action: string) => {
+  if (!subscriptionData.data) {
+    return cachedConversations;
+  }
+
+  if (!cachedConversations) {
+    return null;
+  }
+
+  let contactId:string;
+  let id:string;
+  let body;
+  let contact;
+  switch (action) {
+    case 'RECEIVED':
+      contactId = subscriptionData.data.receivedMessage.contact.id;
+      id = subscriptionData.data.receivedMessage.id;
+      body = subscriptionData.data.receivedMessage.body;
+      contact = subscriptionData.data.receivedMessage.contact;
+      break;
+    case 'SENT':
+      contactId = subscriptionData.data.sentMessage.contact.id;
+      id = subscriptionData.data.sentMessage.id;
+      body = subscriptionData.data.sentMessage.body;
+      contact = subscriptionData.data.sentMessage.contact;
+      break;
+    default:
+      return null;
+  }
+
+  let conversationIndex = -1;
+
+  cachedConversations.search.forEach((conversation: any, index: any) => {
+    if (conversation.contact.id === contactId) {
+      conversationIndex = index;
+    }
+  });
+
+  const newMessage = {
+    id: id,
+    body: body,
+  };
+  const newContactEntry = {
+    messages: [newMessage],
+    contact: contact,
+  };
+  const cache = JSON.parse(JSON.stringify(cachedConversations));
+
+  if (conversationIndex > -1) {
+    // Contact exists, move it to index 0
+    const existingConversation = cache.search[conversationIndex];
+    cache.search.splice(conversationIndex, 1);
+    cache.search.unshift(existingConversation);
+    // Update the messages for the moved conversation
+    cache.search[0].messages.push(newMessage);
+  } else {
+    // Add the entry at position 0
+    cache.search.unshift(newContactEntry);
+  }
+  return cache;
+};
 
 interface Contact {
   id: string;
@@ -26,6 +91,7 @@ interface ContactElement {
 }
 
 const Chat = () => {
+  const { user }: any = useContext(AuthContext);
   const [contacts, setContacts] = useState<ChatEntry[]>([]);
   const [searchVariable, setSearchVariable] = useState({
     filter: {},
@@ -35,8 +101,10 @@ const Chat = () => {
   const [pageNo, setPageNo] = useState(1);
   const [noMoreItems, setNoMoreItems] = useState(false);
 
-  const { loading, error, data, refetch, fetchMore } = useQuery(GET_CONTACTS, {
-    fetchPolicy: 'network-only',
+  const subscriptionVariables = { organizationId: user?.organization?.id };
+
+  const { loading, error, data, refetch, fetchMore, subscribeToMore } = useQuery(GET_CONTACTS, {
+    fetchPolicy: 'cache-and-network',
     variables: searchVariable,
   });
 
@@ -44,7 +112,22 @@ const Chat = () => {
     refetch(searchVariable);
   }
 
-  const handleSetSearchVariable = (variable) => {
+  useEffect(() => {
+    if (subscribeToMore) {
+      subscribeToMore({
+        document: MESSAGE_RECEIVED_SUBSCRIPTION,
+        variables: subscriptionVariables,
+        updateQuery: (prev, { subscriptionData }) => updateContactList(prev, subscriptionData, 'RECEIVED'),
+      });
+      subscribeToMore({
+        document: MESSAGE_SENT_SUBSCRIPTION,
+        variables: subscriptionVariables,
+        updateQuery: (prev, { subscriptionData }) => updateContactList(prev, subscriptionData, 'SENT'),
+      });
+    }
+  }, [subscribeToMore]);
+
+  const handleSetSearchVariable = (variable:any) => {
     setPageNo(1);
     setNoMoreItems(false);
     setSearchVariable(variable);

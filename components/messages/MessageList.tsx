@@ -17,7 +17,7 @@ type MessageListProps = {
   conversationType: string;
 };
 
-export const getSubscriptionDetails = (action: string, subscriptionData: any) => {
+const getSubscriptionDetails = (action: string, subscriptionData: any) => {
   let newMessage: any;
   let contactId = 0;
   let collectionId = 0;
