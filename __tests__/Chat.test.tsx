@@ -4,6 +4,7 @@ import customRender from '../utils/jestRender';
 
 import Chat from '../screens/Chat';
 import { NO_SEARCH_CONTACTS_MOCK } from '../__mocks__/queries/contact';
+import { MARK_AS_READ_MOCK } from '../__mocks__/mutations/chats';
 
 describe('Contact screen', () => {
   test('renders correctly', async () => {

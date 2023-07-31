@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   button: {
     height: SIZES.s36,
     marginLeft: SIZES.m10,
-    width: SCALE(90),
+    width: SCALE(100),
   },
   buttonContainer: {
     flexDirection: 'row',

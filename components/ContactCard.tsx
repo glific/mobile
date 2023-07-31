@@ -5,6 +5,8 @@ import { useNavigation } from '@react-navigation/native';
 import formatTime from '../utils/formatTime';
 import { COLORS, SCALE, SIZES } from '../constants';
 import { getSessionTimeLeft } from '../utils/helper';
+import { MARK_AS_READ, CONTACT_FRAGMENT } from '../graphql/mutations/Chat';
+import { useApolloClient, useMutation } from '@apollo/client';
 
 export interface ContactProps {
   id: string;
@@ -14,6 +16,22 @@ export interface ContactProps {
   isOrgRead: boolean;
 }
 
+const updateContactCache = (client: any, id: any) => {
+  const contact = client.readFragment({
+    id: `Contact:${id}`,
+    fragment: CONTACT_FRAGMENT,
+  });
+  if (contact) {
+    client.writeFragment({
+      id: `Contact:${id}`,
+      fragment: CONTACT_FRAGMENT,
+      data: { ...contact, isOrgRead: true },
+    });
+  }
+
+  return null;
+};
+
 const Contact: React.FC<ContactProps> = ({ id, name, lastMessageAt, lastMessage, isOrgRead }) => {
   const navigation = useNavigation();
 
@@ -21,17 +39,27 @@ const Contact: React.FC<ContactProps> = ({ id, name, lastMessageAt, lastMessage,
   const dateObj = new Date(lastMessageAt);
   const formattedTime = formatTime(dateObj);
 
+  const client = useApolloClient();
+  const [markAsRead] = useMutation(MARK_AS_READ, {
+    onCompleted: (data) => {
+      if (data.markContactMessagesAsRead) {
+        updateContactCache(client, id);
+      }
+    },
+  });
+
   return (
     <Pressable
       testID={`contactCard${id}`}
-      onPress={() =>
+      onPress={() => {
+        markAsRead({ variables: { contactId: id } });
         navigation.navigate('ChatScreen', {
           id: id,
           displayName: name,
           conversationType: 'contact',
           lastMessageAt: lastMessageAt,
-        })
-      }
+        });
+      }}
       style={styles.item}
       android_ripple={{ color: COLORS.primary10 }}
     >
