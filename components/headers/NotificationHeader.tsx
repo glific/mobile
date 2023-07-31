@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   input: {
     color: COLORS.black,
     fontSize: SIZES.f16,
-    width: SCALE(210),
+    width: SCALE(220),
   },
   mainContainer: {
     flexDirection: 'row',
