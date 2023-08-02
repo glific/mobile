@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
 import { COLORS, SIZES } from '../constants';
 import { Feather } from '@expo/vector-icons';
+import { useQuery } from '@apollo/client';
+import { GET_CONTACT_HISTORY } from '../graphql/queries/Contact';
+
+type History = {
+  id: string;
+  date: string;
+  action: string;
+};
 
 const data = [
   {
@@ -32,12 +40,52 @@ const formatDate = (date: string) => {
   return moment(givenDate).format('DD/MM/YYYY, HH:mm:ss');
 };
 
-const ContactHistory = () => {
+const formatHistory = (histories): History[] => {
+  return histories.map((history) => {
+    return {
+      id: history.id,
+      date: moment.utc(history.eventDatetime).valueOf(),
+      action: history.eventLabel,
+    };
+  });
+};
+interface Props {
+  navigation: unknown;
+  route: {
+    params: {
+      id: string;
+    };
+  };
+}
+
+const ContactHistory = ({ navigation, route }: Props) => {
+  const contactId = route.params;
+  const [historyData, setHistoryData] = useState([]);
+  const { loading } = useQuery(GET_CONTACT_HISTORY, {
+    variables: {
+      opts: {
+        order: 'ASC',
+        limit: 10,
+        offset: 0,
+      },
+      filter: {
+        contactId: contactId,
+      },
+    },
+    onCompleted: (data) => {
+      const formattedHistory = formatHistory(data.contactHistory);
+      setHistoryData(formattedHistory);
+    },
+    onError: (error) => {
+      console.log(error.message);
+    },
+  });
+
   return (
     <>
       <FlatList
         style={styles.mainContainer}
-        data={data}
+        data={historyData}
         renderItem={({ item }) => (
           <View key={item.id} style={styles.historyContainer}>
             <Text>{item.action}</Text>
