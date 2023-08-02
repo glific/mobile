@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import React, { useState, useEffect, useContext } from 'react';
 import { FlatList, StyleSheet, Text } from 'react-native';
 import { useQuery } from '@apollo/client';
@@ -10,9 +9,13 @@ import { COLORS, SIZES } from '../constants';
 import { ChatEntry } from '../constants/types';
 import Loading from '../components/ui/Loading';
 import AuthContext from '../config/AuthContext';
-import { MESSAGE_RECEIVED_SUBSCRIPTION, MESSAGE_SENT_SUBSCRIPTION } from '../graphql/subscriptions/Chat';
+import {
+  MESSAGE_RECEIVED_SUBSCRIPTION,
+  MESSAGE_SENT_SUBSCRIPTION,
+} from '../graphql/subscriptions/Chat';
 
 const updateContactList = (cachedConversations: any, subscriptionData: any, action: string) => {
+  console.log(cachedConversations);
   if (!subscriptionData.data) {
     return cachedConversations;
   }
@@ -21,8 +24,8 @@ const updateContactList = (cachedConversations: any, subscriptionData: any, acti
     return null;
   }
 
-  let contactId:string;
-  let id:string;
+  let contactId: string;
+  let id: string;
   let body;
   let contact;
   switch (action) {
@@ -117,17 +120,21 @@ const Chat = () => {
       subscribeToMore({
         document: MESSAGE_RECEIVED_SUBSCRIPTION,
         variables: subscriptionVariables,
-        updateQuery: (prev, { subscriptionData }) => updateContactList(prev, subscriptionData, 'RECEIVED'),
+        updateQuery: (prev, { subscriptionData }) =>
+          updateContactList(prev, subscriptionData, 'RECEIVED'),
+        // updateMessages(prev, subscriptionData, 'RECEIVED', -1, 'contact'),
       });
       subscribeToMore({
         document: MESSAGE_SENT_SUBSCRIPTION,
         variables: subscriptionVariables,
-        updateQuery: (prev, { subscriptionData }) => updateContactList(prev, subscriptionData, 'SENT'),
+        updateQuery: (prev, { subscriptionData }) =>
+          updateContactList(prev, subscriptionData, 'SENT'),
+        // updateMessages(prev, subscriptionData, 'SENT', -1, 'contact'),
       });
     }
   }, [subscribeToMore]);
 
-  const handleSetSearchVariable = (variable:any) => {
+  const handleSetSearchVariable = (variable: any) => {
     setPageNo(1);
     setNoMoreItems(false);
     setSearchVariable(variable);
