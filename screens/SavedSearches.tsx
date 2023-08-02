@@ -1,171 +1,64 @@
 import React, { useState } from 'react';
-import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Pressable, StyleSheet, Text } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 import { useQuery } from '@apollo/client';
 
-import ContactCard from '../components/ContactCard';
 import { COLORS, SCALE, SIZES } from '../constants';
 import { SAVED_SEARCH_QUERY } from '../graphql/queries/Search';
+import SavedSearchBar from '../components/ui/SavedSearchBar';
 import Loading from '../components/ui/Loading';
-import SearchBarDropdown from '../components/ui/SearchBarDropdown';
-import { ChatEntry } from '../constants/types';
-import { GET_CONTACTS } from '../graphql/queries/Contact';
 
-interface Contact {
-  id: string;
-  lastMessageAt: string | null;
-  name: string | null;
-  maskedPhone: string | null;
-  isOrgRead: boolean;
-}
-interface Message {
-  id: string;
-  body: string;
-}
-interface ContactElement {
-  contact?: Contact;
-  messages: Message[];
+interface Props {
+  navigation: {
+    navigate: () => void;
+  };
 }
 
-const SavedSearches = () => {
-  const [isSearched, setIsSearched] = useState(false);
-  const [savedSearch, setSavedSearch] = useState([]);
+const SavedSearches = ({ navigation }: Props) => {
   const [searchValue, setSearchValue] = useState<string>('');
-  const [selectedSearchId, setSelectedSearchId] = useState('');
-
-  // filter: { isReserved: false },
-  const { loading: savedSearchLoading } = useQuery(SAVED_SEARCH_QUERY, {
+  const { loading, data: savedSearchData } = useQuery(SAVED_SEARCH_QUERY, {
     variables: {
-      filter: {},
+      filter: { isReserved: false },
       opts: { limit: 20 },
     },
-    onCompleted(data) {
-      setSavedSearch(data.savedSearches);
-    },
     onError(error) {
       console.log(error);
     },
   });
 
-  const [contacts, setContacts] = useState<ChatEntry[]>([]);
-  const [searchVariable, setSearchVariable] = useState({
-    filter: {},
-    messageOpts: { limit: 0 },
-    contactOpts: { limit: 0 },
-  });
-  const [pageNo, setPageNo] = useState(1);
-  const [noMoreItems, setNoMoreItems] = useState(false);
-
-  const { loading, refetch, fetchMore } = useQuery(GET_CONTACTS, {
-    variables: searchVariable,
-    onCompleted(data) {
-      const newContacts: ChatEntry[] = data?.search?.map((element: ContactElement) => {
-        const messagesLength = element.messages?.length || 0;
-        return {
-          id: element.contact?.id,
-          name: element.contact?.name ? element.contact.name : element.contact?.maskedPhone,
-          lastMessageAt: element.contact?.lastMessageAt,
-          lastMessage: messagesLength > 0 ? element.messages[messagesLength - 1]?.body : ' ',
-          isOrgRead: element.contact?.isOrgRead,
-        };
-      });
-
-      setContacts(newContacts);
-    },
-    onError(error) {
-      console.log(error);
-    },
-  });
-
-  async function onSearchHandler() {
-    setIsSearched(true);
-    refetch(searchVariable);
-  }
-
-  const handleSetSearchVariable = (search) => {
-    setSearchValue(search.label);
-    setSelectedSearchId(search.id);
-    const variables = JSON.parse(search.args);
-    setSearchVariable({
-      ...variables,
-      messageOpts: { limit: 1 },
-      contactOpts: { limit: 10, offset: 0 },
-    });
-    setPageNo(1);
-    setNoMoreItems(false);
-    onSearchHandler();
-  };
-
-  const handleLoadMore = () => {
-    if (!isSearched || loading || noMoreItems) return;
-
-    fetchMore({
-      variables: {
-        filter: searchVariable.filter,
-        messageOpts: searchVariable.messageOpts,
-        contactOpts: { ...searchVariable.contactOpts, offset: pageNo * 10 },
-      },
-      updateQuery: (prev, { fetchMoreResult }) => {
-        if (!fetchMoreResult?.search?.length) {
-          setNoMoreItems(true);
-          return prev;
-        } else {
-          if (fetchMoreResult.search.length < 10) setNoMoreItems(true);
-          setPageNo(pageNo + 1);
-          return {
-            search: [...prev.search, ...fetchMoreResult.search],
-          };
-        }
-      },
+  const handleSelect = (search) => {
+    navigation.navigate('Contacts', {
+      name: 'savedSearch',
+      variables: JSON.parse(search.args),
     });
   };
 
   return (
     <>
       <FlatList
-        data={isSearched ? contacts : savedSearch}
+        data={savedSearchData?.savedSearches.filter((search) => search.label.includes(searchValue))}
         keyExtractor={(item) => item.id}
-        renderItem={({ item, index }) =>
-          isSearched ? (
-            <ContactCard
-              key={index}
-              id={item.id}
-              name={item.name}
-              lastMessage={item.lastMessage}
-              lastMessageAt={item.lastMessageAt}
-              isOrgRead={item.isOrgRead}
-            />
-          ) : (
-            <Pressable style={styles.item} onPress={() => handleSetSearchVariable(item)}>
-              <Text style={styles.name} key={item.id}>
-                {item.label}
-              </Text>
-            </Pressable>
-          )
-        }
-        ListHeaderComponent={
-          <SearchBarDropdown
-            setSearchVariable={handleSetSearchVariable}
-            savedSearches={savedSearch}
-            searchValue={searchValue}
-            setSearchValue={setSearchValue}
-            selectedSearchId={selectedSearchId}
-          />
-        }
-        ListEmptyComponent={
-          !loading && (
-            <Text style={styles.emptyText}>
-              {isSearched
-                ? 'Sorry, no results found!\nPlease try a different search.'
-                : 'No Saved Searches'}
+        renderItem={({ item, index }) => (
+          <Pressable
+            key={index}
+            style={styles.item}
+            onPress={() => handleSelect(item)}
+            android_ripple={{ color: COLORS.primary10 }}
+          >
+            <MaterialIcons name="touch-app" size={24} color={COLORS.primary100} />
+            <Text style={styles.name} key={item.id}>
+              {item.label}
             </Text>
-          )
+          </Pressable>
+        )}
+        ListHeaderComponent={
+          <SavedSearchBar searchValue={searchValue} setSearchValue={setSearchValue} />
         }
+        ListEmptyComponent={!loading && <Text style={styles.emptyText}>No Saved Searches</Text>}
         stickyHeaderIndices={[0]}
         stickyHeaderHiddenOnScroll={true}
         contentContainerStyle={styles.contentContainer}
         style={styles.mainContainer}
-        onEndReached={handleLoadMore}
-        onEndReachedThreshold={0.1}
       />
       {loading && <Loading />}
     </>
@@ -193,7 +86,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.darkGray,
     flexDirection: 'row',
     height: SIZES.s70,
-    paddingHorizontal: '4%',
+    paddingHorizontal: SIZES.m20,
     width: '100%',
   },
   mainContainer: {
@@ -204,7 +97,6 @@ const styles = StyleSheet.create({
   name: {
     color: COLORS.black,
     fontSize: SIZES.f16,
-    fontWeight: '600',
     marginLeft: SIZES.m16,
   },
 });

@@ -25,8 +25,20 @@ interface ContactElement {
   messages: Message[];
 }
 
-const Chat = () => {
+interface Props {
+  route: {
+    params:
+      | {
+          name: string;
+          variables: object;
+        }
+      | undefined;
+  };
+}
+
+const Chat = ({ route }: Props) => {
   const [contacts, setContacts] = useState<ChatEntry[]>([]);
+  const screen = route.params;
   const [searchVariable, setSearchVariable] = useState({
     filter: {},
     messageOpts: { limit: 1 },
@@ -49,6 +61,13 @@ const Chat = () => {
     setNoMoreItems(false);
     setSearchVariable(variable);
   };
+
+  useEffect(() => {
+    if (screen?.name === 'savedSearches') {
+      handleSetSearchVariable(screen.variables);
+      onSearchHandler();
+    }
+  }, [screen]);
 
   useEffect(() => {
     if (error) console.log(error);
@@ -96,6 +115,7 @@ const Chat = () => {
   return (
     <>
       <FlatList
+        accessibilityLabel={'notification-list'}
         data={contacts}
         keyExtractor={(item) => item.id + item.name}
         renderItem={({ item, index }) => (
