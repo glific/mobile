@@ -77,20 +77,18 @@ describe('Contact screen', () => {
     const searchIcon = getByTestId('searchIcon');
     fireEvent.press(searchIcon);
     expect(mockOnSearchHandler).toBeTruthy();
-    // const filterIcon = getByTestId('filterIcon');
-    // fireEvent.press(filterIcon);
-    // expect(navigateMock).toHaveBeenCalledWith('ConversationFilter');
   });
 
-  test('should test menu is visible on press or not ', async () => {
-    const { getByTestId } = customRender(
-      <Chat route={noParamsRouteMock} />,
-      NO_SEARCH_CONTACTS_MOCK
-    );
-    fireEvent.press(getByTestId('menuIcon'));
-    await waitFor(() => {
-      const menu = getByTestId('menuCard');
-      expect(menu).toBeTruthy();
+  test('should test search filters', async () => {
+    const { getByText } = customRender(
+      <Chat route={noParamsRouteMock}/>,
+      NO_SEARCH_CONTACTS_MOCK);
+    await waitFor(async () => {
+      const filterButton = await getByText('ts');
+      expect(filterButton).toBeDefined();
+      expect(getByText('(10)')).toBeDefined();
+
+      fireEvent.press(filterButton);
     });
   });
 });

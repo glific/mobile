@@ -243,17 +243,13 @@ export const NO_SEARCH_CONTACTS_MOCK = [
     },
     result: {
       data: {
-        search: [
+        savedSearches: [
           {
-            savedSearches: [
-              {
-                id: '1',
-                args: '{}',
-                shortcode: 'ts',
-                label: 'test search',
-                isReserved: true,
-              },
-            ],
+            id: '1',
+            args: '{}',
+            shortcode: 'ts',
+            label: 'test search',
+            isReserved: true,
           },
         ],
       },
@@ -262,10 +258,12 @@ export const NO_SEARCH_CONTACTS_MOCK = [
   {
     request: {
       query: SEARCHES_COUNT,
-      variables: { organizationId: 1 },
+      variables: { organizationId: '1' },
     },
     result: {
-      data: '{collectionStats: {"1": {ts: 10}}}',
+      data: {
+        collectionStats: '{"1":{"ts":10}}',
+      },
     },
   },
 ];
@@ -277,7 +275,7 @@ export const SEARCH_CONTACTS_MOCK = [
       variables: {
         filter: { term: 'test search' },
         messageOpts: { limit: 1 },
-        contactOpts: { limit: 20 },
+        contactOpts: { limit: 1, offset: 0 },
       },
     },
     result: {

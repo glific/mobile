@@ -7,7 +7,6 @@ import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 type Props = {
   bsRef: RefObject<unknown>;
   notification: {
-    id: number;
     header: string;
     message: string;
     time: string;

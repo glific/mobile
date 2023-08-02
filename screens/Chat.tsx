@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { FlatList, StyleSheet, Text } from 'react-native';
 import { useQuery } from '@apollo/client';
 
@@ -47,9 +47,25 @@ const Chat = ({ route }: Props) => {
   const [pageNo, setPageNo] = useState(1);
   const [noMoreItems, setNoMoreItems] = useState(false);
 
-  const { loading, error, data, refetch, fetchMore } = useQuery(GET_CONTACTS, {
-    fetchPolicy: 'network-only',
+  const { loading, refetch, fetchMore } = useQuery(GET_CONTACTS, {
     variables: searchVariable,
+    onCompleted(data) {
+      const newContacts: ChatEntry[] = data.search.map((element: ContactElement) => {
+        const messagesLength = element.messages?.length || 0;
+        return {
+          id: element.contact?.id,
+          name: element.contact?.name ? element.contact.name : element.contact?.maskedPhone,
+          lastMessageAt: element.contact?.lastMessageAt,
+          lastMessage: messagesLength > 0 ? element.messages[messagesLength - 1]?.body : ' ',
+          isOrgRead: element.contact?.isOrgRead,
+        };
+      });
+
+      setContacts(newContacts);
+    },
+    onError(error) {
+      console.log(error);
+    },
   });
 
   async function onSearchHandler() {
@@ -68,25 +84,6 @@ const Chat = ({ route }: Props) => {
       onSearchHandler();
     }
   }, [screen]);
-
-  useEffect(() => {
-    if (error) console.log(error);
-
-    if (!loading && data) {
-      const newContacts: ChatEntry[] = data.search.map((element: ContactElement) => {
-        const messagesLength = element.messages?.length || 0;
-        return {
-          id: element.contact?.id,
-          name: element.contact?.name ? element.contact.name : element.contact?.maskedPhone,
-          lastMessageAt: element.contact?.lastMessageAt,
-          lastMessage: messagesLength > 0 ? element.messages[messagesLength - 1]?.body : ' ',
-          isOrgRead: element.contact?.isOrgRead,
-        };
-      });
-
-      setContacts(newContacts);
-    }
-  }, [data, error]);
 
   const handleLoadMore = () => {
     if (loading || noMoreItems) return;
@@ -135,7 +132,7 @@ const Chat = ({ route }: Props) => {
             showMenu
           />
         }
-        ListEmptyComponent={() => !loading && <Text style={styles.emptyText}>No contact</Text>}
+        ListEmptyComponent={!loading && <Text style={styles.emptyText}>No contact</Text>}
         stickyHeaderIndices={[0]}
         stickyHeaderHiddenOnScroll={true}
         style={styles.mainContainer}
