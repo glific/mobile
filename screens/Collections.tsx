@@ -66,6 +66,7 @@ const Collections = () => {
   return (
     <>
       <FlatList
+        accessibilityLabel={'notification-list'}
         data={collectionsData?.search}
         renderItem={({ item, index }) => {
           return (

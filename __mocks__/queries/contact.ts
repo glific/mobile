@@ -34,7 +34,194 @@ export const NO_SEARCH_CONTACTS_MOCK = [
       data: {
         search: [
           {
-            contact: mockContacts,
+            contact: {
+              id: '1',
+              name: 'test',
+              maskedPhone: '12*****90',
+              lastMessageAt: '2021-08-10T12:00:00.000Z',
+              isOrgRead: true,
+            },
+            messages: [
+              {
+                id: '1',
+                body: 'test message',
+              },
+            ],
+          },
+          {
+            contact: {
+              id: '2',
+              name: 'test',
+              maskedPhone: '12*****90',
+              lastMessageAt: '2021-08-10T12:00:00.000Z',
+              isOrgRead: true,
+            },
+            messages: [
+              {
+                id: '1',
+                body: 'test message',
+              },
+            ],
+          },
+          {
+            contact: {
+              id: '3',
+              name: 'test',
+              maskedPhone: '12*****90',
+              lastMessageAt: '2021-08-10T12:00:00.000Z',
+              isOrgRead: true,
+            },
+            messages: [
+              {
+                id: '1',
+                body: 'test message',
+              },
+            ],
+          },
+          {
+            contact: {
+              id: '4',
+              name: 'test',
+              maskedPhone: '12*****90',
+              lastMessageAt: '2021-08-10T12:00:00.000Z',
+              isOrgRead: true,
+            },
+            messages: [
+              {
+                id: '1',
+                body: 'test message',
+              },
+            ],
+          },
+          {
+            contact: {
+              id: '5',
+              name: 'test',
+              maskedPhone: '12*****90',
+              lastMessageAt: '2021-08-10T12:00:00.000Z',
+              isOrgRead: true,
+            },
+            messages: [
+              {
+                id: '1',
+                body: 'test message',
+              },
+            ],
+          },
+          {
+            contact: {
+              id: '6',
+              name: 'test',
+              maskedPhone: '12*****90',
+              lastMessageAt: '2021-08-10T12:00:00.000Z',
+              isOrgRead: true,
+            },
+            messages: [
+              {
+                id: '1',
+                body: 'test message',
+              },
+            ],
+          },
+          {
+            contact: {
+              id: '7',
+              name: 'test',
+              maskedPhone: '12*****90',
+              lastMessageAt: '2021-08-10T12:00:00.000Z',
+              isOrgRead: true,
+            },
+            messages: [
+              {
+                id: '1',
+                body: 'test message',
+              },
+            ],
+          },
+          {
+            contact: {
+              id: '8',
+              name: 'test',
+              maskedPhone: '12*****90',
+              lastMessageAt: '2021-08-10T12:00:00.000Z',
+              isOrgRead: true,
+            },
+            messages: [
+              {
+                id: '1',
+                body: 'test message',
+              },
+            ],
+          },
+          {
+            contact: {
+              id: '9',
+              name: 'test',
+              maskedPhone: '12*****90',
+              lastMessageAt: '2021-08-10T12:00:00.000Z',
+              isOrgRead: true,
+            },
+            messages: [
+              {
+                id: '1',
+                body: 'test message',
+              },
+            ],
+          },
+          {
+            contact: {
+              id: '10',
+              name: 'test',
+              maskedPhone: '12*****90',
+              lastMessageAt: '2021-08-10T12:00:00.000Z',
+              isOrgRead: true,
+            },
+            messages: [
+              {
+                id: '1',
+                body: 'test message',
+              },
+            ],
+          },
+        ],
+      },
+    },
+  },
+  {
+    request: {
+      query: GET_CONTACTS,
+      variables: {
+        filter: {},
+        messageOpts: { limit: 1 },
+        contactOpts: { limit: 10, offset: 10 },
+      },
+    },
+    result: {
+      data: {
+        search: [
+          {
+            contact: {
+              id: '11',
+              name: 'test',
+              maskedPhone: '12*****90',
+              lastMessageAt: '2021-08-10T12:00:00.000Z',
+              isOrgRead: true,
+            },
+            messages: [
+              {
+                id: '1',
+                body: 'test message',
+              },
+            ],
+          },
+          {
+            contact: {
+              id: '12',
+              name: 'test',
+              maskedPhone: '12*****90',
+              lastMessageAt: '2021-08-10T12:00:00.000Z',
+              isOrgRead: true,
+            },
             messages: [
               {
                 id: '1',

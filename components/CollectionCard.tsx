@@ -13,7 +13,7 @@ const CollectionCard: React.FC<CollectionCardProps> = ({ id, name }) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   return (
     <Pressable
-      testID="collectionCard"
+      testID={`collectionCard${id}`}
       onPress={() =>
         navigation.navigate('ChatScreen', {
           id: id,

@@ -7,24 +7,26 @@ import { GET_COLLECTIONS_MOCK } from '../__mocks__/queries/collection';
 
 describe('Collections Screen', () => {
   test('renders the Collections screen', async () => {
-    const { getByTestId, findByText } = customRender(<Collections />, GET_COLLECTIONS_MOCK);
+    const { getByTestId, findByText, getByLabelText } = customRender(
+      <Collections />,
+      GET_COLLECTIONS_MOCK
+    );
 
     expect(getByTestId('searchInput'));
     expect(getByTestId('searchIcon'));
 
     await waitFor(async () => {
-      const collectionCard = await getByTestId('collectionCard');
+      const collectionCard = await getByTestId('collectionCard1');
 
       expect(collectionCard).toBeDefined();
-      expect(findByText('test group')).toBeTruthy();
+      expect(findByText('test group1')).toBeTruthy();
 
       fireEvent.press(collectionCard);
-      // expect(navigateMock).toHaveBeenCalledWith('ChatScreen', {
-      //   id: '17',
-      //   displayName: 'test',
-      //   conversationType: 'collection',
-      // });
     });
+
+    const flatList = getByLabelText('notification-list');
+    flatList.props.onEndReached();
+    expect(getByTestId('collectionCard10')).toBeDefined();
   });
 
   test('updates search correctly', async () => {

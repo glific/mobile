@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FlatList, StyleSheet, Text } from 'react-native';
 import { useQuery } from '@apollo/client';
 
@@ -25,8 +25,20 @@ interface ContactElement {
   messages: Message[];
 }
 
-const Chat = () => {
+interface Props {
+  route: {
+    params:
+      | {
+          name: string;
+          variables: object;
+        }
+      | undefined;
+  };
+}
+
+const Chat = ({ route }: Props) => {
   const [contacts, setContacts] = useState<ChatEntry[]>([]);
+  const screen = route.params;
   const [searchVariable, setSearchVariable] = useState({
     filter: {},
     messageOpts: { limit: 1 },
@@ -66,6 +78,13 @@ const Chat = () => {
     setSearchVariable(variable);
   };
 
+  useEffect(() => {
+    if (screen?.name === 'savedSearches') {
+      handleSetSearchVariable(screen.variables);
+      onSearchHandler();
+    }
+  }, [screen]);
+
   const handleLoadMore = () => {
     if (loading || noMoreItems) return;
 
@@ -93,6 +112,7 @@ const Chat = () => {
   return (
     <>
       <FlatList
+        accessibilityLabel={'notification-list'}
         data={contacts}
         keyExtractor={(item) => item.id + item.name}
         renderItem={({ item, index }) => (
