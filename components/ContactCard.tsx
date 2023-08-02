@@ -50,7 +50,7 @@ const Contact: React.FC<ContactProps> = ({ id, name, lastMessageAt, lastMessage,
 
   return (
     <Pressable
-      testID="contactCard"
+      testID={`contactCard${id}`}
       onPress={() => {
         markAsRead({ variables: { contactId: id } });
         navigation.navigate('ChatScreen', {

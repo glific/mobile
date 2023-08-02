@@ -1,6 +1,7 @@
 import { MARK_AS_READ } from '../../graphql/mutations/Chat';
 
-export const MARK_AS_READ_MOCK ={
+export const MARK_AS_READ_MOCK = [
+  {
     request: {
       query: MARK_AS_READ,
       variables: {
@@ -12,4 +13,5 @@ export const MARK_AS_READ_MOCK ={
         markContactMessagesAsRead: '1',
       },
     },
-  };
+  },
+];
