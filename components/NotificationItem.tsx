@@ -6,16 +6,14 @@ import { COLORS, SCALE, SIZES } from '../constants/theme';
 import NotificationBottomSheet from './NotificationBottomSheet';
 
 type notificationType = {
-  notification: {
-    id: number;
-    header: string;
-    message: string;
-    time: string;
-    type: string;
-  };
+  id: number;
+  header: string;
+  message: string;
+  time: string;
+  type: string;
 };
 
-const NotificationItem: React.FC<notificationType> = React.memo(({ notification }) => {
+const NotificationItem: React.FC<notificationType> = React.memo((notification) => {
   const notificationRef = useRef(null);
   return (
     <>

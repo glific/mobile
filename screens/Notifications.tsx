@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useApolloClient, useMutation, useQuery } from '@apollo/client';
@@ -89,17 +89,6 @@ const Notifications: React.FC<NotificationProps> = ({ searchValue }) => {
   const [pageNo, setPageNo] = useState(1);
   const [noMoreItems, setNoMoreItems] = useState(false);
 
-  const { loading, data, error, fetchMore } = useQuery(GET_NOTIFICATIONS, {
-    variables: {
-      filter: { message: searchValue },
-      opts: { limit: 10, offset: 0, order: 'DESC', orderWith: 'updated_at' },
-    },
-  });
-
-  const handleTabPress = (tab: ITab) => {
-    setActiveTab(tab);
-  };
-
   const [markNotificationAsRead] = useMutation(MARK_NOTIFICATIONS_AS_READ, {
     onCompleted: (data) => {
       if (data.markNotificationAsRead) {
@@ -116,21 +105,28 @@ const Notifications: React.FC<NotificationProps> = ({ searchValue }) => {
     },
   });
 
-  useEffect(() => {
-    if (error) {
-      console.log(error);
-      setErrorMessage(error.message);
-      setInterval(() => {
-        setErrorMessage('');
-      }, 4000);
-    }
-    if (!loading && data) {
+  const { loading, fetchMore } = useQuery(GET_NOTIFICATIONS, {
+    variables: {
+      filter: { message: searchValue },
+      opts: { limit: 10, offset: 0, order: 'DESC', orderWith: 'updated_at' },
+    },
+    onCompleted(data) {
       markNotificationAsRead();
       const formattedNotifications = formatNotifications(data.notifications);
       setNotificationArray(formattedNotifications);
-      console.log(formattedNotifications.length);
-    }
-  }, [data, error]);
+    },
+    onError(error) {
+      console.log(error.message);
+      setErrorMessage(error.message);
+      setTimeout(() => {
+        setErrorMessage('');
+      }, 4000);
+    },
+  });
+
+  const handleTabPress = (tab: ITab) => {
+    setActiveTab(tab);
+  };
 
   const handleLoadMore = () => {
     if (loading || noMoreItems) return;
@@ -157,33 +153,34 @@ const Notifications: React.FC<NotificationProps> = ({ searchValue }) => {
 
   return (
     <View style={styles.mainContainer}>
-      <View style={styles.navBar}>
-        {Tabs.map((tab) => (
-          <RenderOption
-            key={tab.id}
-            label={tab.label}
-            selectedTab={activeTab}
-            handlePress={() => handleTabPress(tab)}
-          />
-        ))}
-      </View>
-      <>
-        <FlatList
-          data={notificationArray.filter(
-            (item) => item['type'] === activeTab.label || activeTab.label === 'All'
-          )}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => <NotificationItem key={item.id} notification={item} />}
-          ListEmptyComponent={
-            <>{!loading && <Text style={styles.emptyText}>No notification</Text>}</>
-          }
-          initialNumToRender={10}
-          style={styles.innerContainer}
-          onEndReached={handleLoadMore}
-          onEndReachedThreshold={0.1}
-        />
-        {loading && <Loading />}
-      </>
+      <FlatList
+        accessibilityLabel={'notification-list'}
+        data={notificationArray.filter(
+          (item) => item['type'] === activeTab.label || activeTab.label === 'All'
+        )}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => <NotificationItem key={item.id} {...item} />}
+        ListEmptyComponent={
+          <>{!loading && <Text style={styles.emptyText}>No notification</Text>}</>
+        }
+        ListHeaderComponent={
+          <View style={styles.navBar}>
+            {Tabs.map((tab) => (
+              <RenderOption
+                key={tab.id}
+                label={tab.label}
+                selectedTab={activeTab}
+                handlePress={() => handleTabPress(tab)}
+              />
+            ))}
+          </View>
+        }
+        initialNumToRender={10}
+        style={styles.innerContainer}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.1}
+      />
+      {loading && <Loading />}
       {errorMessage !== '' && <ErrorAlert message={errorMessage} />}
     </View>
   );
