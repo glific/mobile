@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, TextInput, StyleSheet, Pressable, Text, ScrollView } from 'react-native';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
@@ -21,15 +21,10 @@ interface MenuButtonProps {
 const MenuButton: React.FC<MenuButtonProps> = ({ label, count, onPress, active }) => {
   const countStr = numberToAbbreviation(count);
   const activeStyle = (type: string) => {
-    if (active && type === 'button')
-      return {
-        backgroundColor: COLORS.primary400,
-      };
-    else if (active && type === 'text')
-      return {
-        color: COLORS.white,
-      };
+    if (!active) return;
+    return type === 'button' ? { backgroundColor: COLORS.primary400 } : { color: COLORS.white };
   };
+
   return (
     <Pressable
       onPress={onPress}
@@ -69,7 +64,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
     filter: { isReserved: true },
     opts: {},
   };
-  const { loading: menuLoading } = useQuery(SAVED_SEARCH_QUERY, {
+  const { loading: loadingSearches } = useQuery(SAVED_SEARCH_QUERY, {
     variables: queryVariables,
     onCompleted: (data) => {
       setFixedSearches(data.savedSearches);
@@ -80,17 +75,15 @@ const SearchBar: React.FC<SearchBarProps> = ({
   });
 
   const countVariables = { organizationId: user?.organization?.id };
-  const { data: countData } = useQuery(SEARCHES_COUNT, { variables: countVariables });
-
-  useEffect(() => {
-    if (countData) {
-      console.log(countData);
-      const collectionStats = JSON.parse(countData.collectionStats);
+  const { loading: loadingCounts } = useQuery(SEARCHES_COUNT, {
+    variables: countVariables,
+    onCompleted(data) {
+      const collectionStats = JSON.parse(data.collectionStats);
       if (collectionStats[countVariables.organizationId]) {
         setSearchesCount(collectionStats[countVariables.organizationId]);
       }
-    }
-  }, [countData]);
+    },
+  });
 
   const handleStatusSearch = (item: object) => {
     setSearchValue('');
@@ -167,7 +160,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
           style={styles.menuContainer}
           testID="filtersContainer"
         >
-          {menuLoading ? (
+          {loadingCounts || loadingSearches ? (
             <Loading size={'small'} color={COLORS.darkGray} />
           ) : (
             <>

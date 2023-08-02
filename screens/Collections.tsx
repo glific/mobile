@@ -2,15 +2,13 @@ import React, { useState } from 'react';
 import { FlatList, StyleSheet, Text } from 'react-native';
 import { useQuery } from '@apollo/client';
 
-import SearchBar from '../components/ui/SearchBar';
-import { GET_COLLECTIONS } from '../graphql/queries/Collection';
-import CollectionCard from '../components/CollectionCard';
 import { COLORS, SIZES } from '../constants';
-import { ChatEntry } from '../constants/types';
 import Loading from '../components/ui/Loading';
+import SearchBar from '../components/ui/SearchBar';
+import CollectionCard from '../components/CollectionCard';
+import { GET_COLLECTIONS } from '../graphql/queries/Collection';
 
 const Collections = () => {
-  const [collections, setCollections] = useState<ChatEntry[]>([]);
   const [searchVariable, setSearchVariable] = useState({
     filter: { searchGroup: true },
     messageOpts: { limit: 1 },
@@ -19,18 +17,13 @@ const Collections = () => {
   const [pageNo, setPageNo] = useState(1);
   const [noMoreItems, setNoMoreItems] = useState(false);
 
-  const { loading, refetch, fetchMore } = useQuery(GET_COLLECTIONS, {
+  const {
+    loading,
+    refetch,
+    fetchMore,
+    data: collectionsData,
+  } = useQuery(GET_COLLECTIONS, {
     variables: searchVariable,
-    onCompleted(data) {
-      const newCollections: ChatEntry[] = data.search.map((element: unknown) => {
-        return {
-          id: element.group?.id,
-          name: element.group?.label || 'Unknown Name',
-        };
-      });
-
-      setCollections(newCollections);
-    },
     onError(error) {
       console.log(error);
     },
@@ -73,11 +66,16 @@ const Collections = () => {
   return (
     <>
       <FlatList
-        data={collections}
-        keyExtractor={(item) => item.id + item.name}
-        renderItem={({ item, index }) => (
-          <CollectionCard key={index} id={item.id} name={item.name} />
-        )}
+        data={collectionsData?.search}
+        renderItem={({ item, index }) => {
+          return (
+            <CollectionCard
+              key={index}
+              id={item.group.id}
+              name={item.group.label ? item.group.label : 'Unknown Name'}
+            />
+          );
+        }}
         ListHeaderComponent={
           <SearchBar
             setSearchVariable={handleSetSearchVariable}

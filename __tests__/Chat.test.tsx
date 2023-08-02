@@ -8,7 +8,10 @@ import { MARK_AS_READ_MOCK } from '../__mocks__/mutations/chats';
 
 describe('Contact screen', () => {
   test('renders correctly', async () => {
-    const { getByTestId, findByText } = customRender(<Chat />, NO_SEARCH_CONTACTS_MOCK);
+    const { getByTestId, findByText } = customRender(<Chat />, [
+      ...NO_SEARCH_CONTACTS_MOCK,
+      ...MARK_AS_READ_MOCK,
+    ]);
 
     expect(getByTestId('searchInput')).toBeDefined();
     expect(getByTestId('searchIcon')).toBeDefined();
