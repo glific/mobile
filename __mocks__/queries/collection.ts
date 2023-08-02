@@ -22,70 +22,70 @@ export const GET_COLLECTIONS_MOCK = [
           {
             group: {
               id: '1',
-              label: 'test group',
+              label: 'test group1',
             },
             messages: mockMessages,
           },
           {
             group: {
               id: '2',
-              label: 'test group',
+              label: 'test group2',
             },
             messages: mockMessages,
           },
           {
             group: {
               id: '3',
-              label: 'test group',
+              label: 'test group3',
             },
             messages: mockMessages,
           },
           {
             group: {
               id: '4',
-              label: 'test group',
+              label: 'test group4',
             },
             messages: mockMessages,
           },
           {
             group: {
               id: '5',
-              label: 'test group',
+              label: 'test group5',
             },
             messages: mockMessages,
           },
           {
             group: {
               id: '6',
-              label: 'test group',
+              label: 'test group6',
             },
             messages: mockMessages,
           },
           {
             group: {
               id: '7',
-              label: 'test group',
+              label: 'test group7',
             },
             messages: mockMessages,
           },
           {
             group: {
               id: '8',
-              label: 'test group',
+              label: 'test group8',
             },
             messages: mockMessages,
           },
           {
             group: {
               id: '9',
-              label: 'test group',
+              label: 'test group9',
             },
             messages: mockMessages,
           },
           {
             group: {
               id: '10',
-              label: 'test group',
+              label: 'test group10',
             },
             messages: mockMessages,
           },
@@ -108,14 +108,14 @@ export const GET_COLLECTIONS_MOCK = [
           {
             group: {
               id: '11',
-              label: 'test group',
+              label: 'test group11',
             },
             messages: mockMessages,
           },
           {
             group: {
               id: '12',
-              label: 'test group',
+              label: 'test group12',
             },
             messages: mockMessages,
           },

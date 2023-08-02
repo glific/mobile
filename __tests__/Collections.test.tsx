@@ -19,7 +19,7 @@ describe('Collections Screen', () => {
       const collectionCard = await getByTestId('collectionCard1');
 
       expect(collectionCard).toBeDefined();
-      expect(findByText('test group')).toBeTruthy();
+      expect(findByText('test group1')).toBeTruthy();
 
       fireEvent.press(collectionCard);
     });
