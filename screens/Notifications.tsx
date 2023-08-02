@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useApolloClient, useMutation, useQuery } from '@apollo/client';
-import moment from 'moment';
 
 import ErrorAlert from '../components/ui/ErrorAlert';
 import NotificationItem from '../components/NotificationItem';
@@ -11,40 +10,12 @@ import { GET_NOTIFICATIONS, GET_NOTIFICATIONS_COUNT } from '../graphql/queries/N
 import { MARK_NOTIFICATIONS_AS_READ } from '../graphql/mutations/Notification';
 import Loading from '../components/ui/Loading';
 
-type notificationType = {
-  id: number;
-  header: string;
-  message: string;
-  time: string;
-  type: string;
-};
-
 interface Notification {
   entity: string;
   message: string;
   updatedAt: string;
   severity: string;
 }
-
-const formatNotifications = (notifications: Notification[]): notificationType[] => {
-  return notifications
-    .map(({ entity, message, updatedAt, severity }, index) => {
-      const { name, phone } = JSON.parse(entity);
-      const id = index + 1;
-      return {
-        id,
-        header: name || phone,
-        message,
-        time: moment.utc(updatedAt).valueOf(),
-        type: severity.replace(/"/g, ''),
-      };
-    })
-    .sort((a, b) => b.time - a.time)
-    .map(({ time, ...rest }) => ({
-      ...rest,
-      time: moment.utc(time).fromNow(),
-    }));
-};
 
 interface ITab {
   id: number;
@@ -58,25 +29,6 @@ const Tabs: ITab[] = [
   { id: 4, label: 'Info' },
 ];
 
-type RenderOptionProps = {
-  label: string;
-  selectedTab: ITab;
-  handlePress: () => void;
-};
-
-const RenderOption: React.FC<RenderOptionProps> = ({ label, selectedTab, handlePress }) => {
-  const isActive = label === selectedTab.label;
-  return (
-    <TouchableOpacity
-      testID={label}
-      onPress={handlePress}
-      style={isActive ? styles.activeTab : styles.inActiveTab}
-    >
-      <Text style={[styles.tabText, isActive ? styles.active : {}]}>{label}</Text>
-    </TouchableOpacity>
-  );
-};
-
 type NotificationProps = {
   searchValue: string;
 };
@@ -84,7 +36,6 @@ type NotificationProps = {
 const Notifications: React.FC<NotificationProps> = ({ searchValue }) => {
   const client = useApolloClient();
   const [activeTab, setActiveTab] = useState(Tabs[0]);
-  const [notificationArray, setNotificationArray] = useState<notificationType[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
   const [pageNo, setPageNo] = useState(1);
   const [noMoreItems, setNoMoreItems] = useState(false);
@@ -105,15 +56,17 @@ const Notifications: React.FC<NotificationProps> = ({ searchValue }) => {
     },
   });
 
-  const { loading, fetchMore } = useQuery(GET_NOTIFICATIONS, {
+  const {
+    loading,
+    fetchMore,
+    data: notificationData,
+  } = useQuery(GET_NOTIFICATIONS, {
     variables: {
       filter: { message: searchValue },
       opts: { limit: 10, offset: 0, order: 'DESC', orderWith: 'updated_at' },
     },
-    onCompleted(data) {
+    onCompleted() {
       markNotificationAsRead();
-      const formattedNotifications = formatNotifications(data.notifications);
-      setNotificationArray(formattedNotifications);
     },
     onError(error) {
       console.log(error.message);
@@ -123,10 +76,6 @@ const Notifications: React.FC<NotificationProps> = ({ searchValue }) => {
       }, 4000);
     },
   });
-
-  const handleTabPress = (tab: ITab) => {
-    setActiveTab(tab);
-  };
 
   const handleLoadMore = () => {
     if (loading || noMoreItems) return;
@@ -155,23 +104,27 @@ const Notifications: React.FC<NotificationProps> = ({ searchValue }) => {
     <View style={styles.mainContainer}>
       <FlatList
         accessibilityLabel={'notification-list'}
-        data={notificationArray.filter(
-          (item) => item['type'] === activeTab.label || activeTab.label === 'All'
+        data={notificationData?.notifications.filter(
+          (item: Notification) =>
+            item.severity.replace(/"/g, '') === activeTab.label || activeTab.label === 'All'
         )}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <NotificationItem key={item.id} {...item} />}
+        renderItem={({ item, index }) => <NotificationItem key={index} {...item} />}
         ListEmptyComponent={
           <>{!loading && <Text style={styles.emptyText}>No notification</Text>}</>
         }
         ListHeaderComponent={
           <View style={styles.navBar}>
             {Tabs.map((tab) => (
-              <RenderOption
+              <TouchableOpacity
                 key={tab.id}
-                label={tab.label}
-                selectedTab={activeTab}
-                handlePress={() => handleTabPress(tab)}
-              />
+                testID={tab.label}
+                onPress={() => setActiveTab(tab)}
+                style={tab.label === activeTab.label ? styles.activeTab : styles.inActiveTab}
+              >
+                <Text style={[styles.tabText, tab.label === activeTab.label ? styles.active : {}]}>
+                  {tab.label}
+                </Text>
+              </TouchableOpacity>
             ))}
           </View>
         }

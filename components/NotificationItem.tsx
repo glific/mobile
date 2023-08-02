@@ -1,20 +1,27 @@
 import React, { useRef } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
+import moment from 'moment';
 
 import { COLORS, SCALE, SIZES } from '../constants/theme';
 import NotificationBottomSheet from './NotificationBottomSheet';
 
 type notificationType = {
-  id: number;
-  header: string;
+  entity: string;
   message: string;
-  time: string;
-  type: string;
+  updatedAt: string;
+  severity: string;
 };
 
-const NotificationItem: React.FC<notificationType> = React.memo((notification) => {
+const NotificationItem: React.FC<notificationType> = React.memo((item) => {
   const notificationRef = useRef(null);
+  const { name, phone } = JSON.parse(item.entity);
+  const notification = {
+    header: name || phone,
+    message: item.message,
+    time: moment.utc(item.updatedAt).fromNow(),
+    type: item.severity.replace(/"/g, ''),
+  };
   return (
     <>
       <Pressable
