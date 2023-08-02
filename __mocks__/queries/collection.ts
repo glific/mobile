@@ -25,7 +25,103 @@ export const GET_COLLECTIONS_MOCK = [
       data: {
         search: [
           {
-            group: mockGroups,
+            group: {
+              id: '1',
+              label: 'test group',
+            },
+            messages: mockMessages,
+          },
+          {
+            group: {
+              id: '2',
+              label: 'test group',
+            },
+            messages: mockMessages,
+          },
+          {
+            group: {
+              id: '3',
+              label: 'test group',
+            },
+            messages: mockMessages,
+          },
+          {
+            group: {
+              id: '4',
+              label: 'test group',
+            },
+            messages: mockMessages,
+          },
+          {
+            group: {
+              id: '5',
+              label: 'test group',
+            },
+            messages: mockMessages,
+          },
+          {
+            group: {
+              id: '6',
+              label: 'test group',
+            },
+            messages: mockMessages,
+          },
+          {
+            group: {
+              id: '7',
+              label: 'test group',
+            },
+            messages: mockMessages,
+          },
+          {
+            group: {
+              id: '8',
+              label: 'test group',
+            },
+            messages: mockMessages,
+          },
+          {
+            group: {
+              id: '9',
+              label: 'test group',
+            },
+            messages: mockMessages,
+          },
+          {
+            group: {
+              id: '10',
+              label: 'test group',
+            },
+            messages: mockMessages,
+          },
+        ],
+      },
+    },
+  },
+  {
+    request: {
+      query: GET_COLLECTIONS,
+      variables: {
+        filter: { searchGroup: true },
+        messageOpts: { limit: 1 },
+        contactOpts: { limit: 10, offset: 10 },
+      },
+    },
+    result: {
+      data: {
+        search: [
+          {
+            group: {
+              id: '11',
+              label: 'test group',
+            },
+            messages: mockMessages,
+          },
+          {
+            group: {
+              id: '12',
+              label: 'test group',
+            },
             messages: mockMessages,
           },
         ],

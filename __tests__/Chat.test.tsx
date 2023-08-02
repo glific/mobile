@@ -80,9 +80,7 @@ describe('Contact screen', () => {
   });
 
   test('should test search filters', async () => {
-    const { getByText } = customRender(
-      <Chat route={noParamsRouteMock}/>,
-      NO_SEARCH_CONTACTS_MOCK);
+    const { getByText } = customRender(<Chat route={noParamsRouteMock} />, NO_SEARCH_CONTACTS_MOCK);
     await waitFor(async () => {
       const filterButton = await getByText('ts');
       expect(filterButton).toBeDefined();
