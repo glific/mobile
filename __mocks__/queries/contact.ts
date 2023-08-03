@@ -20,96 +20,280 @@ const mockContacts = {
   isOrgRead: true,
 };
 
-export const NO_SEARCH_CONTACTS_MOCK = [
-  {
-    request: {
-      query: GET_CONTACTS,
-      variables: {
-        filter: {},
-        messageOpts: { limit: 1 },
-        contactOpts: { limit: 10, offset: 0 },
-      },
-    },
-    result: {
-      data: {
-        search: [
-          {
-            contact: mockContacts,
-            messages: [
-              {
-                id: '1',
-                body: 'test message',
-              },
-            ],
-          },
-        ],
-      },
+export const SAVED_SEARCH_QUERY_MOCK = {
+  request: {
+    query: SAVED_SEARCH_QUERY,
+    variables: {
+      filter: { isReserved: true },
+      opts: {},
     },
   },
-  {
-    request: {
-      query: SAVED_SEARCH_QUERY,
-      variables: {
-        filter: { isReserved: true },
-        opts: {},
-      },
-    },
-    result: {
-      data: {
-        search: [
-          {
-            savedSearches: [
-              {
-                id: '1',
-                args: '{}',
-                shortcode: 'ts',
-                label: 'test search',
-                isReserved: true,
-              },
-            ],
-          },
-        ],
-      },
+  result: {
+    data: {
+      savedSearches: [
+        {
+          id: '1',
+          args: '{"filter":{},"messageOpts":{"limit":1},"contactOpts":{"limit":10,"offset":0}}',
+          shortcode: 'ts',
+          label: 'test search',
+          isReserved: true,
+        },
+      ],
     },
   },
-  {
-    request: {
-      query: SEARCHES_COUNT,
-      variables: { organizationId: 1 },
-    },
-    result: {
-      data: '{collectionStats: {"1": {ts: 10}}}',
-    },
-  },
-];
+};
 
-export const SEARCH_CONTACTS_MOCK = [
-  {
-    request: {
-      query: GET_CONTACTS,
-      variables: {
-        filter: { term: 'test search' },
-        messageOpts: { limit: 1 },
-        contactOpts: { limit: 20 },
-      },
-    },
-    result: {
-      data: {
-        search: [
-          {
-            contact: mockContacts,
-            messages: [
-              {
-                id: '1',
-                body: 'test message',
-              },
-            ],
-          },
-        ],
-      },
+export const SEARCHES_COUNT_MOCK = {
+  request: {
+    query: SEARCHES_COUNT,
+    variables: { organizationId: '1' },
+  },
+  result: {
+    data: {
+      collectionStats: '{"1":{"ts":10}}',
     },
   },
-];
+};
+
+export const NO_SEARCH_CONTACTS_MOCK = {
+  request: {
+    query: GET_CONTACTS,
+    variables: {
+      filter: {},
+      messageOpts: { limit: 1 },
+      contactOpts: { limit: 10, offset: 0 },
+    },
+  },
+  result: {
+    data: {
+      search: [
+        {
+          contact: {
+            id: '1',
+            name: 'test',
+            maskedPhone: '12*****90',
+            lastMessageAt: '2021-08-10T12:00:00.000Z',
+            isOrgRead: true,
+          },
+          messages: [
+            {
+              id: '1',
+              body: 'test message',
+            },
+          ],
+        },
+        {
+          contact: {
+            id: '2',
+            name: 'test',
+            maskedPhone: '12*****90',
+            lastMessageAt: '2021-08-10T12:00:00.000Z',
+            isOrgRead: true,
+          },
+          messages: [
+            {
+              id: '1',
+              body: 'test message',
+            },
+          ],
+        },
+        {
+          contact: {
+            id: '3',
+            name: 'test',
+            maskedPhone: '12*****90',
+            lastMessageAt: '2021-08-10T12:00:00.000Z',
+            isOrgRead: true,
+          },
+          messages: [
+            {
+              id: '1',
+              body: 'test message',
+            },
+          ],
+        },
+        {
+          contact: {
+            id: '4',
+            name: 'test',
+            maskedPhone: '12*****90',
+            lastMessageAt: '2021-08-10T12:00:00.000Z',
+            isOrgRead: true,
+          },
+          messages: [
+            {
+              id: '1',
+              body: 'test message',
+            },
+          ],
+        },
+        {
+          contact: {
+            id: '5',
+            name: 'test',
+            maskedPhone: '12*****90',
+            lastMessageAt: '2021-08-10T12:00:00.000Z',
+            isOrgRead: true,
+          },
+          messages: [
+            {
+              id: '1',
+              body: 'test message',
+            },
+          ],
+        },
+        {
+          contact: {
+            id: '6',
+            name: 'test',
+            maskedPhone: '12*****90',
+            lastMessageAt: '2021-08-10T12:00:00.000Z',
+            isOrgRead: true,
+          },
+          messages: [
+            {
+              id: '1',
+              body: 'test message',
+            },
+          ],
+        },
+        {
+          contact: {
+            id: '7',
+            name: 'test',
+            maskedPhone: '12*****90',
+            lastMessageAt: '2021-08-10T12:00:00.000Z',
+            isOrgRead: true,
+          },
+          messages: [
+            {
+              id: '1',
+              body: 'test message',
+            },
+          ],
+        },
+        {
+          contact: {
+            id: '8',
+            name: 'test',
+            maskedPhone: '12*****90',
+            lastMessageAt: '2021-08-10T12:00:00.000Z',
+            isOrgRead: true,
+          },
+          messages: [
+            {
+              id: '1',
+              body: 'test message',
+            },
+          ],
+        },
+        {
+          contact: {
+            id: '9',
+            name: 'test',
+            maskedPhone: '12*****90',
+            lastMessageAt: '2021-08-10T12:00:00.000Z',
+            isOrgRead: true,
+          },
+          messages: [
+            {
+              id: '1',
+              body: 'test message',
+            },
+          ],
+        },
+        {
+          contact: {
+            id: '10',
+            name: 'test',
+            maskedPhone: '12*****90',
+            lastMessageAt: '2021-08-10T12:00:00.000Z',
+            isOrgRead: true,
+          },
+          messages: [
+            {
+              id: '1',
+              body: 'test message',
+            },
+          ],
+        },
+      ],
+    },
+  },
+};
+
+export const GET_MORE_CONTACTS_MOCK = {
+  request: {
+    query: GET_CONTACTS,
+    variables: {
+      filter: {},
+      messageOpts: { limit: 1 },
+      contactOpts: { limit: 10, offset: 10 },
+    },
+  },
+  result: {
+    data: {
+      search: [
+        {
+          contact: {
+            id: '11',
+            name: 'test',
+            maskedPhone: '12*****90',
+            lastMessageAt: '2021-08-10T12:00:00.000Z',
+            isOrgRead: true,
+          },
+          messages: [
+            {
+              id: '1',
+              body: 'test message',
+            },
+          ],
+        },
+        {
+          contact: {
+            id: '12',
+            name: 'test',
+            maskedPhone: '12*****90',
+            lastMessageAt: '2021-08-10T12:00:00.000Z',
+            isOrgRead: true,
+          },
+          messages: [
+            {
+              id: '1',
+              body: 'test message',
+            },
+          ],
+        },
+      ],
+    },
+  },
+};
+
+export const SEARCH_CONTACTS_MOCK = {
+  request: {
+    query: GET_CONTACTS,
+    variables: {
+      filter: { term: 'test search' },
+      messageOpts: { limit: 1 },
+      contactOpts: { limit: 1, offset: 0 },
+    },
+  },
+  result: {
+    data: {
+      search: [
+        {
+          contact: mockContacts,
+          messages: [
+            {
+              id: '1',
+              body: 'test message',
+            },
+          ],
+        },
+      ],
+    },
+  },
+};
 
 export const GET_CONTACT_NO_MESSAGE_MOCK = [
   {

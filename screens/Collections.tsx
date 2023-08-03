@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FlatList, StyleSheet, Text } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useQuery } from '@apollo/client';
 
-import SearchBar from '../components/ui/SearchBar';
-import { GET_COLLECTIONS } from '../graphql/queries/Collection';
-import CollectionCard from '../components/CollectionCard';
+import { RootStackParamList } from '../constants/types';
 import { COLORS, SIZES } from '../constants';
-import { ChatEntry } from '../constants/types';
 import Loading from '../components/ui/Loading';
+import SearchBar from '../components/ui/SearchBar';
+import CollectionCard from '../components/CollectionCard';
+import { GET_COLLECTIONS } from '../graphql/queries/Collection';
 
-const Collections = () => {
-  const [collections, setCollections] = useState<ChatEntry[]>([]);
+type Props = NativeStackScreenProps<RootStackParamList, 'Collections'>;
+
+const Collections = ({ navigation }: Props) => {
   const [searchVariable, setSearchVariable] = useState({
     filter: { searchGroup: true },
     messageOpts: { limit: 1 },
@@ -19,8 +21,16 @@ const Collections = () => {
   const [pageNo, setPageNo] = useState(1);
   const [noMoreItems, setNoMoreItems] = useState(false);
 
-  const { loading, error, data, refetch, fetchMore } = useQuery(GET_COLLECTIONS, {
+  const {
+    loading,
+    refetch,
+    fetchMore,
+    data: collectionsData,
+  } = useQuery(GET_COLLECTIONS, {
     variables: searchVariable,
+    onError(error) {
+      console.log(error);
+    },
   });
 
   async function onSearchHandler() {
@@ -32,20 +42,6 @@ const Collections = () => {
     setNoMoreItems(false);
     setSearchVariable(variable);
   };
-
-  useEffect(() => {
-    if (error) console.log(error);
-    if (!loading && data) {
-      const newCollections: ChatEntry[] = data.search.map((element: unknown) => {
-        return {
-          id: element.group?.id,
-          name: element.group?.label || 'Unknown Name',
-        };
-      });
-
-      setCollections(newCollections);
-    }
-  }, [data, error]);
 
   const handleLoadMore = () => {
     if (loading || noMoreItems) return;
@@ -74,19 +70,27 @@ const Collections = () => {
   return (
     <>
       <FlatList
-        data={collections}
-        keyExtractor={(item) => item.id + item.name}
-        renderItem={({ item, index }) => (
-          <CollectionCard key={index} id={item.id} name={item.name} />
-        )}
+        accessibilityLabel={'notification-list'}
+        data={collectionsData?.search}
+        renderItem={({ item, index }) => {
+          return (
+            <CollectionCard
+              key={index}
+              id={item.group.id}
+              name={item.group.label ? item.group.label : 'Unknown Name'}
+              navigation={navigation}
+            />
+          );
+        }}
         ListHeaderComponent={
           <SearchBar
             setSearchVariable={handleSetSearchVariable}
             onSearch={onSearchHandler}
             collectionTab
+            navigation={navigation}
           />
         }
-        ListEmptyComponent={() => !loading && <Text style={styles.emptyText}>No collection</Text>}
+        ListEmptyComponent={!loading && <Text style={styles.emptyText}>No collection</Text>}
         stickyHeaderIndices={[0]}
         stickyHeaderHiddenOnScroll={true}
         style={styles.mainContainer}

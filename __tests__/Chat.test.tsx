@@ -3,15 +3,45 @@ import { fireEvent, waitFor } from '@testing-library/react-native';
 import customRender from '../utils/jestRender';
 
 import Chat from '../screens/Chat';
-import { NO_SEARCH_CONTACTS_MOCK } from '../__mocks__/queries/contact';
+import {
+  GET_MORE_CONTACTS_MOCK,
+  NO_SEARCH_CONTACTS_MOCK,
+  SAVED_SEARCH_QUERY_MOCK,
+  SEARCHES_COUNT_MOCK,
+  SEARCH_CONTACTS_MOCK,
+} from '../__mocks__/queries/contact';
 import { MARK_AS_READ_MOCK } from '../__mocks__/mutations/chats';
+
+const noParamsRouteMock = {
+  params: undefined,
+};
+
+const paramsRouteMock = {
+  params: {
+    name: 'savedSearch',
+    variables: {
+      filter: {},
+      messageOpts: { limit: 1 },
+      contactOpts: { limit: 10, offset: 0 },
+    },
+  },
+};
+
+const navigationMock = {
+  navigate: jest.fn(),
+};
 
 describe('Contact screen', () => {
   test('renders correctly', async () => {
-    const navigateMock = jest.fn();
-    const { getByTestId, findByText } = customRender(
-      <Chat navigation={{ navigate: navigateMock }} />,
-      [...NO_SEARCH_CONTACTS_MOCK, MARK_AS_READ_MOCK]
+    const { getByTestId, getByLabelText } = customRender(
+      <Chat navigation={navigationMock} route={noParamsRouteMock} />,
+      [
+        NO_SEARCH_CONTACTS_MOCK,
+        MARK_AS_READ_MOCK,
+        SAVED_SEARCH_QUERY_MOCK,
+        SEARCHES_COUNT_MOCK,
+        GET_MORE_CONTACTS_MOCK,
+      ]
     );
 
     expect(getByTestId('searchInput')).toBeDefined();
@@ -19,46 +49,56 @@ describe('Contact screen', () => {
     expect(getByTestId('filterIcon')).toBeDefined();
 
     await waitFor(async () => {
-      const contactCard = await getByTestId('contactCard');
-
+      const contactCard = await getByTestId('contactCard1');
       expect(contactCard).toBeDefined();
-      expect(findByText('test')).toBeTruthy();
-      expect(findByText('test message')).toBeTruthy();
+      fireEvent.press(contactCard);
+    });
 
+    const flatList = getByLabelText('notification-list');
+    flatList.props.onEndReached();
+    expect(getByTestId('contactCard10')).toBeDefined();
+  }, 5000);
+
+  test('should render contacts for savedSearches screen', async () => {
+    const { getByTestId } = customRender(
+      <Chat navigation={navigationMock} route={paramsRouteMock} />,
+      [NO_SEARCH_CONTACTS_MOCK, MARK_AS_READ_MOCK, SAVED_SEARCH_QUERY_MOCK, SEARCHES_COUNT_MOCK]
+    );
+
+    await waitFor(async () => {
+      const contactCard = await getByTestId('contactCard1');
+      expect(contactCard).toBeDefined();
       fireEvent.press(contactCard);
     });
   });
 
   test('updates search correctly', async () => {
-    const { getByTestId } = customRender(<Chat />, NO_SEARCH_CONTACTS_MOCK);
+    const { getByTestId } = customRender(
+      <Chat navigation={navigationMock} route={noParamsRouteMock} />,
+      [NO_SEARCH_CONTACTS_MOCK, SAVED_SEARCH_QUERY_MOCK, SEARCHES_COUNT_MOCK, SEARCH_CONTACTS_MOCK]
+    );
     const searchInput = getByTestId('searchInput');
+    const searchIcon = getByTestId('searchIcon');
+
     fireEvent.changeText(searchInput, 'test search');
+
     await waitFor(() => {
       expect(searchInput.props.value).toBe('test search');
+      fireEvent.press(searchIcon);
     });
   });
 
-  test('should test when search and filter icon pressed', async () => {
-    const navigateMock = jest.fn();
-    const mockOnSearchHandler = jest.fn();
-    const { getByTestId } = customRender(
-      <Chat navigation={{ navigate: navigateMock }} />,
-      NO_SEARCH_CONTACTS_MOCK
+  test('should test search filters', async () => {
+    const { getByText } = customRender(
+      <Chat navigation={navigationMock} route={noParamsRouteMock} />,
+      [NO_SEARCH_CONTACTS_MOCK, SAVED_SEARCH_QUERY_MOCK, SEARCHES_COUNT_MOCK]
     );
-    const searchIcon = getByTestId('searchIcon');
-    fireEvent.press(searchIcon);
-    expect(mockOnSearchHandler).toBeTruthy();
-    // const filterIcon = getByTestId('filterIcon');
-    // fireEvent.press(filterIcon);
-    // expect(navigateMock).toHaveBeenCalledWith('ConversationFilter');
-  });
+    await waitFor(async () => {
+      const filterButton = await getByText('ts');
+      expect(filterButton).toBeDefined();
+      expect(getByText('(10)')).toBeDefined();
 
-  test('should test menu is visible on press or not ', async () => {
-    const { getByTestId } = customRender(<Chat />, NO_SEARCH_CONTACTS_MOCK);
-    fireEvent.press(getByTestId('menuIcon'));
-    await waitFor(() => {
-      const menu = getByTestId('menuCard');
-      expect(menu).toBeTruthy();
+      fireEvent.press(filterButton);
     });
   });
 });
