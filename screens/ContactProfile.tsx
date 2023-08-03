@@ -66,7 +66,7 @@ const ContactProfile = ({ navigation, route }: Props) => {
         </Pressable>
         <Pressable
           style={styles.tabButton}
-          onPress={() => navigation.navigate('ContactHistory')}
+          onPress={() => navigation.navigate('ContactHistory', contact.id)}
           android_ripple={{ color: COLORS.black005 }}
         >
           <Text style={styles.tabButtonText}>Contact History</Text>

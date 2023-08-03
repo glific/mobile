@@ -4,36 +4,14 @@ import moment from 'moment';
 import { COLORS, SIZES } from '../constants';
 import { Feather } from '@expo/vector-icons';
 import { useQuery } from '@apollo/client';
-import { GET_CONTACT_HISTORY } from '../graphql/queries/Contact';
+import { COUNT_CONTACT_HISTORY, GET_CONTACT_HISTORY } from '../graphql/queries/Contact';
+import Loading from '../components/ui/Loading';
 
 type History = {
   id: string;
   date: string;
   action: string;
 };
-
-const data = [
-  {
-    id: '1',
-    date: '2023-07-19T03:22:11.442Z',
-    action: 'Flow Started: Registration Workflow',
-  },
-  {
-    id: '2',
-    date: '2023-07-19T03:22:11.442Z',
-    action: 'Added to collection: "Optin contacts"',
-  },
-  {
-    id: '3',
-    date: '2023-07-19T03:22:11.442Z',
-    action: 'Changed contact language to English',
-  },
-  {
-    id: '4',
-    date: '2023-07-19T03:22:11.442Z',
-    action: 'Flow Started: Optin Workflow',
-  },
-];
 
 const formatDate = (date: string) => {
   const givenDate = new Date(date);
@@ -42,10 +20,14 @@ const formatDate = (date: string) => {
 
 const formatHistory = (histories): History[] => {
   return histories.map((history) => {
+    let flow = '';
+    if (history.eventLabel === 'Flow Started') {
+      flow = JSON.parse(history.eventMeta).flow.name;
+    }
     return {
       id: history.id,
       date: moment.utc(history.eventDatetime).valueOf(),
-      action: history.eventLabel,
+      action: `${history.eventLabel}${flow ? `: ${flow}` : ''}`,
     };
   });
 };
@@ -61,11 +43,24 @@ interface Props {
 const ContactHistory = ({ navigation, route }: Props) => {
   const contactId = route.params;
   const [historyData, setHistoryData] = useState([]);
+  const [numHistory, setNumHistory] = useState(10);
+  const [totalHistoryCount, setTotalHistoryCount] = useState(0);
+
+  useQuery(COUNT_CONTACT_HISTORY, {
+    variables: {
+      filter: {
+        contactId: contactId,
+      },
+    },
+    onCompleted: (data) => {
+      setTotalHistoryCount(data.countContactHistory);
+    },
+  });
   const { loading } = useQuery(GET_CONTACT_HISTORY, {
     variables: {
       opts: {
         order: 'ASC',
-        limit: 10,
+        limit: numHistory,
         offset: 0,
       },
       filter: {
@@ -93,10 +88,13 @@ const ContactHistory = ({ navigation, route }: Props) => {
           </View>
         )}
       />
-      <Pressable onPress={() => console.log('Load more')} style={styles.loadMoreButton}>
-        <Text style={styles.loadMoreText}>Load More</Text>
-        <Feather name="chevron-down" size={SIZES.s20} color={COLORS.primary400} />
-      </Pressable>
+      {numHistory < totalHistoryCount ? (
+        <Pressable onPress={() => setNumHistory(numHistory + 10)} style={styles.loadMoreButton}>
+          <Text style={styles.loadMoreText}>Load More</Text>
+          <Feather name="chevron-down" size={SIZES.s20} color={COLORS.primary400} />
+        </Pressable>
+      ) : null}
+      {loading && <Loading />}
     </>
   );
 };
