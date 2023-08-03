@@ -1,19 +1,28 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView, Text } from 'react-native';
 
 import FieldValue from '../components/ui/FieldValue';
 import { COLORS, SIZES } from '../constants';
 
-const ContactInfo = () => {
+interface Props {
+  navigation: unknown;
+  route: {
+    params: {
+      object: { [key: string]: string };
+    };
+  };
+}
+const ContactInfo = ({ navigation, route }: Props) => {
   return (
     <ScrollView style={styles.mainContainer}>
       <View style={styles.bodyContainer}>
-        <FieldValue field={'Provider status'} value={'Can send template messages'} />
-        <FieldValue field={'Status'} value={'Optin via WA on 22/03/2023, 11:59:57'} />
-        <FieldValue field={'Role'} value={'Student'} />
-        <FieldValue field={'Age'} value={'11 to 14'} />
-        <FieldValue field={'Language'} value={'English'} />
-        <FieldValue testID={'contactStatus'} field={'Status'} value={'Valid contact'} />
+        {Object.keys(route.params).length === 0 ? (
+          <Text style={styles.placeholder}>No Fields Available</Text>
+        ) : (
+          Object.entries(route.params).map(([field, value]) => (
+            <FieldValue key={field} field={field} value={value} />
+          ))
+        )}
       </View>
     </ScrollView>
   );
@@ -32,5 +41,10 @@ const styles = StyleSheet.create({
   mainContainer: {
     backgroundColor: COLORS.white,
     flex: 1,
+  },
+  placeholder: {
+    color: COLORS.darkGray,
+    fontSize: SIZES.f14,
+    textAlign: 'center',
   },
 });

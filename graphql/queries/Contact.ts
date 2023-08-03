@@ -37,3 +37,26 @@ export const COUNT_CONTACT_HISTORY = gql`
     countContactHistory(filter: $filter)
   }
 `;
+
+export const GET_CONTACT_INFO = gql`
+  query contact($id: ID!) {
+    contact(id: $id) {
+      contact {
+        id
+        name
+        phone
+        status
+        language {
+          label
+        }
+        fields
+        groups {
+          label
+          users {
+            name
+          }
+        }
+      }
+    }
+  }
+`;

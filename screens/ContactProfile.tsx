@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { COLORS, SCALE, SIZES } from '../constants';
 import FieldValue from '../components/ui/FieldValue';
+import { useQuery } from '@apollo/client';
+import { GET_CONTACT_INFO } from '../graphql/queries/Contact';
+import { getSessionTimeLeft } from '../utils/helper';
 
 interface Props {
   navigation: unknown;
@@ -16,10 +19,57 @@ interface Props {
     };
   };
 }
+interface ContactInfoProp {
+  name: string;
+  phone: string;
+  status: string;
+  language: string;
+  assignedTo: string[];
+  collections: string[];
+  fields: { [key: string]: string };
+}
+
+const formatInfo = (contacts): ContactInfoProp => {
+  const { contact } = contacts;
+  const assignedTo = [];
+  const collections = [];
+
+  for (const group of contact.groups) {
+    collections.push(group.label);
+    for (const user of group.users) {
+      assignedTo.push(user.name);
+    }
+  }
+  const fields = JSON.parse(contact.fields);
+  const fieldInfo: { [key: string]: string } = {};
+  for (const key in fields) {
+    const item = fields[key];
+    fieldInfo[item.label] = item.value;
+  }
+  return {
+    name: contact.name,
+    phone: contact.phone,
+    status: contact.status,
+    language: contact.language.label,
+    assignedTo,
+    collections,
+    fields: fieldInfo,
+  };
+};
 
 const ContactProfile = ({ navigation, route }: Props) => {
   const { contact } = route.params;
+  const [contactInfo, setContactInfo] = useState([]);
 
+  const { loading } = useQuery(GET_CONTACT_INFO, {
+    variables: {
+      id: contact.id,
+    },
+    onCompleted: (data) => {
+      const formattedInfo = formatInfo(data.contact);
+      setContactInfo(formattedInfo);
+    },
+  });
   return (
     <ScrollView style={styles.mainContainer}>
       <View style={styles.headerContainer}>
@@ -31,7 +81,7 @@ const ContactProfile = ({ navigation, route }: Props) => {
             onPress={(): void => navigation.goBack()}
           />
           <Text testID={'sessionTimer'} style={styles.sessionText}>
-            Session Timer: 0
+            Session Timer: {getSessionTimeLeft(contact.lastMessageAt)}hrs
           </Text>
         </View>
         <View style={styles.lowerContainer}>
@@ -46,20 +96,37 @@ const ContactProfile = ({ navigation, route }: Props) => {
 
       <View style={styles.bodyContainer}>
         <View style={styles.rowContainer}>
-          <FieldValue field={'Phone'} value={'+919876543210'} />
-          <FieldValue field={'Assigned to'} value={'None'} />
+          <FieldValue field={'Phone'} value={contactInfo.phone} />
+          <FieldValue
+            field={'Assigned to'}
+            value={
+              contactInfo.assignedTo && contactInfo.assignedTo.length > 0
+                ? contactInfo.assignedTo.join(', ')
+                : 'None'
+            }
+          />
         </View>
         <View style={styles.rowContainer}>
-          <FieldValue field={'Language'} value={'English'} />
-          <FieldValue field={'Status'} value={'Valid Contact'} />
+          <FieldValue field={'Language'} value={contactInfo.language} />
+          <FieldValue
+            field={'Status'}
+            value={contactInfo.status === 'VALID' ? 'Valid Contact' : 'Invalid Contact'}
+          />
         </View>
-        <FieldValue field={'Collections'} value={'Optin contacts'} />
+        <FieldValue
+          field={'Collections'}
+          value={
+            contactInfo.collections && contactInfo.collections.length > 0
+              ? contactInfo.collections.join(', ')
+              : 'None'
+          }
+        />
       </View>
 
       <View style={styles.rowContainer}>
         <Pressable
           style={styles.tabButton}
-          onPress={() => navigation.navigate('ContactInformation')}
+          onPress={() => navigation.navigate('ContactInformation', contactInfo.fields)}
           android_ripple={{ color: COLORS.black005 }}
         >
           <Text style={styles.tabButtonText}>View Info</Text>
