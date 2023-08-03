@@ -26,6 +26,7 @@ interface ContactElement {
 }
 
 interface Props {
+  navigation: NavigationProp<RootStackParamList>;
   route: {
     params:
       | {
@@ -36,9 +37,8 @@ interface Props {
   };
 }
 
-const Chat = ({ route }: Props) => {
+const Chat = ({ navigation, route }: Props) => {
   const [contacts, setContacts] = useState<ChatEntry[]>([]);
-  const screen = route.params;
   const [searchVariable, setSearchVariable] = useState({
     filter: {},
     messageOpts: { limit: 1 },
@@ -79,11 +79,11 @@ const Chat = ({ route }: Props) => {
   };
 
   useEffect(() => {
-    if (screen?.name === 'savedSearches') {
-      handleSetSearchVariable(screen.variables);
+    if (route.params && route.params.name === 'savedSearch') {
+      handleSetSearchVariable(route.params.variables);
       onSearchHandler();
     }
-  }, [screen]);
+  }, [route.params]);
 
   const handleLoadMore = () => {
     if (loading || noMoreItems) return;
@@ -123,6 +123,7 @@ const Chat = ({ route }: Props) => {
             lastMessage={item.lastMessage}
             lastMessageAt={item.lastMessageAt}
             isOrgRead={item.isOrgRead}
+            navigation={navigation}
           />
         )}
         ListHeaderComponent={
