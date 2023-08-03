@@ -5,10 +5,14 @@ import customRender from '../utils/jestRender';
 import Collections from '../screens/Collections';
 import { GET_COLLECTIONS_MOCK } from '../__mocks__/queries/collection';
 
+const navigationMock = {
+  navigate: jest.fn(),
+};
+
 describe('Collections Screen', () => {
   test('renders the Collections screen', async () => {
     const { getByTestId, findByText, getByLabelText } = customRender(
-      <Collections />,
+      <Collections navigation={navigationMock} />,
       GET_COLLECTIONS_MOCK
     );
 
@@ -30,7 +34,10 @@ describe('Collections Screen', () => {
   });
 
   test('updates search correctly', async () => {
-    const { getByTestId } = customRender(<Collections />, GET_COLLECTIONS_MOCK);
+    const { getByTestId } = customRender(
+      <Collections navigation={navigationMock} />,
+      GET_COLLECTIONS_MOCK
+    );
 
     const searchInput = getByTestId('searchInput');
     fireEvent.changeText(searchInput, 'test search');

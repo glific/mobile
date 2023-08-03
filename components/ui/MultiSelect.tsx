@@ -3,7 +3,7 @@ import { View, Text, Pressable, StyleSheet, Modal, ScrollView } from 'react-nati
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { COLORS, SCALE, SIZES } from '../../constants';
 
-interface Option {
+interface OptionType {
   id: string;
   name?: string;
   label?: string;
@@ -11,10 +11,10 @@ interface Option {
 
 interface Props {
   testID?: string;
-  options: Option[];
-  selectedOptions: Option[];
+  options: OptionType[];
+  selectedOptions: OptionType[];
   // eslint-disable-next-line no-unused-vars
-  onSelectOption: (options: Option[]) => void;
+  onSelectOption: (options: OptionType[]) => void;
   label: string;
   placeHolder: string;
 }
@@ -33,7 +33,7 @@ const MultiSelect: React.FC<Props> = ({
     setIsModalVisible(!isModalVisible);
   };
 
-  const handleOptionPress = (option: Option) => {
+  const handleOptionPress = (option: OptionType) => {
     const isSelected = selectedOptions.find((o) => o.id === option.id);
     if (isSelected) {
       // Remove the option from selected options
@@ -46,7 +46,7 @@ const MultiSelect: React.FC<Props> = ({
     }
   };
 
-  const handleTagRemove = (option: Option) => {
+  const handleTagRemove = (option: OptionType) => {
     const updatedOptions = selectedOptions.filter((o) => o.id !== option.id);
     onSelectOption(updatedOptions);
   };

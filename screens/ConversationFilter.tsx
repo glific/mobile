@@ -1,35 +1,33 @@
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { NavigationProp, RouteProp } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useQuery } from '@apollo/client';
 
-import Input from '../components/ui/Input';
-import Button from '../components/ui/Button';
 import { COLORS, SCALE, SIZES } from '../constants';
-import MultiSelect from '../components/ui/MultiSelect';
+import { RootStackParamList } from '../constants/types';
 import DateRangeSelect from '../components/ui/DateRangeSelect';
+import MultiSelect from '../components/ui/MultiSelect';
+import Button from '../components/ui/Button';
+import Input from '../components/ui/Input';
+import { GET_USERS } from '../graphql/queries/User';
 import { GET_ALL_FLOW_LABELS } from '../graphql/queries/Flows';
 import { GET_COLLECTIONS_LIST } from '../graphql/queries/Collection';
-import { GET_USERS } from '../graphql/queries/User';
-import { RootStackParamList } from '../constants/types';
 
-interface OptionData {
+interface OptionType {
   id: string;
-  name: string;
+  name?: string;
+  label?: string;
 }
 
-interface ConversationFilterProps {
-  navigation: NavigationProp<RootStackParamList, 'ConversationFilter'>;
-  route: RouteProp<RootStackParamList, 'ConversationFilter'>;
-}
+type Props = NativeStackScreenProps<RootStackParamList, 'ConversationFilter'>;
 
-const ConversationFilter: React.FC<ConversationFilterProps> = ({ navigation, route }) => {
+const ConversationFilter = ({ navigation, route }: Props) => {
   const { onGoBack } = route.params;
 
   const [name, setName] = useState('');
-  const [selectLabels, setSelectLabels] = useState<OptionData[]>([]);
-  const [selectCollections, setSelectCollections] = useState<OptionData[]>([]);
-  const [selectStaffs, setSelectStaffs] = useState<OptionData[]>([]);
+  const [selectLabels, setSelectLabels] = useState<OptionType[]>([]);
+  const [selectCollections, setSelectCollections] = useState<OptionType[]>([]);
+  const [selectStaffs, setSelectStaffs] = useState<OptionType[]>([]);
   const [dateFrom, setDateFrom] = useState<Date | null>(null);
   const [dateTo, setDateTo] = useState<Date | null>(null);
 
@@ -57,13 +55,13 @@ const ConversationFilter: React.FC<ConversationFilterProps> = ({ navigation, rou
   const nameChanged = (value: string) => {
     setName(value);
   };
-  const handleSelectLabel = (options: OptionData[]) => {
+  const handleSelectLabel = (options: OptionType[]) => {
     setSelectLabels(options);
   };
-  const handleSelectCollection = (options: OptionData[]) => {
+  const handleSelectCollection = (options: OptionType[]) => {
     setSelectCollections(options);
   };
-  const handleSelectStaff = (options: OptionData[]) => {
+  const handleSelectStaff = (options: OptionType[]) => {
     setSelectStaffs(options);
   };
 

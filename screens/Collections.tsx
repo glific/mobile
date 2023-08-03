@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, Text } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useQuery } from '@apollo/client';
 
+import { RootStackParamList } from '../constants/types';
 import { COLORS, SIZES } from '../constants';
 import Loading from '../components/ui/Loading';
 import SearchBar from '../components/ui/SearchBar';
 import CollectionCard from '../components/CollectionCard';
 import { GET_COLLECTIONS } from '../graphql/queries/Collection';
 
-const Collections = () => {
+type Props = NativeStackScreenProps<RootStackParamList, 'Collections'>;
+
+const Collections = ({ navigation }: Props) => {
   const [searchVariable, setSearchVariable] = useState({
     filter: { searchGroup: true },
     messageOpts: { limit: 1 },
@@ -74,6 +78,7 @@ const Collections = () => {
               key={index}
               id={item.group.id}
               name={item.group.label ? item.group.label : 'Unknown Name'}
+              navigation={navigation}
             />
           );
         }}
@@ -82,6 +87,7 @@ const Collections = () => {
             setSearchVariable={handleSetSearchVariable}
             onSearch={onSearchHandler}
             collectionTab
+            navigation={navigation}
           />
         }
         ListEmptyComponent={!loading && <Text style={styles.emptyText}>No collection</Text>}

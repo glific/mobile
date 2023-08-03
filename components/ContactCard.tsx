@@ -1,12 +1,13 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp } from '@react-navigation/native';
 
 import formatTime from '../utils/formatTime';
 import { COLORS, SCALE, SIZES } from '../constants';
 import { getSessionTimeLeft } from '../utils/helper';
 import { MARK_AS_READ, CONTACT_FRAGMENT } from '../graphql/mutations/Chat';
 import { useApolloClient, useMutation } from '@apollo/client';
+import { RootStackParamList } from '../constants/types';
 
 export interface ContactProps {
   id: string;
@@ -14,6 +15,7 @@ export interface ContactProps {
   lastMessageAt: string;
   lastMessage: string | undefined;
   isOrgRead: boolean;
+  navigation: NavigationProp<RootStackParamList>;
 }
 
 const updateContactCache = (client: any, id: any) => {
@@ -32,9 +34,14 @@ const updateContactCache = (client: any, id: any) => {
   return null;
 };
 
-const Contact: React.FC<ContactProps> = ({ id, name, lastMessageAt, lastMessage, isOrgRead }) => {
-  const navigation = useNavigation();
-
+const Contact: React.FC<ContactProps> = ({
+  id,
+  name,
+  lastMessageAt,
+  lastMessage,
+  isOrgRead,
+  navigation,
+}) => {
   const lastSessiontime = getSessionTimeLeft(lastMessageAt);
   const dateObj = new Date(lastMessageAt);
   const formattedTime = formatTime(dateObj);

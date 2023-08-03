@@ -1,21 +1,13 @@
 import React from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AntDesign } from '@expo/vector-icons';
+
+import { RootStackParamList } from '../constants/types';
 import { COLORS, SCALE, SIZES } from '../constants';
 import FieldValue from '../components/ui/FieldValue';
 
-interface Props {
-  navigation: unknown;
-  route: {
-    params: {
-      contact: {
-        id: string;
-        name: string;
-        lastMessageAt: string;
-      };
-    };
-  };
-}
+type Props = NativeStackScreenProps<RootStackParamList, 'ContactProfile'>;
 
 const ContactProfile = ({ navigation, route }: Props) => {
   const { contact } = route.params;
@@ -28,7 +20,7 @@ const ContactProfile = ({ navigation, route }: Props) => {
             testID="backIcon"
             name="arrowleft"
             style={styles.backButton}
-            onPress={(): void => navigation.goBack()}
+            onPress={() => navigation.goBack()}
           />
           <Text testID={'sessionTimer'} style={styles.sessionText}>
             Session Timer: 0

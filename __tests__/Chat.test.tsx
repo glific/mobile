@@ -3,7 +3,13 @@ import { fireEvent, waitFor } from '@testing-library/react-native';
 import customRender from '../utils/jestRender';
 
 import Chat from '../screens/Chat';
-import { NO_SEARCH_CONTACTS_MOCK } from '../__mocks__/queries/contact';
+import {
+  GET_MORE_CONTACTS_MOCK,
+  NO_SEARCH_CONTACTS_MOCK,
+  SAVED_SEARCH_QUERY_MOCK,
+  SEARCHES_COUNT_MOCK,
+  SEARCH_CONTACTS_MOCK,
+} from '../__mocks__/queries/contact';
 import { MARK_AS_READ_MOCK } from '../__mocks__/mutations/chats';
 
 const noParamsRouteMock = {
@@ -12,7 +18,7 @@ const noParamsRouteMock = {
 
 const paramsRouteMock = {
   params: {
-    name: 'savedSearches',
+    name: 'savedSearch',
     variables: {
       filter: {},
       messageOpts: { limit: 1 },
@@ -21,12 +27,22 @@ const paramsRouteMock = {
   },
 };
 
+const navigationMock = {
+  navigate: jest.fn(),
+};
+
 describe('Contact screen', () => {
   test('renders correctly', async () => {
-    const { getByTestId, getByLabelText } = customRender(<Chat route={noParamsRouteMock} />, [
-      ...NO_SEARCH_CONTACTS_MOCK,
-      ...MARK_AS_READ_MOCK,
-    ]);
+    const { getByTestId, getByLabelText } = customRender(
+      <Chat navigation={navigationMock} route={noParamsRouteMock} />,
+      [
+        NO_SEARCH_CONTACTS_MOCK,
+        MARK_AS_READ_MOCK,
+        SAVED_SEARCH_QUERY_MOCK,
+        SEARCHES_COUNT_MOCK,
+        GET_MORE_CONTACTS_MOCK,
+      ]
+    );
 
     expect(getByTestId('searchInput')).toBeDefined();
     expect(getByTestId('searchIcon')).toBeDefined();
@@ -41,13 +57,13 @@ describe('Contact screen', () => {
     const flatList = getByLabelText('notification-list');
     flatList.props.onEndReached();
     expect(getByTestId('contactCard10')).toBeDefined();
-  });
+  }, 5000);
 
   test('should render contacts for savedSearches screen', async () => {
-    const { getByTestId } = customRender(<Chat route={paramsRouteMock} />, [
-      ...NO_SEARCH_CONTACTS_MOCK,
-      ...MARK_AS_READ_MOCK,
-    ]);
+    const { getByTestId } = customRender(
+      <Chat navigation={navigationMock} route={paramsRouteMock} />,
+      [NO_SEARCH_CONTACTS_MOCK, MARK_AS_READ_MOCK, SAVED_SEARCH_QUERY_MOCK, SEARCHES_COUNT_MOCK]
+    );
 
     await waitFor(async () => {
       const contactCard = await getByTestId('contactCard1');
@@ -58,29 +74,25 @@ describe('Contact screen', () => {
 
   test('updates search correctly', async () => {
     const { getByTestId } = customRender(
-      <Chat route={noParamsRouteMock} />,
-      NO_SEARCH_CONTACTS_MOCK
+      <Chat navigation={navigationMock} route={noParamsRouteMock} />,
+      [NO_SEARCH_CONTACTS_MOCK, SAVED_SEARCH_QUERY_MOCK, SEARCHES_COUNT_MOCK, SEARCH_CONTACTS_MOCK]
     );
     const searchInput = getByTestId('searchInput');
+    const searchIcon = getByTestId('searchIcon');
+
     fireEvent.changeText(searchInput, 'test search');
+
     await waitFor(() => {
       expect(searchInput.props.value).toBe('test search');
+      fireEvent.press(searchIcon);
     });
   });
 
-  test('should test when search and filter icon pressed', async () => {
-    const mockOnSearchHandler = jest.fn();
-    const { getByTestId } = customRender(
-      <Chat route={noParamsRouteMock} />,
-      NO_SEARCH_CONTACTS_MOCK
-    );
-    const searchIcon = getByTestId('searchIcon');
-    fireEvent.press(searchIcon);
-    expect(mockOnSearchHandler).toBeTruthy();
-  });
-
   test('should test search filters', async () => {
-    const { getByText } = customRender(<Chat route={noParamsRouteMock} />, NO_SEARCH_CONTACTS_MOCK);
+    const { getByText } = customRender(
+      <Chat navigation={navigationMock} route={noParamsRouteMock} />,
+      [NO_SEARCH_CONTACTS_MOCK, SAVED_SEARCH_QUERY_MOCK, SEARCHES_COUNT_MOCK]
+    );
     await waitFor(async () => {
       const filterButton = await getByText('ts');
       expect(filterButton).toBeDefined();
