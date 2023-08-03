@@ -3,13 +3,10 @@ import { FlatList, StyleSheet, Text } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useQuery } from '@apollo/client';
 
-import { COLORS, SIZES } from '../constants';
-import Loading from '../components/ui/Loading';
 import SearchBar from '../components/ui/SearchBar';
 import ContactCard from '../components/ContactCard';
 import { GET_CONTACTS } from '../graphql/queries/Contact';
 import { COLORS, SIZES } from '../constants';
-import { ChatEntry } from '../constants/types';
 import Loading from '../components/ui/Loading';
 import AuthContext from '../config/AuthContext';
 import { ChatEntry, RootStackParamList } from '../constants/types';
@@ -60,7 +57,6 @@ const updateContactList = (cachedConversations: any, subscriptionData: any, acti
   }
   return cache;
 };
-import { ChatEntry, RootStackParamList } from '../constants/types';
 
 interface Contact {
   id: string;
