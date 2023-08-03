@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useQuery } from '@apollo/client';
 
 import { COLORS, SCALE, SIZES } from '../constants';
+import { RootStackParamList } from '../constants/types';
 import { SAVED_SEARCH_QUERY } from '../graphql/queries/Search';
 import SavedSearchBar from '../components/ui/SavedSearchBar';
 import Loading from '../components/ui/Loading';
 
-interface Props {
-  navigation: {
-    navigate: () => void;
-  };
-}
+type Props = NativeStackScreenProps<RootStackParamList, 'SavedSearches'>;
 
 const SavedSearches = ({ navigation }: Props) => {
   const [searchValue, setSearchValue] = useState<string>('');

@@ -18,14 +18,6 @@ import { CLEAR_MESSAGES } from '../../graphql/mutations/Chat';
 import { BLOCK_CONTACT } from '../../graphql/mutations/Contact';
 import { getPopupData } from '../../constants/popupsData';
 
-interface ChatHeaderDataProps {
-  conversationType: string;
-  id: number;
-  displayName: string;
-  lastMessageAt: string;
-  navigation: NavigationProp<RootStackParamList>;
-}
-
 interface MenuProps {
   icon: JSX.Element;
   text: string;
@@ -46,6 +38,14 @@ const MenuButton: React.FC<MenuProps> = ({ icon, text, onPress }) => {
     </Pressable>
   );
 };
+
+interface ChatHeaderDataProps {
+  conversationType: string;
+  id: number;
+  displayName: string;
+  lastMessageAt?: string;
+  navigation: NavigationProp<RootStackParamList, 'ChatScreen'>;
+}
 
 const ChatHeader: React.FC<ChatHeaderDataProps> = ({
   conversationType,

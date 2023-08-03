@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, Text } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useQuery } from '@apollo/client';
 
+import { RootStackParamList } from '../constants/types';
 import { COLORS, SIZES } from '../constants';
 import Loading from '../components/ui/Loading';
 import SearchBar from '../components/ui/SearchBar';
 import CollectionCard from '../components/CollectionCard';
 import { GET_COLLECTIONS } from '../graphql/queries/Collection';
-import { NavigationProp } from '@react-navigation/native';
-import { RootStackParamList } from '../constants/types';
 
-interface Props {
-  navigation: NavigationProp<RootStackParamList>;
-}
+type Props = NativeStackScreenProps<RootStackParamList, 'Collections'>;
 
 const Collections = ({ navigation }: Props) => {
   const [searchVariable, setSearchVariable] = useState({
