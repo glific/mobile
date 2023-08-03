@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { View, TextInput, StyleSheet, Pressable, Text, ScrollView } from 'react-native';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { NavigationProp } from '@react-navigation/native';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { useQuery } from '@apollo/client';
 
@@ -43,6 +43,7 @@ type SearchBarProps = {
   onSearch: () => void;
   showMenu?: boolean;
   collectionTab?: boolean;
+  navigation: NavigationProp<RootStackParamList>;
 };
 
 const SearchBar: React.FC<SearchBarProps> = ({
@@ -50,10 +51,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
   onSearch,
   showMenu = false,
   collectionTab = false,
+  navigation,
 }) => {
   const { user } = useContext(AuthContext);
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-
   const [searchValue, setSearchValue] = useState<string>('');
   const [isAdvancedSearch, setIsAdvancedSearch] = useState<boolean>(false);
   const [fixedSearches, setFixedSearches] = useState([]);

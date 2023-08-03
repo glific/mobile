@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { NavigationProp } from '@react-navigation/native';
 import { Entypo, Ionicons, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 
 import { COLORS, SCALE, SIZES } from '../../constants';
@@ -23,6 +23,7 @@ interface ChatHeaderDataProps {
   id: number;
   displayName: string;
   lastMessageAt: string;
+  navigation: NavigationProp<RootStackParamList>;
 }
 
 interface MenuProps {
@@ -51,8 +52,8 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
   id,
   displayName,
   lastMessageAt,
+  navigation,
 }) => {
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [showMenu, setShowMenu] = useState(false);
   const [showStartFlowModal, setShowStartFlowModal] = useState(false);
 

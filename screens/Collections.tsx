@@ -7,8 +7,14 @@ import Loading from '../components/ui/Loading';
 import SearchBar from '../components/ui/SearchBar';
 import CollectionCard from '../components/CollectionCard';
 import { GET_COLLECTIONS } from '../graphql/queries/Collection';
+import { NavigationProp } from '@react-navigation/native';
+import { RootStackParamList } from '../constants/types';
 
-const Collections = () => {
+interface Props {
+  navigation: NavigationProp<RootStackParamList>;
+}
+
+const Collections = ({ navigation }: Props) => {
   const [searchVariable, setSearchVariable] = useState({
     filter: { searchGroup: true },
     messageOpts: { limit: 1 },
@@ -74,6 +80,7 @@ const Collections = () => {
               key={index}
               id={item.group.id}
               name={item.group.label ? item.group.label : 'Unknown Name'}
+              navigation={navigation}
             />
           );
         }}
@@ -82,6 +89,7 @@ const Collections = () => {
             setSearchVariable={handleSetSearchVariable}
             onSearch={onSearchHandler}
             collectionTab
+            navigation={navigation}
           />
         }
         ListEmptyComponent={!loading && <Text style={styles.emptyText}>No collection</Text>}

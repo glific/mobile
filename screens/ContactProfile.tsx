@@ -5,7 +5,7 @@ import { COLORS, SCALE, SIZES } from '../constants';
 import FieldValue from '../components/ui/FieldValue';
 
 interface Props {
-  navigation: unknown;
+  navigation: NavigationProp<RootStackParamList>;
   route: {
     params: {
       contact: {
