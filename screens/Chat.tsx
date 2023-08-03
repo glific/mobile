@@ -13,9 +13,9 @@ import {
   MESSAGE_RECEIVED_SUBSCRIPTION,
   MESSAGE_SENT_SUBSCRIPTION,
 } from '../graphql/subscriptions/Chat';
+import { getSubscriptionDetails } from '../utils/subscriptionDetails';
 
 const updateContactList = (cachedConversations: any, subscriptionData: any, action: string) => {
-  console.log(cachedConversations);
   if (!subscriptionData.data) {
     return cachedConversations;
   }
@@ -24,27 +24,7 @@ const updateContactList = (cachedConversations: any, subscriptionData: any, acti
     return null;
   }
 
-  let contactId: string;
-  let id: string;
-  let body;
-  let contact;
-  switch (action) {
-    case 'RECEIVED':
-      contactId = subscriptionData.data.receivedMessage.contact.id;
-      id = subscriptionData.data.receivedMessage.id;
-      body = subscriptionData.data.receivedMessage.body;
-      contact = subscriptionData.data.receivedMessage.contact;
-      break;
-    case 'SENT':
-      contactId = subscriptionData.data.sentMessage.contact.id;
-      id = subscriptionData.data.sentMessage.id;
-      body = subscriptionData.data.sentMessage.body;
-      contact = subscriptionData.data.sentMessage.contact;
-      break;
-    default:
-      return null;
-  }
-
+  const { newMessage, contactId, contact } = getSubscriptionDetails(action, subscriptionData);
   let conversationIndex = -1;
 
   cachedConversations.search.forEach((conversation: any, index: any) => {
@@ -53,12 +33,12 @@ const updateContactList = (cachedConversations: any, subscriptionData: any, acti
     }
   });
 
-  const newMessage = {
-    id: id,
-    body: body,
+  const newMessageEntry = {
+    id: newMessage.id,
+    body: newMessage.body,
   };
   const newContactEntry = {
-    messages: [newMessage],
+    messages: [newMessageEntry],
     contact: contact,
   };
   const cache = JSON.parse(JSON.stringify(cachedConversations));
@@ -69,7 +49,7 @@ const updateContactList = (cachedConversations: any, subscriptionData: any, acti
     cache.search.splice(conversationIndex, 1);
     cache.search.unshift(existingConversation);
     // Update the messages for the moved conversation
-    cache.search[0].messages.push(newMessage);
+    cache.search[0].messages.push(newMessageEntry);
   } else {
     // Add the entry at position 0
     cache.search.unshift(newContactEntry);
@@ -122,14 +102,12 @@ const Chat = () => {
         variables: subscriptionVariables,
         updateQuery: (prev, { subscriptionData }) =>
           updateContactList(prev, subscriptionData, 'RECEIVED'),
-        // updateMessages(prev, subscriptionData, 'RECEIVED', -1, 'contact'),
       });
       subscribeToMore({
         document: MESSAGE_SENT_SUBSCRIPTION,
         variables: subscriptionVariables,
         updateQuery: (prev, { subscriptionData }) =>
           updateContactList(prev, subscriptionData, 'SENT'),
-        // updateMessages(prev, subscriptionData, 'SENT', -1, 'contact'),
       });
     }
   }, [subscribeToMore]);
