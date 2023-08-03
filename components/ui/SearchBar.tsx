@@ -22,18 +22,22 @@ const MenuButton: React.FC<MenuButtonProps> = ({ label, count, onPress, active }
   const countStr = numberToAbbreviation(count);
   const activeStyle = (type: string) => {
     if (!active) return;
-    return type === 'button' ? { backgroundColor: COLORS.primary400 } : { color: COLORS.white };
+    return type === 'button'
+      ? { backgroundColor: COLORS.primary400, borderWidth: 0 }
+      : { color: COLORS.white };
   };
 
   return (
-    <Pressable
-      onPress={onPress}
-      style={[styles.menu, activeStyle('button')]}
-      android_ripple={{ color: COLORS.primary10 }}
-    >
-      <Text style={[styles.menuText, activeStyle('text')]}>{label}</Text>
-      <Text style={[styles.menuText, activeStyle('text')]}>({countStr})</Text>
-    </Pressable>
+    <View style={styles.filterButtonWrapper}>
+      <Pressable
+        onPress={onPress}
+        style={[styles.menu, activeStyle('button')]}
+        android_ripple={{ color: COLORS.primary10, borderless: false }}
+      >
+        <Text style={[styles.menuText, activeStyle('text')]}>{label}</Text>
+        <Text style={[styles.menuText, activeStyle('text')]}>({countStr})</Text>
+      </Pressable>
+    </View>
   );
 };
 
@@ -86,9 +90,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
   });
 
   const handleStatusSearch = (item: object) => {
+    setSelectedSearchId(item.id);
     setSearchValue('');
     setIsAdvancedSearch(false);
-    setSelectedSearchId(item.id);
     const variables = JSON.parse(item.args);
     setSearchVariable({
       ...variables,
@@ -195,6 +199,11 @@ const styles = StyleSheet.create({
     top: 0,
     width: SIZES.m10,
   },
+  filterButtonWrapper: {
+    borderRadius: SIZES.r20,
+    marginRight: SIZES.m4,
+    overflow: 'hidden',
+  },
   icon: {
     color: COLORS.darkGray,
     fontSize: SIZES.f20,
@@ -231,7 +240,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: SIZES.s30,
     justifyContent: 'space-between',
-    marginRight: SIZES.m4,
     paddingHorizontal: SIZES.m12,
   },
   menuContainer: {

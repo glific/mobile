@@ -43,7 +43,7 @@ const Chat = ({ navigation, route }: Props) => {
   const { loading, refetch, fetchMore } = useQuery(GET_CONTACTS, {
     variables: searchVariable,
     onCompleted(data) {
-      const newContacts: ChatEntry[] = data.search.map((element: ContactElement) => {
+      const newContacts: ChatEntry[] = data?.search?.map((element: ContactElement) => {
         const messagesLength = element.messages?.length || 0;
         return {
           id: element.contact?.id,
