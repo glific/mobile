@@ -42,7 +42,7 @@ export const SAVED_SEARCH_MOCK = [
     request: {
       query: SAVED_SEARCH_QUERY,
       variables: {
-        filter: {},
+        filter: { isReserved: false },
         opts: { limit: 20 },
       },
     },
@@ -69,7 +69,7 @@ export const NO_SAVED_SEARCH_MOCK = [
     request: {
       query: SAVED_SEARCH_QUERY,
       variables: {
-        filter: {},
+        filter: { isReserved: false },
         opts: { limit: 20 },
       },
     },

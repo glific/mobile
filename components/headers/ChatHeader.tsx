@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { NavigationProp } from '@react-navigation/native';
 import { Entypo, Ionicons, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 
 import { COLORS, SCALE, SIZES } from '../../constants';
@@ -17,13 +17,6 @@ import {
 import { CLEAR_MESSAGES } from '../../graphql/mutations/Chat';
 import { BLOCK_CONTACT } from '../../graphql/mutations/Contact';
 import { getPopupData } from '../../constants/popupsData';
-
-interface ChatHeaderDataProps {
-  conversationType: string;
-  id: number;
-  displayName: string;
-  lastMessageAt: string;
-}
 
 interface MenuProps {
   icon: JSX.Element;
@@ -46,13 +39,21 @@ const MenuButton: React.FC<MenuProps> = ({ icon, text, onPress }) => {
   );
 };
 
+interface ChatHeaderDataProps {
+  conversationType: string;
+  id: number;
+  displayName: string;
+  lastMessageAt?: string;
+  navigation: NavigationProp<RootStackParamList, 'ChatScreen'>;
+}
+
 const ChatHeader: React.FC<ChatHeaderDataProps> = ({
   conversationType,
   id,
   displayName,
   lastMessageAt,
+  navigation,
 }) => {
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [showMenu, setShowMenu] = useState(false);
   const [showStartFlowModal, setShowStartFlowModal] = useState(false);
 

@@ -7,7 +7,12 @@ export type ChatEntry = {
 };
 
 export type RootStackParamList = {
-  Contacts: undefined;
+  Contacts:
+    | {
+        name: string;
+        variables: object;
+      }
+    | undefined;
   Collections: undefined;
   SavedSearches: undefined;
   // eslint-disable-next-line no-unused-vars
@@ -20,7 +25,12 @@ export type RootStackParamList = {
       lastMessageAt: string;
     };
   };
-  ChatScreen: { id: string; displayName: string; conversationType: string };
+  ChatScreen: {
+    id: number;
+    displayName: string;
+    lastMessageAt?: string;
+    conversationType: string;
+  };
 };
 
 export type MessageObjectType = {

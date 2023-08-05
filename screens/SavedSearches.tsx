@@ -1,56 +1,61 @@
-import React, { useState, useEffect } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { FlatList, Pressable, StyleSheet, Text } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { MaterialIcons } from '@expo/vector-icons';
 import { useQuery } from '@apollo/client';
 
-import SearchBar from '../components/ui/SearchBar';
 import { COLORS, SCALE, SIZES } from '../constants';
+import { RootStackParamList } from '../constants/types';
 import { SAVED_SEARCH_QUERY } from '../graphql/queries/Search';
+import SavedSearchBar from '../components/ui/SavedSearchBar';
 import Loading from '../components/ui/Loading';
 
-const SavedSearches = () => {
-  const [savedSearch, setSavedSearch] = useState([]);
-  const [searchVariable, setSearchVariable] = useState({
-    filter: {},
-    opts: { limit: 20 },
-  });
+type Props = NativeStackScreenProps<RootStackParamList, 'SavedSearches'>;
 
-  const { loading, error, data, refetch } = useQuery(SAVED_SEARCH_QUERY, {
-    variables: searchVariable,
-  });
-
-  async function onSearchHandler() {
-    refetch(searchVariable);
-  }
-
-  useEffect(() => {
-    if (error) {
+const SavedSearches = ({ navigation }: Props) => {
+  const [searchValue, setSearchValue] = useState<string>('');
+  const { loading, data: savedSearchData } = useQuery(SAVED_SEARCH_QUERY, {
+    variables: {
+      filter: { isReserved: false },
+      opts: { limit: 20 },
+    },
+    onError(error) {
       console.log(error);
-    }
-    if (data) {
-      setSavedSearch(data.savedSearches);
-    }
-  }, [data, error]);
+    },
+  });
+
+  const handleSelect = (search) => {
+    navigation.navigate('Contacts', {
+      name: 'savedSearch',
+      variables: JSON.parse(search.args),
+    });
+  };
 
   return (
     <>
       <FlatList
-        data={savedSearch}
+        data={savedSearchData?.savedSearches.filter((search) => search.label.includes(searchValue))}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.item}>
+        renderItem={({ item, index }) => (
+          <Pressable
+            key={index}
+            style={styles.item}
+            onPress={() => handleSelect(item)}
+            android_ripple={{ color: COLORS.primary10 }}
+          >
+            <MaterialIcons name="touch-app" size={24} color={COLORS.primary100} />
             <Text style={styles.name} key={item.id}>
               {item.label}
             </Text>
-          </View>
+          </Pressable>
         )}
         ListHeaderComponent={
-          <SearchBar setSearchVariable={setSearchVariable} onSearch={onSearchHandler} />
+          <SavedSearchBar searchValue={searchValue} setSearchValue={setSearchValue} />
         }
-        ListEmptyComponent={() =>
-          !loading && <Text style={styles.emptyText}>No Saved Searches</Text>
-        }
+        ListEmptyComponent={!loading && <Text style={styles.emptyText}>No Saved Searches</Text>}
         stickyHeaderIndices={[0]}
         stickyHeaderHiddenOnScroll={true}
+        contentContainerStyle={styles.contentContainer}
         style={styles.mainContainer}
       />
       {loading && <Loading />}
@@ -61,12 +66,16 @@ const SavedSearches = () => {
 export default SavedSearches;
 
 const styles = StyleSheet.create({
+  contentContainer: {
+    flexGrow: 1,
+  },
   emptyText: {
     alignSelf: 'center',
     color: COLORS.darkGray,
     fontSize: SIZES.f14,
     fontWeight: '500',
     marginTop: SIZES.m16,
+    textAlign: 'center',
   },
   item: {
     alignItems: 'center',
@@ -75,17 +84,17 @@ const styles = StyleSheet.create({
     borderColor: COLORS.darkGray,
     flexDirection: 'row',
     height: SIZES.s70,
-    paddingHorizontal: '4%',
+    paddingHorizontal: SIZES.m20,
     width: '100%',
   },
   mainContainer: {
     backgroundColor: COLORS.white,
     flex: 1,
+    overflow: 'visible',
   },
   name: {
     color: COLORS.black,
     fontSize: SIZES.f16,
-    fontWeight: '600',
     marginLeft: SIZES.m16,
   },
 });

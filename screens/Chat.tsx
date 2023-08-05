@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { FlatList, StyleSheet, Text } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useQuery } from '@apollo/client';
 
+import { COLORS, SIZES } from '../constants';
+import Loading from '../components/ui/Loading';
 import SearchBar from '../components/ui/SearchBar';
 import ContactCard from '../components/ContactCard';
 import { GET_CONTACTS } from '../graphql/queries/Contact';
-import { COLORS, SIZES } from '../constants';
-import { ChatEntry } from '../constants/types';
-import Loading from '../components/ui/Loading';
+import { ChatEntry, RootStackParamList } from '../constants/types';
 
 interface Contact {
   id: string;
@@ -16,16 +17,20 @@ interface Contact {
   maskedPhone: string | null;
   isOrgRead: boolean;
 }
+
 interface Message {
   id: string;
   body: string;
 }
+
 interface ContactElement {
   contact?: Contact;
   messages: Message[];
 }
 
-const Chat = () => {
+type Props = NativeStackScreenProps<RootStackParamList, 'Contacts'>;
+
+const Chat = ({ navigation, route }: Props) => {
   const [contacts, setContacts] = useState<ChatEntry[]>([]);
   const [searchVariable, setSearchVariable] = useState({
     filter: {},
@@ -35,9 +40,25 @@ const Chat = () => {
   const [pageNo, setPageNo] = useState(1);
   const [noMoreItems, setNoMoreItems] = useState(false);
 
-  const { loading, error, data, refetch, fetchMore } = useQuery(GET_CONTACTS, {
-    fetchPolicy: 'network-only',
+  const { loading, refetch, fetchMore } = useQuery(GET_CONTACTS, {
     variables: searchVariable,
+    onCompleted(data) {
+      const newContacts: ChatEntry[] = data.search.map((element: ContactElement) => {
+        const messagesLength = element.messages?.length || 0;
+        return {
+          id: element.contact?.id,
+          name: element.contact?.name ? element.contact.name : element.contact?.maskedPhone,
+          lastMessageAt: element.contact?.lastMessageAt,
+          lastMessage: messagesLength > 0 ? element.messages[messagesLength - 1]?.body : ' ',
+          isOrgRead: element.contact?.isOrgRead,
+        };
+      });
+
+      setContacts(newContacts);
+    },
+    onError(error) {
+      console.log(error);
+    },
   });
 
   async function onSearchHandler() {
@@ -51,23 +72,11 @@ const Chat = () => {
   };
 
   useEffect(() => {
-    if (error) console.log(error);
-
-    if (!loading && data) {
-      const newContacts: ChatEntry[] = data.search.map((element: ContactElement) => {
-        const messagesLength = element.messages?.length || 0;
-        return {
-          id: element.contact?.id,
-          name: element.contact?.name ? element.contact.name : element.contact?.maskedPhone,
-          lastMessageAt: element.contact?.lastMessageAt,
-          lastMessage: messagesLength > 0 ? element.messages[messagesLength - 1]?.body : ' ',
-          isOrgRead: element.contact?.isOrgRead,
-        };
-      });
-
-      setContacts(newContacts);
+    if (route.params && route.params.name === 'savedSearch') {
+      handleSetSearchVariable(route.params.variables);
+      onSearchHandler();
     }
-  }, [data, error]);
+  }, [route.params]);
 
   const handleLoadMore = () => {
     if (loading || noMoreItems) return;
@@ -96,6 +105,7 @@ const Chat = () => {
   return (
     <>
       <FlatList
+        accessibilityLabel={'notification-list'}
         data={contacts}
         keyExtractor={(item) => item.id + item.name}
         renderItem={({ item, index }) => (
@@ -106,6 +116,7 @@ const Chat = () => {
             lastMessage={item.lastMessage}
             lastMessageAt={item.lastMessageAt}
             isOrgRead={item.isOrgRead}
+            navigation={navigation}
           />
         )}
         ListHeaderComponent={
@@ -113,9 +124,10 @@ const Chat = () => {
             setSearchVariable={handleSetSearchVariable}
             onSearch={onSearchHandler}
             showMenu
+            navigation={navigation}
           />
         }
-        ListEmptyComponent={() => !loading && <Text style={styles.emptyText}>No contact</Text>}
+        ListEmptyComponent={!loading && <Text style={styles.emptyText}>No contact</Text>}
         stickyHeaderIndices={[0]}
         stickyHeaderHiddenOnScroll={true}
         style={styles.mainContainer}

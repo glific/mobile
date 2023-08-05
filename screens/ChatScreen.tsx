@@ -2,24 +2,15 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
+import { RootStackParamList } from '../constants/types';
 import ChatHeader from '../components/headers/ChatHeader';
 import MessagesList from '../components/messages/MessageList';
 import ChatInput from '../components/messages/ChatInput';
 import { COLORS } from '../constants';
 
-type RootStackParamList = {
-  Chat: undefined;
-  ChatScreen: {
-    id: number;
-    displayName: string;
-    lastMessageAt?: string;
-    conversationType: string;
-  };
-};
-
 type Props = NativeStackScreenProps<RootStackParamList, 'ChatScreen'>;
 
-const ChatScreen = ({ route }: Props) => {
+const ChatScreen = ({ navigation, route }: Props) => {
   const info = route.params;
 
   return (
@@ -29,6 +20,7 @@ const ChatScreen = ({ route }: Props) => {
         displayName={info.displayName}
         lastMessageAt={info.lastMessageAt}
         conversationType={info.conversationType}
+        navigation={navigation}
       />
       <MessagesList conversationType={info.conversationType} id={info.id} />
       <ChatInput conversationType={info.conversationType} id={info.id} />

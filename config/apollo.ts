@@ -87,7 +87,7 @@ const refreshLink = new TokenRefreshLink({
   },
 });
 
-const retryIf = (error: any) => {
+const retryIf = (error: unknown) => {
   const doNotRetryCodes = [500, 400, 401];
   return !!error && !doNotRetryCodes.includes(error.statusCode);
 };
