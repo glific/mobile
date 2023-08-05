@@ -11,7 +11,7 @@ import { GET_CONTACT_INFO } from '../graphql/queries/Contact';
 import { getSessionTimeLeft } from '../utils/helper';
 
 interface Props {
-  navigation: unknown;
+  navigation: NativeStackScreenProps<RootStackParamList, 'ContactProfile'>;
   route: {
     params: {
       contact: {
@@ -59,7 +59,6 @@ const formatInfo = (contacts): ContactInfoProp => {
     fields: fieldInfo,
   };
 };
-type Props = NativeStackScreenProps<RootStackParamList, 'ContactProfile'>;
 
 const ContactProfile = ({ navigation, route }: Props) => {
   const { contact } = route.params;
