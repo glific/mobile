@@ -32,12 +32,6 @@ export const GET_CONTACT_HISTORY = gql`
   }
 `;
 
-export const COUNT_CONTACT_HISTORY = gql`
-  query countContactHistory($filter: ContactsHistoryFilter) {
-    countContactHistory(filter: $filter)
-  }
-`;
-
 export const GET_CONTACT_INFO = gql`
   query contact($id: ID!) {
     contact(id: $id) {
