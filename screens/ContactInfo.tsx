@@ -8,18 +8,20 @@ interface Props {
   navigation: unknown;
   route: {
     params: {
-      object: { [key: string]: string };
+      fields: { [key: string]: string };
     };
   };
 }
+
 const ContactInfo = ({ navigation, route }: Props) => {
+  const { fields } = route.params;
   return (
     <ScrollView style={styles.mainContainer}>
       <View style={styles.bodyContainer}>
-        {Object.keys(route.params).length === 0 ? (
+        {Object.keys(fields).length === 0 ? (
           <Text style={styles.placeholder}>No Fields Available</Text>
         ) : (
-          Object.entries(route.params).map(([field, value]) => (
+          Object.entries(fields).map(([field, value]) => (
             <FieldValue key={field} field={field} value={value} />
           ))
         )}

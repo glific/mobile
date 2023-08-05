@@ -126,14 +126,14 @@ const ContactProfile = ({ navigation, route }: Props) => {
       <View style={styles.rowContainer}>
         <Pressable
           style={styles.tabButton}
-          onPress={() => navigation.navigate('ContactInformation', contactInfo.fields)}
+          onPress={() => navigation.navigate('ContactInformation', { fields: contactInfo.fields })}
           android_ripple={{ color: COLORS.black005 }}
         >
           <Text style={styles.tabButtonText}>View Info</Text>
         </Pressable>
         <Pressable
           style={styles.tabButton}
-          onPress={() => navigation.navigate('ContactHistory', contact.id)}
+          onPress={() => navigation.navigate('ContactHistory', { id: contact.id })}
           android_ripple={{ color: COLORS.black005 }}
         >
           <Text style={styles.tabButtonText}>Contact History</Text>
