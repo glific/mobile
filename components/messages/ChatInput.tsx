@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { View, StyleSheet, TextInput, Pressable, Keyboard } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { View, StyleSheet, TextInput, Pressable, Keyboard, Animated } from 'react-native';
 import {
   FontAwesome,
   Ionicons,
@@ -12,11 +12,24 @@ import { useMutation } from '@apollo/client';
 import { COLORS, SCALE, SIZES } from '../../constants';
 import { SEND_COLLECTION_MESSAGE, SEND_CONTACT_MESSAGE } from '../../graphql/mutations/Chat';
 import EmojiPicker from '../emojis/EmojiPicker';
-import SpeedSend from './SpeedSend';
 import Templates from './Templates';
 import InteractiveMessage from './InteractiveMessage';
 import ErrorAlert from '../ui/ErrorAlert';
 import MessageOptions from './MessageOptions';
+import TemplateVariablesPopup from './TemplateVariablesPopup';
+
+type InteractiveTemplateType = {
+  id: string;
+  body: string;
+};
+
+type TemplateType = {
+  id: string;
+  isHsm: boolean;
+  body: string;
+  type: string;
+  numberParameters: number;
+};
 
 interface ChatInputProps {
   id: number;
@@ -28,6 +41,9 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
   const speedSendRef = useRef(null);
   const templateRef = useRef(null);
   const interactiveMessageRef = useRef(null);
+  const xValue = useRef(new Animated.Value(0)).current;
+  const [prevX, setPrevX] = useState(0);
+
   const [message, setMessage] = useState('');
   const [cursor, setcursor] = useState(0);
   const [errorMessage, setErrorMessage] = useState('');
@@ -36,14 +52,14 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
   const [showEmoji, setShowEmoji] = useState(false);
   const [showAttachments, setShowAttachments] = useState(false);
 
-  const [selectedTemplate, setSelectedTemplate] = useState();
-  const [variableParam, setVariableParam] = useState([]);
+  const [interactiveTemplate, setInteractiveTemplate] = useState<InteractiveTemplateType>();
+  const [selectedTemplate, setSelectedTemplate] = useState<TemplateType>();
+  const [variableParam, setVariableParam] = useState<string[] | []>([]);
+  const [variablePopupVisible, setVariablePopupVisible] = useState(false);
 
   const [createAndSendMessage] = useMutation(SEND_CONTACT_MESSAGE, {
-    onCompleted: (data) => {
-      console.log(data.createAndSendMessage.message);
-    },
     onError: (error) => {
+      console.log(error);
       setErrorMessage(error.message);
       setInterval(() => {
         setErrorMessage('');
@@ -52,9 +68,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
   });
 
   const [createAndSendToCollection] = useMutation(SEND_COLLECTION_MESSAGE, {
-    onCompleted: () => {
-      console.log('success');
-    },
     onError: (error) => {
       setErrorMessage(error.message);
       setInterval(() => {
@@ -64,7 +77,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
   });
 
   const HandleSendMessage = () => {
-    setMessage('');
     Keyboard.dismiss();
     setShowOptions(false);
     setShowEmoji(false);
@@ -74,19 +86,22 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
     const input = {
       body: message,
       flow: 'OUTBOUND',
-      type: 'TEXT',
+      type: selectedTemplate ? selectedTemplate.type : interactiveTemplate ? 'QUICK_REPLY' : 'TEXT',
       receiverId: id,
-      // mediaId: null,
-      // interactiveTemplateId: null,
+      mediaId: null,
     };
 
+    if (interactiveTemplate) {
+      input.interactiveTemplateId = parseInt(interactiveTemplate.id, 10);
+    }
     if (selectedTemplate) {
+      input.body = selectedTemplate.body;
       input.isHsm = selectedTemplate.isHsm;
       input.templateId = parseInt(selectedTemplate.id, 10);
       input.params = variableParam;
     }
 
-    if (message !== '') {
+    if (message !== '' || interactiveTemplate) {
       if (conversationType === 'contact') {
         createAndSendMessage({
           variables: { input },
@@ -97,22 +112,55 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
         });
       }
     }
+
+    setMessage('');
+    setSelectedTemplate(undefined);
+    setVariableParam([]);
+    setInteractiveTemplate(undefined);
+  };
+
+  useEffect(() => {
+    const translateX = message ? 100 : 0;
+    if (prevX !== translateX) {
+      setPrevX(translateX);
+      Animated.timing(xValue, {
+        toValue: translateX,
+        duration: 400,
+        useNativeDriver: false,
+      }).start();
+    }
+  }, [message]);
+
+  const handleTemplateSelect = (template: TemplateType, isTemplate: boolean) => {
+    setShowOptions(false);
+    setSelectedTemplate(template);
+    setMessage(template.body);
+    if (isTemplate) {
+      setVariablePopupVisible(true);
+    }
+  };
+
+  const handleInteractiveTemplateSelect = (template: InteractiveTemplateType) => {
+    setShowOptions(false);
+    setInteractiveTemplate(template);
+  };
+
+  const handleTemplateVariableCancel = () => {
+    setMessage('');
+    setSelectedTemplate(undefined);
+    setVariablePopupVisible(false);
+  };
+
+  const handleTemplateVariableDone = (variables: string[]) => {
+    setVariableParam(variables);
+    const updatedBody = message.replace(/\{\{(\d+)\}\}/g, (_, index) => variables[index - 1]);
+    setMessage(updatedBody);
+    setVariablePopupVisible(false);
   };
 
   return (
     <View style={styles.mainContainer}>
       <View style={styles.inputContainer}>
-        <Entypo
-          testID="upIcon"
-          name="chevron-up"
-          style={[styles.showIcon, showOptions && { transform: [{ rotate: '180deg' }] }]}
-          onPress={() => {
-            setShowEmoji(false);
-            setShowAttachments(false);
-            inputRef?.current?.blur();
-            setShowOptions(!showOptions);
-          }}
-        />
         <View style={styles.inputAndEmoji}>
           {showEmoji ? (
             <MaterialCommunityIcons
@@ -145,27 +193,58 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
             multiline
             placeholder={'Start Typing...'}
             style={styles.input}
-            value={message}
-            onChangeText={(text) => setMessage(text)}
+            value={interactiveTemplate ? interactiveTemplate.body : message}
+            editable={!(selectedTemplate || interactiveTemplate?.id)}
+            onChangeText={setMessage}
             onFocus={() => {
               setShowEmoji(false);
             }}
             onSelectionChange={(event) => {
               setcursor(event?.nativeEvent?.selection.start);
             }}
+            cursorColor={COLORS.darkGray}
+            selectionColor={COLORS.darkGray}
           />
-          <MaterialCommunityIcons
-            testID="clipIcon"
-            name="paperclip"
-            color={COLORS.black}
-            style={styles.paperclipicon}
-            onPress={() => {
-              setShowOptions(false);
-              setShowEmoji(false);
-              inputRef?.current?.blur();
-              setShowAttachments(!showAttachments);
-            }}
-          />
+          {selectedTemplate || interactiveTemplate?.id ? (
+            <Ionicons
+              name="close-circle-outline"
+              testID="clearIcon"
+              color={COLORS.black}
+              style={styles.emojiconButton}
+              onPress={() => {
+                setMessage('');
+                setSelectedTemplate(undefined);
+                setVariableParam([]);
+                setInteractiveTemplate(undefined);
+              }}
+            />
+          ) : (
+            <Animated.View style={[styles.actionButtons, { transform: [{ translateX: xValue }] }]}>
+              <Entypo
+                testID="upIcon"
+                name="chevron-up"
+                style={[styles.showIcon, showOptions && { transform: [{ rotate: '180deg' }] }]}
+                onPress={() => {
+                  setShowEmoji(false);
+                  setShowAttachments(false);
+                  inputRef?.current?.blur();
+                  setShowOptions(!showOptions);
+                }}
+              />
+              <MaterialCommunityIcons
+                testID="clipIcon"
+                name="paperclip"
+                color={COLORS.black}
+                style={styles.paperclipicon}
+                onPress={() => {
+                  setShowOptions(false);
+                  setShowEmoji(false);
+                  inputRef?.current?.blur();
+                  setShowAttachments(!showAttachments);
+                }}
+              />
+            </Animated.View>
+          )}
         </View>
 
         <Pressable testID="sendIcon" style={styles.sendButton} onPress={HandleSendMessage}>
@@ -181,11 +260,20 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
             onTemplates={() => templateRef.current.show()}
             onInteractiveMessage={() => interactiveMessageRef.current.show()}
           />
-          <SpeedSend bsRef={speedSendRef} />
-          <Templates bsRef={templateRef} />
-          <InteractiveMessage bsRef={interactiveMessageRef} />
+          <Templates bsRef={speedSendRef} handleSelect={handleTemplateSelect} />
+          <Templates bsRef={templateRef} handleSelect={handleTemplateSelect} isTemplates={true} />
+          <InteractiveMessage
+            bsRef={interactiveMessageRef}
+            handleSelect={handleInteractiveTemplateSelect}
+          />
         </View>
       )}
+      <TemplateVariablesPopup
+        visible={variablePopupVisible}
+        onCancel={handleTemplateVariableCancel}
+        onDone={handleTemplateVariableDone}
+        selectedTemplate={selectedTemplate}
+      />
 
       {showEmoji && (
         <View testID="emojisTab" style={styles.emojiPanel}>
@@ -231,6 +319,13 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
 export default ChatInput;
 
 const styles = StyleSheet.create({
+  actionButtons: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    flexDirection: 'row',
+    position: 'absolute',
+    right: 0,
+  },
   attachmentButton: {
     alignItems: 'center',
     backgroundColor: COLORS.white,
@@ -273,13 +368,12 @@ const styles = StyleSheet.create({
     width: SCALE(340),
   },
   emojiPanel: {
-    height: SCALE(300),
+    height: SCALE(250),
     width: SIZES.width,
   },
   emojiconButton: {
     color: COLORS.black,
     fontSize: SIZES.s24,
-    marginLeft: SCALE(2),
     padding: SIZES.m6,
   },
   iconchatbox: {
@@ -291,17 +385,20 @@ const styles = StyleSheet.create({
     color: COLORS.black,
     flex: 1,
     fontSize: SIZES.f16,
+    marginLeft: SIZES.m2,
+    marginRight: SIZES.m6,
     minHeight: SIZES.s48,
-    paddingHorizontal: SIZES.m6,
     paddingVertical: SIZES.m4,
   },
   inputAndEmoji: {
     alignItems: 'center',
     backgroundColor: COLORS.lightGray,
-    borderRadius: SCALE(30),
+    borderRadius: SIZES.s30,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginHorizontal: SIZES.m4,
+    overflow: 'hidden',
   },
   inputContainer: {
     alignItems: 'center',
@@ -321,8 +418,9 @@ const styles = StyleSheet.create({
   paperclipicon: {
     color: COLORS.black,
     fontSize: SIZES.s24,
-    marginRight: SCALE(2),
-    padding: SIZES.m6,
+    marginRight: SIZES.m4,
+    paddingHorizontal: SIZES.m4,
+    paddingVertical: SIZES.m12,
     transform: [{ rotate: '50deg' }],
   },
   sendButton: {
@@ -332,18 +430,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: SIZES.s48,
     justifyContent: 'center',
-    marginLeft: SCALE(2),
     width: SIZES.s48,
   },
   sendicon: {
     color: COLORS.primary100,
-    fontSize: SIZES.f16,
+    fontSize: SIZES.f14,
+    includeFontPadding: false,
     marginBottom: SIZES.m4,
   },
   showIcon: {
     color: COLORS.black,
     fontSize: SIZES.f18,
-    paddingHorizontal: SIZES.m6,
+    paddingHorizontal: SIZES.m4,
     paddingVertical: SIZES.m12,
   },
 });

@@ -232,35 +232,6 @@ describe('Chat screen', () => {
     });
   });
 
-  test('should open speed send bottom sheet when press up in chat input options', async () => {
-    const { getByTestId } = customRender(
-      <ChatScreen route={{ params: { ...contactMock } }} />,
-      GET_CONTACT_MESSAGES_MOCK
-    );
-
-    fireEvent.press(getByTestId('upIcon'));
-
-    await waitFor(async () => {
-      expect(getByTestId('speedSend')).toBeDefined();
-      expect(getByTestId('templates')).toBeDefined();
-      expect(getByTestId('interactive')).toBeDefined();
-
-      fireEvent.press(getByTestId('speedSend'));
-
-      expect(await getByTestId('quickTemplate1')).toBeDefined();
-      expect(await getByTestId('quickTemplate2')).toBeDefined();
-      expect(await getByTestId('quickTemplate3')).toBeDefined();
-      expect(await getByTestId('quickTemplate4')).toBeDefined();
-
-      const bsSearch = getByTestId('bsSearch');
-      fireEvent.changeText(bsSearch, 'test search');
-      expect(bsSearch.props.value).toBe('test search');
-
-      const bsBackIcon = getByTestId('bsBackIcon');
-      fireEvent.press(bsBackIcon);
-    });
-  });
-
   test('should open emojis tab when press emoji in chat input', async () => {
     const { getByTestId } = customRender(
       <ChatScreen route={{ params: { ...contactMock } }} />,

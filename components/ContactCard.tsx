@@ -18,7 +18,7 @@ export interface ContactProps {
   navigation: NavigationProp<RootStackParamList>;
 }
 
-const updateContactCache = (client: any, id: any) => {
+const updateContactCache = (client: unknown, id: string) => {
   const contact = client.readFragment({
     id: `Contact:${id}`,
     fragment: CONTACT_FRAGMENT,
