@@ -31,24 +31,26 @@ const SavedSearches = ({ navigation }: Props) => {
     });
   };
 
+  const renderItem = ({ item, index }) => (
+    <Pressable
+      key={index}
+      style={styles.item}
+      onPress={() => handleSelect(item)}
+      android_ripple={{ color: COLORS.primary10 }}
+    >
+      <MaterialIcons name="touch-app" size={24} color={COLORS.primary100} />
+      <Text style={styles.name} key={item.id}>
+        {item.label}
+      </Text>
+    </Pressable>
+  );
+
   return (
     <>
       <FlatList
         data={savedSearchData?.savedSearches.filter((search) => search.label.includes(searchValue))}
         keyExtractor={(item) => item.id}
-        renderItem={({ item, index }) => (
-          <Pressable
-            key={index}
-            style={styles.item}
-            onPress={() => handleSelect(item)}
-            android_ripple={{ color: COLORS.primary10 }}
-          >
-            <MaterialIcons name="touch-app" size={24} color={COLORS.primary100} />
-            <Text style={styles.name} key={item.id}>
-              {item.label}
-            </Text>
-          </Pressable>
-        )}
+        renderItem={renderItem}
         ListHeaderComponent={
           <SavedSearchBar searchValue={searchValue} setSearchValue={setSearchValue} />
         }
