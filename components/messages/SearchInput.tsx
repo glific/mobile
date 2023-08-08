@@ -5,7 +5,8 @@ import { COLORS, SCALE, SIZES } from '../../constants';
 
 type SearchInputProps = {
   value: string;
-  handleValue: () => void;
+  // eslint-disable-next-line no-unused-vars
+  handleValue: (value: string) => void;
   handleBack: () => void;
 };
 
@@ -50,6 +51,7 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
     alignItems: 'center',
+    backgroundColor: COLORS.white,
     borderBottomWidth: SCALE(0.5),
     borderColor: COLORS.lightGray,
     flexDirection: 'row',

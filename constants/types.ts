@@ -22,7 +22,7 @@ export type RootStackParamList = {
       id: number;
       conversationType: string;
       name: string;
-      lastMessageAt: string;
+      lastMessageAt?: string;
     };
   };
   ChatScreen: {

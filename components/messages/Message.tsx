@@ -229,12 +229,7 @@ const Message: React.FC<MessageProps> = ({
           </Pressable>
           <View style={styles.optionsContainer}>
             {options?.map((option, index) => (
-              <Pressable
-                key={index}
-                testID={`quickOption${index}`}
-                style={styles.optionButton}
-                android_ripple={{ color: COLORS.black005 }}
-              >
+              <Pressable key={index} testID={`quickOption${index}`} style={styles.optionButton}>
                 <Text style={styles.optionText}>{option.title}</Text>
               </Pressable>
             ))}

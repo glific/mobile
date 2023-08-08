@@ -96,7 +96,7 @@ const Chat = ({ navigation, route }: Props) => {
     fetchPolicy: 'cache-and-network',
     variables: searchVariable,
     onCompleted(data) {
-      const newContacts: ChatEntry[] = data.search.map((element: ContactElement) => {
+      const newContacts: ChatEntry[] = data?.search?.map((element: ContactElement) => {
         const messagesLength = element.messages?.length || 0;
         return {
           id: element.contact?.id,
