@@ -1,14 +1,62 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { FlatList, StyleSheet, Text } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useQuery } from '@apollo/client';
 
-import { COLORS, SIZES } from '../constants';
-import Loading from '../components/ui/Loading';
 import SearchBar from '../components/ui/SearchBar';
 import ContactCard from '../components/ContactCard';
 import { GET_CONTACTS } from '../graphql/queries/Contact';
+import { COLORS, SIZES } from '../constants';
+import Loading from '../components/ui/Loading';
+import AuthContext from '../config/AuthContext';
 import { ChatEntry, RootStackParamList } from '../constants/types';
+import {
+  MESSAGE_RECEIVED_SUBSCRIPTION,
+  MESSAGE_SENT_SUBSCRIPTION,
+} from '../graphql/subscriptions/Chat';
+import { getSubscriptionDetails } from '../utils/subscriptionDetails';
+
+const updateContactList = (cachedConversations: any, subscriptionData: any, action: string) => {
+  if (!subscriptionData.data) {
+    return cachedConversations;
+  }
+
+  if (!cachedConversations) {
+    return null;
+  }
+
+  const { newMessage, contactId, contact } = getSubscriptionDetails(action, subscriptionData);
+  let conversationIndex = -1;
+
+  cachedConversations.search.forEach((conversation: any, index: any) => {
+    if (conversation.contact.id === contactId) {
+      conversationIndex = index;
+    }
+  });
+
+  const newMessageEntry = {
+    id: newMessage.id,
+    body: newMessage.body,
+  };
+  const newContactEntry = {
+    messages: [newMessageEntry],
+    contact: contact,
+  };
+  const cache = JSON.parse(JSON.stringify(cachedConversations));
+
+  if (conversationIndex > -1) {
+    // Contact exists, move it to index 0
+    const existingConversation = cache.search[conversationIndex];
+    cache.search.splice(conversationIndex, 1);
+    cache.search.unshift(existingConversation);
+    // Update the messages for the moved conversation
+    cache.search[0].messages.push(newMessageEntry);
+  } else {
+    // Add the entry at position 0
+    cache.search.unshift(newContactEntry);
+  }
+  return cache;
+};
 
 interface Contact {
   id: string;
@@ -28,9 +76,11 @@ interface ContactElement {
   messages: Message[];
 }
 
+
 type Props = NativeStackScreenProps<RootStackParamList, 'Contacts'>;
 
 const Chat = ({ navigation, route }: Props) => {
+  const { user }: any = useContext(AuthContext);
   const [contacts, setContacts] = useState<ChatEntry[]>([]);
   const [searchVariable, setSearchVariable] = useState({
     filter: {},
@@ -40,7 +90,10 @@ const Chat = ({ navigation, route }: Props) => {
   const [pageNo, setPageNo] = useState(1);
   const [noMoreItems, setNoMoreItems] = useState(false);
 
-  const { loading, refetch, fetchMore } = useQuery(GET_CONTACTS, {
+  const subscriptionVariables = { organizationId: user?.organization?.id };
+
+  const { loading, refetch, fetchMore, subscribeToMore } = useQuery(GET_CONTACTS, {
+    fetchPolicy: 'cache-and-network',
     variables: searchVariable,
     onCompleted(data) {
       const newContacts: ChatEntry[] = data?.search?.map((element: ContactElement) => {
@@ -65,7 +118,24 @@ const Chat = ({ navigation, route }: Props) => {
     refetch(searchVariable);
   }
 
-  const handleSetSearchVariable = (variable) => {
+  useEffect(() => {
+    if (subscribeToMore) {
+      subscribeToMore({
+        document: MESSAGE_RECEIVED_SUBSCRIPTION,
+        variables: subscriptionVariables,
+        updateQuery: (prev, { subscriptionData }) =>
+          updateContactList(prev, subscriptionData, 'RECEIVED'),
+      });
+      subscribeToMore({
+        document: MESSAGE_SENT_SUBSCRIPTION,
+        variables: subscriptionVariables,
+        updateQuery: (prev, { subscriptionData }) =>
+          updateContactList(prev, subscriptionData, 'SENT'),
+      });
+    }
+  }, [subscribeToMore]);
+
+  const handleSetSearchVariable = (variable: any) => {
     setPageNo(1);
     setNoMoreItems(false);
     setSearchVariable(variable);
@@ -102,23 +172,25 @@ const Chat = ({ navigation, route }: Props) => {
     });
   };
 
+  const renderItem = ({ item, index }) => (
+    <ContactCard
+      key={index}
+      id={item.id}
+      name={item.name}
+      lastMessage={item.lastMessage}
+      lastMessageAt={item.lastMessageAt}
+      isOrgRead={item.isOrgRead}
+      navigation={navigation}
+    />
+  );
+
   return (
     <>
       <FlatList
         accessibilityLabel={'notification-list'}
         data={contacts}
         keyExtractor={(item) => item.id + item.name}
-        renderItem={({ item, index }) => (
-          <ContactCard
-            key={index}
-            id={item.id}
-            name={item.name}
-            lastMessage={item.lastMessage}
-            lastMessageAt={item.lastMessageAt}
-            isOrgRead={item.isOrgRead}
-            navigation={navigation}
-          />
-        )}
+        renderItem={renderItem}
         ListHeaderComponent={
           <SearchBar
             setSearchVariable={handleSetSearchVariable}

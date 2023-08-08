@@ -364,7 +364,7 @@ export const GET_CONTACT_TEXT_MESSAGE_MOCK = [
       variables: {
         filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
-        messageOpts: { limit: 20 },
+        messageOpts: { limit: 20, offset: 0 },
       },
     },
     result: {
@@ -404,7 +404,7 @@ export const GET_CONTACT_IMAGE_MESSAGE_MOCK = [
       variables: {
         filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
-        messageOpts: { limit: 20 },
+        messageOpts: { limit: 20, offset: 0 },
       },
     },
     result: {
@@ -448,7 +448,7 @@ export const GET_CONTACT_VIDEO_MESSAGE_MOCK = [
       variables: {
         filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
-        messageOpts: { limit: 20 },
+        messageOpts: { limit: 20, offset: 0 },
       },
     },
     result: {
@@ -492,7 +492,7 @@ export const GET_CONTACT_AUDIO_MESSAGE_MOCK = [
       variables: {
         filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
-        messageOpts: { limit: 20 },
+        messageOpts: { limit: 20, offset: 0 },
       },
     },
     result: {
@@ -536,7 +536,7 @@ export const GET_CONTACT_DOCUMENT_MESSAGE_MOCK = [
       variables: {
         filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
-        messageOpts: { limit: 20 },
+        messageOpts: { limit: 20, offset: 0 },
       },
     },
     result: {
@@ -580,7 +580,7 @@ export const GET_CONTACT_STICKER_MESSAGE_MOCK = [
       variables: {
         filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
-        messageOpts: { limit: 20 },
+        messageOpts: { limit: 20, offset: 0 },
       },
     },
     result: {
@@ -624,7 +624,7 @@ export const GET_CONTACT_LOCATION_MESSAGE_MOCK = [
       variables: {
         filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
-        messageOpts: { limit: 20 },
+        messageOpts: { limit: 20, offset: 0 },
       },
     },
     result: {
@@ -664,7 +664,7 @@ export const GET_CONTACT_QUCIK_REPLY_MESSAGE_MOCK = [
       variables: {
         filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
-        messageOpts: { limit: 20 },
+        messageOpts: { limit: 20, offset: 0 },
       },
     },
     result: {
