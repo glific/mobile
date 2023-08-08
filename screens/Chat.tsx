@@ -172,23 +172,25 @@ const Chat = ({ navigation, route }: Props) => {
     });
   };
 
+  const renderItem = ({ item, index }) => (
+    <ContactCard
+      key={index}
+      id={item.id}
+      name={item.name}
+      lastMessage={item.lastMessage}
+      lastMessageAt={item.lastMessageAt}
+      isOrgRead={item.isOrgRead}
+      navigation={navigation}
+    />
+  );
+
   return (
     <>
       <FlatList
         accessibilityLabel={'notification-list'}
         data={contacts}
         keyExtractor={(item) => item.id + item.name}
-        renderItem={({ item, index }) => (
-          <ContactCard
-            key={index}
-            id={item.id}
-            name={item.name}
-            lastMessage={item.lastMessage}
-            lastMessageAt={item.lastMessageAt}
-            isOrgRead={item.isOrgRead}
-            navigation={navigation}
-          />
-        )}
+        renderItem={renderItem}
         ListHeaderComponent={
           <SearchBar
             setSearchVariable={handleSetSearchVariable}
