@@ -11,10 +11,15 @@ const contactMock = {
   lastMessageAt: '2023-06-15',
 };
 
+const navigationMock = {
+  navigate: jest.fn(),
+  goBack: jest.fn(),
+};
+
 describe('ContactProfile', () => {
   test('renders the contact profile with correct information', () => {
     const { getByTestId, getByText } = customRender(
-      <ContactProfile route={{ params: { contact: contactMock } }} />
+      <ContactProfile navigation={navigationMock} route={{ params: { contact: contactMock } }} />
     );
 
     expect(getByTestId('backIcon')).toBeDefined();
@@ -34,11 +39,7 @@ describe('ContactProfile', () => {
   });
 
   test('calls the navigation.goBack() function when the back button is pressed', async () => {
-    const navigationMock = {
-      navigate: jest.fn(),
-      goBack: jest.fn(),
-    };
-    const { getByTestId, getByText } = customRender(
+    const { getByTestId } = customRender(
       <ContactProfile navigation={navigationMock} route={{ params: { contact: contactMock } }} />
     );
 
@@ -47,10 +48,6 @@ describe('ContactProfile', () => {
   });
 
   test('navigate to view info page', async () => {
-    const navigationMock = {
-      navigate: jest.fn(),
-      goBack: jest.fn(),
-    };
     const { getByText } = customRender(
       <ContactProfile navigation={navigationMock} route={{ params: { contact: contactMock } }} />,
       CONTACT_INFO_MOCK
@@ -64,10 +61,6 @@ describe('ContactProfile', () => {
   });
 
   test('navigate to contact history page', async () => {
-    const navigationMock = {
-      navigate: jest.fn(),
-      goBack: jest.fn(),
-    };
     const { getByText } = customRender(
       <ContactProfile navigation={navigationMock} route={{ params: { contact: contactMock } }} />,
       CONTACT_INFO_MOCK

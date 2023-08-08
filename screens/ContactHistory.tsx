@@ -90,19 +90,25 @@ const ContactHistory = ({ route }: Props) => {
     });
   };
 
+  const renderItem = ({ item }) => (
+    <View key={item.id} style={styles.historyContainer}>
+      <Text>{item.action}</Text>
+      <Text>{formatDate(item.date)}</Text>
+    </View>
+  );
+
   return (
     <>
       {historyData.length > 0 ? (
         <FlatList
+          accessibilityLabel={'history-list'}
           testID="historyFlatList"
           style={styles.mainContainer}
           data={historyData}
-          renderItem={({ item }) => (
-            <View key={item.id} style={styles.historyContainer}>
-              <Text>{item.action}</Text>
-              <Text>{formatDate(item.date)}</Text>
-            </View>
-          )}
+          ListEmptyComponent={
+            !loading ? <Text style={styles.placeholder}>No History Available</Text> : null
+          }
+          renderItem={renderItem}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={0.1}
         />

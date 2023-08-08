@@ -37,10 +37,6 @@ const createSimilarItem = (id: string) => ({
 for (let i = 3; i <= 10; i++) {
   mockHistory.contactHistory.push(createSimilarItem(i.toString()));
 }
-const moreReponse = { contactHistory: [] };
-for (let i = 11; i <= 12; i++) {
-  moreReponse.contactHistory.push(createSimilarItem(i.toString()));
-}
 export const GET_CONTACT_HISTORY_MOCK = [
   {
     request: {
@@ -55,9 +51,6 @@ export const GET_CONTACT_HISTORY_MOCK = [
     request: {
       query: GET_CONTACT_HISTORY,
       variables: { opts: { order: 'ASC', limit: 10, offset: 11 }, filter: { contactId: '2' } },
-    },
-    result: {
-      data: moreReponse,
     },
   },
 ];
