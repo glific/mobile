@@ -21,6 +21,7 @@ import TemplateVariablesPopup from './TemplateVariablesPopup';
 type InteractiveTemplateType = {
   id: string;
   body: string;
+  type: string;
 };
 
 type TemplateType = {
@@ -86,16 +87,17 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
     const input = {
       body: message,
       flow: 'OUTBOUND',
-      type: selectedTemplate ? selectedTemplate.type : interactiveTemplate ? 'QUICK_REPLY' : 'TEXT',
+      type: 'TEXT',
       receiverId: id,
       mediaId: null,
     };
 
     if (interactiveTemplate) {
+      input.type = interactiveTemplate.type;
       input.interactiveTemplateId = parseInt(interactiveTemplate.id, 10);
-    }
-    if (selectedTemplate) {
+    } else if (selectedTemplate) {
       input.body = selectedTemplate.body;
+      input.type = selectedTemplate.type;
       input.isHsm = selectedTemplate.isHsm;
       input.templateId = parseInt(selectedTemplate.id, 10);
       input.params = variableParam;

@@ -39,6 +39,22 @@ const Templates = ({ bsRef, handleSelect, isTemplates = false }: Props) => {
     handleSelect(item, isTemplates);
   };
 
+  const renderItem = ({ item }) => (
+    <Pressable
+      key={item.id}
+      testID={`template_${item.id}`}
+      style={styles.messageContainer}
+      android_ripple={{ color: COLORS.primary10 }}
+      onPress={() => onSelect(item)}
+    >
+      <MaterialCommunityIcons name="message-flash-outline" style={styles.messageIcon} />
+      <View style={styles.message}>
+        <Text style={styles.messageTitle}>{item.label}</Text>
+        <Text style={styles.messageText}>{item.body}</Text>
+      </View>
+    </Pressable>
+  );
+
   return (
     <BottomSheet refs={bsRef} draggable={false} height={SIZES.s400}>
       <FlatList
@@ -47,21 +63,7 @@ const Templates = ({ bsRef, handleSelect, isTemplates = false }: Props) => {
           (item) =>
             item.isHsm === isTemplates && (item.label.includes(value) || item.body.includes(value))
         )}
-        renderItem={({ item }) => (
-          <Pressable
-            key={item.id}
-            testID={`template_${item.id}`}
-            style={styles.messageContainer}
-            android_ripple={{ color: COLORS.primary10 }}
-            onPress={() => onSelect(item)}
-          >
-            <MaterialCommunityIcons name="message-flash-outline" style={styles.messageIcon} />
-            <View style={styles.message}>
-              <Text style={styles.messageTitle}>{item.label}</Text>
-              <Text style={styles.messageText}>{item.body}</Text>
-            </View>
-          </Pressable>
-        )}
+        renderItem={renderItem}
         ListHeaderComponent={
           <SearchInput
             value={value}

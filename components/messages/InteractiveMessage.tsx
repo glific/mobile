@@ -12,6 +12,7 @@ import { GET_INTERACTIVE_MESSAGES } from '../../graphql/queries/Templates';
 type InteractiveTemplateType = {
   id: string;
   body: string;
+  type: string;
 };
 
 type Props = {
@@ -32,7 +33,26 @@ const InteractiveMessage = ({ bsRef, handleSelect }: Props) => {
 
   const onSelect = (item: InteractiveTemplateType, body: string) => {
     bsRef.current.close();
-    handleSelect({ id: item.id, body });
+    handleSelect({ id: item.id, body, type: item.type });
+  };
+
+  const renderItem = ({ item }) => {
+    const body = JSON.parse(item.interactiveContent).content?.text;
+    return (
+      <Pressable
+        key={item.id}
+        testID={`template_${item.id}`}
+        style={styles.messageContainer}
+        android_ripple={{ color: COLORS.primary10 }}
+        onPress={() => onSelect(item, body)}
+      >
+        <MaterialCommunityIcons name="message-flash-outline" style={styles.messageIcon} />
+        <View style={styles.message}>
+          <Text style={styles.messageTitle}>{item.label}</Text>
+          <Text style={styles.messageText}>{body}</Text>
+        </View>
+      </Pressable>
+    );
   };
 
   return (
@@ -42,24 +62,7 @@ const InteractiveMessage = ({ bsRef, handleSelect }: Props) => {
         data={data?.interactiveTemplates.filter(
           (item) => item.label.includes(value) || item.interactiveContent.includes(value)
         )}
-        renderItem={({ item }) => {
-          const body = JSON.parse(item.interactiveContent).content?.text;
-          return (
-            <Pressable
-              key={item.id}
-              testID={`template_${item.id}`}
-              style={styles.messageContainer}
-              android_ripple={{ color: COLORS.primary10 }}
-              onPress={() => onSelect(item, body)}
-            >
-              <MaterialCommunityIcons name="message-flash-outline" style={styles.messageIcon} />
-              <View style={styles.message}>
-                <Text style={styles.messageTitle}>{item.label}</Text>
-                <Text style={styles.messageText}>{body}</Text>
-              </View>
-            </Pressable>
-          );
-        }}
+        renderItem={renderItem}
         ListHeaderComponent={
           <SearchInput
             value={value}
