@@ -26,6 +26,13 @@ export const MESSAGE_RECEIVED_SUBSCRIPTION = gql`
         url
         caption
       }
+      contact {
+        id
+        name
+        maskedPhone
+        lastMessageAt
+        isOrgRead
+      }
       errors
       contextMessage {
         body
@@ -85,6 +92,13 @@ export const MESSAGE_SENT_SUBSCRIPTION = gql`
       media {
         url
         caption
+      }
+      contact {
+        id
+        name
+        maskedPhone
+        lastMessageAt
+        isOrgRead
       }
       errors
       contextMessage {
