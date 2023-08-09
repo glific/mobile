@@ -67,10 +67,10 @@ const Collections = ({ navigation }: Props) => {
     });
   };
 
-  const renderItem = ({ item, index }) => {
+  const renderItem = ({ item }) => {
     return (
       <CollectionCard
-        key={index}
+        key={item.group.id}
         id={item.group.id}
         name={item.group.label ? item.group.label : 'Unknown Name'}
         navigation={navigation}
@@ -81,6 +81,8 @@ const Collections = ({ navigation }: Props) => {
   return (
     <>
       <FlatList
+        extraData={pageNo}
+        keyExtractor={(item) => item.group.id}
         accessibilityLabel={'notification-list'}
         data={collectionsData?.search}
         renderItem={renderItem}

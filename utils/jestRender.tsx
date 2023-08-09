@@ -6,7 +6,7 @@ import AuthContext from '../config/AuthContext';
 
 const customRender = (
   component: React.ReactElement,
-  mocks = [],
+  mocks: Array<any> = [],
   authContextValue = {
     token: 'existing_token',
     setToken: jest.fn(),

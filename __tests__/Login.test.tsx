@@ -5,6 +5,7 @@ import customRender from '../utils/jestRender';
 import Login from '../screens/Login';
 import AxiosService from '../config/axios';
 import Storage from '../utils/asyncStorage';
+import { getCurrentUserQuery } from '../__mocks__/queries/user';
 
 jest.mock('../utils/asyncStorage', () => ({
   storeData: jest.fn(),
@@ -63,7 +64,8 @@ describe('Login screen', () => {
     };
 
     const { getByTestId, getByText } = customRender(
-      <Login navigation={{ navigate: navigateMock }} />
+      <Login navigation={{ navigate: navigateMock }} />,
+      [getCurrentUserQuery]
     );
 
     fireEvent.changeText(getByTestId('mobileNumber'), '7834811114');

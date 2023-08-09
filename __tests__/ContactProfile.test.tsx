@@ -17,34 +17,41 @@ const navigationMock = {
 };
 
 describe('ContactProfile', () => {
-  test('renders the contact profile with correct information', () => {
+  test('renders the contact profile with correct information', async () => {
     const { getByTestId, getByText } = customRender(
-      <ContactProfile navigation={navigationMock} route={{ params: { contact: contactMock } }} />
+      <ContactProfile navigation={navigationMock} route={{ params: { contact: contactMock } }} />,
+      CONTACT_INFO_MOCK
     );
-
-    expect(getByTestId('backIcon')).toBeDefined();
-    expect(getByTestId('sessionTimer')).toBeDefined();
-    expect(getByTestId('userProfile')).toBeDefined();
+    await waitFor(() => {
+      expect(getByTestId('backIcon')).toBeDefined();
+      expect(getByTestId('sessionTimer')).toBeDefined();
+      expect(getByTestId('userProfile')).toBeDefined();
+    });
     const userName = getByTestId('userName');
-    expect(userName.props.children).toBe(contactMock.name);
+    await waitFor(() => {
+      expect(userName.props.children).toBe(contactMock.name);
 
-    expect(getByTestId('Phone')).toBeDefined();
-    expect(getByTestId('Assigned to')).toBeDefined();
-    expect(getByTestId('Language')).toBeDefined();
-    expect(getByTestId('Status')).toBeDefined();
-    expect(getByTestId('Collections')).toBeDefined();
+      expect(getByTestId('Phone')).toBeDefined();
+      expect(getByTestId('Assigned to')).toBeDefined();
+      expect(getByTestId('Language')).toBeDefined();
+      expect(getByTestId('Status')).toBeDefined();
+      expect(getByTestId('Collections')).toBeDefined();
 
-    expect(getByText('View Info')).toBeDefined();
-    expect(getByText('Contact History')).toBeDefined();
+      expect(getByText('View Info')).toBeDefined();
+      expect(getByText('Contact History')).toBeDefined();
+    });
   });
 
   test('calls the navigation.goBack() function when the back button is pressed', async () => {
     const { getByTestId } = customRender(
-      <ContactProfile navigation={navigationMock} route={{ params: { contact: contactMock } }} />
+      <ContactProfile navigation={navigationMock} route={{ params: { contact: contactMock } }} />,
+      CONTACT_INFO_MOCK
     );
 
     fireEvent.press(getByTestId('backIcon'));
-    expect(navigationMock.goBack).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(navigationMock.goBack).toHaveBeenCalled();
+    });
   });
 
   test('navigate to view info page', async () => {

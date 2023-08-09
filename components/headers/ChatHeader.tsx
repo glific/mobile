@@ -220,12 +220,13 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
             {menu}
           </>
         )}
-        <StartFlowPopup
-          visible={showStartFlowModal}
-          onClose={closePopups}
-          variables={isContactType ? { contactId: id } : { groupId: id }}
-          mutation={isContactType ? START_CONTACT_FLOW : START_COLLECTION_FLOW}
-        />
+        {showStartFlowModal && (
+          <StartFlowPopup
+            onClose={closePopups}
+            variables={isContactType ? { contactId: id } : { groupId: id }}
+            mutation={isContactType ? START_CONTACT_FLOW : START_COLLECTION_FLOW}
+          />
+        )}
         <ChatPopup
           visible={showChatPopup}
           onClose={closePopups}

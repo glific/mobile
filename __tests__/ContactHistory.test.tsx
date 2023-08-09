@@ -6,9 +6,13 @@ import { GET_CONTACT_HISTORY_MOCK, GET_EMPTY_HISTORY_MOCK } from '../__mocks__/q
 import { waitFor } from '@testing-library/react-native';
 
 describe('Contact History', () => {
-  test('renders loading indicator for no data', () => {
-    const { getByTestId } = customRender(<ContactHistory route={{ params: { id: '2' } }} />);
-    expect(getByTestId('loadingIndicator')).toBeDefined();
+  test('renders loading indicator for no data', async () => {
+    const { getByTestId } = customRender(<ContactHistory route={{ params: { id: '2' } }} />, [
+      GET_CONTACT_HISTORY_MOCK,
+    ]);
+    await waitFor(() => {
+      expect(getByTestId('loadingIndicator')).toBeDefined();
+    });
   });
 
   test('render with no history data', async () => {
@@ -16,7 +20,7 @@ describe('Contact History', () => {
       <ContactHistory route={{ params: { id: '2' } }} />,
       GET_EMPTY_HISTORY_MOCK
     );
-    await waitFor(async () => {
+    await waitFor(() => {
       expect(getByText('No History Available')).toBeDefined();
     });
   });

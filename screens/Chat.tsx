@@ -21,7 +21,7 @@ const updateContactList = (cachedConversations: any, subscriptionData: any, acti
     return cachedConversations;
   }
 
-  if (!cachedConversations) {
+  if (!cachedConversations.search) {
     return null;
   }
 
@@ -75,7 +75,6 @@ interface ContactElement {
   contact?: Contact;
   messages: Message[];
 }
-
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Contacts'>;
 
