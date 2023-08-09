@@ -22,32 +22,58 @@ export const SEND_CONTACT_TEMPLATE_MESSAGE_MOCK = {
   request: {
     query: SEND_CONTACT_MESSAGE,
     variables: {
-      body: 'test template body',
-      flow: 'OUTBOUND',
-      type: 'TEXT',
-      receiverId: '1',
-      mediaId: null,
-      isHsm: true,
-      templateId: '1',
-      params: ['template'],
+      input: {
+        body: 'test {{1}} body',
+        flow: 'OUTBOUND',
+        type: 'TEXT',
+        receiverId: 1,
+        mediaId: null,
+        isHsm: true,
+        templateId: 1,
+        params: ['template'],
+      },
     },
   },
-  result: {},
+  result: {
+    data: {
+      createAndSendMessage: {
+        message: {
+          id: 1,
+          body: 'test template body',
+          media: null,
+          sender: {
+            id: 1,
+          },
+          receiver: {
+            id: 1,
+          },
+        },
+        errors: null,
+      },
+    },
+  },
 };
 
 export const SEND_COLLECTION_INTERACTIVE_MESSAGE_MOCK = {
   request: {
     query: SEND_COLLECTION_MESSAGE,
     variables: {
-      body: 'test template body',
-      flow: 'OUTBOUND',
-      type: 'TEXT',
-      receiverId: '1',
-      mediaId: null,
-      isHsm: true,
-      templateId: '1',
-      params: ['template'],
+      groupId: 1,
+      input: {
+        body: '',
+        flow: 'OUTBOUND',
+        type: 'QUICK_REPLY',
+        receiverId: 1,
+        mediaId: null,
+        interactiveTemplateId: 1,
+      },
     },
   },
-  result: {},
+  result: {
+    data: {
+      createAndSendMessageToGroup: {
+        success: true,
+      },
+    },
+  },
 };

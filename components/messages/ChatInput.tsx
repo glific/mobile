@@ -255,6 +255,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
         </Pressable>
       </View>
 
+      {/* Todo: The refs approach is making it overcomplicated. we should clean it up*/}
       {showOptions && (
         <View>
           <MessageOptions
@@ -270,12 +271,13 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
           />
         </View>
       )}
-      <TemplateVariablesPopup
-        visible={variablePopupVisible}
-        onCancel={handleTemplateVariableCancel}
-        onDone={handleTemplateVariableDone}
-        selectedTemplate={selectedTemplate}
-      />
+      {variablePopupVisible && (
+        <TemplateVariablesPopup
+          onCancel={handleTemplateVariableCancel}
+          onDone={handleTemplateVariableDone}
+          selectedTemplate={selectedTemplate}
+        />
+      )}
 
       {showEmoji && (
         <View testID="emojisTab" style={styles.emojiPanel}>

@@ -67,7 +67,7 @@ const Collections = ({ navigation }: Props) => {
     });
   };
 
-  const renderItem = ({ item, index }) => {
+  const renderItem = ({ item }) => {
     return (
       <CollectionCard
         key={item.group.id}

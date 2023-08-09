@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, waitFor } from '@testing-library/react-native';
 import SearchBar from '../components/ui/SearchBar';
 import customRender from '../utils/jestRender';
-import { SAVED_SEARCH_MOCK, reservedSavedSearchQuery } from '../__mocks__/queries/search';
+import { SAVED_SEARCH_MOCK } from '../__mocks__/queries/search';
 
 describe('SearchBar', () => {
   const setSearchVariableMock = jest.fn();

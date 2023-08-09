@@ -140,6 +140,10 @@ export const GET_COLLECTION_NO_MESSAGE_MOCK = [
         search: [
           {
             messages: [],
+            contact: {
+              id: 1,
+              name: 'Glific user',
+            },
           },
         ],
       },
@@ -161,6 +165,10 @@ export const GET_COLLECTION_TEXT_MESSAGE_MOCK = [
       data: {
         search: [
           {
+            contact: {
+              id: 1,
+              name: 'Glific user',
+            },
             messages: [
               {
                 __typename: 'Message',
