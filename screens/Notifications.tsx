@@ -100,6 +100,8 @@ const Notifications: React.FC<NotificationProps> = ({ searchValue }) => {
     });
   };
 
+  const renderItem = ({ item, index }) => <NotificationItem key={index} {...item} />;
+
   return (
     <View style={styles.mainContainer}>
       <FlatList
@@ -108,7 +110,7 @@ const Notifications: React.FC<NotificationProps> = ({ searchValue }) => {
           (item: Notification) =>
             item.severity.replace(/"/g, '') === activeTab.label || activeTab.label === 'All'
         )}
-        renderItem={({ item, index }) => <NotificationItem key={index} {...item} />}
+        renderItem={renderItem}
         ListEmptyComponent={
           <>{!loading && <Text style={styles.emptyText}>No notification</Text>}</>
         }

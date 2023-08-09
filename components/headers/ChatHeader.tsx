@@ -109,7 +109,7 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
     sessionTimeLeft = (
       <View style={styles.sessionContainer}>
         <Text testID="timeLeft" style={styles.time}>
-          Time left: {getSessionTimeLeft(lastMessageAt)}hrs
+          Time left: {lastMessageAt ? getSessionTimeLeft(lastMessageAt) : 0}hrs
         </Text>
       </View>
     );
@@ -187,6 +187,7 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
           testID="profileButton"
           style={styles.innerContainer}
           android_ripple={{ color: COLORS.primary70 }}
+          disabled={!isContactType}
           onPress={() =>
             navigation.navigate('ContactProfile', {
               contact: {

@@ -132,7 +132,7 @@ export const GET_COLLECTION_NO_MESSAGE_MOCK = [
       variables: {
         filter: { id: 1, searchGroup: true },
         contactOpts: { limit: 1 },
-        messageOpts: { limit: 20 },
+        messageOpts: { limit: 20, offset: 0 },
       },
     },
     result: {
@@ -154,7 +154,7 @@ export const GET_COLLECTION_TEXT_MESSAGE_MOCK = [
       variables: {
         filter: { id: 1, searchGroup: true },
         contactOpts: { limit: 1 },
-        messageOpts: { limit: 20 },
+        messageOpts: { limit: 20, offset: 0 },
       },
     },
     result: {

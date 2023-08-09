@@ -1,58 +1,21 @@
-import React, { useEffect, useRef, useState, useContext } from 'react';
-import { ScrollView, StyleSheet, Text } from 'react-native';
+import React, { useEffect, useState, useContext } from 'react';
+import { FlatList, StyleSheet, Text } from 'react-native';
 import { useQuery } from '@apollo/client';
 
 import { GET_MESSAGES } from '../../graphql/queries/Chat';
 import { COLORS, SIZES } from '../../constants';
-import LoadingPage from '../ui/Loading';
+import Loading from '../ui/Loading';
 import Message from './Message';
 import {
   MESSAGE_RECEIVED_SUBSCRIPTION,
   MESSAGE_SENT_SUBSCRIPTION,
 } from '../../graphql/subscriptions/Chat';
 import AuthContext from '../../config/AuthContext';
+import { getSubscriptionDetails } from '../../utils/subscriptionDetails';
 
 type MessageListProps = {
   id: number;
   conversationType: string;
-};
-
-export const getSubscriptionDetails = (action: string, subscriptionData: any) => {
-  let newMessage: any;
-  let contactId = 0;
-  let collectionId = 0;
-  let messageStatusData: any;
-
-  switch (action) {
-    case 'SENT':
-      // set the receiver contact id
-      newMessage = subscriptionData.data.sentMessage;
-      contactId = subscriptionData.data.sentMessage.receiver.id;
-      break;
-    case 'RECEIVED':
-      // set the sender contact id
-      newMessage = subscriptionData.data.receivedMessage;
-      contactId = subscriptionData.data.receivedMessage.sender.id;
-      break;
-    case 'COLLECTION':
-      newMessage = subscriptionData.data.sentGroupMessage;
-      collectionId = subscriptionData.data.sentGroupMessage.groupId.toString();
-      break;
-    case 'STATUS':
-      // set the receiver contact id
-      messageStatusData = subscriptionData.data.updateMessageStatus;
-      contactId = subscriptionData.data.updateMessageStatus.receiver.id;
-      break;
-    default:
-      break;
-  }
-
-  return {
-    newMessage,
-    contactId,
-    collectionId,
-    messageStatusData,
-  };
 };
 
 const updateConversations = (
@@ -120,7 +83,6 @@ const updateConversations = (
   } else {
     updatedConversation[0].messages.forEach((message: any) => {
       if (messageStatusData && message.id === messageStatusData.id) {
-        // eslint-disable-next-line
         message.errors = messageStatusData.errors;
       }
     });
@@ -135,22 +97,27 @@ const updateConversations = (
 };
 
 const MessagesList: React.FC<MessageListProps> = ({ conversationType, id }) => {
-  const { user }: any = useContext(AuthContext);
-  const scrollView = useRef<ScrollView>(null);
+  const { user } = useContext(AuthContext);
   const [openVideo, setOpenVideo] = useState(false);
   const [openImage, setOpenImage] = useState(false);
+
+  const [pageNo, setPageNo] = useState(1);
+  const [noMoreItems, setNoMoreItems] = useState(false);
 
   const variables = {
     filter: { id: id, searchGroup: conversationType === 'collection' },
     contactOpts: { limit: 1 },
-    messageOpts: { limit: 20 },
+    messageOpts: { limit: 20, offset: 0 },
   };
 
   const subscriptionVariables = { organizationId: user?.organization?.id };
 
-  const { loading, error, data, subscribeToMore } = useQuery(GET_MESSAGES, {
+  const { loading, subscribeToMore, fetchMore, data } = useQuery(GET_MESSAGES, {
     variables,
     fetchPolicy: 'cache-and-network',
+    onError(error) {
+      console.log(error);
+    },
   });
 
   useEffect(() => {
@@ -162,7 +129,6 @@ const MessagesList: React.FC<MessageListProps> = ({ conversationType, id }) => {
           updateConversations(prev, subscriptionData, 'RECEIVED', id),
       });
 
-      // message sent subscription
       subscribeToMore({
         document: MESSAGE_SENT_SUBSCRIPTION,
         variables: subscriptionVariables,
@@ -172,18 +138,10 @@ const MessagesList: React.FC<MessageListProps> = ({ conversationType, id }) => {
     }
   }, [subscribeToMore]);
 
-  if (error) {
-    console.log(error);
-  }
-
   if (loading) {
-    return <LoadingPage />;
+    return <Loading />;
   }
 
-  let dataArray = [];
-  if (data && data.search && data.search[0] && data.search[0].messages) {
-    dataArray = [...data.search[0].messages].reverse();
-  }
   const handleVideo = () => {
     setOpenVideo(!openVideo);
   };
@@ -192,30 +150,59 @@ const MessagesList: React.FC<MessageListProps> = ({ conversationType, id }) => {
     setOpenImage(!openImage);
   };
 
+  const handleLoadMore = () => {
+    if (loading || noMoreItems) return;
+
+    fetchMore({
+      variables: {
+        filter: variables.filter,
+        contactOpts: variables.contactOpts,
+        messageOpts: { ...variables.messageOpts, offset: pageNo * 20 },
+      },
+      updateQuery: (prev, { fetchMoreResult }) => {
+        if (!fetchMoreResult?.search[0]?.messages?.length) {
+          setNoMoreItems(true);
+          return prev;
+        } else {
+          if (fetchMoreResult.search[0].messages.length < 20) setNoMoreItems(true);
+          setPageNo(pageNo + 1);
+          return {
+            search: [
+              {
+                ...prev.search[0],
+                messages: [...prev.search[0].messages, ...fetchMoreResult.search[0].messages],
+              },
+            ],
+          };
+        }
+      },
+    });
+  };
+
+  const renderItem = ({ item }) => (
+    <Message
+      key={`${item.messageNumber}${item.id}`}
+      message={item}
+      isLeft={conversationType === 'collection' ? false : item?.sender?.id === id}
+      handleImage={handleImage}
+      handleVideo={handleVideo}
+      openImage={openImage}
+      openVideo={openVideo}
+    />
+  );
+
   return (
-    <ScrollView
+    <FlatList
       style={styles.container}
-      ref={scrollView}
-      onContentSizeChange={() => {
-        scrollView.current?.scrollToEnd({ animated: true });
-      }}
-    >
-      {dataArray.length ? (
-        dataArray.map((message, index) => (
-          <Message
-            key={index}
-            message={message}
-            isLeft={conversationType === 'collection' ? false : message?.sender?.id === id}
-            handleImage={handleImage}
-            handleVideo={handleVideo}
-            openImage={openImage}
-            openVideo={openVideo}
-          />
-        ))
-      ) : (
-        <Text style={styles.emptyText}>No messages</Text>
-      )}
-    </ScrollView>
+      data={data?.search[0] ? data?.search[0]?.messages : []}
+      renderItem={renderItem}
+      initialNumToRender={10}
+      ListEmptyComponent={!loading && <Text style={styles.emptyText}>No messages</Text>}
+      inverted
+      maxToRenderPerBatch={20}
+      onEndReached={handleLoadMore}
+      onEndReachedThreshold={0.1}
+    />
   );
 };
 

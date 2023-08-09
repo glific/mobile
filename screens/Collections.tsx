@@ -67,21 +67,23 @@ const Collections = ({ navigation }: Props) => {
     });
   };
 
+  const renderItem = ({ item, index }) => {
+    return (
+      <CollectionCard
+        key={index}
+        id={item.group.id}
+        name={item.group.label ? item.group.label : 'Unknown Name'}
+        navigation={navigation}
+      />
+    );
+  };
+
   return (
     <>
       <FlatList
         accessibilityLabel={'notification-list'}
         data={collectionsData?.search}
-        renderItem={({ item, index }) => {
-          return (
-            <CollectionCard
-              key={index}
-              id={item.group.id}
-              name={item.group.label ? item.group.label : 'Unknown Name'}
-              navigation={navigation}
-            />
-          );
-        }}
+        renderItem={renderItem}
         ListHeaderComponent={
           <SearchBar
             setSearchVariable={handleSetSearchVariable}
