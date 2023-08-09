@@ -46,19 +46,18 @@ describe('Chat screen', () => {
     );
 
     await waitFor(() => {
-      expect(getByTestId('backIcon')).toBeDefined();
-      expect(getByTestId('userProfile')).toBeDefined();
       expect(getByText('test contact name')).toBeDefined();
-      expect(getByTestId('menuIcon')).toBeDefined();
     });
 
-    await waitFor(() => {
-      expect(getByTestId('upIcon')).toBeDefined();
-      expect(getByTestId('emojiIcon')).toBeDefined();
-      expect(getByTestId('chatInput')).toBeDefined();
-      expect(getByTestId('clipIcon')).toBeDefined();
-      expect(getByTestId('sendIcon')).toBeDefined();
-    });
+    expect(getByTestId('backIcon')).toBeDefined();
+    expect(getByTestId('userProfile')).toBeDefined();
+
+    expect(getByTestId('menuIcon')).toBeDefined();
+    expect(getByTestId('upIcon')).toBeDefined();
+    expect(getByTestId('emojiIcon')).toBeDefined();
+    expect(getByTestId('chatInput')).toBeDefined();
+    expect(getByTestId('clipIcon')).toBeDefined();
+    expect(getByTestId('sendIcon')).toBeDefined();
   });
 
   test('should open contact chat screen menu', async () => {
