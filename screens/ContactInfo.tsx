@@ -13,7 +13,7 @@ interface Props {
   };
 }
 
-const ContactInfo = ({ navigation, route }: Props) => {
+const ContactInfo = ({ route }: Props) => {
   const { fields } = route.params;
   return (
     <ScrollView style={styles.mainContainer}>

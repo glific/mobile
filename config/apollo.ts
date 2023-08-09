@@ -1,11 +1,4 @@
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloLink,
-  HttpLink,
-  Operation,
-  ApolloError,
-} from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloLink, HttpLink, Operation } from '@apollo/client';
 import { TokenRefreshLink } from 'apollo-link-token-refresh';
 import { setContext } from '@apollo/link-context';
 import { createClient } from 'graphql-ws';
@@ -15,7 +8,6 @@ import { hasSubscription } from '@jumpn/utils-graphql';
 
 import Storage from '../utils/asyncStorage';
 import AxiosService from './axios';
-import { AxiosError } from 'axios';
 
 // Fetches the uri dynamically
 async function customFetch(uri: string, options: RequestInit) {
