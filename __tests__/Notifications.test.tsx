@@ -27,8 +27,6 @@ describe('Notifications Screen', () => {
       expect(infoNotification1).toBeDefined();
     });
 
-    const flatList = getByLabelText('notification-list');
-
     // Todo: need to see how to get the next set of items in flatlist. The below expectations is not correct
     await waitFor(() => {
       expect(getByText('Glific 10')).toBeDefined();
