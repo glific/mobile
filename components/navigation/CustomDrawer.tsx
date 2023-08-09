@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, Image, Pressable, StyleSheet } from 'react-native';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
+import { useApolloClient } from '@apollo/client';
 
 import Wallet from './Wallet';
 import { Feather } from '@expo/vector-icons';
@@ -9,11 +10,13 @@ import { COLORS, SCALE, SIZES } from '../../constants';
 import AuthContext from '../../config/AuthContext';
 import AxiosService from '../../config/axios';
 
+
 type DrawerContentProps = {
   navigation: undefined;
 };
 
 const CustomDrawer: React.FC<DrawerContentProps> = (props) => {
+  const client = useApolloClient();
   const [orgName, setOrgName] = useState('');
   const { setToken } = useContext(AuthContext);
 
@@ -34,6 +37,7 @@ const CustomDrawer: React.FC<DrawerContentProps> = (props) => {
   const LogoutHandler = async () => {
     await Storage.removeData('glific_session');
     await Storage.removeData('glific_user');
+    client.clearStore();
     setToken(null);
   };
 

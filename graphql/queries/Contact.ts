@@ -17,3 +17,40 @@ export const GET_CONTACTS = gql`
     }
   }
 `;
+
+export const GET_CONTACT_HISTORY = gql`
+  query ContactHistory($filter: ContactsHistoryFilter, $opts: Opts) {
+    contactHistory(filter: $filter, opts: $opts) {
+      eventDatetime
+      eventLabel
+      eventMeta
+      eventType
+      id
+      insertedAt
+      updatedAt
+    }
+  }
+`;
+
+export const GET_CONTACT_INFO = gql`
+  query contact($id: ID!) {
+    contact(id: $id) {
+      contact {
+        id
+        name
+        phone
+        status
+        language {
+          label
+        }
+        fields
+        groups {
+          label
+          users {
+            name
+          }
+        }
+      }
+    }
+  }
+`;

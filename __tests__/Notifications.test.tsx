@@ -66,7 +66,7 @@ describe('Notifications Screen', () => {
       expect(logSpy).toHaveBeenCalledWith('Test error');
     });
     logSpy.mockRestore();
-  });
+  }, 5000);
 
   test('renders the Notification header search', async () => {
     const { getByTestId } = customRender(

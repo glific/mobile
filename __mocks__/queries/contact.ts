@@ -1,4 +1,4 @@
-import { GET_CONTACTS } from '../../graphql/queries/Contact';
+import { GET_CONTACTS, GET_CONTACT_INFO } from '../../graphql/queries/Contact';
 import { GET_MESSAGES } from '../../graphql/queries/Chat';
 import {
   START_COLLECTION_FLOW,
@@ -949,6 +949,53 @@ export const GET_OPTIONS_MOCK = [
           { id: 2, label: 'User 2' },
           { id: 3, label: 'User 3' },
         ],
+      },
+    },
+  },
+];
+
+export const CONTACT_INFO_MOCK = [
+  {
+    request: {
+      query: GET_CONTACT_INFO,
+      variables: { id: '12' },
+    },
+    result: {
+      data: {
+        contact: {
+          contact: {
+            id: '1',
+            name: 'John Doe',
+            phone: '1234567890',
+            status: 'VALID',
+            language: {
+              label: 'English',
+            },
+            fields:
+              '{"name":{"value":"John","label":"Name"},"age_group":{"value":"15 to 18","label":"Age"}}',
+            groups: [
+              {
+                label: 'Group 1',
+                users: [
+                  {
+                    name: 'User 1',
+                  },
+                  {
+                    name: 'User 2',
+                  },
+                ],
+              },
+              {
+                label: 'Group 2',
+                users: [
+                  {
+                    name: 'User 3',
+                  },
+                ],
+              },
+            ],
+          },
+        },
       },
     },
   },

@@ -1,8 +1,9 @@
 import React from 'react';
-import { fireEvent } from '@testing-library/react-native';
+import { fireEvent, waitFor } from '@testing-library/react-native';
 import customRender from '../utils/jestRender';
 
 import ContactProfile from '../screens/ContactProfile';
+import { CONTACT_INFO_MOCK } from '../__mocks__/queries/contact';
 
 const contactMock = {
   id: '12',
@@ -10,10 +11,15 @@ const contactMock = {
   lastMessageAt: '2023-06-15',
 };
 
+const navigationMock = {
+  navigate: jest.fn(),
+  goBack: jest.fn(),
+};
+
 describe('ContactProfile', () => {
   test('renders the contact profile with correct information', () => {
     const { getByTestId, getByText } = customRender(
-      <ContactProfile route={{ params: { contact: contactMock } }} />
+      <ContactProfile navigation={navigationMock} route={{ params: { contact: contactMock } }} />
     );
 
     expect(getByTestId('backIcon')).toBeDefined();
@@ -32,22 +38,38 @@ describe('ContactProfile', () => {
     expect(getByText('Contact History')).toBeDefined();
   });
 
-  test('calls the navigation.goBack() function when the back button is pressed', () => {
-    const navigationMock = {
-      navigate: jest.fn(),
-      goBack: jest.fn(),
-    };
-    const { getByTestId, getByText } = customRender(
+  test('calls the navigation.goBack() function when the back button is pressed', async () => {
+    const { getByTestId } = customRender(
       <ContactProfile navigation={navigationMock} route={{ params: { contact: contactMock } }} />
     );
 
     fireEvent.press(getByTestId('backIcon'));
     expect(navigationMock.goBack).toHaveBeenCalled();
+  });
 
-    fireEvent.press(getByText('View Info'));
-    expect(navigationMock.navigate).toHaveBeenCalledWith('ContactInformation');
+  test('navigate to view info page', async () => {
+    const { getByText } = customRender(
+      <ContactProfile navigation={navigationMock} route={{ params: { contact: contactMock } }} />,
+      CONTACT_INFO_MOCK
+    );
+    await waitFor(async () => {
+      fireEvent.press(getByText('View Info'));
+      expect(navigationMock.navigate).toHaveBeenCalledWith('ContactInformation', {
+        fields: { Name: 'John', Age: '15 to 18' },
+      });
+    });
+  });
 
+  test('navigate to contact history page', async () => {
+    const { getByText } = customRender(
+      <ContactProfile navigation={navigationMock} route={{ params: { contact: contactMock } }} />,
+      CONTACT_INFO_MOCK
+    );
     fireEvent.press(getByText('Contact History'));
-    expect(navigationMock.navigate).toHaveBeenCalledWith('ContactHistory');
+    await waitFor(async () => {
+      expect(navigationMock.navigate).toHaveBeenCalledWith('ContactHistory', {
+        id: '12',
+      });
+    });
   });
 });

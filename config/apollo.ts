@@ -59,13 +59,20 @@ const refreshLink = new TokenRefreshLink({
     const renewalToken = parsedSessionValue.renewal_token;
 
     const Client = await AxiosService.createAxiosInstance();
-    const response = await Client.post('/v1/session/renew', null, {
-      headers: {
-        Authorization: renewalToken,
-      },
-    });
-    if (response.status === 200) {
-      return response.data;
+    try {
+      const response = await Client.post('/v1/session/renew', null, {
+        headers: {
+          Authorization: renewalToken,
+        },
+      });
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (err: any) {
+      if (err.response.status === 401) {
+        await Storage.removeData('glific_session');
+        await Storage.removeData('glific_user');
+      }
     }
     return null;
   },
