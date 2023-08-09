@@ -1,7 +1,8 @@
 import React from 'react';
-import { fireEvent } from '@testing-library/react-native';
+import { fireEvent, waitFor } from '@testing-library/react-native';
 import SearchBar from '../components/ui/SearchBar';
 import customRender from '../utils/jestRender';
+import { SAVED_SEARCH_MOCK, reservedSavedSearchQuery } from '../__mocks__/queries/search';
 
 describe('SearchBar', () => {
   const setSearchVariableMock = jest.fn();
@@ -24,19 +25,22 @@ describe('SearchBar', () => {
     expect(searchInput).toBeDefined();
   });
 
-  test('should render Search Bar with filters', () => {
+  test('should render Search Bar with filters', async () => {
     const { getByTestId } = customRender(
       <SearchBar
         setSearchVariable={setSearchVariableMock}
         onSearch={onSearchMock}
         showMenu={true}
-      />
+      />,
+      SAVED_SEARCH_MOCK
     );
 
-    expect(getByTestId('searchIcon')).toBeDefined();
-    expect(getByTestId('searchInput')).toBeDefined();
-    expect(getByTestId('filterIcon')).toBeDefined();
-    expect(getByTestId('filtersContainer')).toBeDefined();
+    await waitFor(() => {
+      expect(getByTestId('searchIcon')).toBeDefined();
+      expect(getByTestId('searchInput')).toBeDefined();
+      expect(getByTestId('filterIcon')).toBeDefined();
+      expect(getByTestId('filtersContainer')).toBeDefined();
+    });
   });
 
   test('should changes the input value and call onSearch when search button is pressed  ', () => {

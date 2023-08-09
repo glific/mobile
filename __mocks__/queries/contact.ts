@@ -945,9 +945,9 @@ export const GET_OPTIONS_MOCK = [
     result: {
       data: {
         users: [
-          { id: 1, label: 'User 1' },
-          { id: 2, label: 'User 2' },
-          { id: 3, label: 'User 3' },
+          { id: 1, label: 'User 1', name: "User 1" },
+          { id: 2, label: 'User 2', name: "User 2" },
+          { id: 3, label: 'User 3', name: "User 3" },
         ],
       },
     },
