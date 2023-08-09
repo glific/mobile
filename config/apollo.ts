@@ -1,4 +1,11 @@
-import { ApolloClient, InMemoryCache, ApolloLink, HttpLink, Operation } from '@apollo/client';
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloLink,
+  HttpLink,
+  Operation,
+  ApolloError,
+} from '@apollo/client';
 import { TokenRefreshLink } from 'apollo-link-token-refresh';
 import { setContext } from '@apollo/link-context';
 import { createClient } from 'graphql-ws';
@@ -8,6 +15,7 @@ import { hasSubscription } from '@jumpn/utils-graphql';
 
 import Storage from '../utils/asyncStorage';
 import AxiosService from './axios';
+import { AxiosError } from 'axios';
 
 // Fetches the uri dynamically
 async function customFetch(uri: string, options: RequestInit) {
@@ -59,13 +67,20 @@ const refreshLink = new TokenRefreshLink({
     const renewalToken = parsedSessionValue.renewal_token;
 
     const Client = await AxiosService.createAxiosInstance();
-    const response = await Client.post('/v1/session/renew', null, {
-      headers: {
-        Authorization: renewalToken,
-      },
-    });
-    if (response.status === 200) {
-      return response.data;
+    try {
+      const response = await Client.post('/v1/session/renew', null, {
+        headers: {
+          Authorization: renewalToken,
+        },
+      });
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (err: any) {
+      if (err.response.status === 401) {
+        await Storage.removeData('glific_session');
+        await Storage.removeData('glific_user');
+      }
     }
     return null;
   },
@@ -135,17 +150,5 @@ const link = retryLink.split(
 
 export const client = new ApolloClient({
   link: link,
-  cache: new InMemoryCache({
-    typePolicies: {
-      Query: {
-        fields: {
-          contactHistory: {
-            merge(existing = [], incoming) {
-              return incoming;
-            },
-          },
-        },
-      },
-    },
-  }),
+  cache: new InMemoryCache(),
 });

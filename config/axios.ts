@@ -7,7 +7,7 @@ class AxiosService {
 
   static async createAxiosInstance(): Promise<AxiosInstance> {
     if (!AxiosService.baseURL) {
-      const orgValue = await Storage.getData('glific_orgnisation');
+      const orgValue = await Storage.getData('glific_organisation');
       if (orgValue) {
         const parsedOrgValue = JSON.parse(orgValue);
         AxiosService.baseURL = parsedOrgValue.url;
@@ -21,11 +21,11 @@ class AxiosService {
 
   static async updateServerURL(url: string): Promise<void> {
     AxiosService.baseURL = url;
-    const orgValue = await Storage.getData('glific_orgnisation');
+    const orgValue = await Storage.getData('glific_organisation');
     if (orgValue) {
       const parsedOrgValue = JSON.parse(orgValue);
       const updatedOrgValue = JSON.stringify({ ...parsedOrgValue, url });
-      await Storage.storeData('glific_orgnisation', updatedOrgValue);
+      await Storage.storeData('glific_organisation', updatedOrgValue);
     }
   }
 
