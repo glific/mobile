@@ -12,7 +12,6 @@ interface Props {
 }
 
 const ListMessage = ({ message, time, isLeft }: Props) => {
-  console.log(message);
   const onRight = (type: string): ViewStyle | TextStyle | undefined => {
     if (!isLeft) {
       switch (type) {
