@@ -1,4 +1,7 @@
 function formatTime(dateObj: Date): string {
+  if (dateObj.getTime() == new Date('1970-01-01T00:00:00.000Z').getTime()) {
+    return '--      ';
+  }
   const currentTime: Date = new Date();
   const timeDifference: number = currentTime - dateObj;
 

@@ -1,13 +1,13 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { ApolloClient, useApolloClient, useMutation } from '@apollo/client';
 import { NavigationProp } from '@react-navigation/native';
 
 import formatTime from '../utils/formatTime';
 import { COLORS, SCALE, SIZES } from '../constants';
 import { getSessionTimeLeft } from '../utils/helper';
-import { MARK_AS_READ, CONTACT_FRAGMENT } from '../graphql/mutations/Chat';
-import { useApolloClient, useMutation } from '@apollo/client';
 import { RootStackParamList } from '../constants/types';
+import { MARK_AS_READ, CONTACT_FRAGMENT } from '../graphql/mutations/Chat';
 
 export interface ContactProps {
   id: string;
@@ -18,7 +18,7 @@ export interface ContactProps {
   navigation: NavigationProp<RootStackParamList>;
 }
 
-const updateContactCache = (client: unknown, id: string) => {
+const updateContactCache = (client: ApolloClient<object>, id: string) => {
   const contact = client.readFragment({
     id: `Contact:${id}`,
     fragment: CONTACT_FRAGMENT,
@@ -86,7 +86,7 @@ const Contact: React.FC<ContactProps> = ({
         </Text>
         <View style={lastSessiontime ? styles.sessionBorder : styles.sessionInvalid}>
           <Text style={lastSessiontime ? styles.lastSession : styles.textInvalid}>
-            {lastSessiontime}hrs
+            {lastSessiontime || 0}hrs
           </Text>
         </View>
       </View>

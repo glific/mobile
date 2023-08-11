@@ -2,27 +2,16 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AntDesign } from '@expo/vector-icons';
-
-import { RootStackParamList } from '../constants/types';
-import { COLORS, SCALE, SIZES } from '../constants';
-import FieldValue from '../components/ui/FieldValue';
 import { useQuery } from '@apollo/client';
-import { GET_CONTACT_INFO } from '../graphql/queries/Contact';
-import { getSessionTimeLeft } from '../utils/helper';
 
-interface Props {
-  navigation: NativeStackScreenProps<RootStackParamList, 'ContactProfile'>;
-  route: {
-    params: {
-      contact: {
-        id: string;
-        name: string;
-        lastMessageAt: string;
-      };
-    };
-  };
-}
-interface ContactInfoProp {
+import Loading from '../components/ui/Loading';
+import { COLORS, SCALE, SIZES } from '../constants';
+import { getSessionTimeLeft } from '../utils/helper';
+import FieldValue from '../components/ui/FieldValue';
+import { RootStackParamList } from '../constants/types';
+import { GET_CONTACT_INFO } from '../graphql/queries/Contact';
+
+type ContactInfoType = {
   name: string;
   phone: string;
   status: string;
@@ -30,9 +19,9 @@ interface ContactInfoProp {
   assignedTo: string[];
   collections: string[];
   fields: { [key: string]: string };
-}
+};
 
-const formatInfo = (contacts): ContactInfoProp => {
+const formatInfo = (contacts): ContactInfoType => {
   const { contact } = contacts;
   const assignedTo = [];
   const collections = [];
@@ -60,9 +49,19 @@ const formatInfo = (contacts): ContactInfoProp => {
   };
 };
 
+type Props = NativeStackScreenProps<RootStackParamList, 'ContactProfile'>;
+
 const ContactProfile = ({ navigation, route }: Props) => {
   const { contact } = route.params;
-  const [contactInfo, setContactInfo] = useState([]);
+  const [contactInfo, setContactInfo] = useState<ContactInfoType>({
+    name: '--',
+    phone: '--',
+    status: '--',
+    language: '--',
+    assignedTo: ['--'],
+    collections: ['--'],
+    fields: { '--': '--' },
+  });
 
   const { loading } = useQuery(GET_CONTACT_INFO, {
     variables: {
@@ -97,51 +96,59 @@ const ContactProfile = ({ navigation, route }: Props) => {
         </View>
       </View>
 
-      <View style={styles.bodyContainer}>
-        <View style={styles.rowContainer}>
-          <FieldValue field={'Phone'} value={contactInfo.phone} />
-          <FieldValue
-            field={'Assigned to'}
-            value={
-              contactInfo.assignedTo && contactInfo.assignedTo.length > 0
-                ? contactInfo.assignedTo.join(', ')
-                : 'None'
-            }
-          />
-        </View>
-        <View style={styles.rowContainer}>
-          <FieldValue field={'Language'} value={contactInfo.language} />
-          <FieldValue
-            field={'Status'}
-            value={contactInfo.status === 'VALID' ? 'Valid Contact' : 'Invalid Contact'}
-          />
-        </View>
-        <FieldValue
-          field={'Collections'}
-          value={
-            contactInfo.collections && contactInfo.collections.length > 0
-              ? contactInfo.collections.join(', ')
-              : 'None'
-          }
-        />
-      </View>
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <View style={styles.bodyContainer}>
+            <View style={styles.rowContainer}>
+              <FieldValue field={'Phone'} value={contactInfo.phone} />
+              <FieldValue
+                field={'Assigned to'}
+                value={
+                  contactInfo.assignedTo && contactInfo.assignedTo.length > 0
+                    ? contactInfo.assignedTo.join(', ')
+                    : 'None'
+                }
+              />
+            </View>
+            <View style={styles.rowContainer}>
+              <FieldValue field={'Language'} value={contactInfo.language} />
+              <FieldValue
+                field={'Status'}
+                value={contactInfo?.status === 'VALID' ? 'Valid Contact' : 'Invalid Contact'}
+              />
+            </View>
+            <FieldValue
+              field={'Collections'}
+              value={
+                contactInfo?.collections && contactInfo.collections.length > 0
+                  ? contactInfo.collections.join(', ')
+                  : 'None'
+              }
+            />
+          </View>
 
-      <View style={styles.rowContainer}>
-        <Pressable
-          style={styles.tabButton}
-          onPress={() => navigation.navigate('ContactInformation', { fields: contactInfo.fields })}
-          android_ripple={{ color: COLORS.black005 }}
-        >
-          <Text style={styles.tabButtonText}>View Info</Text>
-        </Pressable>
-        <Pressable
-          style={styles.tabButton}
-          onPress={() => navigation.navigate('ContactHistory', { id: contact.id })}
-          android_ripple={{ color: COLORS.black005 }}
-        >
-          <Text style={styles.tabButtonText}>Contact History</Text>
-        </Pressable>
-      </View>
+          <View style={styles.rowContainer}>
+            <Pressable
+              style={styles.tabButton}
+              onPress={() =>
+                navigation.navigate('ContactInformation', { fields: contactInfo.fields })
+              }
+              android_ripple={{ color: COLORS.black005 }}
+            >
+              <Text style={styles.tabButtonText}>View Info</Text>
+            </Pressable>
+            <Pressable
+              style={styles.tabButton}
+              onPress={() => navigation.navigate('ContactHistory', { id: contact.id })}
+              android_ripple={{ color: COLORS.black005 }}
+            >
+              <Text style={styles.tabButtonText}>Contact History</Text>
+            </Pressable>
+          </View>
+        </>
+      )}
     </ScrollView>
   );
 };
