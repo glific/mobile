@@ -116,13 +116,13 @@ const ContactProfile = ({ navigation, route }: Props) => {
               <FieldValue field={'Language'} value={contactInfo.language} />
               <FieldValue
                 field={'Status'}
-                value={contactInfo?.status === 'VALID' ? 'Valid Contact' : 'Invalid Contact'}
+                value={contactInfo.status === 'VALID' ? 'Valid Contact' : 'Invalid Contact'}
               />
             </View>
             <FieldValue
               field={'Collections'}
               value={
-                contactInfo?.collections && contactInfo.collections.length > 0
+                contactInfo.collections && contactInfo.collections.length > 0
                   ? contactInfo.collections.join(', ')
                   : 'None'
               }
