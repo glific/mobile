@@ -60,16 +60,18 @@ When submitting a pull request, please ensure that it meets the following requir
 
 Please make sure to address all the checkboxes above before submitting your pull request. This will help in ensuring the quality and maintainability of the project.
 
-
 ## Developer Guidelines
 
-### Theme Constants Usage 
+### Theme Constants Usage
+
 Import the project theme constants from the constants folder:
+
 ```sh
 import { COLORS, SIZES, FONTS, SCALE } from '/path/to/constants';
 ```
 
 Here are the project theme constants available for usage:
+
 - **COLORS**: Contains color-related constants, ex. `COLORS.primary400`.
 - **SIZES**: Includes size-related constants, ex. `SIZES.m10`, `SIZES.r4` etc.
 - **FONTS**: Provides font-related constants, ex. `...FONTS.regular14`.
@@ -92,7 +94,6 @@ Example:
 <View testID="my_element" className="my_component" />
 <View testID="my element" className="my-component" />
 ```
-
 
 Following these guidelines helps to ensure a smoother development process and easier maintenance.
 
