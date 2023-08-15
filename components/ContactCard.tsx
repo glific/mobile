@@ -75,7 +75,9 @@ const Contact: React.FC<ContactProps> = ({
         <Text style={styles.avatartext}>{name.charAt(0)}</Text>
       </View>
       <View style={styles.mainbody}>
-        <Text style={[styles.name, isOrgRead && styles.readName]}>{name}</Text>
+        <Text style={[styles.name, isOrgRead && styles.readName]} numberOfLines={1}>
+          {name}
+        </Text>
         <Text style={[styles.lastMsg, isOrgRead && styles.readName]} numberOfLines={1}>
           {lastMessage}
         </Text>

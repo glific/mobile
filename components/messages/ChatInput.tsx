@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, StyleSheet, TextInput, Pressable, Keyboard, Animated } from 'react-native';
+import { View, StyleSheet, TextInput, Pressable, Keyboard, Animated, Text } from 'react-native';
 import { FontAwesome, Ionicons, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 import { useMutation } from '@apollo/client';
 
@@ -15,8 +15,14 @@ import {
   CREATE_MEDIA_MESSAGE,
   SEND_COLLECTION_MESSAGE,
   SEND_CONTACT_MESSAGE,
-  UPLOAD_MEDIA,
 } from '../../graphql/mutations/Chat';
+import AttachmentSelected from './AttachmentSelected';
+
+type MediaType = {
+  name: string;
+  url: string;
+  type: string;
+};
 
 type InteractiveTemplateType = {
   id: string;
@@ -50,6 +56,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
   const [cursor, setcursor] = useState(0);
   const [errorMessage, setErrorMessage] = useState('');
 
+  const [media, setMedia] = useState<MediaType>();
   const [interactiveTemplate, setInteractiveTemplate] = useState<InteractiveTemplateType>();
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateType>();
   const [variableParam, setVariableParam] = useState<string[] | []>([]);
@@ -74,7 +81,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
     },
   });
 
-  const HandleSendMessage = () => {
+  const sendMessage = (mediaId: string | null) => {
     Keyboard.dismiss();
     setInputTab('');
     inputRef?.current?.blur();
@@ -84,10 +91,13 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
       flow: 'OUTBOUND',
       type: 'TEXT',
       receiverId: id,
-      mediaId: null,
+      mediaId: mediaId,
     };
 
-    if (interactiveTemplate) {
+    if (mediaId) {
+      input.type = media.type;
+      input.mediaId = mediaId;
+    } else if (interactiveTemplate) {
       input.type = interactiveTemplate.type;
       input.interactiveTemplateId = parseInt(interactiveTemplate.id, 10);
     } else if (selectedTemplate) {
@@ -98,7 +108,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
       input.params = variableParam;
     }
 
-    if (message !== '' || interactiveTemplate) {
+    if (message !== '' || media || interactiveTemplate) {
       if (conversationType === 'contact') {
         createAndSendMessage({
           variables: { input },
@@ -111,9 +121,34 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
     }
 
     setMessage('');
+    setMedia(undefined);
     setSelectedTemplate(undefined);
     setVariableParam([]);
     setInteractiveTemplate(undefined);
+  };
+
+  const [createMediaMessage] = useMutation(CREATE_MEDIA_MESSAGE, {
+    onCompleted: (data) => {
+      if (data) {
+        sendMessage(data.createMessageMedia.messageMedia.id);
+      }
+    },
+  });
+
+  const HandleSendMessage = () => {
+    if (media) {
+      createMediaMessage({
+        variables: {
+          input: {
+            caption: message,
+            sourceUrl: media.url,
+            url: media.url,
+          },
+        },
+      });
+    } else {
+      sendMessage(null);
+    }
   };
 
   useEffect(() => {
@@ -155,48 +190,15 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
     setVariablePopupVisible(false);
   };
 
-  const [attachmentURL, setAttachmentURL] = useState('');
-  const [uploading, setUploading] = useState(false);
-  const [fileName, setFileName] = useState<null | string>(null);
-  const [verifying, setVerifying] = useState(false);
-  // const [uploadDisabled] = useState(!uploadPermission);
-
-  const [uploadMedia] = useMutation(UPLOAD_MEDIA, {
-    onCompleted: (data) => {
-      setAttachmentURL(data.uploadMedia);
-      setUploading(false);
-    },
-    onError: () => {
-      setFileName(null);
-      setUploading(false);
-      setErrorMessage('An error occured while uploading the file');
-    },
-  });
-
-  const [createMediaMessage] = useMutation(CREATE_MEDIA_MESSAGE, {
-    onCompleted: (data) => {
-      if (data) {
-        // onSendMessage(
-        //   '',
-        //   data.createMessageMedia.messageMedia.id,
-        //   attachmentType,
-        //   selectedTemplate,
-        //   variableParam
-        // );
-        // setAttachmentAdded(false);
-        // setAttachmentURL('');
-        // setAttachmentType('');
-        // resetVariable();
-      }
-    },
-  });
-
-  const handleAttachment = (attachment: string) => {
-    console.log(attachment);
-  };
-
   return (
     <View style={styles.mainContainer}>
+      {media && (
+        <AttachmentSelected
+          name={media.name || media.url}
+          type={media.type.toLowerCase()}
+          remove={() => setMedia(undefined)}
+        />
+      )}
       <View style={styles.inputContainer}>
         <View style={styles.inputAndEmoji}>
           {inputTab === 'emojis' ? (
@@ -313,7 +315,9 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
           />
         </View>
       )}
-      {inputTab === 'attachments' && <AttachmentOptions handleAttachment={handleAttachment} />}
+      {inputTab === 'attachments' && (
+        <AttachmentOptions setMedia={setMedia} onClose={() => setInputTab('')} />
+      )}
       {errorMessage !== '' && <ErrorAlert message={errorMessage} />}
     </View>
   );

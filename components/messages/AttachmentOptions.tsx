@@ -1,76 +1,106 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { Foundation, Ionicons } from '@expo/vector-icons';
 
 import { COLORS, SCALE, SIZES } from '../../constants';
+import AttachmentPopup from './AttachmentPopup';
+
+type MediaType = {
+  name: string;
+  url: string;
+  type: string;
+};
 
 interface Props {
   // eslint-disable-next-line no-unused-vars
-  handleAttachment: (attachment: string) => void;
+  setMedia: (media: MediaType) => void;
+  onClose: () => void;
 }
 
-const AttachmentOptions = ({ handleAttachment }: Props) => {
+const AttachmentOptions = ({ setMedia, onClose }: Props) => {
+  const [showPopup, setShowPopup] = useState(false);
+  const [attachmentType, setAttachmentType] = useState('');
+
+  const closePopup = () => {
+    setShowPopup(false);
+    setAttachmentType('');
+    onClose();
+  };
+
+  const handleAttachment = (attachment: string) => {
+    setAttachmentType(attachment);
+    setShowPopup(true);
+  };
+
   return (
-    <View testID="attachmentsTab" style={styles.attachmentsContainer}>
-      <View style={styles.attachmentInContainer}>
-        <View style={styles.attachmentButton}>
-          <Pressable
-            style={styles.attachmentButton}
-            onPress={() => handleAttachment('image')}
-            android_ripple={{ borderless: false }}
-          >
-            <Ionicons name="image-outline" style={styles.attachmentIcon} />
-          </Pressable>
+    <>
+      <View testID="attachmentsTab" style={styles.attachmentsContainer}>
+        <View style={styles.attachmentInContainer}>
+          <View style={styles.attachmentButton}>
+            <Pressable
+              style={styles.attachmentButton}
+              onPress={() => handleAttachment('image')}
+              android_ripple={{ borderless: false }}
+            >
+              <Ionicons name="image-outline" style={styles.attachmentIcon} />
+            </Pressable>
+          </View>
+          <View style={styles.attachmentButton}>
+            <Pressable
+              style={styles.attachmentButton}
+              onPress={() => handleAttachment('document')}
+              android_ripple={{ borderless: false }}
+            >
+              <Ionicons name="document-attach-outline" style={styles.attachmentIcon} />
+            </Pressable>
+          </View>
+          <View style={styles.attachmentButton}>
+            <Pressable
+              style={styles.attachmentButton}
+              // onPress={() => handleAttachment('location')}
+              android_ripple={{ borderless: false }}
+            >
+              <Ionicons name="location-outline" style={styles.attachmentIcon} />
+            </Pressable>
+          </View>
         </View>
-        <View style={styles.attachmentButton}>
-          <Pressable
-            style={styles.attachmentButton}
-            onPress={() => handleAttachment('document')}
-            android_ripple={{ borderless: false }}
-          >
-            <Ionicons name="document-attach-outline" style={styles.attachmentIcon} />
-          </Pressable>
-        </View>
-        <View style={styles.attachmentButton}>
-          <Pressable
-            style={styles.attachmentButton}
-            onPress={() => handleAttachment('location')}
-            android_ripple={{ borderless: false }}
-          >
-            <Ionicons name="location-outline" style={styles.attachmentIcon} />
-          </Pressable>
+        <View style={styles.attachmentInContainer}>
+          <View style={styles.attachmentButton}>
+            <Pressable
+              style={styles.attachmentButton}
+              onPress={() => handleAttachment('video')}
+              android_ripple={{ borderless: false }}
+            >
+              <Ionicons name="videocam-outline" style={styles.attachmentIcon} />
+            </Pressable>
+          </View>
+          <View style={styles.attachmentButton}>
+            <Pressable
+              style={styles.attachmentButton}
+              onPress={() => handleAttachment('audio')}
+              android_ripple={{ borderless: false }}
+            >
+              <Foundation name="sound" style={styles.attachmentIcon} />
+            </Pressable>
+          </View>
+          <View style={styles.attachmentButton}>
+            <Pressable
+              style={styles.attachmentButton}
+              // onPress={() => handleAttachment('recording')}
+              android_ripple={{ borderless: false }}
+            >
+              <Ionicons name="mic-outline" style={styles.attachmentIcon} />
+            </Pressable>
+          </View>
         </View>
       </View>
-      <View style={styles.attachmentInContainer}>
-        <View style={styles.attachmentButton}>
-          <Pressable
-            style={styles.attachmentButton}
-            onPress={() => handleAttachment('video')}
-            android_ripple={{ borderless: false }}
-          >
-            <Ionicons name="videocam-outline" style={styles.attachmentIcon} />
-          </Pressable>
-        </View>
-        <View style={styles.attachmentButton}>
-          <Pressable
-            style={styles.attachmentButton}
-            onPress={() => handleAttachment('audio')}
-            android_ripple={{ borderless: false }}
-          >
-            <Foundation name="sound" style={styles.attachmentIcon} />
-          </Pressable>
-        </View>
-        <View style={styles.attachmentButton}>
-          <Pressable
-            style={styles.attachmentButton}
-            onPress={() => handleAttachment('recording')}
-            android_ripple={{ borderless: false }}
-          >
-            <Ionicons name="mic-outline" style={styles.attachmentIcon} />
-          </Pressable>
-        </View>
-      </View>
-    </View>
+      <AttachmentPopup
+        visible={showPopup}
+        onClose={closePopup}
+        mediaType={attachmentType}
+        setMedia={setMedia}
+      />
+    </>
   );
 };
 
