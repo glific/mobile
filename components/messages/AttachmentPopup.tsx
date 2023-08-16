@@ -132,6 +132,7 @@ const AttachmentPopup: React.FC<AttachmentPopupProps> = ({
             />
             <View style={styles.selectContainer}>
               <Pressable
+                testID="selectFile"
                 disabled={!uploadPermission}
                 style={styles.selectButton}
                 onPress={handleSelect}
@@ -146,7 +147,12 @@ const AttachmentPopup: React.FC<AttachmentPopupProps> = ({
                 )}
               </Pressable>
               {file && attachmentURL == '' && (
-                <Pressable disabled={uploading} style={styles.uploadButton} onPress={handleUpload}>
+                <Pressable
+                  testID="uploadButton"
+                  disabled={uploading}
+                  style={styles.uploadButton}
+                  onPress={handleUpload}
+                >
                   {uploading ? (
                     <Loading size="small" color={COLORS.white} />
                   ) : (

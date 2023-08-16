@@ -14,31 +14,35 @@ const AttachmentSelected = ({ name, type, remove }: Props) => {
   let icon;
   switch (type) {
     case 'image':
-      icon = <Ionicons name="image-outline" style={styles.attachmentIcon} />;
+      icon = <Ionicons testID="image" name="image-outline" style={styles.attachmentIcon} />;
       break;
     case 'document':
-      icon = <Ionicons name="document-attach-outline" style={styles.attachmentIcon} />;
+      icon = (
+        <Ionicons testID="document" name="document-attach-outline" style={styles.attachmentIcon} />
+      );
       break;
     case 'location':
-      icon = <Ionicons name="location-outline" style={styles.attachmentIcon} />;
+      icon = <Ionicons testID="location" name="location-outline" style={styles.attachmentIcon} />;
       break;
     case 'video':
-      icon = <Ionicons name="videocam-outline" style={styles.attachmentIcon} />;
+      icon = <Ionicons testID="video" name="videocam-outline" style={styles.attachmentIcon} />;
       break;
     case 'audio':
-      icon = <Foundation name="sound" style={styles.attachmentIcon} />;
+      icon = <Foundation testID="audio" name="sound" style={styles.attachmentIcon} />;
       break;
     case 'recording':
-      icon = <Ionicons name="mic-outline" style={styles.attachmentIcon} />;
+      icon = <Ionicons testID="recording" name="mic-outline" style={styles.attachmentIcon} />;
       break;
   }
   return (
-    <View style={styles.attachment}>
+    <View testID="selectedAttachmentTab" style={styles.attachment}>
       <View style={styles.flexView}>
         {icon}
-        <Text style={styles.attachmentText}>{name.slice(0, 30)}</Text>
+        <Text testID="attachmentURL" style={styles.attachmentText}>
+          {name.slice(0, 30)}
+        </Text>
       </View>
-      <AntDesign testID="close" name="close" style={styles.clearIcon} onPress={remove} />
+      <AntDesign testID="removeAttachment" name="close" style={styles.clearIcon} onPress={remove} />
     </View>
   );
 };

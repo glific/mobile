@@ -1,8 +1,60 @@
 import {
+  CREATE_MEDIA_MESSAGE,
   MARK_AS_READ,
   SEND_COLLECTION_MESSAGE,
   SEND_CONTACT_MESSAGE,
+  UPLOAD_MEDIA,
+  UPLOAD_MEDIA_BLOB,
 } from '../../graphql/mutations/Chat';
+
+export const CREATE_MEDIA_MESSAGE_MOCK = {
+  request: {
+    query: CREATE_MEDIA_MESSAGE,
+    variables: {
+      input: {
+        caption: 'test image message',
+        sourceUrl: 'https://dummy-image-jpg.url',
+        url: 'https://dummy-image-jpg.url',
+      },
+    },
+  },
+  result: {
+    data: {
+      createMessageMedia: {
+        messageMedia: { id: '123' },
+      },
+    },
+  },
+};
+
+export const UPLOAD_MEDIA_BLOB_MOCK = {
+  request: {
+    query: UPLOAD_MEDIA_BLOB,
+    variables: {
+      contactId: '1',
+    },
+  },
+  result: {
+    data: {
+      uploadBlob: 'test-blob.url',
+    },
+  },
+};
+
+export const UPLOAD_MEDIA_MOCK = {
+  request: {
+    query: UPLOAD_MEDIA,
+    variables: {
+      media: '1',
+      extension: 'jpg',
+    },
+  },
+  result: {
+    data: {
+      uploadMediab: 'test-media.url',
+    },
+  },
+};
 
 export const MARK_AS_READ_MOCK = {
   request: {
@@ -66,6 +118,28 @@ export const SEND_COLLECTION_INTERACTIVE_MESSAGE_MOCK = {
         receiverId: 1,
         mediaId: null,
         interactiveTemplateId: 1,
+      },
+    },
+  },
+  result: {
+    data: {
+      createAndSendMessageToGroup: {
+        success: true,
+      },
+    },
+  },
+};
+
+export const SEND_CONTACT_IMAGE_MESSAGE_MOCK = {
+  request: {
+    query: SEND_CONTACT_MESSAGE,
+    variables: {
+      input: {
+        body: 'test image message',
+        flow: 'OUTBOUND',
+        type: 'IMAGE',
+        receiverId: 1,
+        mediaId: '123',
       },
     },
   },

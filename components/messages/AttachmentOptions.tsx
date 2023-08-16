@@ -38,6 +38,7 @@ const AttachmentOptions = ({ setMedia, onClose }: Props) => {
         <View style={styles.attachmentInContainer}>
           <View style={styles.attachmentButton}>
             <Pressable
+              testID="attachImage"
               style={styles.attachmentButton}
               onPress={() => handleAttachment('image')}
               android_ripple={{ borderless: false }}
@@ -47,6 +48,7 @@ const AttachmentOptions = ({ setMedia, onClose }: Props) => {
           </View>
           <View style={styles.attachmentButton}>
             <Pressable
+              testID="attachDocument"
               style={styles.attachmentButton}
               onPress={() => handleAttachment('document')}
               android_ripple={{ borderless: false }}
@@ -56,6 +58,7 @@ const AttachmentOptions = ({ setMedia, onClose }: Props) => {
           </View>
           <View style={styles.attachmentButton}>
             <Pressable
+              testID="attachLocation"
               style={styles.attachmentButton}
               // onPress={() => handleAttachment('location')}
               android_ripple={{ borderless: false }}
@@ -67,6 +70,7 @@ const AttachmentOptions = ({ setMedia, onClose }: Props) => {
         <View style={styles.attachmentInContainer}>
           <View style={styles.attachmentButton}>
             <Pressable
+              testID="attachVideo"
               style={styles.attachmentButton}
               onPress={() => handleAttachment('video')}
               android_ripple={{ borderless: false }}
@@ -76,6 +80,7 @@ const AttachmentOptions = ({ setMedia, onClose }: Props) => {
           </View>
           <View style={styles.attachmentButton}>
             <Pressable
+              testID="attachAudio"
               style={styles.attachmentButton}
               onPress={() => handleAttachment('audio')}
               android_ripple={{ borderless: false }}
@@ -85,6 +90,7 @@ const AttachmentOptions = ({ setMedia, onClose }: Props) => {
           </View>
           <View style={styles.attachmentButton}>
             <Pressable
+              testID="attachRecording"
               style={styles.attachmentButton}
               // onPress={() => handleAttachment('recording')}
               android_ripple={{ borderless: false }}

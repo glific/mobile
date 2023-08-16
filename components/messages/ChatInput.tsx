@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, StyleSheet, TextInput, Pressable, Keyboard, Animated, Text } from 'react-native';
+import { View, StyleSheet, TextInput, Pressable, Keyboard, Animated } from 'react-native';
 import { FontAwesome, Ionicons, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 import { useMutation } from '@apollo/client';
 

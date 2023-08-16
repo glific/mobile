@@ -54,23 +54,15 @@ const VideoThumbnail = ({ videoUri }: { videoUri: string }) => {
     }
   };
 
-  return (
-    <>
-      {thumbnailUrl && (
-        <ImageBackground
-          testID="videoThumbnail"
-          source={{ uri: thumbnailUrl }}
-          style={styles.video}
-        >
-          <View style={styles.videoInnerBackground}>
-            <View style={styles.playButtonBackground}>
-              <Entypo name="controller-play" size={SIZES.s24} color={COLORS.white} />
-            </View>
-          </View>
-        </ImageBackground>
-      )}
-    </>
-  );
+  return thumbnailUrl ? (
+    <ImageBackground testID="videoThumbnail" source={{ uri: thumbnailUrl }} style={styles.video}>
+      <View style={styles.videoInnerBackground}>
+        <View style={styles.playButtonBackground}>
+          <Entypo name="controller-play" size={SIZES.s24} color={COLORS.white} />
+        </View>
+      </View>
+    </ImageBackground>
+  ) : null;
 };
 
 const Message: React.FC<MessageProps> = ({

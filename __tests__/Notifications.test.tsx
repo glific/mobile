@@ -28,6 +28,8 @@ describe('Notifications Screen', () => {
     });
 
     // Todo: need to see how to get the next set of items in flatlist. The below expectations is not correct
+    const flatList = getByLabelText('notification-list');
+    flatList.props.onEndReached();
     await waitFor(() => {
       expect(getByText('Glific 10')).toBeDefined();
     });

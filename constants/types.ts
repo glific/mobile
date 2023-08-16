@@ -20,7 +20,7 @@ export type RootStackParamList = {
   ContactProfile: {
     contact: {
       id: number;
-      conversationType: string;
+      conversationType?: string;
       name: string;
       lastMessageAt?: string;
     };
