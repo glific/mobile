@@ -1,9 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-import { COLORS, SCALE, SIZES } from '../../../constants';
 import { MessageType } from '../Message';
+import { MessageTime, onRight } from './AudioMessage';
+import { COLORS, SCALE, SIZES } from '../../../constants';
 
 interface Props {
   message: MessageType;
@@ -12,32 +13,13 @@ interface Props {
 }
 
 const ListMessage = ({ message, time, isLeft }: Props) => {
-  const onRight = (type: string): ViewStyle | TextStyle | undefined => {
-    if (!isLeft) {
-      switch (type) {
-        case 'message':
-          return {
-            alignSelf: 'flex-end',
-            borderTopRightRadius: 0,
-            borderTopLeftRadius: SIZES.r10,
-            backgroundColor: COLORS.lightGray,
-          };
-        case 'text':
-          return { color: COLORS.black };
-        case 'time':
-          return { color: COLORS.darkGray };
-        case 'option':
-          return { alignSelf: 'flex-end' };
-      }
-    }
-  };
-
   const options = JSON.parse(message.interactiveContent)?.items;
+
   return (
-    <View style={[styles.quickContainer, onRight('option')]}>
-      <View testID="listMessage" style={[styles.listMessageContainer, onRight('message')]}>
-        <Text style={[styles.text, onRight('text')]}>{message.body}</Text>
-        <Text style={[styles.time, onRight('time')]}>{time}</Text>
+    <View style={[styles.quickContainer, onRight('option', isLeft)]}>
+      <View testID="listMessage" style={[styles.listMessageContainer, onRight('message', isLeft)]}>
+        <Text style={[styles.text, onRight('text', isLeft)]}>{message.body}</Text>
+        <MessageTime time={time} isLeft={isLeft} />
       </View>
       <View style={styles.optionsContainer}>
         {options?.map((item, index) => (
@@ -107,12 +89,5 @@ const styles = StyleSheet.create({
     fontSize: SIZES.f14,
     includeFontPadding: false,
     letterSpacing: 0.2,
-  },
-  time: {
-    alignSelf: 'flex-end',
-    bottom: -SIZES.m6,
-    color: COLORS.lightGray,
-    fontSize: SIZES.f10,
-    position: 'relative',
   },
 });

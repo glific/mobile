@@ -1,19 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import {
-  ImageBackground,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextStyle,
-  View,
-  ViewStyle,
-} from 'react-native';
+import { ImageBackground, Pressable, StyleSheet, View } from 'react-native';
 import { getThumbnailAsync } from 'expo-video-thumbnails';
 import { Entypo } from '@expo/vector-icons';
 
-import { COLORS, SCALE, SIZES } from '../../../constants';
 import { MessageType } from '../Message';
 import VideoPlayer from '../VideoPlayer';
+import { MessageTime, onRight } from './AudioMessage';
+import { COLORS, SCALE, SIZES } from '../../../constants';
 
 const VideoThumbnail = ({ videoUri }: { videoUri: string }) => {
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
@@ -56,31 +49,15 @@ interface Props {
 }
 
 const VideoMessage = ({ message, openVideo, handleVideo, time, isLeft }: Props) => {
-  const onRight = (type: string): ViewStyle | TextStyle | undefined => {
-    if (!isLeft) {
-      switch (type) {
-        case 'message':
-          return {
-            alignSelf: 'flex-end',
-            borderTopRightRadius: 0,
-            borderTopLeftRadius: SIZES.r10,
-            backgroundColor: COLORS.lightGray,
-          };
-        case 'time':
-          return { color: COLORS.darkGray };
-      }
-    }
-  };
-
   return (
     <Pressable
       testID="videoMessage"
-      style={[styles.container, onRight('message')]}
+      style={[styles.container, onRight('message', isLeft)]}
       onPress={handleVideo}
     >
       <VideoPlayer message={message} handleVideo={handleVideo} openVideo={openVideo} />
       <VideoThumbnail videoUri={message.media.url} />
-      <Text style={[styles.time, onRight('time')]}>{time}</Text>
+      <MessageTime time={time} isLeft={isLeft} />
     </Pressable>
   );
 };
@@ -104,13 +81,6 @@ const styles = StyleSheet.create({
     height: SIZES.s40,
     justifyContent: 'center',
     width: SIZES.s40,
-  },
-  time: {
-    alignSelf: 'flex-end',
-    bottom: -SIZES.m6,
-    color: COLORS.lightGray,
-    fontSize: SIZES.f10,
-    position: 'relative',
   },
   video: {
     borderRadius: SIZES.r10,

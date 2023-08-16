@@ -1,9 +1,10 @@
 import React from 'react';
-import { Linking, Pressable, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
+import { Linking, Pressable, StyleSheet, Text, View } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
 import { COLORS, SIZES } from '../../../constants';
 import { MessageType } from '../Message';
+import { MessageTime, onRight } from './AudioMessage';
 
 interface Props {
   message: MessageType;
@@ -14,28 +15,6 @@ interface Props {
 const DocumentMessage = ({ message, time, isLeft }: Props) => {
   const media_ext = message.media.url.split('.').pop();
 
-  const onRight = (type: string): ViewStyle | TextStyle | undefined => {
-    if (!isLeft) {
-      switch (type) {
-        case 'message':
-          return {
-            alignSelf: 'flex-end',
-            borderTopRightRadius: 0,
-            borderTopLeftRadius: SIZES.r10,
-            backgroundColor: COLORS.lightGray,
-          };
-        case 'text':
-          return { color: COLORS.black };
-        case 'icon':
-          return { color: COLORS.primary400 };
-        case 'time':
-          return { color: COLORS.darkGray };
-        case 'innerBackground':
-          return { backgroundColor: COLORS.primary10 };
-      }
-    }
-  };
-
   const handleLink = () => {
     Linking.openURL(message.media.url);
   };
@@ -43,19 +22,19 @@ const DocumentMessage = ({ message, time, isLeft }: Props) => {
   return (
     <Pressable
       testID="documentMessage"
-      style={[styles.container, onRight('message')]}
+      style={[styles.container, onRight('message', isLeft)]}
       onPress={handleLink}
     >
-      <View style={[styles.docInnerContainer, onRight('innerBackground')]}>
-        <AntDesign name="file1" style={[styles.docIcon, onRight('icon')]} />
+      <View style={[styles.docInnerContainer, onRight('innerBackground', isLeft)]}>
+        <AntDesign name="file1" style={[styles.docIcon, onRight('icon', isLeft)]} />
         <View>
-          <Text style={[styles.docText, onRight('text')]} numberOfLines={1}>
+          <Text style={[styles.docText, onRight('text', isLeft)]} numberOfLines={1}>
             {message.media.caption}
           </Text>
-          <Text style={[styles.extensionText, onRight('text')]}>{media_ext}</Text>
+          <Text style={[styles.extensionText, onRight('text', isLeft)]}>{media_ext}</Text>
         </View>
       </View>
-      <Text style={[styles.time, onRight('time')]}>{time}</Text>
+      <MessageTime time={time} isLeft={isLeft} />
     </Pressable>
   );
 };
@@ -98,12 +77,5 @@ const styles = StyleSheet.create({
     color: COLORS.lightGray,
     fontSize: SIZES.f10,
     textTransform: 'uppercase',
-  },
-  time: {
-    alignSelf: 'flex-end',
-    bottom: -SIZES.m6,
-    color: COLORS.lightGray,
-    fontSize: SIZES.f10,
-    position: 'relative',
   },
 });

@@ -1,8 +1,9 @@
 import React from 'react';
-import { Pressable, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { COLORS, SCALE, SIZES } from '../../../constants';
 import { MessageType } from '../Message';
+import { MessageTime, onRight } from './AudioMessage';
 
 interface Props {
   message: MessageType;
@@ -11,35 +12,15 @@ interface Props {
 }
 
 const QuickReplyMessage = ({ message, time, isLeft }: Props) => {
-  const onRight = (type: string): ViewStyle | TextStyle | undefined => {
-    if (!isLeft) {
-      switch (type) {
-        case 'message':
-          return {
-            alignSelf: 'flex-end',
-            borderTopRightRadius: 0,
-            borderTopLeftRadius: SIZES.r10,
-            backgroundColor: COLORS.lightGray,
-          };
-        case 'text':
-          return { color: COLORS.black };
-        case 'time':
-          return { color: COLORS.darkGray };
-        case 'option':
-          return { alignSelf: 'flex-end' };
-      }
-    }
-  };
-
   const options = JSON.parse(message.interactiveContent)?.options;
   return (
-    <View style={[styles.quickContainer, onRight('option')]}>
+    <View style={[styles.quickContainer, onRight('option', isLeft)]}>
       <Pressable
         testID="quickReplyMessage"
-        style={[styles.quickMessageContainer, onRight('message')]}
+        style={[styles.quickMessageContainer, onRight('message', isLeft)]}
       >
-        <Text style={[styles.text, onRight('text')]}>{message.body}</Text>
-        <Text style={[styles.time, onRight('time')]}>{time}</Text>
+        <Text style={[styles.text, onRight('text', isLeft)]}>{message.body}</Text>
+        <MessageTime time={time} isLeft={isLeft} />
       </Pressable>
       <View style={styles.optionsContainer}>
         {options?.map((option, index) => (
@@ -90,12 +71,5 @@ const styles = StyleSheet.create({
     fontSize: SIZES.f14,
     includeFontPadding: false,
     letterSpacing: 0.2,
-  },
-  time: {
-    alignSelf: 'flex-end',
-    bottom: -SIZES.m6,
-    color: COLORS.lightGray,
-    fontSize: SIZES.f10,
-    position: 'relative',
   },
 });

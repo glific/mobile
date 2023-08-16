@@ -1,9 +1,10 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, Text, TextStyle, ViewStyle } from 'react-native';
+import { Image, Pressable, StyleSheet } from 'react-native';
 
 import { COLORS, SIZES } from '../../../constants';
 import { MessageType } from '../Message';
 import ImageViewer from '../ImageViewer';
+import { MessageTime, onRight } from './AudioMessage';
 
 interface Props {
   message: MessageType;
@@ -14,31 +15,15 @@ interface Props {
 }
 
 const ImageMessage = ({ message, openImage, handleImage, time, isLeft }: Props) => {
-  const onRight = (type: string): ViewStyle | TextStyle | undefined => {
-    if (!isLeft) {
-      switch (type) {
-        case 'message':
-          return {
-            alignSelf: 'flex-end',
-            borderTopRightRadius: 0,
-            borderTopLeftRadius: SIZES.r10,
-            backgroundColor: COLORS.lightGray,
-          };
-        case 'time':
-          return { color: COLORS.darkGray };
-      }
-    }
-  };
-
   return (
     <Pressable
       testID="imageMessage"
-      style={[styles.container, onRight('message')]}
+      style={[styles.container, onRight('message', isLeft)]}
       onPress={handleImage}
     >
       <ImageViewer message={message} handleImage={handleImage} openImage={openImage} />
       <Image source={{ uri: message.media.url }} style={styles.image} />
-      <Text style={[styles.time, onRight('time')]}>{time}</Text>
+      <MessageTime time={time} isLeft={isLeft} />
     </Pressable>
   );
 };
@@ -60,12 +45,5 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.r10,
     maxWidth: '100%',
     width: '100%',
-  },
-  time: {
-    alignSelf: 'flex-end',
-    bottom: -SIZES.m6,
-    color: COLORS.lightGray,
-    fontSize: SIZES.f10,
-    position: 'relative',
   },
 });
