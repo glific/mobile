@@ -72,8 +72,8 @@ describe('ContactProfile', () => {
       <ContactProfile navigation={navigationMock} route={{ params: { contact: contactMock } }} />,
       CONTACT_INFO_MOCK
     );
-    fireEvent.press(getByText('Contact History'));
     await waitFor(async () => {
+      fireEvent.press(getByText('Contact History'));
       expect(navigationMock.navigate).toHaveBeenCalledWith('ContactHistory', {
         id: '12',
       });
