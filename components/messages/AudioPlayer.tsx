@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import Slider from '@react-native-community/slider';
 import { Audio } from 'expo-av';
 
-import { COLORS, SIZES } from '../../constants';
+import { COLORS, SIZES, Icon } from '../../constants';
 
 const timefy = (ms: number): string => {
   if (!ms) return '00:00';
@@ -68,15 +67,15 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioUri, isLeft }) => {
   return (
     <View style={styles.container}>
       {isPlay ? (
-        <MaterialIcons
-          name="pause"
+        <Icon
+          name="player-pause"
           size={SIZES.s24}
           color={isLeft ? COLORS.white : COLORS.primary400}
           onPress={handlePlayPause}
         />
       ) : (
-        <Entypo
-          name="controller-play"
+        <Icon
+          name="player-play"
           size={SIZES.s24}
           color={isLeft ? COLORS.white : COLORS.primary400}
           onPress={handlePlayPause}

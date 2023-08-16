@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, Image, StyleSheet, Linking, Pressable, ImageBackground } from 'react-native';
-import { AntDesign, Entypo } from '@expo/vector-icons';
 import * as VideoThumbnails from 'expo-video-thumbnails';
 
-import { COLORS, SCALE, SIZES } from '../../constants';
+import { COLORS, SCALE, SIZES, Icon } from '../../constants';
 import AudioPlayer from './AudioPlayer';
 import VideoPlayer from './VideoPlayer';
 import ImageViewer from './ImageViewer';
@@ -64,7 +63,7 @@ const VideoThumbnail = ({ videoUri }: { videoUri: string }) => {
         >
           <View style={styles.videoInnerBackground}>
             <View style={styles.playButtonBackground}>
-              <Entypo name="controller-play" size={SIZES.s24} color={COLORS.white} />
+              <Icon name="player-play" size={SIZES.s24} color={COLORS.white} />
             </View>
           </View>
         </ImageBackground>
@@ -183,7 +182,7 @@ const Message: React.FC<MessageProps> = ({
           onPress={handleLink}
         >
           <View style={[styles.docInnerContainer, onRight('innerBackground')]}>
-            <AntDesign name="file1" style={[styles.docIcon, onRight('icon')]} />
+            <Icon name="file-document" style={[styles.docIcon, onRight('icon')]} />
             <View>
               <Text style={[styles.docText, onRight('text')]} numberOfLines={1}>
                 {message.media.caption}

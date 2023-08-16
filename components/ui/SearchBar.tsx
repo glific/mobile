@@ -1,13 +1,12 @@
 import React, { useContext, useState } from 'react';
 import { View, TextInput, StyleSheet, Pressable, Text, ScrollView } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
-import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { useQuery } from '@apollo/client';
 
 import { SAVED_SEARCH_QUERY, SEARCHES_COUNT } from '../../graphql/queries/Search';
 import { RootStackParamList } from '../../constants/types';
 import { numberToAbbreviation } from '../../utils/helper';
-import { COLORS, SIZES, SCALE } from '../../constants';
+import { COLORS, SIZES, SCALE, Icon } from '../../constants';
 import AuthContext from '../../config/AuthContext';
 import Loading from './Loading';
 
@@ -126,12 +125,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   return (
     <View style={styles.mainContainer}>
       <View style={styles.inputContainer}>
-        <AntDesign
-          testID="searchIcon"
-          name="search1"
-          style={styles.icon}
-          onPress={handleTermSearch}
-        />
+        <Icon testID="searchIcon" name="search" style={styles.icon} onPress={handleTermSearch} />
         <TextInput
           testID="searchInput"
           style={styles.input}
@@ -147,9 +141,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
         />
         {showMenu && (
           <View>
-            <Ionicons
+            <Icon
               testID="filterIcon"
-              name="filter-outline"
+              name="filter"
               style={[styles.icon, isAdvancedSearch && { color: COLORS.primary100 }]}
               onPress={() =>
                 navigation.navigate('ConversationFilter', { onGoBack: handleAdvanceSearch })

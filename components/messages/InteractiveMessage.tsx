@@ -1,12 +1,11 @@
 import React, { RefObject, useState } from 'react';
 import { Pressable, StyleSheet, View, Text, FlatList } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useQuery } from '@apollo/client';
 
 import Loading from '../ui/Loading';
 import SearchInput from './SearchInput';
 import BottomSheet from '../ui/BottomSheet';
-import { COLORS, SCALE, SIZES } from '../../constants';
+import { COLORS, SCALE, SIZES, Icon } from '../../constants';
 import { GET_INTERACTIVE_MESSAGES } from '../../graphql/queries/Templates';
 
 type InteractiveTemplateType = {
@@ -46,7 +45,7 @@ const InteractiveMessage = ({ bsRef, handleSelect }: Props) => {
         android_ripple={{ color: COLORS.primary10 }}
         onPress={() => onSelect(item, body)}
       >
-        <MaterialCommunityIcons name="message-flash-outline" style={styles.messageIcon} />
+        <Icon name="interactive-message" style={styles.messageIcon} />
         <View style={styles.message}>
           <Text style={styles.messageTitle}>{item.label}</Text>
           <Text style={styles.messageText}>{body}</Text>
@@ -95,7 +94,7 @@ const styles = StyleSheet.create({
     padding: SIZES.m12,
   },
   messageIcon: {
-    color: COLORS.primary400,
+    color: COLORS.primary100,
     fontSize: SIZES.f18,
   },
   messageText: {

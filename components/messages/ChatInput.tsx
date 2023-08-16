@@ -1,22 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, StyleSheet, TextInput, Pressable, Keyboard, Animated } from 'react-native';
-import {
-  FontAwesome,
-  Ionicons,
-  MaterialCommunityIcons,
-  Foundation,
-  Entypo,
-} from '@expo/vector-icons';
 import { useMutation } from '@apollo/client';
 
-import { COLORS, SCALE, SIZES } from '../../constants';
-import { SEND_COLLECTION_MESSAGE, SEND_CONTACT_MESSAGE } from '../../graphql/mutations/Chat';
-import EmojiPicker from '../emojis/EmojiPicker';
 import Templates from './Templates';
-import InteractiveMessage from './InteractiveMessage';
 import ErrorAlert from '../ui/ErrorAlert';
 import MessageOptions from './MessageOptions';
+import EmojiPicker from '../emojis/EmojiPicker';
+import InteractiveMessage from './InteractiveMessage';
+import { COLORS, SCALE, SIZES, Icon } from '../../constants';
 import TemplateVariablesPopup from './TemplateVariablesPopup';
+import { SEND_COLLECTION_MESSAGE, SEND_CONTACT_MESSAGE } from '../../graphql/mutations/Chat';
 
 type InteractiveTemplateType = {
   id: string;
@@ -165,7 +158,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
       <View style={styles.inputContainer}>
         <View style={styles.inputAndEmoji}>
           {showEmoji ? (
-            <MaterialCommunityIcons
+            <Icon
               testID="keyboardIcon"
               name={'keyboard'}
               style={styles.emojiconButton}
@@ -177,9 +170,9 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
               }}
             />
           ) : (
-            <MaterialCommunityIcons
+            <Icon
               testID="emojiIcon"
-              name={'emoticon-outline'}
+              name={'smiling-face'}
               style={styles.emojiconButton}
               onPress={() => {
                 setShowOptions(false);
@@ -208,8 +201,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
             selectionColor={COLORS.darkGray}
           />
           {selectedTemplate || interactiveTemplate?.id ? (
-            <Ionicons
-              name="close-circle-outline"
+            <Icon
+              name="cross-circle"
               testID="clearIcon"
               color={COLORS.black}
               style={styles.emojiconButton}
@@ -222,9 +215,9 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
             />
           ) : (
             <Animated.View style={[styles.actionButtons, { transform: [{ translateX: xValue }] }]}>
-              <Entypo
+              <Icon
                 testID="upIcon"
-                name="chevron-up"
+                name="upper-arrow"
                 style={[styles.showIcon, showOptions && { transform: [{ rotate: '180deg' }] }]}
                 onPress={() => {
                   setShowEmoji(false);
@@ -233,9 +226,9 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
                   setShowOptions((showOptions) => !showOptions);
                 }}
               />
-              <MaterialCommunityIcons
+              <Icon
                 testID="clipIcon"
-                name="paperclip"
+                name="attachment"
                 color={COLORS.black}
                 style={styles.paperclipicon}
                 onPress={() => {
@@ -249,9 +242,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
           )}
         </View>
 
-        <Pressable testID="sendIcon" style={styles.sendButton} onPress={HandleSendMessage}>
-          <Ionicons name="chatbox-sharp" style={styles.iconchatbox} />
-          <FontAwesome name="send" style={styles.sendicon} />
+        <Pressable testID="sendIcon" onPress={HandleSendMessage}>
+          <Icon name="send" style={styles.sendicon} />
         </Pressable>
       </View>
 
@@ -292,24 +284,24 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
         <View testID="attachmentsTab" style={styles.attachmentsContainer}>
           <View style={styles.attachmentInContainer}>
             <Pressable style={styles.attachmentButton} android_ripple={{ borderless: false }}>
-              <Ionicons name="image-outline" style={styles.attachmentIcon} />
+              <Icon name="image" style={styles.attachmentIcon} />
             </Pressable>
             <Pressable style={styles.attachmentButton} android_ripple={{ borderless: false }}>
-              <Ionicons name="document-attach-outline" style={styles.attachmentIcon} />
+              <Icon name="file-document" style={styles.attachmentIcon} />
             </Pressable>
             <Pressable style={styles.attachmentButton} android_ripple={{ borderless: false }}>
-              <Ionicons name="location-outline" style={styles.attachmentIcon} />
+              <Icon name="location-pin" style={styles.attachmentIcon} />
             </Pressable>
           </View>
           <View style={styles.attachmentInContainer}>
             <Pressable style={styles.attachmentButton} android_ripple={{ borderless: false }}>
-              <Ionicons name="videocam-outline" style={styles.attachmentIcon} />
+              <Icon name="folder-video" style={styles.attachmentIcon} />
             </Pressable>
             <Pressable style={styles.attachmentButton} android_ripple={{ borderless: false }}>
-              <Foundation name="sound" style={styles.attachmentIcon} />
+              <Icon name="headphone" style={styles.attachmentIcon} />
             </Pressable>
             <Pressable style={styles.attachmentButton} android_ripple={{ borderless: false }}>
-              <Ionicons name="mic-outline" style={styles.attachmentIcon} />
+              <Icon name="microphone" style={styles.attachmentIcon} />
             </Pressable>
           </View>
         </View>
@@ -342,7 +334,7 @@ const styles = StyleSheet.create({
     width: SCALE(104),
   },
   attachmentIcon: {
-    color: COLORS.primary400,
+    color: COLORS.primary100,
     fontSize: SIZES.m24,
   },
   attachmentInContainer: {
@@ -379,11 +371,6 @@ const styles = StyleSheet.create({
     color: COLORS.black,
     fontSize: SIZES.s24,
     padding: SIZES.m6,
-  },
-  iconchatbox: {
-    color: COLORS.white,
-    fontSize: SIZES.s30,
-    position: 'absolute',
   },
   input: {
     color: COLORS.black,
@@ -425,26 +412,15 @@ const styles = StyleSheet.create({
     marginRight: SIZES.m4,
     paddingHorizontal: SIZES.m4,
     paddingVertical: SIZES.m12,
-    transform: [{ rotate: '50deg' }],
-  },
-  sendButton: {
-    alignItems: 'center',
-    backgroundColor: COLORS.primary100,
-    borderRadius: SIZES.m24,
-    flexDirection: 'row',
-    height: SIZES.s48,
-    justifyContent: 'center',
-    width: SIZES.s48,
   },
   sendicon: {
     color: COLORS.primary100,
-    fontSize: SIZES.f14,
+    fontSize: SIZES.s44,
     includeFontPadding: false,
-    marginBottom: SIZES.m4,
   },
   showIcon: {
     color: COLORS.black,
-    fontSize: SIZES.f18,
+    fontSize: SIZES.f20,
     paddingHorizontal: SIZES.m4,
     paddingVertical: SIZES.m12,
   },

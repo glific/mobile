@@ -1,8 +1,8 @@
 import React, { useState, memo } from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { COLORS, SCALE, SIZES } from '../../constants';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+
+import { COLORS, SCALE, SIZES, Icon } from '../../constants';
 
 interface Props {
   selectedDateFrom: Date | null;
@@ -70,7 +70,7 @@ const DateRangeSelect: React.FC<Props> = ({
         ) : (
           <Text style={styles.dateText}>{formatDate(date)}</Text>
         )}
-        <MaterialCommunityIcons name="calendar" style={styles.calendarIcon} />
+        <Icon name="calendar" style={styles.calendarIcon} />
       </Pressable>
     );
   };

@@ -1,8 +1,7 @@
 import React from 'react';
 import { View, TextInput, StyleSheet, Pressable } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
 
-import { COLORS, SIZES, SCALE } from '../../constants';
+import { COLORS, SIZES, SCALE, Icon } from '../../constants';
 
 type SavedSearchBarProps = {
   searchValue: string;
@@ -15,7 +14,7 @@ const SavedSearchBar: React.FC<SavedSearchBarProps> = ({ searchValue, setSearchV
   return (
     <View style={styles.mainContainer}>
       <View style={styles.inputContainer}>
-        <AntDesign testID="searchIcon" name="search1" style={styles.icon} />
+        <Icon testID="searchIcon" name="search" style={styles.icon} />
         <TextInput
           testID="searchInput"
           style={styles.input}
@@ -34,7 +33,7 @@ const SavedSearchBar: React.FC<SavedSearchBarProps> = ({ searchValue, setSearchV
             onPress={handleClear}
             android_ripple={{ color: COLORS.black005, borderless: true }}
           >
-            <AntDesign testID="close" name="close" style={styles.clearIcon} />
+            <Icon testID="close" name="cross" style={styles.clearIcon} />
           </Pressable>
         )}
       </View>

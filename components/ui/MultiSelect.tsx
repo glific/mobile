@@ -1,7 +1,7 @@
 import React, { useState, memo } from 'react';
 import { View, Text, Pressable, StyleSheet, Modal, ScrollView } from 'react-native';
-import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
-import { COLORS, SCALE, SIZES } from '../../constants';
+
+import { COLORS, SCALE, SIZES, Icon } from '../../constants';
 
 interface OptionType {
   id: string;
@@ -66,12 +66,12 @@ const MultiSelect: React.FC<Props> = ({
                 onPress={() => handleTagRemove(option)}
               >
                 <Text style={styles.tagText}>{option.name ? option.name : option.label}</Text>
-                <AntDesign name="close" style={styles.tagCloseIcon} />
+                <Icon name="cross" style={styles.tagCloseIcon} />
               </Pressable>
             ))}
           </View>
         )}
-        <AntDesign name="caretdown" style={styles.dropIcon} />
+        <Icon name="down-arrow" style={styles.dropIcon} />
       </Pressable>
       <Modal visible={isModalVisible} animationType="fade" transparent onRequestClose={toggleModal}>
         <Pressable testID="closeSelect" style={styles.modalBackdrop} onPress={toggleModal}>
@@ -89,12 +89,9 @@ const MultiSelect: React.FC<Props> = ({
                   android_ripple={{ color: COLORS.primary10 }}
                 >
                   {selectedOptions.find((o) => o.id === option.id) ? (
-                    <MaterialCommunityIcons name="checkbox-outline" style={styles.checkBoxIcon} />
+                    <Icon name="shape-fill" style={styles.checkBoxIcon} />
                   ) : (
-                    <MaterialCommunityIcons
-                      name="checkbox-blank-outline"
-                      style={styles.checkBoxIcon}
-                    />
+                    <Icon name="shape" style={styles.checkBoxIcon} />
                   )}
                   <Text style={styles.optionButtonText}>
                     {option.name ? option.name : option.label}
@@ -113,13 +110,13 @@ export default memo(MultiSelect);
 
 const styles = StyleSheet.create({
   checkBoxIcon: {
-    color: COLORS.black,
+    color: COLORS.primary100,
     fontSize: SIZES.f20,
     marginRight: SIZES.m8,
   },
   dropIcon: {
     color: COLORS.darkGray,
-    fontSize: SIZES.f12,
+    fontSize: SIZES.f18,
     includeFontPadding: false,
     marginTop: SIZES.m16,
   },
@@ -132,7 +129,7 @@ const styles = StyleSheet.create({
     borderWidth: SCALE(0.75),
     flexDirection: 'row',
     minHeight: SIZES.s48,
-    paddingHorizontal: SIZES.m10,
+    paddingHorizontal: SIZES.m8,
   },
   label: {
     color: COLORS.black,
@@ -181,8 +178,8 @@ const styles = StyleSheet.create({
   placeholderText: {
     alignSelf: 'center',
     color: COLORS.darkGray,
+    flex: 1,
     fontSize: SIZES.f16,
-    width: '95%',
   },
   tag: {
     alignItems: 'center',
@@ -211,7 +208,7 @@ const styles = StyleSheet.create({
   tagsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    flex: 1,
     marginTop: SIZES.m6,
-    width: '95%',
   },
 });

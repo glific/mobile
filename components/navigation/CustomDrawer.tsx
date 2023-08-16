@@ -2,11 +2,10 @@ import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, Image, Pressable, StyleSheet } from 'react-native';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { useApolloClient } from '@apollo/client';
-import { Feather } from '@expo/vector-icons';
 
 import Wallet from './Wallet';
 import Storage from '../../utils/asyncStorage';
-import { COLORS, SCALE, SIZES } from '../../constants';
+import { COLORS, Icon, SCALE, SIZES } from '../../constants';
 import AuthContext from '../../config/AuthContext';
 import AxiosService from '../../config/axios';
 
@@ -61,7 +60,7 @@ const CustomDrawer: React.FC<DrawerContentProps> = (props) => {
           style={styles.logoutButton}
           android_ripple={{ borderless: false, color: COLORS.black005 }}
         >
-          <Feather name="log-out" style={styles.logoutIcon} />
+          <Icon name="exit" style={styles.logoutIcon} />
           <Text style={styles.logoutText}>Logout</Text>
         </Pressable>
       </View>

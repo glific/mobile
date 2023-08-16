@@ -8,8 +8,8 @@ import {
   StyleSheet,
   Pressable,
 } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
-import { COLORS, SIZES } from '../../constants';
+
+import { COLORS, SIZES, Icon } from '../../constants';
 
 type Props = {
   refs: unknown;
@@ -106,7 +106,7 @@ const BottomSheet = ({
         />
         {closeButton && (
           <Pressable style={styles.closeButton} onPress={close}>
-            <AntDesign testID="close" name="close" style={styles.closeIcon} />
+            <Icon testID="close" name="cross" style={styles.closeIcon} />
           </Pressable>
         )}
         <Animated.View

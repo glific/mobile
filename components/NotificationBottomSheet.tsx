@@ -1,8 +1,7 @@
 import React, { RefObject } from 'react';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import BottomSheet from './ui/BottomSheet';
-import { COLORS, SCALE, SIZES } from '../constants';
-import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
+import { COLORS, Icon, SCALE, SIZES } from '../constants';
 
 type Props = {
   bsRef: RefObject<unknown>;
@@ -22,21 +21,17 @@ const NotificationBottomSheet = ({ bsRef, notification }: Props) => {
           <View style={styles.iconContainer}>
             {notification.type === 'Info' ? (
               <View style={styles.typeInfo}>
-                <MaterialCommunityIcons
-                  name="message-text-outline"
-                  style={styles.icon}
-                  color={COLORS.info}
-                />
+                <Icon name="chat-1" style={styles.icon} color={COLORS.info} />
               </View>
             ) : (
               <>
                 {notification.type === 'Critical' ? (
                   <View style={styles.typeCritical}>
-                    <AntDesign name="setting" style={styles.icon} color={COLORS.critical} />
+                    <Icon name="settings" style={styles.icon} color={COLORS.critical} />
                   </View>
                 ) : (
                   <View style={styles.typeWarning}>
-                    <AntDesign name="warning" style={styles.icon} color={COLORS.warning} />
+                    <Icon name="exclamation-mark" style={styles.icon} color={COLORS.warning} />
                   </View>
                 )}
               </>

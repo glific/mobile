@@ -1,8 +1,7 @@
 import React, { memo } from 'react';
 import { View, Text, TextInput, StyleSheet, KeyboardTypeOptions } from 'react-native';
-import { AntDesign, Ionicons } from '@expo/vector-icons';
 
-import { COLORS, SCALE, SIZES } from '../../constants';
+import { COLORS, SCALE, SIZES, Icon } from '../../constants';
 
 type InputType = 'text' | 'password' | 'number';
 
@@ -48,17 +47,17 @@ const Input = ({
           underlineColorAndroid="transparent"
         />
         {type == 'password' ? (
-          <Ionicons
+          <Icon
             testID="passwordEye"
-            name={secure ? 'eye' : 'eye-off'}
+            name={secure ? 'eye-off' : 'eye'}
             style={styles.clearIcon}
             onPress={onShowPassword}
           />
         ) : (
           value && (
-            <AntDesign
+            <Icon
               testID="close"
-              name="close"
+              name="cross"
               style={styles.clearIcon}
               onPress={() => onUpdateValue('')}
             />
