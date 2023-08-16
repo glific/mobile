@@ -46,7 +46,7 @@ const ChatPopup: React.FC<ChatPopupProps> = ({
   };
 
   return (
-    <Modal visible={visible} animationType="fade" transparent={true} onRequestClose={onClose}>
+    <Modal visible={visible} animationType="fade" transparent onRequestClose={onClose}>
       <View style={styles.background}>
         <View testID="chatPopup" style={styles.popupContainer}>
           <Text testID="popupTitle" style={styles.title}>

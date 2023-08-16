@@ -161,7 +161,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
       </View>
       {showMenu && (
         <ScrollView
-          horizontal={true}
+          horizontal
           showsHorizontalScrollIndicator={false}
           style={styles.menuContainer}
           testID="filtersContainer"

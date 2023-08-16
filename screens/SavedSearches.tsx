@@ -56,7 +56,7 @@ const SavedSearches = ({ navigation }: Props) => {
         }
         ListEmptyComponent={!loading && <Text style={styles.emptyText}>No Saved Searches</Text>}
         stickyHeaderIndices={[0]}
-        stickyHeaderHiddenOnScroll={true}
+        stickyHeaderHiddenOnScroll
         contentContainerStyle={styles.contentContainer}
         style={styles.mainContainer}
       />

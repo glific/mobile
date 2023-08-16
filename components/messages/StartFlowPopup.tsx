@@ -72,7 +72,7 @@ const StartFlowPopup: React.FC<FlowProps> = ({ onClose, variables, mutation }) =
       testID="startFlowPopup"
       visible
       animationType="fade"
-      transparent={true}
+      transparent
       onRequestClose={onClose}
     >
       <View style={styles.background}>

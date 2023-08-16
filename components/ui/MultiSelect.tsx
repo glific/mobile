@@ -73,12 +73,7 @@ const MultiSelect: React.FC<Props> = ({
         )}
         <AntDesign name="caretdown" style={styles.dropIcon} />
       </Pressable>
-      <Modal
-        visible={isModalVisible}
-        animationType="fade"
-        transparent={true}
-        onRequestClose={toggleModal}
-      >
+      <Modal visible={isModalVisible} animationType="fade" transparent onRequestClose={toggleModal}>
         <Pressable testID="closeSelect" style={styles.modalBackdrop} onPress={toggleModal}>
           <View style={styles.modalContent}>
             <Text style={styles.modalLabel}>{label}</Text>

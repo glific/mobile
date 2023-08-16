@@ -80,7 +80,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ message, handleVideo, openVid
           ref={video}
           source={{ uri: message.media.url }}
           style={styles.video}
-          shouldPlay={true}
+          shouldPlay
           useNativeControls={false}
           resizeMode={ResizeMode.CONTAIN}
           onPlaybackStatusUpdate={handlePlaybackUpdate}

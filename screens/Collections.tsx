@@ -96,7 +96,7 @@ const Collections = ({ navigation }: Props) => {
         }
         ListEmptyComponent={!loading && <Text style={styles.emptyText}>No collection</Text>}
         stickyHeaderIndices={[0]}
-        stickyHeaderHiddenOnScroll={true}
+        stickyHeaderHiddenOnScroll
         style={styles.mainContainer}
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.1}

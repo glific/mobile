@@ -264,7 +264,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
             onInteractiveMessage={() => interactiveMessageRef.current.show()}
           />
           <Templates bsRef={speedSendRef} handleSelect={handleTemplateSelect} />
-          <Templates bsRef={templateRef} handleSelect={handleTemplateSelect} isTemplates={true} />
+          <Templates bsRef={templateRef} handleSelect={handleTemplateSelect} isTemplates />
           <InteractiveMessage
             bsRef={interactiveMessageRef}
             handleSelect={handleInteractiveTemplateSelect}
