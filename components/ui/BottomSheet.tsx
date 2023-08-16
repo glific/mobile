@@ -1,4 +1,4 @@
-import React, { useState, useRef, useImperativeHandle } from 'react';
+import React, { useState, useRef, useImperativeHandle, memo } from 'react';
 import {
   View,
   Modal,
@@ -125,7 +125,7 @@ const BottomSheet = ({
   );
 };
 
-export default BottomSheet;
+export default memo(BottomSheet);
 
 const styles = StyleSheet.create({
   background: {

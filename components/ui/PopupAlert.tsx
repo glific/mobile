@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef, memo } from 'react';
 import { Pressable, StyleSheet, Text, View, Animated } from 'react-native';
 
 import { COLORS, SIZES } from '../../constants';
@@ -69,7 +69,7 @@ const PopupAlert = () => {
   );
 };
 
-export default PopupAlert;
+export default memo(PopupAlert);
 
 const styles = StyleSheet.create({
   alertContainer: {

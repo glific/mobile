@@ -63,17 +63,17 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
   const isContactType = conversationType == 'contact';
 
   const handleMenu = () => {
-    setShowMenu(!showMenu);
+    setShowMenu((showMenu) => !showMenu);
   };
 
   const openFlowModal = () => {
-    setShowMenu(!showMenu);
+    setShowMenu((showMenu) => !showMenu);
     setShowStartFlowModal(true);
   };
 
   const openPopupTaskModal = (task: string) => {
     setpopupTask(task);
-    setShowMenu(!showMenu);
+    setShowMenu((showMenu) => !showMenu);
     setShowChatPopup(true);
   };
 

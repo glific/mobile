@@ -230,7 +230,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
                   setShowEmoji(false);
                   setShowAttachments(false);
                   inputRef?.current?.blur();
-                  setShowOptions(!showOptions);
+                  setShowOptions((showOptions) => !showOptions);
                 }}
               />
               <MaterialCommunityIcons
@@ -242,7 +242,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
                   setShowOptions(false);
                   setShowEmoji(false);
                   inputRef?.current?.blur();
-                  setShowAttachments(!showAttachments);
+                  setShowAttachments((showAttachments) => !showAttachments);
                 }}
               />
             </Animated.View>

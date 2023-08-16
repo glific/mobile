@@ -46,7 +46,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioUri, isLeft }) => {
   const handlePlayPause = () => {
     if (audio) {
       isPlay ? audio.pauseAsync() : audio.playFromPositionAsync(position);
-      setPlay(!isPlay);
+      setPlay((isPlay) => !isPlay);
     }
   };
 

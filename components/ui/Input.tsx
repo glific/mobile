@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View, Text, TextInput, StyleSheet, KeyboardTypeOptions } from 'react-native';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 
@@ -69,7 +69,7 @@ const Input = ({
   );
 };
 
-export default Input;
+export default memo(Input);
 
 const styles = StyleSheet.create({
   clearIcon: {

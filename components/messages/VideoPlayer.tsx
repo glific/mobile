@@ -30,7 +30,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ message, handleVideo, openVid
   const handlePlayPause = () => {
     if (video.current) {
       isPlay ? video.current.pauseAsync() : video.current.playAsync();
-      setPlay(!isPlay);
+      setPlay((isPlay) => !isPlay);
     }
   };
 
@@ -41,7 +41,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ message, handleVideo, openVid
   const handlePlaybackUpdate = (status: AVPlaybackStatus) => {
     setPosition(status.positionMillis);
     if (status.positionMillis === duration) {
-      setPlay(!isPlay);
+      setPlay((isPlay) => !isPlay);
     }
   };
 

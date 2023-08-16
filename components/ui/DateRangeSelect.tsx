@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { COLORS, SCALE, SIZES } from '../../constants';
@@ -88,7 +88,7 @@ const DateRangeSelect: React.FC<Props> = ({
   );
 };
 
-export default DateRangeSelect;
+export default memo(DateRangeSelect);
 
 const styles = StyleSheet.create({
   calendarIcon: {
