@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
-import moment from 'moment';
-import { COLORS, SIZES } from '../constants';
 import { useQuery } from '@apollo/client';
-import { GET_CONTACT_HISTORY } from '../graphql/queries/Contact';
+import moment from 'moment';
+
+import { COLORS, SIZES } from '../constants';
 import Loading from '../components/ui/Loading';
+import { GET_CONTACT_HISTORY } from '../graphql/queries/Contact';
 
 type History = {
   id: string;

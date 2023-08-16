@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AntDesign } from '@expo/vector-icons';
-
-import { RootStackParamList } from '../constants/types';
-import { COLORS, SCALE, SIZES } from '../constants';
-import FieldValue from '../components/ui/FieldValue';
 import { useQuery } from '@apollo/client';
-import { GET_CONTACT_INFO } from '../graphql/queries/Contact';
-import { getSessionTimeLeft } from '../utils/helper';
+
 import Loading from '../components/ui/Loading';
+import { COLORS, SCALE, SIZES } from '../constants';
+import { getSessionTimeLeft } from '../utils/helper';
+import FieldValue from '../components/ui/FieldValue';
+import { RootStackParamList } from '../constants/types';
+import { GET_CONTACT_INFO } from '../graphql/queries/Contact';
 
 type ContactInfoType = {
   name: string;
