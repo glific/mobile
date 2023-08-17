@@ -15,7 +15,7 @@ describe('Server screen', () => {
     const { getByTestId, getByText } = customRender(<Server />);
 
     const serverUrlInput = getByTestId('server');
-    const continueButton = getByText('CONTINUE');
+    const continueButton = getByText('Continue');
 
     expect(serverUrlInput).toBeDefined();
     expect(continueButton).toBeDefined();
@@ -37,7 +37,7 @@ describe('Server screen', () => {
     const { getByTestId, getByText } = customRender(<Server />);
 
     fireEvent.changeText(getByTestId('server'), 'c');
-    fireEvent.press(getByText('CONTINUE'));
+    fireEvent.press(getByText('Continue'));
 
     const errorMessage = getByText('Please enter valid organization code');
     expect(errorMessage).toBeDefined();
@@ -77,7 +77,7 @@ describe('Server screen', () => {
     );
 
     fireEvent.changeText(getByTestId('server'), 'example');
-    fireEvent.press(getByText('CONTINUE'));
+    fireEvent.press(getByText('Continue'));
 
     await waitFor(async () => {
       expect(AxiosService.updateServerURL).toHaveBeenCalledWith(

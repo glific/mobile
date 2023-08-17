@@ -53,7 +53,15 @@ type Props = NativeStackScreenProps<RootStackParamList, 'ContactProfile'>;
 
 const ContactProfile = ({ navigation, route }: Props) => {
   const { contact } = route.params;
-  const [contactInfo, setContactInfo] = useState<ContactInfoType[]>([]);
+  const [contactInfo, setContactInfo] = useState<ContactInfoType>({
+    name: '--',
+    phone: '--',
+    status: '--',
+    language: '--',
+    assignedTo: ['--'],
+    collections: ['--'],
+    fields: { '--': '--' },
+  });
 
   const { loading } = useQuery(GET_CONTACT_INFO, {
     variables: {

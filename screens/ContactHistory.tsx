@@ -7,30 +7,31 @@ import { COLORS, SIZES } from '../constants';
 import Loading from '../components/ui/Loading';
 import { GET_CONTACT_HISTORY } from '../graphql/queries/Contact';
 
-type History = {
+type HistoryType = {
   id: string;
-  date: string;
+  date: number;
   action: string;
 };
 
-const formatDate = (date: string) => {
+const formatHistory = (history): HistoryType => {
+  let flow = '';
+  if (history.eventLabel === 'Flow Started') {
+    flow = JSON.parse(history.eventMeta).flow.name;
+  }
+  const action = flow ? `${history.eventLabel}: ${flow}` : history.eventLabel;
+
+  return {
+    id: history.id,
+    date: moment.utc(history.eventDatetime).valueOf(),
+    action: action,
+  };
+};
+
+const formatDate = (date: number) => {
   const givenDate = new Date(date);
   return moment(givenDate).format('DD/MM/YYYY, HH:mm:ss');
 };
 
-const formatHistory = (histories): History[] => {
-  return histories.map((history) => {
-    let flow = '';
-    if (history.eventLabel === 'Flow Started') {
-      flow = JSON.parse(history.eventMeta).flow.name;
-    }
-    return {
-      id: history.id,
-      date: moment.utc(history.eventDatetime).valueOf(),
-      action: `${history.eventLabel}${flow ? `: ${flow}` : ''}`,
-    };
-  });
-};
 interface Props {
   route: {
     params: {
@@ -41,7 +42,6 @@ interface Props {
 
 const ContactHistory = ({ route }: Props) => {
   const { id: contactId } = route.params;
-  const [historyData, setHistoryData] = useState([]);
   const [noMoreItems, setNoMoreItems] = useState(false);
   const [pageNo, setPageNo] = useState(1);
   const historyVariables = {
@@ -55,13 +55,9 @@ const ContactHistory = ({ route }: Props) => {
     },
   };
 
-  const { loading, fetchMore } = useQuery(GET_CONTACT_HISTORY, {
+  const { loading, fetchMore, data } = useQuery(GET_CONTACT_HISTORY, {
     variables: historyVariables,
-    fetchPolicy: 'network-only',
-    onCompleted: (data) => {
-      const formattedHistory = formatHistory(data.contactHistory);
-      setHistoryData(formattedHistory);
-    },
+    fetchPolicy: 'cache-and-network',
     onError: (error) => {
       console.log(error.message);
     },
@@ -91,30 +87,29 @@ const ContactHistory = ({ route }: Props) => {
     });
   };
 
-  const renderItem = ({ item }) => (
-    <View key={item.id} style={styles.historyContainer}>
-      <Text>{item.action}</Text>
-      <Text>{formatDate(item.date)}</Text>
-    </View>
-  );
+  const renderItem = ({ item }) => {
+    const history = formatHistory(item);
+    return (
+      <View key={history.id} style={styles.historyContainer}>
+        <Text>{history.action}</Text>
+        <Text>{formatDate(history.date)}</Text>
+      </View>
+    );
+  };
 
   return (
     <>
-      {historyData.length > 0 ? (
-        <FlatList
-          accessibilityLabel="history-list"
-          style={styles.mainContainer}
-          data={historyData}
-          ListEmptyComponent={
-            !loading ? <Text style={styles.placeholder}>No History Available</Text> : null
-          }
-          renderItem={renderItem}
-          onEndReached={handleLoadMore}
-          onEndReachedThreshold={0.1}
-        />
-      ) : (
-        <Text style={styles.placeholder}>{!loading ? ' No History Available' : ''}</Text>
-      )}
+      <FlatList
+        testID="historyFlatList"
+        style={styles.mainContainer}
+        data={data?.contactHistory}
+        ListEmptyComponent={
+          <>{!loading && <Text style={styles.placeholder}>No History Available</Text>}</>
+        }
+        renderItem={renderItem}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.1}
+      />
       {loading && <Loading />}
     </>
   );

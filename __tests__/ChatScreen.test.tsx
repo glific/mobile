@@ -8,6 +8,7 @@ import {
   GET_CONTACT_AUDIO_MESSAGE_MOCK,
   GET_CONTACT_DOCUMENT_MESSAGE_MOCK,
   GET_CONTACT_IMAGE_MESSAGE_MOCK,
+  GET_CONTACT_LIST_MESSAGE_MOCK,
   GET_CONTACT_LOCATION_MESSAGE_MOCK,
   GET_CONTACT_MESSAGES_FLOW_MOCK,
   GET_CONTACT_MESSAGES_MOCK,
@@ -218,6 +219,25 @@ describe('Chat screen', () => {
       expect(quickReplyMessage).toBeDefined();
       expect(quickOption0).toBeDefined();
       expect(quickOption1).toBeDefined();
+    });
+  });
+
+  test('renders list message correctly', async () => {
+    const { getByTestId, getByText } = customRender(
+      <ChatScreen route={{ params: { ...contactMock } }} />,
+      [...GET_CONTACT_LIST_MESSAGE_MOCK, ...subscriptionMocks]
+    );
+    await waitFor(() => {
+      const quickReplyMessage = getByTestId('listMessage');
+      expect(quickReplyMessage).toBeDefined();
+
+      expect(getByText(' ⁝ List 1')).toBeDefined();
+      expect(getByText('option 1')).toBeDefined();
+      expect(getByText('option 2')).toBeDefined();
+      expect(getByText('option 3')).toBeDefined();
+
+      expect(getByText(' ⁝ List 2')).toBeDefined();
+      expect(getByText('option 4')).toBeDefined();
     });
   });
 
