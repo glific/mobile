@@ -58,18 +58,6 @@ const AttachmentOptions = ({ setMedia, onClose }: Props) => {
           </View>
           <View style={styles.attachmentButton}>
             <Pressable
-              testID="attachLocation"
-              style={styles.attachmentButton}
-              // onPress={() => handleAttachment('location')}
-              android_ripple={{ borderless: false }}
-            >
-              <Ionicons name="location-outline" style={styles.attachmentIcon} />
-            </Pressable>
-          </View>
-        </View>
-        <View style={styles.attachmentInContainer}>
-          <View style={styles.attachmentButton}>
-            <Pressable
               testID="attachVideo"
               style={styles.attachmentButton}
               onPress={() => handleAttachment('video')}
@@ -78,6 +66,8 @@ const AttachmentOptions = ({ setMedia, onClose }: Props) => {
               <Ionicons name="videocam-outline" style={styles.attachmentIcon} />
             </Pressable>
           </View>
+        </View>
+        <View style={styles.attachmentInContainer}>
           <View style={styles.attachmentButton}>
             <Pressable
               testID="attachAudio"
