@@ -10,19 +10,7 @@ import { RootStackParamList } from '../constants/types';
 import { COLORS, SCALE, SIZES, Icon } from '../constants';
 import { GET_CONTACT_INFO } from '../graphql/queries/Contact';
 
-interface Props {
-  navigation: NativeStackScreenProps<RootStackParamList, 'ContactProfile'>;
-  route: {
-    params: {
-      contact: {
-        id: string;
-        name: string;
-        lastMessageAt: string;
-      };
-    };
-  };
-}
-interface ContactInfoProp {
+type ContactInfoType = {
   name: string;
   phone: string;
   status: string;
@@ -30,9 +18,9 @@ interface ContactInfoProp {
   assignedTo: string[];
   collections: string[];
   fields: { [key: string]: string };
-}
+};
 
-const formatInfo = (contacts): ContactInfoProp => {
+const formatInfo = (contacts): ContactInfoType => {
   const { contact } = contacts;
   const assignedTo = [];
   const collections = [];
@@ -60,9 +48,19 @@ const formatInfo = (contacts): ContactInfoProp => {
   };
 };
 
+type Props = NativeStackScreenProps<RootStackParamList, 'ContactProfile'>;
+
 const ContactProfile = ({ navigation, route }: Props) => {
   const { contact } = route.params;
-  const [contactInfo, setContactInfo] = useState([]);
+  const [contactInfo, setContactInfo] = useState<ContactInfoType>({
+    name: '--',
+    phone: '--',
+    status: '--',
+    language: '--',
+    assignedTo: ['--'],
+    collections: ['--'],
+    fields: { '--': '--' },
+  });
 
   const { loading } = useQuery(GET_CONTACT_INFO, {
     variables: {

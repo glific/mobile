@@ -27,7 +27,9 @@ const CollectionCard: React.FC<CollectionCardProps> = ({ id, name, navigation })
       <View style={styles.avatar}>
         <Text style={styles.avatartext}>{name.charAt(0)}</Text>
       </View>
-      <Text style={styles.name}>{name}</Text>
+      <Text style={styles.name} numberOfLines={1}>
+        {name}
+      </Text>
     </Pressable>
   );
 };
