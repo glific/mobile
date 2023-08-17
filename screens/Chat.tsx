@@ -28,7 +28,7 @@ const updateContactList = (cachedConversations: any, subscriptionData: any, acti
   const { newMessage, contactId, contact } = getSubscriptionDetails(action, subscriptionData);
   let conversationIndex = -1;
 
-  cachedConversations.search.forEach((conversation: any, index: any) => {
+  cachedConversations.search.forEach((conversation: any, index: number) => {
     if (conversation.contact.id === contactId) {
       conversationIndex = index;
     }

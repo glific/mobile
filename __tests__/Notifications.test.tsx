@@ -14,7 +14,7 @@ const handleSearchMock = jest.fn();
 
 describe('Notifications Screen', () => {
   test('renders the Notifications screen', async () => {
-    const { getByText, getByLabelText } = customRender(<Notifications searchValue={searchVal} />, [
+    const { getByText } = customRender(<Notifications searchValue={searchVal} />, [
       ...GET_NOTIFICATIONS_MOCK,
       ...GET_NOTIFICATIONS_MOCK,
     ]);
