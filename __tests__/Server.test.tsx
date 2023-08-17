@@ -5,6 +5,7 @@ import customRender from '../utils/jestRender';
 import Server from '../screens/Server';
 import AxiosService from '../config/axios';
 import Storage from '../utils/asyncStorage';
+import { SERVER_URL_SUFFIX } from '../config';
 
 jest.mock('../utils/asyncStorage', () => ({
   storeData: jest.fn(),
@@ -66,8 +67,8 @@ describe('Server screen', () => {
     });
 
     const responseMock = {
-      url: `https://api.example.${process.env.SERVER_URL_SUFFIX}/api`,
-      wsUrl: `wss://api.example.${process.env.SERVER_URL_SUFFIX}/socket`,
+      url: `https://api.example.${SERVER_URL_SUFFIX}/api`,
+      wsUrl: `wss://api.example.${SERVER_URL_SUFFIX}/socket`,
       shortcode: 'example',
       name: 'Example Organization',
     };
@@ -81,7 +82,7 @@ describe('Server screen', () => {
 
     await waitFor(async () => {
       expect(AxiosService.updateServerURL).toHaveBeenCalledWith(
-        `https://api.example.${process.env.SERVER_URL_SUFFIX}/api`
+        `https://api.example.${SERVER_URL_SUFFIX}/api`
       );
     });
 

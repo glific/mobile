@@ -3,6 +3,7 @@ import { render } from '@testing-library/react-native';
 import { MockedProvider } from '@apollo/client/testing';
 import { NavigationContainer } from '@react-navigation/native';
 import AuthContext from '../config/AuthContext';
+import { SERVER_URL_SUFFIX } from '../config';
 
 const customRender = (
   component: React.ReactElement,
@@ -11,7 +12,7 @@ const customRender = (
     token: 'existing_token',
     setToken: jest.fn(),
     org: {
-      url: `https://api.example.${process.env.SERVER_URL_SUFFIX}/api`,
+      url: `https://api.example.${SERVER_URL_SUFFIX}/api`,
       shortcode: 'example',
       name: 'Example Organization',
     },

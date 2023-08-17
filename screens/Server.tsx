@@ -9,6 +9,7 @@ import InstructionCard from '../components/InstructionCard';
 import AxiosService from '../config/axios';
 import Storage from '../utils/asyncStorage';
 import AuthContext from '../config/AuthContext';
+import { SERVER_URL_SUFFIX } from '../config';
 
 type RootStackParamList = {
   Server: undefined;
@@ -29,8 +30,8 @@ const Server = ({ navigation }: Props) => {
   };
 
   const onSubmitHandler = async () => {
-    const orgUrl = `https://api.${serverCode}.${process.env.SERVER_URL_SUFFIX}/api`;
-    const wsUrl = `wss://api.${serverCode}.${process.env.SERVER_URL_SUFFIX}/socket`;
+    const orgUrl = `https://api.${serverCode}.${SERVER_URL_SUFFIX}/api`;
+    const wsUrl = `wss://api.${serverCode}.${SERVER_URL_SUFFIX}/socket`;
     if (serverCode.length < 2) {
       setErrorMessage('Please enter valid organization code');
       return;
@@ -76,7 +77,7 @@ const Server = ({ navigation }: Props) => {
           placeholder="shortcode"
         />
         <Text style={styles.previewUrl}>
-          {serverCode ? serverCode : 'shortcode'}.{process.env.SERVER_URL_SUFFIX}
+          {serverCode ? serverCode : 'shortcode'}.{SERVER_URL_SUFFIX}
         </Text>
         {errorDisplay}
       </View>
