@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { useState } from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
@@ -88,7 +88,7 @@ const DateRangeSelect: React.FC<Props> = ({
   );
 };
 
-export default memo(DateRangeSelect);
+export default DateRangeSelect;
 
 const styles = StyleSheet.create({
   calendarIcon: {

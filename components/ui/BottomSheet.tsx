@@ -1,4 +1,4 @@
-import React, { useState, useRef, useImperativeHandle, memo } from 'react';
+import React, { useState, useRef, useImperativeHandle } from 'react';
 import {
   View,
   Modal,
@@ -17,7 +17,7 @@ type Props = {
   children: React.ReactNode;
   backgroundColor?: string;
   closeButton?: boolean;
-  sheetStyle?: unknown;
+  sheetStyle?: object;
   draggable?: boolean;
   outSideTouchCancel?: boolean;
 };
@@ -102,7 +102,9 @@ const BottomSheet = ({
         <TouchableOpacity
           style={styles.background}
           activeOpacity={1}
-          onPress={outSideTouchCancel ? close : null}
+          onPress={() => {
+            if (outSideTouchCancel) close();
+          }}
         />
         {closeButton && (
           <Pressable style={styles.closeButton} onPress={close}>
@@ -125,7 +127,7 @@ const BottomSheet = ({
   );
 };
 
-export default memo(BottomSheet);
+export default BottomSheet;
 
 const styles = StyleSheet.create({
   background: {

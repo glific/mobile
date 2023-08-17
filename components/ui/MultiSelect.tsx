@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { useState } from 'react';
 import { View, Text, Pressable, StyleSheet, Modal, ScrollView } from 'react-native';
 
 import { COLORS, SCALE, SIZES, Icon } from '../../constants';
@@ -106,7 +106,7 @@ const MultiSelect: React.FC<Props> = ({
   );
 };
 
-export default memo(MultiSelect);
+export default MultiSelect;
 
 const styles = StyleSheet.create({
   checkBoxIcon: {

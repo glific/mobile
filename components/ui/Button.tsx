@@ -1,4 +1,4 @@
-import React, { ReactElement, memo } from 'react';
+import React, { ReactElement } from 'react';
 import { Pressable, StyleSheet, Text } from 'react-native';
 
 import { COLORS, SIZES } from '../../constants';
@@ -53,7 +53,7 @@ const Button = ({
   );
 };
 
-export default memo(Button);
+export default Button;
 
 const styles = StyleSheet.create({
   button: {

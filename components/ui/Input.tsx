@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { View, Text, TextInput, StyleSheet, KeyboardTypeOptions } from 'react-native';
 
 import { COLORS, SCALE, SIZES, Icon } from '../../constants';
@@ -68,7 +68,7 @@ const Input = ({
   );
 };
 
-export default memo(Input);
+export default Input;
 
 const styles = StyleSheet.create({
   clearIcon: {

@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useQuery } from '@apollo/client';
 
+import Loading from '../components/ui/Loading';
 import FieldValue from '../components/ui/FieldValue';
 import { getSessionTimeLeft } from '../utils/helper';
 import { RootStackParamList } from '../constants/types';
@@ -96,51 +97,59 @@ const ContactProfile = ({ navigation, route }: Props) => {
         </View>
       </View>
 
-      <View style={styles.bodyContainer}>
-        <View style={styles.rowContainer}>
-          <FieldValue field={'Phone'} value={contactInfo.phone} />
-          <FieldValue
-            field={'Assigned to'}
-            value={
-              contactInfo.assignedTo && contactInfo.assignedTo.length > 0
-                ? contactInfo.assignedTo.join(', ')
-                : 'None'
-            }
-          />
-        </View>
-        <View style={styles.rowContainer}>
-          <FieldValue field={'Language'} value={contactInfo.language} />
-          <FieldValue
-            field={'Status'}
-            value={contactInfo.status === 'VALID' ? 'Valid Contact' : 'Invalid Contact'}
-          />
-        </View>
-        <FieldValue
-          field={'Collections'}
-          value={
-            contactInfo.collections && contactInfo.collections.length > 0
-              ? contactInfo.collections.join(', ')
-              : 'None'
-          }
-        />
-      </View>
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <View style={styles.bodyContainer}>
+            <View style={styles.rowContainer}>
+              <FieldValue field={'Phone'} value={contactInfo.phone} />
+              <FieldValue
+                field={'Assigned to'}
+                value={
+                  contactInfo.assignedTo && contactInfo.assignedTo.length > 0
+                    ? contactInfo.assignedTo.join(', ')
+                    : 'None'
+                }
+              />
+            </View>
+            <View style={styles.rowContainer}>
+              <FieldValue field={'Language'} value={contactInfo.language} />
+              <FieldValue
+                field={'Status'}
+                value={contactInfo.status === 'VALID' ? 'Valid Contact' : 'Invalid Contact'}
+              />
+            </View>
+            <FieldValue
+              field={'Collections'}
+              value={
+                contactInfo.collections && contactInfo.collections.length > 0
+                  ? contactInfo.collections.join(', ')
+                  : 'None'
+              }
+            />
+          </View>
 
-      <View style={styles.rowContainer}>
-        <Pressable
-          style={styles.tabButton}
-          onPress={() => navigation.navigate('ContactInformation', { fields: contactInfo.fields })}
-          android_ripple={{ color: COLORS.black005 }}
-        >
-          <Text style={styles.tabButtonText}>View Info</Text>
-        </Pressable>
-        <Pressable
-          style={styles.tabButton}
-          onPress={() => navigation.navigate('ContactHistory', { id: contact.id })}
-          android_ripple={{ color: COLORS.black005 }}
-        >
-          <Text style={styles.tabButtonText}>Contact History</Text>
-        </Pressable>
-      </View>
+          <View style={styles.rowContainer}>
+            <Pressable
+              style={styles.tabButton}
+              onPress={() =>
+                navigation.navigate('ContactInformation', { fields: contactInfo.fields })
+              }
+              android_ripple={{ color: COLORS.black005 }}
+            >
+              <Text style={styles.tabButtonText}>View Info</Text>
+            </Pressable>
+            <Pressable
+              style={styles.tabButton}
+              onPress={() => navigation.navigate('ContactHistory', { id: contact.id })}
+              android_ripple={{ color: COLORS.black005 }}
+            >
+              <Text style={styles.tabButtonText}>Contact History</Text>
+            </Pressable>
+          </View>
+        </>
+      )}
     </ScrollView>
   );
 };
