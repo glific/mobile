@@ -711,6 +711,48 @@ export const GET_CONTACT_QUCIK_REPLY_MESSAGE_MOCK = [
   },
 ];
 
+export const GET_CONTACT_LIST_MESSAGE_MOCK = [
+  {
+    request: {
+      query: GET_MESSAGES,
+      variables: {
+        filter: { id: 1, searchGroup: false },
+        contactOpts: { limit: 1 },
+        messageOpts: { limit: 20, offset: 0 },
+      },
+    },
+    result: {
+      data: {
+        search: [
+          {
+            contact: searchQueryContact,
+            messages: [
+              {
+                __typename: 'Message',
+                body: 'test list message',
+                contextMessage: null,
+                errors: '{}',
+                flowLabel: null,
+                id: '777',
+                insertedAt: '2023-08-10T14:19:10.978818Z',
+                interactiveContent:
+                  '{"type":"list","title":"Interactive list","items":[{"title":"List 1","subtitle":"first Subtitle","options":[{"type":"text","title":"option 1","description":"Flow Editor for creating flows"},{"type":"text","title":"option 2","description":"test description"},{"type":"text","title":"option 3","description":"Dialogflow for AI/ML"}]},{"title":"List 2","subtitle":"some usecases of Glific","options":[{"type":"text","title":"option 4","description":"Sharing education content with school student"}]}],"globalButtons":[{"type":"text","title":"button text"}],"body":"Glific"}',
+                location: null,
+                media: null,
+                messageNumber: 54,
+                receiver: { __typename: 'Contact', id: '22' },
+                sendBy: 'NGO Main Account',
+                sender: { __typename: 'Contact', id: '17' },
+                type: 'LIST',
+              },
+            ],
+          },
+        ],
+      },
+    },
+  },
+];
+
 export const GET_CONTACT_MESSAGES_POPUPS_MOCK = [
   {
     request: {

@@ -8,6 +8,7 @@ import {
   GET_CONTACT_AUDIO_MESSAGE_MOCK,
   GET_CONTACT_DOCUMENT_MESSAGE_MOCK,
   GET_CONTACT_IMAGE_MESSAGE_MOCK,
+  GET_CONTACT_LIST_MESSAGE_MOCK,
   GET_CONTACT_LOCATION_MESSAGE_MOCK,
   GET_CONTACT_MESSAGES_FLOW_MOCK,
   GET_CONTACT_MESSAGES_MOCK,
@@ -24,6 +25,7 @@ import {
 } from '../__mocks__/queries/collection';
 import { subscriptionMocks } from '../__mocks__/subscriptions/message';
 import { GET_INTERACTIVE_MESSAGES_MOCK, GET_TEMPLATES_MOCK } from '../__mocks__/queries/templates';
+import { GET_ATTACHMENT_PERMISSION_MOCK } from '../__mocks__/queries/account';
 
 const contactMock = {
   id: 1,
@@ -220,6 +222,25 @@ describe('Chat screen', () => {
     });
   });
 
+  test('renders list message correctly', async () => {
+    const { getByTestId, getByText } = customRender(
+      <ChatScreen route={{ params: { ...contactMock } }} />,
+      [...GET_CONTACT_LIST_MESSAGE_MOCK, ...subscriptionMocks]
+    );
+    await waitFor(() => {
+      const quickReplyMessage = getByTestId('listMessage');
+      expect(quickReplyMessage).toBeDefined();
+
+      expect(getByText(' ⁝ List 1')).toBeDefined();
+      expect(getByText('option 1')).toBeDefined();
+      expect(getByText('option 2')).toBeDefined();
+      expect(getByText('option 3')).toBeDefined();
+
+      expect(getByText(' ⁝ List 2')).toBeDefined();
+      expect(getByText('option 4')).toBeDefined();
+    });
+  });
+
   test('should open options tab when press up in chat input', async () => {
     const { getByTestId } = customRender(<ChatScreen route={{ params: { ...contactMock } }} />, [
       ...GET_CONTACT_MESSAGES_MOCK,
@@ -258,6 +279,7 @@ describe('Chat screen', () => {
     const { getByTestId } = customRender(<ChatScreen route={{ params: { ...contactMock } }} />, [
       ...GET_CONTACT_MESSAGES_MOCK,
       ...subscriptionMocks,
+      GET_ATTACHMENT_PERMISSION_MOCK,
     ]);
 
     fireEvent.press(getByTestId('clipIcon'));

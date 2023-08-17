@@ -3,12 +3,12 @@ import { FlatList, StyleSheet, Text } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useQuery } from '@apollo/client';
 
-import SearchBar from '../components/ui/SearchBar';
-import ContactCard from '../components/ContactCard';
-import { GET_CONTACTS } from '../graphql/queries/Contact';
 import { COLORS, SIZES } from '../constants';
 import Loading from '../components/ui/Loading';
 import AuthContext from '../config/AuthContext';
+import SearchBar from '../components/ui/SearchBar';
+import ContactCard from '../components/ContactCard';
+import { GET_CONTACTS } from '../graphql/queries/Contact';
 import { ChatEntry, RootStackParamList } from '../constants/types';
 import {
   MESSAGE_RECEIVED_SUBSCRIPTION,
@@ -28,7 +28,7 @@ const updateContactList = (cachedConversations: any, subscriptionData: any, acti
   const { newMessage, contactId, contact } = getSubscriptionDetails(action, subscriptionData);
   let conversationIndex = -1;
 
-  cachedConversations.search.forEach((conversation: any, index: any) => {
+  cachedConversations.search.forEach((conversation: any, index: number) => {
     if (conversation.contact.id === contactId) {
       conversationIndex = index;
     }
