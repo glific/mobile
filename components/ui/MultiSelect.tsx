@@ -17,6 +17,7 @@ interface Props {
   onSelectOption: (options: OptionType[]) => void;
   label: string;
   placeHolder: string;
+  allowDeleteOption?: boolean;
 }
 
 const MultiSelect: React.FC<Props> = ({
@@ -26,6 +27,7 @@ const MultiSelect: React.FC<Props> = ({
   onSelectOption,
   label = 'Select',
   placeHolder = 'Select option',
+  allowDeleteOption = true,
 }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -66,7 +68,7 @@ const MultiSelect: React.FC<Props> = ({
                 onPress={() => handleTagRemove(option)}
               >
                 <Text style={styles.tagText}>{option.name ? option.name : option.label}</Text>
-                <AntDesign name="close" style={styles.tagCloseIcon} />
+                {allowDeleteOption ? <AntDesign name="close" style={styles.tagCloseIcon} /> : null}
               </Pressable>
             ))}
           </View>

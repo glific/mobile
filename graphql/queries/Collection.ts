@@ -24,3 +24,29 @@ export const GET_COLLECTIONS_LIST = gql`
     }
   }
 `;
+
+export const GET_COLLECTION_CONTACTS = gql`
+  query group($id: ID!) {
+    group(id: $id) {
+      group {
+        contacts {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
+
+export const GET_CONTACT_COLLECTIONS = gql`
+  query contact($id: ID!) {
+    contact(id: $id) {
+      contact {
+        groups {
+          id
+          label
+        }
+      }
+    }
+  }
+`;
