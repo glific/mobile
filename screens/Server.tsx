@@ -29,8 +29,8 @@ const Server = ({ navigation }: Props) => {
   };
 
   const onSubmitHandler = async () => {
-    const orgUrl = `https://api.${serverCode}.tides.coloredcow.com/api`;
-    const wsUrl = `wss://api.${serverCode}.tides.coloredcow.com/socket`;
+    const orgUrl = `https://api.${serverCode}.${process.env.SERVER_URL_SUFFIX}/api`;
+    const wsUrl = `wss://api.${serverCode}.${process.env.SERVER_URL_SUFFIX}/socket`;
     if (serverCode.length < 2) {
       setErrorMessage('Please enter valid organization code');
       return;
@@ -76,7 +76,7 @@ const Server = ({ navigation }: Props) => {
           placeholder="shortcode"
         />
         <Text style={styles.previewUrl}>
-          {serverCode ? serverCode : 'shortcode'}.tides.coloredcow.com
+          {serverCode ? serverCode : 'shortcode'}.{process.env.SERVER_URL_SUFFIX}
         </Text>
         {errorDisplay}
       </View>

@@ -6,12 +6,12 @@ import AuthContext from '../config/AuthContext';
 
 const customRender = (
   component: React.ReactElement,
-  mocks: Array<any> = [],
+  mocks: Array<unknown> = [],
   authContextValue = {
     token: 'existing_token',
     setToken: jest.fn(),
     org: {
-      url: 'https://api.example.tides.coloredcow.com/api',
+      url: `https://api.example.${process.env.SERVER_URL_SUFFIX}/api`,
       shortcode: 'example',
       name: 'Example Organization',
     },
