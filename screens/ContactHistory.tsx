@@ -100,7 +100,7 @@ const ContactHistory = ({ route }: Props) => {
   return (
     <>
       <FlatList
-        testID="historyFlatList"
+        accessibilityLabel={'history-list'}
         style={styles.mainContainer}
         data={data?.contactHistory}
         ListEmptyComponent={
