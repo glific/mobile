@@ -68,7 +68,7 @@ const AttachmentOptions = ({ setMedia, onClose }: Props) => {
   const renderItem = ({ item }: { item: AttachmentPopup }) => (
     <View key={item.name} style={[styles.attachmentButton, { marginRight: SIZES.m6 }]}>
       <Pressable
-        testID="attachImage"
+        testID={item.testID}
         style={styles.attachmentButton}
         onPress={() => handleAttachment(item.name)}
         android_ripple={{ borderless: false }}
