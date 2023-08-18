@@ -66,6 +66,8 @@ const CollectionPopup: React.FC<Props> = ({
   const [allOptions, setAllOptions] = useState<OptionType[]>([]);
   const [selectedOptions, setSelectedOptions] = useState<OptionType[]>([]);
   const [deletedOptions, setDeletedOptions] = useState<OptionType[]>([]);
+  const [initialSelected, setInitialSelected] = useState<OptionType[]>([]);
+
   const [AddMutation] = useMutation(mutation, {
     onCompleted() {
       showToast(popupData.successToast);
@@ -128,6 +130,7 @@ const CollectionPopup: React.FC<Props> = ({
       isContactType ? data.contact.contact.groups : data.group.group.contacts,
       isContactType
     );
+    setInitialSelected(options);
     setSelectedOptions(options);
   };
 
@@ -164,6 +167,7 @@ const CollectionPopup: React.FC<Props> = ({
             label={isContactType ? 'Select Collections' : 'Select Contacts'}
             placeHolder="Options"
             allowDeleteOption={isContactType}
+            initialSelections={initialSelected}
           />
           <View style={styles.buttonContainer}>
             <View testID="cancelButton" style={styles.button}>

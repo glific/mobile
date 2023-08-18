@@ -18,6 +18,7 @@ interface Props {
   label: string;
   placeHolder: string;
   allowDeleteOption?: boolean;
+  initialSelections?: OptionType[];
 }
 
 const MultiSelect: React.FC<Props> = ({
@@ -28,6 +29,7 @@ const MultiSelect: React.FC<Props> = ({
   label = 'Select',
   placeHolder = 'Select option',
   allowDeleteOption = true,
+  initialSelections = [],
 }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -36,13 +38,18 @@ const MultiSelect: React.FC<Props> = ({
   };
 
   const handleOptionPress = (option: OptionType) => {
-    const isSelected = selectedOptions.find((o) => o.id === option.id);
+    const isInitiallySelected = initialSelections.some((o) => o.id === option.id);
+
+    if (isInitiallySelected) {
+      return; // Do nothing if it's an initially selected option
+    }
+
+    const isSelected = selectedOptions.some((o) => o.id === option.id);
+
     if (isSelected) {
-      // Remove the option from selected options
       const updatedOptions = selectedOptions.filter((o) => o.id !== option.id);
       onSelectOption(updatedOptions);
     } else {
-      // Add the option to selected options
       const updatedOptions = [...selectedOptions, option];
       onSelectOption(updatedOptions);
     }
