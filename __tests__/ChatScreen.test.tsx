@@ -25,6 +25,7 @@ import {
 } from '../__mocks__/queries/collection';
 import { subscriptionMocks } from '../__mocks__/subscriptions/message';
 import { GET_INTERACTIVE_MESSAGES_MOCK, GET_TEMPLATES_MOCK } from '../__mocks__/queries/templates';
+import { GET_ATTACHMENT_PERMISSION_MOCK } from '../__mocks__/queries/account';
 
 const contactMock = {
   id: 1,
@@ -278,6 +279,7 @@ describe('Chat screen', () => {
     const { getByTestId } = customRender(<ChatScreen route={{ params: { ...contactMock } }} />, [
       ...GET_CONTACT_MESSAGES_MOCK,
       ...subscriptionMocks,
+      GET_ATTACHMENT_PERMISSION_MOCK,
     ]);
 
     fireEvent.press(getByTestId('clipIcon'));

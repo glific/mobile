@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 
-import { COLORS, SCALE, SIZES, Icon } from '../../constants';
+import { COLORS, SCALE, SIZES, Icon, PopupData } from '../../constants';
 import { getSessionTimeLeft } from '../../utils/helper';
 import { RootStackParamList } from '../../constants/types';
 import StartFlowPopup from '../messages/StartFlowPopup';
 import ChatPopup from '../messages/ChatPopup';
-
 import {
   START_COLLECTION_FLOW,
   START_CONTACT_FLOW,
@@ -15,7 +14,6 @@ import {
 } from '../../graphql/mutations/Flows';
 import { CLEAR_MESSAGES } from '../../graphql/mutations/Chat';
 import { BLOCK_CONTACT } from '../../graphql/mutations/Contact';
-import { getPopupData } from '../../constants/popupsData';
 
 interface MenuProps {
   icon: JSX.Element;
@@ -81,7 +79,7 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
     setShowChatPopup(false);
   };
 
-  const popupData = getPopupData(popupTask);
+  const popupData = PopupData(popupTask);
   const variables = {
     contactId: id,
     ...(popupTask === 'block' ? { input: { status: 'BLOCKED' } } : {}),

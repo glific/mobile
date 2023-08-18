@@ -2,11 +2,11 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
+import { COLORS } from '../constants';
 import { RootStackParamList } from '../constants/types';
+import ChatInput from '../components/messages/ChatInput';
 import ChatHeader from '../components/headers/ChatHeader';
 import MessagesList from '../components/messages/MessageList';
-import ChatInput from '../components/messages/ChatInput';
-import { COLORS } from '../constants';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ChatScreen'>;
 

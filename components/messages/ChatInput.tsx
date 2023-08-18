@@ -2,14 +2,26 @@ import React, { useState, useRef, useEffect } from 'react';
 import { View, StyleSheet, TextInput, Pressable, Keyboard, Animated } from 'react-native';
 import { useMutation } from '@apollo/client';
 
+import { COLORS, SCALE, SIZES, Icon } from '../../constants';
 import Templates from './Templates';
 import ErrorAlert from '../ui/ErrorAlert';
 import MessageOptions from './MessageOptions';
 import EmojiPicker from '../emojis/EmojiPicker';
+import AttachmentOptions from './AttachmentOptions';
 import InteractiveMessage from './InteractiveMessage';
-import { COLORS, SCALE, SIZES, Icon } from '../../constants';
 import TemplateVariablesPopup from './TemplateVariablesPopup';
-import { SEND_COLLECTION_MESSAGE, SEND_CONTACT_MESSAGE } from '../../graphql/mutations/Chat';
+import {
+  CREATE_MEDIA_MESSAGE,
+  SEND_COLLECTION_MESSAGE,
+  SEND_CONTACT_MESSAGE,
+} from '../../graphql/mutations/Chat';
+import AttachmentSelected from './AttachmentSelected';
+
+type MediaType = {
+  name: string;
+  url: string;
+  type: string;
+};
 
 type InteractiveTemplateType = {
   id: string;
@@ -38,14 +50,12 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
   const xValue = useRef(new Animated.Value(0)).current;
   const [prevX, setPrevX] = useState(0);
 
+  const [inputTab, setInputTab] = useState('');
   const [message, setMessage] = useState('');
   const [cursor, setcursor] = useState(0);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const [showOptions, setShowOptions] = useState(false);
-  const [showEmoji, setShowEmoji] = useState(false);
-  const [showAttachments, setShowAttachments] = useState(false);
-
+  const [media, setMedia] = useState<MediaType>();
   const [interactiveTemplate, setInteractiveTemplate] = useState<InteractiveTemplateType>();
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateType>();
   const [variableParam, setVariableParam] = useState<string[] | []>([]);
@@ -70,22 +80,23 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
     },
   });
 
-  const HandleSendMessage = () => {
+  const sendMessage = (mediaId: string | null) => {
     Keyboard.dismiss();
-    setShowOptions(false);
-    setShowEmoji(false);
+    setInputTab('');
     inputRef?.current?.blur();
-    setShowAttachments(false);
 
     const input = {
       body: message,
       flow: 'OUTBOUND',
       type: 'TEXT',
       receiverId: id,
-      mediaId: null,
+      mediaId: mediaId,
     };
 
-    if (interactiveTemplate) {
+    if (mediaId) {
+      input.type = media.type;
+      input.mediaId = mediaId;
+    } else if (interactiveTemplate) {
       input.type = interactiveTemplate.type;
       input.interactiveTemplateId = parseInt(interactiveTemplate.id, 10);
     } else if (selectedTemplate) {
@@ -96,7 +107,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
       input.params = variableParam;
     }
 
-    if (message !== '' || interactiveTemplate) {
+    if (message !== '' || media || interactiveTemplate) {
       if (conversationType === 'contact') {
         createAndSendMessage({
           variables: { input },
@@ -109,9 +120,34 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
     }
 
     setMessage('');
+    setMedia(undefined);
     setSelectedTemplate(undefined);
     setVariableParam([]);
     setInteractiveTemplate(undefined);
+  };
+
+  const [createMediaMessage] = useMutation(CREATE_MEDIA_MESSAGE, {
+    onCompleted: (data) => {
+      if (data) {
+        sendMessage(data.createMessageMedia.messageMedia.id);
+      }
+    },
+  });
+
+  const HandleSendMessage = () => {
+    if (media) {
+      createMediaMessage({
+        variables: {
+          input: {
+            caption: message,
+            sourceUrl: media.url,
+            url: media.url,
+          },
+        },
+      });
+    } else {
+      sendMessage(null);
+    }
   };
 
   useEffect(() => {
@@ -127,7 +163,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
   }, [message]);
 
   const handleTemplateSelect = (template: TemplateType, isTemplate: boolean) => {
-    setShowOptions(false);
+    setInputTab('');
     setSelectedTemplate(template);
     setMessage(template.body);
     if (isTemplate) {
@@ -136,7 +172,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
   };
 
   const handleInteractiveTemplateSelect = (template: InteractiveTemplateType) => {
-    setShowOptions(false);
+    setInputTab('');
     setInteractiveTemplate(template);
   };
 
@@ -155,17 +191,22 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
 
   return (
     <View style={styles.mainContainer}>
+      {media && (
+        <AttachmentSelected
+          name={media.name || media.url}
+          type={media.type.toLowerCase()}
+          remove={() => setMedia(undefined)}
+        />
+      )}
       <View style={styles.inputContainer}>
         <View style={styles.inputAndEmoji}>
-          {showEmoji ? (
+          {inputTab === 'emojis' ? (
             <Icon
               testID="keyboardIcon"
               name={'keyboard'}
               style={styles.emojiconButton}
               onPress={() => {
-                setShowOptions(false);
-                setShowEmoji(false);
-                setShowAttachments(false);
+                setInputTab('');
                 inputRef?.current?.focus();
               }}
             />
@@ -175,10 +216,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
               name={'smiling-face'}
               style={styles.emojiconButton}
               onPress={() => {
-                setShowOptions(false);
-                setShowAttachments(false);
                 inputRef?.current?.blur();
-                setShowEmoji(true);
+                setInputTab('emojis');
               }}
             />
           )}
@@ -191,12 +230,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
             value={interactiveTemplate ? interactiveTemplate.body : message}
             editable={!(selectedTemplate || interactiveTemplate?.id)}
             onChangeText={setMessage}
-            onFocus={() => {
-              setShowEmoji(false);
-            }}
-            onSelectionChange={(event) => {
-              setcursor(event?.nativeEvent?.selection.start);
-            }}
+            onFocus={() => setInputTab('')}
+            onSelectionChange={(event) => setcursor(event?.nativeEvent?.selection.start)}
             cursorColor={COLORS.darkGray}
             selectionColor={COLORS.darkGray}
           />
@@ -218,12 +253,13 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
               <Icon
                 testID="upIcon"
                 name="upper-arrow"
-                style={[styles.showIcon, showOptions && { transform: [{ rotate: '180deg' }] }]}
+                style={[
+                  styles.showIcon,
+                  inputTab === 'options' && { transform: [{ rotate: '180deg' }] },
+                ]}
                 onPress={() => {
-                  setShowEmoji(false);
-                  setShowAttachments(false);
                   inputRef?.current?.blur();
-                  setShowOptions((showOptions) => !showOptions);
+                  setInputTab(inputTab === 'options' ? '' : 'options');
                 }}
               />
               <Icon
@@ -232,10 +268,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
                 color={COLORS.black}
                 style={styles.paperclipicon}
                 onPress={() => {
-                  setShowOptions(false);
-                  setShowEmoji(false);
                   inputRef?.current?.blur();
-                  setShowAttachments((showAttachments) => !showAttachments);
+                  setInputTab(inputTab === 'attachments' ? '' : 'attachments');
                 }}
               />
             </Animated.View>
@@ -248,7 +282,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
       </View>
 
       {/* Todo: The refs approach is making it overcomplicated. we should clean it up*/}
-      {showOptions && (
+      {inputTab === 'options' && (
         <View>
           <MessageOptions
             onSpeedSend={() => speedSendRef.current.show()}
@@ -271,7 +305,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
         />
       )}
 
-      {showEmoji && (
+      {inputTab === 'emojis' && (
         <View testID="emojisTab" style={styles.emojiPanel}>
           <EmojiPicker
             messageObj={{ set: setMessage, value: message }}
@@ -279,34 +313,9 @@ const ChatInput: React.FC<ChatInputProps> = ({ conversationType, id }) => {
           />
         </View>
       )}
-
-      {showAttachments && (
-        <View testID="attachmentsTab" style={styles.attachmentsContainer}>
-          <View style={styles.attachmentInContainer}>
-            <Pressable style={styles.attachmentButton} android_ripple={{ borderless: false }}>
-              <Icon name="image" style={styles.attachmentIcon} />
-            </Pressable>
-            <Pressable style={styles.attachmentButton} android_ripple={{ borderless: false }}>
-              <Icon name="file-document" style={styles.attachmentIcon} />
-            </Pressable>
-            <Pressable style={styles.attachmentButton} android_ripple={{ borderless: false }}>
-              <Icon name="location-pin" style={styles.attachmentIcon} />
-            </Pressable>
-          </View>
-          <View style={styles.attachmentInContainer}>
-            <Pressable style={styles.attachmentButton} android_ripple={{ borderless: false }}>
-              <Icon name="folder-video" style={styles.attachmentIcon} />
-            </Pressable>
-            <Pressable style={styles.attachmentButton} android_ripple={{ borderless: false }}>
-              <Icon name="headphone" style={styles.attachmentIcon} />
-            </Pressable>
-            <Pressable style={styles.attachmentButton} android_ripple={{ borderless: false }}>
-              <Icon name="microphone" style={styles.attachmentIcon} />
-            </Pressable>
-          </View>
-        </View>
+      {inputTab === 'attachments' && (
+        <AttachmentOptions setMedia={setMedia} onClose={() => setInputTab('')} />
       )}
-
       {errorMessage !== '' && <ErrorAlert message={errorMessage} />}
     </View>
   );
@@ -321,47 +330,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     position: 'absolute',
     right: 0,
-  },
-  attachmentButton: {
-    alignItems: 'center',
-    backgroundColor: COLORS.white,
-    borderColor: COLORS.primary50,
-    borderRadius: SIZES.r10,
-    borderWidth: SCALE(0.5),
-    height: SIZES.s70,
-    justifyContent: 'center',
-    overflow: 'hidden',
-    width: SCALE(104),
-  },
-  attachmentIcon: {
-    color: COLORS.primary100,
-    fontSize: SIZES.m24,
-  },
-  attachmentInContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  attachmentsContainer: {
-    backgroundColor: COLORS.lightGray,
-    borderColor: COLORS.black005,
-    borderRadius: SIZES.r10,
-    borderWidth: SCALE(0.5),
-    bottom: SIZES.s60,
-    elevation: 3,
-    gap: SIZES.m6,
-    marginBottom: SIZES.m16,
-    marginHorizontal: SIZES.m10,
-    padding: SIZES.m6,
-    position: 'absolute',
-    shadowColor: COLORS.darkGray,
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 10,
-    width: SCALE(340),
   },
   emojiPanel: {
     height: SCALE(250),

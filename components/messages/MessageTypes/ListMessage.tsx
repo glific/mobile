@@ -1,10 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 
 import { MessageType } from '../Message';
 import { MessageTime, onRight } from './AudioMessage';
-import { COLORS, SCALE, SIZES } from '../../../constants';
+import { COLORS, SCALE, SIZES, Icon } from '../../../constants';
 
 interface Props {
   message: MessageType;
@@ -27,7 +26,7 @@ const ListMessage = ({ message, time, isLeft }: Props) => {
             <Text style={styles.listTitle}> ⁝ {item.title}</Text>
             {item.options.map((option, index) => (
               <View key={index} testID={`listOption_${index}`} style={styles.listButton}>
-                <Ionicons name="radio-button-off" style={styles.listRadioIcon} />
+                <Icon name="shape" style={styles.listRadioIcon} />
                 <Text style={styles.optionText}>{option.title}</Text>
               </View>
             ))}

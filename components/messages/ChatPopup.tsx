@@ -36,7 +36,7 @@ const ChatPopup: React.FC<ChatPopupProps> = ({
     },
     onError: (error) => {
       showToast(popupData.errorToast);
-      console.error(error);
+      console.log(error);
       onClose();
     },
   });

@@ -33,7 +33,7 @@ function useAppResources(setToken, setOrg, setUser) {
           setUser(parsedUser);
         }
       } catch (error) {
-        console.warn(error);
+        console.log(error);
       } finally {
         setAppIsReady(true);
         SplashScreen.hideAsync();

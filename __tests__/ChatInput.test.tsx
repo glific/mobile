@@ -11,9 +11,13 @@ import {
   fieldsMock,
 } from '../__mocks__/queries/templates';
 import {
+  CREATE_MEDIA_MESSAGE_MOCK,
   SEND_COLLECTION_INTERACTIVE_MESSAGE_MOCK,
+  SEND_CONTACT_IMAGE_MESSAGE_MOCK,
   SEND_CONTACT_TEMPLATE_MESSAGE_MOCK,
+  UPLOAD_MEDIA_MOCK,
 } from '../__mocks__/mutations/chats';
+import { GET_ATTACHMENT_PERMISSION_MOCK } from '../__mocks__/queries/account';
 
 jest.mock('axios');
 
@@ -241,6 +245,51 @@ describe('chat input', () => {
 
     fireEvent.press(sendButton);
     // need to check something after send button is clicked
+    await waitFor(() => {});
+  });
+
+  test('should send image attachment', async () => {
+    const { getByTestId, getByText } = customRender(
+      <ChatInput conversationType={'contact'} id={1} />,
+      [
+        GET_ATTACHMENT_PERMISSION_MOCK,
+        UPLOAD_MEDIA_MOCK,
+        CREATE_MEDIA_MESSAGE_MOCK,
+        SEND_CONTACT_IMAGE_MESSAGE_MOCK,
+      ]
+    );
+
+    const chatInput = getByTestId('chatInput');
+    fireEvent.changeText(chatInput, 'test image message');
+
+    const attachmentsButton = getByTestId('clipIcon');
+    fireEvent.press(attachmentsButton);
+
+    await waitFor(() => {
+      expect(getByTestId('attachmentsTab')).toBeDefined();
+      fireEvent.press(getByTestId('attachImage'));
+    });
+
+    fireEvent.press(getByText('CANCEL'));
+    fireEvent.press(attachmentsButton);
+    fireEvent.press(getByTestId('attachImage'));
+
+    await waitFor(() => {
+      expect(getByText('Add image to message')).toBeDefined();
+
+      const attachmentURLInput = getByTestId('attachmentUrl');
+      fireEvent.changeText(attachmentURLInput, 'https://dummy-image-jpg.url');
+      expect(attachmentURLInput.props.value).toEqual('https://dummy-image-jpg.url');
+
+      fireEvent.press(getByText('ADD'));
+    });
+
+    expect(getByTestId('selectedAttachmentTab')).toBeDefined();
+    expect(getByTestId('image')).toBeDefined();
+    expect(getByTestId('attachmentURL')).toBeDefined();
+
+    fireEvent.press(getByTestId('sendIcon'));
+
     await waitFor(() => {});
   });
 });

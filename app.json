@@ -13,7 +13,9 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "usesIcloudStorage": true,
+      "bundleIdentifier": "com.glific"
     },
     "android": {
       "adaptiveIcon": {
@@ -30,6 +32,14 @@
       "eas": {
         "projectId": "26b8751d-8764-4184-bb05-04d3fbc4b977"
       }
-    }
+    },
+    "plugins": [
+      [
+        "expo-document-picker",
+        {
+          "iCloudContainerEnvironment": "Production"
+        }
+      ]
+    ]
   }
 }

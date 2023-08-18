@@ -1,10 +1,9 @@
 import React from 'react';
 import { Linking, Pressable, StyleSheet, Text, View } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
 
-import { COLORS, SIZES } from '../../../constants';
 import { MessageType } from '../Message';
 import { MessageTime, onRight } from './AudioMessage';
+import { COLORS, SIZES, Icon } from '../../../constants';
 
 interface Props {
   message: MessageType;
@@ -26,7 +25,7 @@ const DocumentMessage = ({ message, time, isLeft }: Props) => {
       onPress={handleLink}
     >
       <View style={[styles.docInnerContainer, onRight('innerBackground', isLeft)]}>
-        <AntDesign name="file1" style={[styles.docIcon, onRight('icon', isLeft)]} />
+        <Icon name="file-document" style={[styles.docIcon, onRight('icon', isLeft)]} />
         <View>
           <Text style={[styles.docText, onRight('text', isLeft)]} numberOfLines={1}>
             {message.media.caption}

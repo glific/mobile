@@ -14,7 +14,7 @@ const handleSearchMock = jest.fn();
 
 describe('Notifications Screen', () => {
   test('renders the Notifications screen', async () => {
-    const { getByText } = customRender(<Notifications searchValue={searchVal} />, [
+    const { getByText, getByLabelText } = customRender(<Notifications searchValue={searchVal} />, [
       ...GET_NOTIFICATIONS_MOCK,
       ...GET_NOTIFICATIONS_MOCK,
     ]);
@@ -28,6 +28,8 @@ describe('Notifications Screen', () => {
     });
 
     // Todo: need to see how to get the next set of items in flatlist. The below expectations is not correct
+    const flatList = getByLabelText('notification-list');
+    flatList.props.onEndReached();
     await waitFor(() => {
       expect(getByText('Glific 10')).toBeDefined();
     });

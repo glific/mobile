@@ -4,16 +4,12 @@ import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawe
 import { useApolloClient } from '@apollo/client';
 
 import Wallet from './Wallet';
-import Storage from '../../utils/asyncStorage';
-import { COLORS, Icon, SCALE, SIZES } from '../../constants';
-import AuthContext from '../../config/AuthContext';
 import AxiosService from '../../config/axios';
+import Storage from '../../utils/asyncStorage';
+import AuthContext from '../../config/AuthContext';
+import { COLORS, SCALE, SIZES, Icon } from '../../constants';
 
-type DrawerContentProps = {
-  navigation: undefined;
-};
-
-const CustomDrawer: React.FC<DrawerContentProps> = (props) => {
+const CustomDrawer = (props) => {
   const client = useApolloClient();
   const [orgName, setOrgName] = useState('');
   const { setToken } = useContext(AuthContext);
@@ -56,6 +52,7 @@ const CustomDrawer: React.FC<DrawerContentProps> = (props) => {
       </DrawerContentScrollView>
       <View style={styles.bottomContainer}>
         <Pressable
+          testID="logout"
           onPress={LogoutHandler}
           style={styles.logoutButton}
           android_ripple={{ borderless: false, color: COLORS.black005 }}
