@@ -7,14 +7,14 @@ import { COLORS, SIZES, SCALE } from '../../constants';
 import MultiSelect from '../ui/MultiSelect';
 import { showToast } from '../../utils/showToast';
 
-type popupDataType = {
+interface popupDataType {
   id: string;
   title: string;
   successToast: string;
   errorToast: string;
-};
+}
 
-type Props = {
+interface Props {
   isContactType: boolean;
   visible: boolean;
   onClose: () => void;
@@ -23,13 +23,36 @@ type Props = {
   allOptionsQuery: DocumentNode;
   selectedOptionQuery: DocumentNode;
   allOptionsVariables: object;
-};
+}
 
 interface OptionType {
   id: string;
   name?: string;
   label?: string;
 }
+
+const formatOptions = (
+  data: any,
+  isContactType: boolean
+): { id: string; name: string; label: string }[] => {
+  return data.map((element: any) => {
+    const id = element.id || element.contact?.id;
+    const contact = element.contact || {};
+
+    const name = isContactType
+      ? element.label
+      : element.name || element.maskedPhone || contact.name || contact.maskedPhone;
+
+    const label = isContactType ? 'Collections' : 'Contacts';
+
+    return {
+      id,
+      name,
+      label,
+    };
+  });
+};
+
 const CollectionPopup: React.FC<Props> = ({
   isContactType,
   visible,
@@ -96,56 +119,28 @@ const CollectionPopup: React.FC<Props> = ({
   };
 
   const formatAllOptions = (data: any) => {
-    let options;
-    if (isContactType) {
-      options = data.groups.map((element: any) => {
-        return {
-          id: element.id,
-          name: element.label,
-          label: 'Collections',
-        };
-      });
-    } else {
-      options = data.search.map((element: any) => {
-        return {
-          id: element.contact.id,
-          name: element.contact.name ? element.contact.name : element.contact.maskedPhone,
-          label: 'Contacts',
-        };
-      });
-    }
-
+    const options = formatOptions(isContactType ? data.groups : data.search, isContactType);
     setAllOptions(options);
   };
+
   const formatSelectedOptions = (data: any) => {
-    let selected;
-    if (isContactType) {
-      selected = data.contact.contact.groups.map((element: any) => {
-        return {
-          id: element.id,
-          name: element.label,
-          label: 'Collections',
-        };
-      });
-    } else {
-      selected = data.group.group.contacts.map((element: any) => {
-        return {
-          id: element.id,
-          name: element.name ? element.name : element.maskedPhone,
-          label: 'Contacts',
-        };
-      });
-    }
-    setSelectedOptions(selected);
+    const options = formatOptions(
+      isContactType ? data.contact.contact.groups : data.group.group.contacts,
+      isContactType
+    );
+    setSelectedOptions(options);
   };
+
   useQuery(allOptionsQuery, {
     variables: allOptionsVariables,
     onCompleted: formatAllOptions,
+    nextFetchPolicy: 'network-only',
   });
 
   useQuery(selectedOptionQuery, {
     variables: { id: popupData.id },
     onCompleted: formatSelectedOptions,
+    nextFetchPolicy: 'network-only',
   });
 
   return (

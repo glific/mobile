@@ -68,7 +68,7 @@ const MultiSelect: React.FC<Props> = ({
                 onPress={() => handleTagRemove(option)}
               >
                 <Text style={styles.tagText}>{option.name ? option.name : option.label}</Text>
-                {allowDeleteOption ? <AntDesign name="close" style={styles.tagCloseIcon} /> : null}
+                {allowDeleteOption && <AntDesign name="close" style={styles.tagCloseIcon} />}
               </Pressable>
             ))}
           </View>
