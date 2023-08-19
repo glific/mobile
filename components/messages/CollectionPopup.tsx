@@ -148,7 +148,7 @@ const CollectionPopup: React.FC<Props> = ({
 
   return (
     <Modal
-      testID="startFlowPopup"
+      testID="collectionPopup"
       visible={visible}
       animationType="fade"
       transparent={true}
