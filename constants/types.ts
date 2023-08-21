@@ -19,14 +19,14 @@ export type RootStackParamList = {
   ConversationFilter: { onGoBack: (data: object) => void };
   ContactProfile: {
     contact: {
-      id: number;
+      id: string;
       conversationType: string;
       name: string;
       lastMessageAt?: string;
     };
   };
   ChatScreen: {
-    id: number;
+    id: string;
     displayName: string;
     lastMessageAt?: string;
     conversationType: string;

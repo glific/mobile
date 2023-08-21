@@ -37,28 +37,23 @@ export const getPopupData = (task: string) => {
   }
 };
 
-export const getCollectionPopupData = (isContactType: boolean, id: number) => {
-  switch (isContactType) {
-    case true:
-      return {
-        id: id,
-        title: 'Add this contact to collections',
-        successToast: 'Contact added to collections successfully!',
-        errorToast: 'Error adding contact to collections!',
-      };
-    case false:
-      return {
-        id: id,
-        title: 'Add contacts to this collection',
-        successToast: 'Contacts added to the collection successfully!',
-        errorToast: 'Error adding contacts to the collection!',
-      };
-    default:
-      return {
-        id: null,
-        title: 'Alert',
-        successToast: '',
-        errorToast: '',
-      };
-  }
+export const getCollectionPopupData = (isContactType: boolean, id: string) => {
+  const title = isContactType
+    ? 'Add this contact to collections'
+    : 'Add contacts to this collection';
+
+  const successToast = isContactType
+    ? 'Contact added to collections successfully!'
+    : 'Contacts added to the collection successfully!';
+
+  const errorToast = isContactType
+    ? 'Error adding contact to collections!'
+    : 'Error adding contacts to the collection!';
+
+  return {
+    id: id,
+    title: title,
+    successToast: successToast,
+    errorToast: errorToast,
+  };
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import { Entypo, Ionicons, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
@@ -54,7 +54,7 @@ const MenuButton: React.FC<MenuProps> = ({ icon, text, onPress }) => {
 
 interface ChatHeaderDataProps {
   conversationType: string;
-  id: number;
+  id: string;
   displayName: string;
   lastMessageAt?: string;
   navigation: NavigationProp<RootStackParamList, 'ChatScreen'>;
@@ -106,7 +106,7 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
   const optionVariables = isContactType
     ? {
         filter: {},
-        opts: { limit: null, offset: 0, order: 'ASC' },
+        opts: { limit: 50, offset: 0, order: 'ASC' },
       }
     : {
         filter: {},

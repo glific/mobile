@@ -20,7 +20,6 @@ export const GET_COLLECTIONS_LIST = gql`
     groups(filter: $filter, opts: $opts) {
       id
       label
-      isRestricted
     }
   }
 `;

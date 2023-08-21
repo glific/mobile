@@ -76,7 +76,6 @@ interface ContactElement {
   messages: Message[];
 }
 
-
 type Props = NativeStackScreenProps<RootStackParamList, 'Contacts'>;
 
 const Chat = ({ navigation, route }: Props) => {
