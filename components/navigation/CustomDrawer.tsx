@@ -10,7 +10,6 @@ import { COLORS, SCALE, SIZES } from '../../constants';
 import AuthContext from '../../config/AuthContext';
 import AxiosService from '../../config/axios';
 
-
 type DrawerContentProps = {
   navigation: undefined;
 };

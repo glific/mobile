@@ -1,6 +1,6 @@
 {
   "name": "glific",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
@@ -30,9 +30,10 @@
     "apollo-link-token-refresh": "^0.6.0",
     "axios": "^1.4.0",
     "expo": "~48.0.5",
-    "expo-av": "^13.2.1",
+    "expo-av": "~13.2.1",
+    "expo-document-picker": "~11.2.2",
     "expo-splash-screen": "^0.18.2",
-    "expo-video-thumbnails": "^7.2.1",
+    "expo-video-thumbnails": "~7.2.1",
     "graphql": "^15.8.0",
     "graphql-ws": "^5.14.0",
     "moment": "^2.29.4",

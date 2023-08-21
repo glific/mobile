@@ -9,7 +9,6 @@ import { Picker } from '@react-native-picker/picker';
 import { showToast } from '../../utils/showToast';
 
 interface FlowProps {
-  visible: boolean;
   onClose: () => void;
   variables: object;
   mutation: DocumentNode;
@@ -19,7 +18,7 @@ interface FlowProp {
   [key: string]: string;
 }
 
-const StartFlowPopup: React.FC<FlowProps> = ({ visible, onClose, variables, mutation }) => {
+const StartFlowPopup: React.FC<FlowProps> = ({ onClose, variables, mutation }) => {
   const [selectedFlow, setSelectedFlow] = useState('');
 
   const [startFlowMutation] = useMutation(mutation, {
@@ -71,7 +70,7 @@ const StartFlowPopup: React.FC<FlowProps> = ({ visible, onClose, variables, muta
   return (
     <Modal
       testID="startFlowPopup"
-      visible={visible}
+      visible
       animationType="fade"
       transparent={true}
       onRequestClose={onClose}

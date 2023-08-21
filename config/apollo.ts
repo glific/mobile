@@ -68,8 +68,8 @@ const refreshLink = new TokenRefreshLink({
       if (response.status === 200) {
         return response.data;
       }
-    } catch (err: any) {
-      if (err.response.status === 401) {
+    } catch (error) {
+      if (error.response.status === 401) {
         await Storage.removeData('glific_session');
         await Storage.removeData('glific_user');
       }

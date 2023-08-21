@@ -47,7 +47,7 @@ type SearchBarProps = {
   onSearch: () => void;
   showMenu?: boolean;
   collectionTab?: boolean;
-  navigation: NavigationProp<RootStackParamList>;
+  navigation?: NavigationProp<RootStackParamList>;
 };
 
 const SearchBar: React.FC<SearchBarProps> = ({
@@ -69,6 +69,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
     opts: {},
   };
   const { loading: loadingSearches } = useQuery(SAVED_SEARCH_QUERY, {
+    skip: !showMenu,
     variables: queryVariables,
     onCompleted: (data) => {
       setFixedSearches(data.savedSearches);
@@ -80,6 +81,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   const countVariables = { organizationId: user?.organization?.id };
   const { loading: loadingCounts } = useQuery(SEARCHES_COUNT, {
+    skip: !showMenu,
     variables: countVariables,
     onCompleted(data) {
       const collectionStats = JSON.parse(data.collectionStats);

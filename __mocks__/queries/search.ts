@@ -12,7 +12,7 @@ const collectionStats = {
   },
 };
 
-const reservedSavedSearchQuery = {
+export const reservedSavedSearchQuery = {
   request: {
     query: SAVED_SEARCH_QUERY,
     variables: {

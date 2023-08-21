@@ -19,6 +19,10 @@ const mockContacts = {
   lastMessageAt: '2021-08-10T12:00:00.000Z',
   isOrgRead: true,
 };
+const searchQueryContact = {
+  id: 1,
+  name: 'Glific user',
+};
 
 export const SAVED_SEARCH_QUERY_MOCK = {
   request: {
@@ -58,11 +62,7 @@ export const SEARCHES_COUNT_MOCK = {
 export const NO_SEARCH_CONTACTS_MOCK = {
   request: {
     query: GET_CONTACTS,
-    variables: {
-      filter: {},
-      messageOpts: { limit: 1 },
-      contactOpts: { limit: 10, offset: 0 },
-    },
+    variables: { filter: {}, messageOpts: { limit: 1 }, contactOpts: { limit: 10, offset: 0 } },
   },
   result: {
     data: {
@@ -273,9 +273,9 @@ export const SEARCH_CONTACTS_MOCK = {
   request: {
     query: GET_CONTACTS,
     variables: {
-      filter: { term: 'test search' },
+      filter: { term: 'test search', searchGroup: false },
       messageOpts: { limit: 1 },
-      contactOpts: { limit: 1, offset: 0 },
+      contactOpts: { limit: 10, offset: 0 },
     },
   },
   result: {
@@ -302,7 +302,7 @@ export const GET_CONTACT_NO_MESSAGE_MOCK = [
       variables: {
         filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
-        messageOpts: { limit: 20 },
+        messageOpts: { limit: 20, offset: 0 },
       },
     },
     result: {
@@ -310,6 +310,10 @@ export const GET_CONTACT_NO_MESSAGE_MOCK = [
         search: [
           {
             messages: [],
+            contact: {
+              id: 1,
+              name: 'Glific User',
+            },
           },
         ],
       },
@@ -324,13 +328,14 @@ export const GET_CONTACT_MESSAGES_MOCK = [
       variables: {
         filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
-        messageOpts: { limit: 20 },
+        messageOpts: { limit: 20, offset: 0 },
       },
     },
     result: {
       data: {
         search: [
           {
+            contact: searchQueryContact,
             messages: [
               {
                 __typename: 'Message',
@@ -390,6 +395,7 @@ export const GET_CONTACT_TEXT_MESSAGE_MOCK = [
                 type: 'TEXT',
               },
             ],
+            contact: searchQueryContact,
           },
         ],
       },
@@ -411,6 +417,7 @@ export const GET_CONTACT_IMAGE_MESSAGE_MOCK = [
       data: {
         search: [
           {
+            contact: searchQueryContact,
             messages: [
               {
                 __typename: 'Message',
@@ -455,6 +462,7 @@ export const GET_CONTACT_VIDEO_MESSAGE_MOCK = [
       data: {
         search: [
           {
+            contact: searchQueryContact,
             messages: [
               {
                 __typename: 'Message',
@@ -499,6 +507,7 @@ export const GET_CONTACT_AUDIO_MESSAGE_MOCK = [
       data: {
         search: [
           {
+            contact: searchQueryContact,
             messages: [
               {
                 __typename: 'Message',
@@ -543,6 +552,7 @@ export const GET_CONTACT_DOCUMENT_MESSAGE_MOCK = [
       data: {
         search: [
           {
+            contact: searchQueryContact,
             messages: [
               {
                 __typename: 'Message',
@@ -587,6 +597,7 @@ export const GET_CONTACT_STICKER_MESSAGE_MOCK = [
       data: {
         search: [
           {
+            contact: searchQueryContact,
             messages: [
               {
                 __typename: 'Message',
@@ -631,6 +642,7 @@ export const GET_CONTACT_LOCATION_MESSAGE_MOCK = [
       data: {
         search: [
           {
+            contact: { id: 1, name: 'Glific user' },
             messages: [
               {
                 __typename: 'Message',
@@ -671,6 +683,7 @@ export const GET_CONTACT_QUCIK_REPLY_MESSAGE_MOCK = [
       data: {
         search: [
           {
+            contact: searchQueryContact,
             messages: [
               {
                 __typename: 'Message',
@@ -698,6 +711,48 @@ export const GET_CONTACT_QUCIK_REPLY_MESSAGE_MOCK = [
   },
 ];
 
+export const GET_CONTACT_LIST_MESSAGE_MOCK = [
+  {
+    request: {
+      query: GET_MESSAGES,
+      variables: {
+        filter: { id: 1, searchGroup: false },
+        contactOpts: { limit: 1 },
+        messageOpts: { limit: 20, offset: 0 },
+      },
+    },
+    result: {
+      data: {
+        search: [
+          {
+            contact: searchQueryContact,
+            messages: [
+              {
+                __typename: 'Message',
+                body: 'test list message',
+                contextMessage: null,
+                errors: '{}',
+                flowLabel: null,
+                id: '777',
+                insertedAt: '2023-08-10T14:19:10.978818Z',
+                interactiveContent:
+                  '{"type":"list","title":"Interactive list","items":[{"title":"List 1","subtitle":"first Subtitle","options":[{"type":"text","title":"option 1","description":"Flow Editor for creating flows"},{"type":"text","title":"option 2","description":"test description"},{"type":"text","title":"option 3","description":"Dialogflow for AI/ML"}]},{"title":"List 2","subtitle":"some usecases of Glific","options":[{"type":"text","title":"option 4","description":"Sharing education content with school student"}]}],"globalButtons":[{"type":"text","title":"button text"}],"body":"Glific"}',
+                location: null,
+                media: null,
+                messageNumber: 54,
+                receiver: { __typename: 'Contact', id: '22' },
+                sendBy: 'NGO Main Account',
+                sender: { __typename: 'Contact', id: '17' },
+                type: 'LIST',
+              },
+            ],
+          },
+        ],
+      },
+    },
+  },
+];
+
 export const GET_CONTACT_MESSAGES_POPUPS_MOCK = [
   {
     request: {
@@ -705,13 +760,14 @@ export const GET_CONTACT_MESSAGES_POPUPS_MOCK = [
       variables: {
         filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
-        messageOpts: { limit: 20 },
+        messageOpts: { limit: 20, offset: 0 },
       },
     },
     result: {
       data: {
         search: [
           {
+            contact: searchQueryContact,
             messages: [
               {
                 __typename: 'Message',
@@ -739,7 +795,7 @@ export const GET_CONTACT_MESSAGES_POPUPS_MOCK = [
   {
     request: {
       query: TERMINATE_FLOW,
-      variables: { contactId: '123' },
+      variables: { contactId: 1 },
     },
     result: {
       data: {
@@ -753,7 +809,7 @@ export const GET_CONTACT_MESSAGES_POPUPS_MOCK = [
   {
     request: {
       query: CLEAR_MESSAGES,
-      variables: { contactId: '123' },
+      variables: { contactId: 1 },
     },
     result: {
       data: {
@@ -767,7 +823,7 @@ export const GET_CONTACT_MESSAGES_POPUPS_MOCK = [
   {
     request: {
       query: BLOCK_CONTACT,
-      variables: { contactId: '123', input: { status: 'BLOCKED' } },
+      variables: { contactId: 1, input: { status: 'BLOCKED' } },
     },
     result: {
       data: {
@@ -794,13 +850,14 @@ export const GET_CONTACT_MESSAGES_FLOW_MOCK = [
       variables: {
         filter: { id: 1, searchGroup: false },
         contactOpts: { limit: 1 },
-        messageOpts: { limit: 20 },
+        messageOpts: { limit: 20, offset: 0 },
       },
     },
     result: {
       data: {
         search: [
           {
+            contact: searchQueryContact,
             messages: [
               {
                 __typename: 'Message',
@@ -945,9 +1002,9 @@ export const GET_OPTIONS_MOCK = [
     result: {
       data: {
         users: [
-          { id: 1, label: 'User 1' },
-          { id: 2, label: 'User 2' },
-          { id: 3, label: 'User 3' },
+          { id: 1, label: 'User 1', name: 'User 1' },
+          { id: 2, label: 'User 2', name: 'User 2' },
+          { id: 3, label: 'User 3', name: 'User 3' },
         ],
       },
     },

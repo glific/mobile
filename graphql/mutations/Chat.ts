@@ -56,3 +56,25 @@ export const MARK_AS_READ = gql`
     markContactMessagesAsRead(contactId: $contactId)
   }
 `;
+
+export const CREATE_MEDIA_MESSAGE = gql`
+  mutation createMediaMessage($input: MessageMediaInput!) {
+    createMessageMedia(input: $input) {
+      messageMedia {
+        id
+      }
+    }
+  }
+`;
+
+export const UPLOAD_MEDIA_BLOB = gql`
+  mutation uploadBlob($media: String!, $extension: String!) {
+    uploadBlob(media: $media, extension: $extension)
+  }
+`;
+
+export const UPLOAD_MEDIA = gql`
+  mutation uploadMedia($media: Upload!, $extension: String!) {
+    uploadMedia(media: $media, extension: $extension)
+  }
+`;

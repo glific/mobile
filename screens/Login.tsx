@@ -139,7 +139,7 @@ const Login = ({ navigation }: Props) => {
           onPress={onSubmitHandler}
           loading={loading}
         >
-          <Text>LOG IN</Text>
+          <Text style={styles.buttonText}>Log in</Text>
         </Button>
       </View>
     </View>
@@ -154,6 +154,9 @@ const styles = StyleSheet.create({
     bottom: SIZES.m20,
     position: 'absolute',
     width: SIZES.s328,
+  },
+  buttonText: {
+    textTransform: 'uppercase',
   },
   errorLabel: {
     color: COLORS.error100,

@@ -28,7 +28,6 @@ type CompletionType = {
 };
 
 interface TemplateVariablesPopupProps {
-  visible: boolean;
   onCancel: () => void;
   // eslint-disable-next-line no-unused-vars
   onDone: (variables: string[]) => void;
@@ -36,7 +35,6 @@ interface TemplateVariablesPopupProps {
 }
 
 const TemplateVariablesPopup: React.FC<TemplateVariablesPopupProps> = ({
-  visible,
   onCancel,
   onDone,
   selectedTemplate,
@@ -106,7 +104,7 @@ const TemplateVariablesPopup: React.FC<TemplateVariablesPopupProps> = ({
   };
 
   return (
-    <Modal visible={visible} animationType="fade" transparent={true} onRequestClose={onCancel}>
+    <Modal visible animationType="fade" transparent={true} onRequestClose={onCancel}>
       <View style={styles.background}>
         <View testID="TemplateVariablesPopup" style={styles.popupContainer}>
           <Text testID="popupTitle" style={styles.title}>

@@ -3,12 +3,12 @@ import { FlatList, StyleSheet, Text } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useQuery } from '@apollo/client';
 
-import SearchBar from '../components/ui/SearchBar';
-import ContactCard from '../components/ContactCard';
-import { GET_CONTACTS } from '../graphql/queries/Contact';
 import { COLORS, SIZES } from '../constants';
 import Loading from '../components/ui/Loading';
 import AuthContext from '../config/AuthContext';
+import SearchBar from '../components/ui/SearchBar';
+import ContactCard from '../components/ContactCard';
+import { GET_CONTACTS } from '../graphql/queries/Contact';
 import { ChatEntry, RootStackParamList } from '../constants/types';
 import {
   MESSAGE_RECEIVED_SUBSCRIPTION,
@@ -21,14 +21,14 @@ const updateContactList = (cachedConversations: any, subscriptionData: any, acti
     return cachedConversations;
   }
 
-  if (!cachedConversations) {
+  if (!cachedConversations.search) {
     return null;
   }
 
   const { newMessage, contactId, contact } = getSubscriptionDetails(action, subscriptionData);
   let conversationIndex = -1;
 
-  cachedConversations.search.forEach((conversation: any, index: any) => {
+  cachedConversations.search.forEach((conversation: any, index: number) => {
     if (conversation.contact.id === contactId) {
       conversationIndex = index;
     }
@@ -80,7 +80,6 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Contacts'>;
 
 const Chat = ({ navigation, route }: Props) => {
   const { user }: any = useContext(AuthContext);
-  const [contacts, setContacts] = useState<ChatEntry[]>([]);
   const [searchVariable, setSearchVariable] = useState({
     filter: {},
     messageOpts: { limit: 1 },
@@ -91,26 +90,23 @@ const Chat = ({ navigation, route }: Props) => {
 
   const subscriptionVariables = { organizationId: user?.organization?.id };
 
-  const { loading, refetch, fetchMore, subscribeToMore } = useQuery(GET_CONTACTS, {
+  const { data, loading, refetch, fetchMore, subscribeToMore } = useQuery(GET_CONTACTS, {
     fetchPolicy: 'cache-and-network',
     variables: searchVariable,
-    onCompleted(data) {
-      const newContacts: ChatEntry[] = data?.search?.map((element: ContactElement) => {
-        const messagesLength = element.messages?.length || 0;
-        return {
-          id: element.contact?.id,
-          name: element.contact?.name ? element.contact.name : element.contact?.maskedPhone,
-          lastMessageAt: element.contact?.lastMessageAt,
-          lastMessage: messagesLength > 0 ? element.messages[messagesLength - 1]?.body : ' ',
-          isOrgRead: element.contact?.isOrgRead,
-        };
-      });
-
-      setContacts(newContacts);
-    },
     onError(error) {
       console.log(error);
     },
+  });
+
+  const contacts: ChatEntry[] = data?.search?.map((element: ContactElement) => {
+    const messagesLength = element.messages?.length || 0;
+    return {
+      id: element.contact?.id,
+      name: element.contact?.name ? element.contact.name : element.contact?.maskedPhone,
+      lastMessageAt: element.contact?.lastMessageAt,
+      lastMessage: messagesLength > 0 ? element.messages[messagesLength - 1]?.body : ' ',
+      isOrgRead: element.contact?.isOrgRead,
+    };
   });
 
   async function onSearchHandler() {

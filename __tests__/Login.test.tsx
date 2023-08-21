@@ -5,6 +5,7 @@ import customRender from '../utils/jestRender';
 import Login from '../screens/Login';
 import AxiosService from '../config/axios';
 import Storage from '../utils/asyncStorage';
+import { getCurrentUserQuery } from '../__mocks__/queries/user';
 
 jest.mock('../utils/asyncStorage', () => ({
   storeData: jest.fn(),
@@ -18,7 +19,7 @@ describe('Login screen', () => {
     expect(getByTestId('mobileNumber')).toBeDefined();
     expect(getByTestId('password')).toBeDefined();
     expect(getByTestId('forgotPassword')).toBeDefined();
-    expect(getByText('LOG IN')).toBeDefined();
+    expect(getByText('Log in')).toBeDefined();
   });
 
   test('updates input values correctly', () => {
@@ -63,12 +64,13 @@ describe('Login screen', () => {
     };
 
     const { getByTestId, getByText } = customRender(
-      <Login navigation={{ navigate: navigateMock }} />
+      <Login navigation={{ navigate: navigateMock }} />,
+      [getCurrentUserQuery]
     );
 
     fireEvent.changeText(getByTestId('mobileNumber'), '7834811114');
     fireEvent.changeText(getByTestId('password'), 'secret1234');
-    fireEvent.press(getByText('LOG IN'));
+    fireEvent.press(getByText('Log in'));
 
     await waitFor(async () => {
       expect(createAxiosInstanceMock).toHaveBeenCalled();
