@@ -146,6 +146,8 @@ const CollectionPopup: React.FC<Props> = ({
     nextFetchPolicy: 'network-only',
   });
 
+  const initialSelectionProp = isContactType ? {} : { initialSelections: initialSelected };
+
   return (
     <Modal
       testID="collectionPopup"
@@ -167,7 +169,7 @@ const CollectionPopup: React.FC<Props> = ({
             label={isContactType ? 'Select Collections' : 'Select Contacts'}
             placeHolder="Options"
             allowDeleteOption={isContactType}
-            initialSelections={initialSelected}
+            {...initialSelectionProp}
           />
           <View style={styles.buttonContainer}>
             <View testID="cancelButton" style={styles.button}>
