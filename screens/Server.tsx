@@ -83,7 +83,7 @@ const Server = ({ navigation }: Props) => {
       <InstructionCard />
       <View style={styles.buttonContainer}>
         <Button disable={!serverCode} onPress={onSubmitHandler} loading={loading}>
-          <Text>CONTINUE</Text>
+          <Text style={styles.buttonText}>Continue</Text>
         </Button>
       </View>
     </View>
@@ -98,6 +98,9 @@ const styles = StyleSheet.create({
     bottom: SIZES.m20,
     position: 'absolute',
     width: SIZES.s328,
+  },
+  buttonText: {
+    textTransform: 'uppercase',
   },
   errorLabel: {
     color: COLORS.error100,

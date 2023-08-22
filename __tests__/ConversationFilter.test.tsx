@@ -13,11 +13,14 @@ const routeMock = {
 };
 
 describe('ConversationFilter', () => {
-  test('renders all input fields and buttons', () => {
+  test('renders all input fields and buttons', async () => {
     const { getByText, getByTestId } = customRender(
       <ConversationFilter route={routeMock} />,
       GET_OPTIONS_MOCK
     );
+    await waitFor(() => {
+      expect(getByTestId('labelInput')).toBeDefined();
+    });
 
     const labelInput = getByTestId('labelInput');
     const labelSelect = getByTestId('labelSelect');
@@ -40,16 +43,21 @@ describe('ConversationFilter', () => {
     expect(applyButton).toBeDefined();
   });
 
-  test('should update when label input change', () => {
+  test('should update when label input change', async () => {
     const { getByTestId } = customRender(
       <ConversationFilter route={routeMock} />,
       GET_OPTIONS_MOCK
     );
-
+    await waitFor(() => {
+      expect(getByTestId('labelInput')).toBeDefined();
+    });
     const labelInput = getByTestId('labelInput');
+
     fireEvent.changeText(labelInput, 'John Doe');
 
-    expect(labelInput.props.value).toBe('John Doe');
+    await waitFor(() => {
+      expect(labelInput.props.value).toBe('John Doe');
+    });
   });
 
   test('should update state when multi-select options change', async () => {
@@ -135,15 +143,22 @@ describe('ConversationFilter', () => {
     });
   });
 
-  test('calls the appropriate callbacks when buttons are pressed', () => {
+  test('calls the appropriate callbacks when buttons are pressed', async () => {
     const { getByText } = customRender(
       <ConversationFilter navigation={navigationMock} route={routeMock} />,
       GET_OPTIONS_MOCK
     );
 
+    await waitFor(() => {
+      expect(getByText('CANCEL')).toBeDefined();
+    });
+
     const cancelButton = getByText('CANCEL');
 
     fireEvent.press(cancelButton);
-    expect(navigationMock.goBack).toHaveBeenCalled();
+
+    await waitFor(() => {
+      expect(navigationMock.goBack).toHaveBeenCalled();
+    });
   });
 });

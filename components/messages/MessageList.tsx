@@ -5,10 +5,10 @@ import { useQuery } from '@apollo/client';
 import { GET_MESSAGES } from '../../graphql/queries/Chat';
 import { COLORS, SIZES } from '../../constants';
 import Loading from '../ui/Loading';
-import Message from './Message';
+import Message, { MessageType } from './Message';
 import {
-  MESSAGE_RECEIVED_SUBSCRIPTION,
   MESSAGE_SENT_SUBSCRIPTION,
+  MESSAGE_RECEIVED_SUBSCRIPTION,
 } from '../../graphql/subscriptions/Chat';
 import AuthContext from '../../config/AuthContext';
 import { getSubscriptionDetails } from '../../utils/subscriptionDetails';
@@ -50,13 +50,13 @@ const updateConversations = (
   let conversationIndex = 0;
 
   if (action === 'COLLECTION') {
-    cachedConversations.search.forEach((conversation: any, index: any) => {
+    cachedConversations.search.forEach((conversation: any, index: number) => {
       if (conversation.group.id === collectionId) {
         conversationIndex = index;
       }
     });
   } else {
-    cachedConversations.search.forEach((conversation: any, index: any) => {
+    cachedConversations.search.forEach((conversation: any, index: number) => {
       if (conversation.contact.id === contactId) {
         conversationIndex = index;
       }
@@ -81,7 +81,7 @@ const updateConversations = (
   if (newMessage) {
     updatedConversation[0].messages.unshift(newMessage);
   } else {
-    updatedConversation[0].messages.forEach((message: any) => {
+    updatedConversation[0].messages.forEach((message: MessageType) => {
       if (messageStatusData && message.id === messageStatusData.id) {
         message.errors = messageStatusData.errors;
       }
@@ -157,7 +157,7 @@ const MessagesList: React.FC<MessageListProps> = ({ conversationType, id }) => {
       variables: {
         filter: variables.filter,
         contactOpts: variables.contactOpts,
-        messageOpts: { ...variables.messageOpts, offset: pageNo * 20 },
+        messageOpts: { limit: 20, offset: pageNo * 20 },
       },
       updateQuery: (prev, { fetchMoreResult }) => {
         if (!fetchMoreResult?.search[0]?.messages?.length) {
