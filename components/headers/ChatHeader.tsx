@@ -257,23 +257,25 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
             mutation={isContactType ? START_CONTACT_FLOW : START_COLLECTION_FLOW}
           />
         )}
-        <ChatPopup
-          visible={showChatPopup}
-          onClose={closePopups}
-          popupData={popupData}
-          variables={variables}
-          mutation={mutation}
-        />
-        <CollectionPopup
-          isContactType={isContactType}
-          visible={showCollectionPopup}
-          onClose={closePopups}
-          popupData={collectionPopupData}
-          mutation={isContactType ? ADD_COLLECTIONS_TO_CONTACT : ADD_CONTACTS_TO_COLLECTION}
-          allOptionsQuery={isContactType ? GET_COLLECTIONS_LIST : GET_CONTACTS}
-          selectedOptionQuery={isContactType ? GET_CONTACT_COLLECTIONS : GET_COLLECTION_CONTACTS}
-          allOptionsVariables={optionVariables}
-        />
+        {showChatPopup && (
+          <ChatPopup
+            onClose={closePopups}
+            popupData={popupData}
+            variables={variables}
+            mutation={mutation}
+          />
+        )}
+        {showCollectionPopup && (
+          <CollectionPopup
+            isContactType={isContactType}
+            onClose={closePopups}
+            popupData={collectionPopupData}
+            mutation={isContactType ? ADD_COLLECTIONS_TO_CONTACT : ADD_CONTACTS_TO_COLLECTION}
+            allOptionsQuery={isContactType ? GET_COLLECTIONS_LIST : GET_CONTACTS}
+            selectedOptionQuery={isContactType ? GET_CONTACT_COLLECTIONS : GET_COLLECTION_CONTACTS}
+            allOptionsVariables={optionVariables}
+          />
+        )}
       </View>
       {sessionTimeLeft}
     </>

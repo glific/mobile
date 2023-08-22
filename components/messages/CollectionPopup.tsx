@@ -16,7 +16,6 @@ interface popupDataType {
 
 interface Props {
   isContactType: boolean;
-  visible: boolean;
   onClose: () => void;
   popupData: popupDataType;
   mutation: DocumentNode;
@@ -55,7 +54,6 @@ const formatOptions = (
 
 const CollectionPopup: React.FC<Props> = ({
   isContactType,
-  visible,
   onClose,
   popupData,
   mutation,
@@ -151,7 +149,6 @@ const CollectionPopup: React.FC<Props> = ({
   return (
     <Modal
       testID="collectionPopup"
-      visible={visible}
       animationType="fade"
       transparent={true}
       onRequestClose={onClose}

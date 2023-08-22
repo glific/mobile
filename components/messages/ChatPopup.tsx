@@ -15,7 +15,7 @@ type popupDataType = {
 };
 
 interface ChatPopupProps {
-  visible: boolean;
+  // visible: boolean;
   onClose: () => void;
   popupData: popupDataType;
   variables: object;
@@ -23,7 +23,7 @@ interface ChatPopupProps {
 }
 
 const ChatPopup: React.FC<ChatPopupProps> = ({
-  visible,
+  // visible,
   onClose,
   popupData,
   variables,
@@ -46,7 +46,7 @@ const ChatPopup: React.FC<ChatPopupProps> = ({
   };
 
   return (
-    <Modal visible={visible} animationType="fade" transparent={true} onRequestClose={onClose}>
+    <Modal animationType="fade" transparent={true} onRequestClose={onClose}>
       <View style={styles.background}>
         <View testID="chatPopup" style={styles.popupContainer}>
           <Text testID="popupTitle" style={styles.title}>
