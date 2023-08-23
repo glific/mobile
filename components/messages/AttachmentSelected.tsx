@@ -1,8 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { AntDesign, Foundation, Ionicons } from '@expo/vector-icons';
 
-import { COLORS, SIZES } from '../../constants';
+import { COLORS, SIZES, Icon } from '../../constants';
 
 interface Props {
   name: string;
@@ -14,24 +13,19 @@ const AttachmentSelected = ({ name, type, remove }: Props) => {
   let icon;
   switch (type) {
     case 'image':
-      icon = <Ionicons testID="image" name="image-outline" style={styles.attachmentIcon} />;
+      icon = <Icon testID="image" name="image" style={styles.attachmentIcon} />;
       break;
     case 'document':
-      icon = (
-        <Ionicons testID="document" name="document-attach-outline" style={styles.attachmentIcon} />
-      );
-      break;
-    case 'location':
-      icon = <Ionicons testID="location" name="location-outline" style={styles.attachmentIcon} />;
+      icon = <Icon testID="document" name="file-document" style={styles.attachmentIcon} />;
       break;
     case 'video':
-      icon = <Ionicons testID="video" name="videocam-outline" style={styles.attachmentIcon} />;
+      icon = <Icon testID="video" name="folder-video" style={styles.attachmentIcon} />;
       break;
     case 'audio':
-      icon = <Foundation testID="audio" name="sound" style={styles.attachmentIcon} />;
+      icon = <Icon testID="audio" name="headphone" style={styles.attachmentIcon} />;
       break;
     case 'recording':
-      icon = <Ionicons testID="recording" name="mic-outline" style={styles.attachmentIcon} />;
+      icon = <Icon testID="recording" name="microphone" style={styles.attachmentIcon} />;
       break;
   }
   return (
@@ -42,7 +36,7 @@ const AttachmentSelected = ({ name, type, remove }: Props) => {
           {name.slice(0, 30)}
         </Text>
       </View>
-      <AntDesign testID="removeAttachment" name="close" style={styles.clearIcon} onPress={remove} />
+      <Icon testID="removeAttachment" name="cross" style={styles.clearIcon} onPress={remove} />
     </View>
   );
 };

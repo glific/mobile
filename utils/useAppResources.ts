@@ -1,9 +1,14 @@
 import { useEffect, useState } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
+import { useFonts } from 'expo-font';
 import Storage from './asyncStorage';
 
 function useAppResources(setToken, setOrg, setUser) {
   const [appIsReady, setAppIsReady] = useState(false);
+
+  const [fontsLoaded] = useFonts({
+    IcoMoon: require('../assets/fonts/icomoon.ttf'),
+  });
 
   useEffect(() => {
     async function prepare() {
@@ -28,7 +33,7 @@ function useAppResources(setToken, setOrg, setUser) {
           setUser(parsedUser);
         }
       } catch (error) {
-        console.warn(error);
+        console.log(error);
       } finally {
         setAppIsReady(true);
         SplashScreen.hideAsync();
@@ -37,7 +42,7 @@ function useAppResources(setToken, setOrg, setUser) {
     prepare();
   }, []);
 
-  return appIsReady;
+  return fontsLoaded && appIsReady;
 }
 
 export default useAppResources;

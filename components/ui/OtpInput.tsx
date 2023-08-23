@@ -71,8 +71,8 @@ const OtpInput = ({
             onUpdateValue(value);
             value.length == OTP_LENGTH ? setFocused(false) : setFocused(true);
           }}
-          autoFocus={true}
-          caretHidden={true}
+          autoFocus
+          caretHidden
           returnKeyType={'done'}
           keyboardType={'numeric'}
           textContentType={'oneTimeCode'}

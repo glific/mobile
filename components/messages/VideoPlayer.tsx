@@ -1,11 +1,10 @@
 import React, { useRef, useState } from 'react';
 import { StyleSheet, View, Text, Modal } from 'react-native';
-import { AntDesign, Entypo, MaterialIcons } from '@expo/vector-icons';
 import { Video, ResizeMode, AVPlaybackStatus } from 'expo-av';
 import Slider from '@react-native-community/slider';
 import moment from 'moment';
 
-import { COLORS, SCALE, SIZES } from '../../constants';
+import { COLORS, SCALE, SIZES, Icon } from '../../constants';
 
 const timefy = (ms: number): string => {
   if (!ms) return '00:00';
@@ -30,7 +29,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ message, handleVideo, openVid
   const handlePlayPause = () => {
     if (video.current) {
       isPlay ? video.current.pauseAsync() : video.current.playAsync();
-      setPlay(!isPlay);
+      setPlay((isPlay) => !isPlay);
     }
   };
 
@@ -41,7 +40,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ message, handleVideo, openVid
   const handlePlaybackUpdate = (status: AVPlaybackStatus) => {
     setPosition(status.positionMillis);
     if (status.positionMillis === duration) {
-      setPlay(!isPlay);
+      setPlay((isPlay) => !isPlay);
     }
   };
 
@@ -65,9 +64,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ message, handleVideo, openVid
     <Modal transparent visible={openVideo} animationType={'fade'}>
       <View style={styles.container}>
         <View style={styles.headerContainer}>
-          <AntDesign
+          <Icon
             testID="backButton"
-            name="arrowleft"
+            name="arrow-left"
             style={styles.backButton}
             onPress={handleVideo}
           />
@@ -80,7 +79,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ message, handleVideo, openVid
           ref={video}
           source={{ uri: message.media.url }}
           style={styles.video}
-          shouldPlay={true}
+          shouldPlay
           useNativeControls={false}
           resizeMode={ResizeMode.CONTAIN}
           onPlaybackStatusUpdate={handlePlaybackUpdate}
@@ -89,9 +88,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ message, handleVideo, openVid
 
         <View style={styles.controlContainer}>
           {isPlay ? (
-            <MaterialIcons name="pause" style={styles.controlIcon} onPress={handlePlayPause} />
+            <Icon name="player-pause" style={styles.controlIcon} onPress={handlePlayPause} />
           ) : (
-            <Entypo name="controller-play" style={styles.controlIcon} onPress={handlePlayPause} />
+            <Icon name="player-play" style={styles.controlIcon} onPress={handlePlayPause} />
           )}
           <Slider
             value={calculateSeekBar()}

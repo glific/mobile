@@ -36,7 +36,7 @@ const ChatPopup: React.FC<ChatPopupProps> = ({
     },
     onError: (error) => {
       showToast(popupData.errorToast);
-      console.error(error);
+      console.log(error);
       onClose();
     },
   });
@@ -46,7 +46,7 @@ const ChatPopup: React.FC<ChatPopupProps> = ({
   };
 
   return (
-    <Modal animationType="fade" transparent={true} onRequestClose={onClose}>
+    <Modal animationType="fade" transparent onRequestClose={onClose}>
       <View style={styles.background}>
         <View testID="chatPopup" style={styles.popupContainer}>
           <Text testID="popupTitle" style={styles.title}>

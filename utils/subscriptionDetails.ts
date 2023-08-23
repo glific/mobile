@@ -1,9 +1,9 @@
-export const getSubscriptionDetails = (action: string, subscriptionData: any) => {
-  let newMessage: any;
+export const getSubscriptionDetails = (action: string, subscriptionData: object) => {
+  let newMessage;
   let contactId = 0;
   let collectionId = 0;
-  let messageStatusData: any;
-  let contact: any;
+  let messageStatusData;
+  let contact;
 
   switch (action) {
     case 'SENT':
