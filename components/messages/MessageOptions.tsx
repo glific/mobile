@@ -1,8 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { COLORS, SIZES } from '../../constants';
+import { COLORS, SIZES, Icon, SCALE } from '../../constants';
 
 interface MessageOptionsProps {
   onSpeedSend: () => void;
@@ -20,28 +19,28 @@ const MessageOptions: React.FC<MessageOptionsProps> = ({
       <Pressable
         testID="speedSend"
         style={styles.optionsButton}
-        android_ripple={{ borderless: false }}
+        android_ripple={{ borderless: false, color: COLORS.primary10 }}
         onPress={onSpeedSend}
       >
-        <MaterialCommunityIcons name="message-flash" style={styles.optionIcon} />
+        <Icon name="speed-send" style={styles.optionIcon} />
         <Text style={styles.optionsText}>Speed sends</Text>
       </Pressable>
       <Pressable
         testID="templates"
         style={styles.optionsButton}
-        android_ripple={{ borderless: false }}
+        android_ripple={{ borderless: false, color: COLORS.primary10 }}
         onPress={onTemplates}
       >
-        <MaterialCommunityIcons name="message-star" style={styles.optionIcon} />
+        <Icon name="templates" style={styles.optionIcon} />
         <Text style={styles.optionsText}>Templates</Text>
       </Pressable>
       <Pressable
         testID="interactive"
         style={styles.optionsButton}
-        android_ripple={{ borderless: false }}
+        android_ripple={{ borderless: false, color: COLORS.primary10 }}
         onPress={onInteractiveMessage}
       >
-        <MaterialCommunityIcons name="gesture-tap-button" style={styles.optionIcon} />
+        <Icon name="interactive-message" style={styles.optionIcon} />
         <Text style={styles.optionsText}>Interactive message</Text>
       </Pressable>
     </View>
@@ -52,15 +51,15 @@ export default MessageOptions;
 
 const styles = StyleSheet.create({
   optionIcon: {
-    color: COLORS.primary400,
-    fontSize: SIZES.m24,
+    color: COLORS.primary100,
+    fontSize: SIZES.m20,
   },
   optionsButton: {
     alignItems: 'center',
-    borderBottomWidth: 0.2,
-    borderColor: COLORS.darkGray,
+    borderBottomWidth: SCALE(0.5),
+    borderColor: COLORS.lightGray,
     flexDirection: 'row',
-    paddingHorizontal: SIZES.m24,
+    paddingHorizontal: SIZES.m20,
     paddingVertical: SIZES.m16,
     width: '100%',
   },

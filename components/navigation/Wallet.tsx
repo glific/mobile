@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useQuery } from '@apollo/client';
 
 import { BSP_BALANCE } from '../../graphql/queries/Account';
-import { COLORS, SIZES } from '../../constants';
+import { COLORS, Icon, SIZES } from '../../constants';
 import Loading from '../ui/Loading';
 
 const Wallet = () => {
@@ -25,22 +24,15 @@ const Wallet = () => {
   return (
     <View style={[styles.walletContainer, error !== '' && styles.errorContainer]}>
       <View style={styles.innerContainer}>
-        <MaterialCommunityIcons
-          testID="walletIcon"
-          name="wallet-outline"
-          size={24}
-          color="white"
-          style={styles.walletIcon}
-        />
+        <Icon testID="walletIcon" name="wallet" style={styles.walletIcon} />
         <Text style={styles.walletText}>{error !== '' ? error : 'Your Wallet Balance'}</Text>
       </View>
-      {error === '' ? (
-        loading ? (
+      {error === '' &&
+        (loading ? (
           <Loading size="small" color={COLORS.white} relative />
         ) : (
           <Text style={styles.dollarText}>$ {balance}</Text>
-        )
-      ) : null}
+        ))}
     </View>
   );
 };
@@ -69,7 +61,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: SIZES.m16,
   },
   walletIcon: {
-    fontSize: SIZES.s24,
+    color: COLORS.white,
+    fontSize: SIZES.s20,
     fontWeight: '400',
     marginLeft: SIZES.m4,
   },

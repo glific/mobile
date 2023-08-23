@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
-import { AntDesign, MaterialIcons } from '@expo/vector-icons';
-import { COLORS, SCALE, SIZES } from '../../constants';
+
+import { COLORS, SCALE, SIZES, Icon } from '../../constants';
 
 type NotificationHeaderProps = {
   searchValue: string;
@@ -24,16 +24,16 @@ const NotificationHeader: React.FC<NotificationHeaderProps> = ({ searchValue, ha
   return (
     <View style={styles.mainContainer}>
       {!searchVisible ? (
-        <AntDesign
+        <Icon
           testID="searchIcon"
-          name="search1"
+          name="search"
           style={styles.rightIcon}
           onPress={() => setSearchVisible(true)}
         />
       ) : (
         <View style={styles.searchInputContainer}>
           <View style={styles.searchInput}>
-            <AntDesign testID="searchIcon" name="search1" style={styles.searchIcon} />
+            <Icon testID="searchIcon" name="search" style={styles.searchIcon} />
             <TextInput
               testID="searchInput"
               style={styles.input}
@@ -48,9 +48,9 @@ const NotificationHeader: React.FC<NotificationHeaderProps> = ({ searchValue, ha
               underlineColorAndroid="transparent"
             />
           </View>
-          <MaterialIcons
+          <Icon
             testID="searchClose"
-            name="close"
+            name="cross"
             style={styles.rightIcon}
             onPress={handleCloseSearch}
           />

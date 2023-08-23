@@ -71,7 +71,7 @@ const TemplateVariablesPopup: React.FC<TemplateVariablesPopupProps> = ({
 
         setOptions(contacts);
       } catch (error) {
-        console.error('Error fetching variable options:', error);
+        console.log('Error fetching variable options:', error);
       }
     };
 
@@ -104,7 +104,7 @@ const TemplateVariablesPopup: React.FC<TemplateVariablesPopupProps> = ({
   };
 
   return (
-    <Modal visible animationType="fade" transparent={true} onRequestClose={onCancel}>
+    <Modal visible animationType="fade" transparent onRequestClose={onCancel}>
       <View style={styles.background}>
         <View testID="TemplateVariablesPopup" style={styles.popupContainer}>
           <Text testID="popupTitle" style={styles.title}>

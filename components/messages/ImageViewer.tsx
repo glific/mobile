@@ -1,9 +1,8 @@
 import React from 'react';
 import { StyleSheet, View, Text, Modal, Image } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
 import moment from 'moment';
 
-import { COLORS, SCALE, SIZES } from '../../constants';
+import { COLORS, SCALE, SIZES, Icon } from '../../constants';
 
 type ImageViewerProps = {
   message: object;
@@ -16,9 +15,9 @@ const ImageViewer: React.FC<ImageViewerProps> = ({ message, handleImage, openIma
     <Modal transparent visible={openImage} animationType={'fade'}>
       <View style={styles.container}>
         <View style={styles.headerContainer}>
-          <AntDesign
+          <Icon
             testID="backButton"
-            name="arrowleft"
+            name="arrow-left"
             style={styles.backButton}
             onPress={handleImage}
           />

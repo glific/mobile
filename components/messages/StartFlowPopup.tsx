@@ -27,7 +27,7 @@ const StartFlowPopup: React.FC<FlowProps> = ({ onClose, variables, mutation }) =
       onClose();
     },
     onError(error) {
-      console.error(error);
+      console.log(error);
       showToast('Error starting flow!');
       onClose();
     },
@@ -72,7 +72,7 @@ const StartFlowPopup: React.FC<FlowProps> = ({ onClose, variables, mutation }) =
       testID="startFlowPopup"
       visible
       animationType="fade"
-      transparent={true}
+      transparent
       onRequestClose={onClose}
     >
       <View style={styles.background}>

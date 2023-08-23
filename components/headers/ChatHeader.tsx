@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
-import { Entypo, Ionicons, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 
-import { COLORS, SCALE, SIZES } from '../../constants';
+import { COLORS, SCALE, SIZES, Icon, PopupData } from '../../constants';
 import { getSessionTimeLeft } from '../../utils/helper';
 import { RootStackParamList } from '../../constants/types';
 import StartFlowPopup from '../messages/StartFlowPopup';
 import ChatPopup from '../messages/ChatPopup';
-
 import {
   START_COLLECTION_FLOW,
   START_CONTACT_FLOW,
@@ -16,7 +14,6 @@ import {
 } from '../../graphql/mutations/Flows';
 import { CLEAR_MESSAGES } from '../../graphql/mutations/Chat';
 import { BLOCK_CONTACT } from '../../graphql/mutations/Contact';
-import { getPopupData } from '../../constants/popupsData';
 
 interface MenuProps {
   icon: JSX.Element;
@@ -63,17 +60,17 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
   const isContactType = conversationType == 'contact';
 
   const handleMenu = () => {
-    setShowMenu(!showMenu);
+    setShowMenu((showMenu) => !showMenu);
   };
 
   const openFlowModal = () => {
-    setShowMenu(!showMenu);
+    setShowMenu((showMenu) => !showMenu);
     setShowStartFlowModal(true);
   };
 
   const openPopupTaskModal = (task: string) => {
     setpopupTask(task);
-    setShowMenu(!showMenu);
+    setShowMenu((showMenu) => !showMenu);
     setShowChatPopup(true);
   };
 
@@ -82,7 +79,7 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
     setShowChatPopup(false);
   };
 
-  const popupData = getPopupData(popupTask);
+  const popupData = PopupData(popupTask);
   const variables = {
     contactId: id,
     ...(popupTask === 'block' ? { input: { status: 'BLOCKED' } } : {}),
@@ -117,35 +114,35 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
       <View testID={'contactChatMenu'} style={styles.menuContainer}>
         <MenuButton
           text="Start a flow"
-          icon={<MaterialCommunityIcons name="message-cog" style={styles.menuIcon} />}
+          icon={<Icon name="start-flow" style={styles.menuIcon} />}
           onPress={() => {
             openFlowModal();
           }}
         />
         <MenuButton
           text="Add to Collection"
-          icon={<Ionicons name="person-add-sharp" style={styles.menuIcon} />}
+          icon={<Icon name="add-contact" style={styles.menuIcon} />}
           onPress={() => {
             console.log('1');
           }}
         />
         <MenuButton
           text="Clear Conversation"
-          icon={<MaterialCommunityIcons name="message-bulleted-off" style={styles.menuIcon} />}
+          icon={<Icon name="clear-conversation" style={styles.menuIcon} />}
           onPress={() => {
             openPopupTaskModal('clear');
           }}
         />
         <MenuButton
           text="Terminate Flows"
-          icon={<MaterialCommunityIcons name="hand-back-right-off" style={styles.menuIcon} />}
+          icon={<Icon name="terminate-flow" style={styles.menuIcon} />}
           onPress={() => {
             openPopupTaskModal('terminate');
           }}
         />
         <MenuButton
           text="Block Contact"
-          icon={<Entypo name="block" style={[styles.menuIcon, { color: COLORS.error100 }]} />}
+          icon={<Icon name="block" style={[styles.menuIcon, { color: COLORS.error100 }]} />}
           onPress={() => {
             openPopupTaskModal('block');
           }}
@@ -158,14 +155,14 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
       <View testID={'collectionChatMenu'} style={styles.menuContainer}>
         <MenuButton
           text="Start a flow"
-          icon={<MaterialCommunityIcons name="message-cog" style={styles.menuIcon} />}
+          icon={<Icon name="start-flow" style={styles.menuIcon} />}
           onPress={() => {
             openFlowModal();
           }}
         />
         <MenuButton
           text="Add contact"
-          icon={<Ionicons name="person-add-sharp" style={styles.menuIcon} />}
+          icon={<Icon name="add-contact" style={styles.menuIcon} />}
           onPress={() => {
             console.log('1');
           }}
@@ -177,9 +174,9 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
   return (
     <>
       <View style={styles.mainContainer}>
-        <AntDesign
+        <Icon
           testID="backIcon"
-          name="arrowleft"
+          name="arrow-left"
           style={styles.backButton}
           onPress={(): void => navigation.goBack()}
         />
@@ -212,7 +209,7 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
           style={styles.threeDotIconContainer}
           android_ripple={{ borderless: true }}
         >
-          <Entypo name="dots-three-vertical" style={styles.threeDotIcon} />
+          <Icon name="menu-vertical" style={styles.threeDotIcon} />
         </Pressable>
         {showMenu && (
           <>
@@ -289,7 +286,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     height: SIZES.s40,
-    paddingHorizontal: SIZES.m10,
+    paddingHorizontal: SIZES.m12,
     width: '100%',
   },
   menuContainer: {
@@ -304,7 +301,7 @@ const styles = StyleSheet.create({
     shadowOffset: { height: 4, width: 0 },
     shadowRadius: 4,
     top: SIZES.s44,
-    width: SCALE(210),
+    width: SCALE(200),
   },
   menuIcon: {
     color: COLORS.primary100,

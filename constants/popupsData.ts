@@ -1,4 +1,4 @@
-export const getPopupData = (task: string) => {
+export const PopupData = (task: string) => {
   switch (task) {
     case 'terminate':
       return {
