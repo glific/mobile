@@ -54,3 +54,13 @@ export const GET_CONTACT_INFO = gql`
     }
   }
 `;
+
+export const GET_CONTACTS_NAME = gql`
+  query contacts($filter: ContactFilter!, $opts: Opts!) {
+    contacts(filter: $filter, opts: $opts) {
+      id
+      name
+      phone
+    }
+  }
+`;

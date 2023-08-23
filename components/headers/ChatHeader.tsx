@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 
-import { COLORS, SCALE, SIZES, Icon, PopupData } from '../../constants';
+import { COLORS, SCALE, SIZES, Icon } from '../../constants';
 import { getSessionTimeLeft } from '../../utils/helper';
 import { RootStackParamList } from '../../constants/types';
 import StartFlowPopup from '../messages/StartFlowPopup';
@@ -12,8 +12,22 @@ import {
   START_CONTACT_FLOW,
   TERMINATE_FLOW,
 } from '../../graphql/mutations/Flows';
+
+import {
+  GET_COLLECTIONS_LIST,
+  GET_COLLECTION_CONTACTS,
+  GET_CONTACT_COLLECTIONS,
+} from '../../graphql/queries/Collection';
+import { GET_CONTACTS_NAME } from '../../graphql/queries/Contact';
+
 import { CLEAR_MESSAGES } from '../../graphql/mutations/Chat';
 import { BLOCK_CONTACT } from '../../graphql/mutations/Contact';
+import { getCollectionPopupData, getPopupData } from '../../constants/popupsData';
+import CollectionPopup from '../messages/CollectionPopup';
+import {
+  ADD_COLLECTIONS_TO_CONTACT,
+  ADD_CONTACTS_TO_COLLECTION,
+} from '../../graphql/mutations/Contacts';
 
 interface MenuProps {
   icon: JSX.Element;
@@ -38,7 +52,7 @@ const MenuButton: React.FC<MenuProps> = ({ icon, text, onPress }) => {
 
 interface ChatHeaderDataProps {
   conversationType: string;
-  id: number;
+  id: string;
   displayName: string;
   lastMessageAt?: string;
   navigation: NavigationProp<RootStackParamList, 'ChatScreen'>;
@@ -56,9 +70,9 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
 
   const [popupTask, setpopupTask] = useState('');
   const [showChatPopup, setShowChatPopup] = useState(false);
+  const [showCollectionPopup, setShowCollectionPopup] = useState(false);
 
-  const isContactType = conversationType == 'contact';
-
+  const isContactType = conversationType === 'contact';
   const handleMenu = () => {
     setShowMenu((showMenu) => !showMenu);
   };
@@ -66,6 +80,11 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
   const openFlowModal = () => {
     setShowMenu((showMenu) => !showMenu);
     setShowStartFlowModal(true);
+  };
+
+  const openCollectionPopup = () => {
+    setShowMenu(!showMenu);
+    setShowCollectionPopup(true);
   };
 
   const openPopupTaskModal = (task: string) => {
@@ -76,10 +95,22 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
 
   const closePopups = () => {
     setShowStartFlowModal(false);
+    setShowCollectionPopup(false);
     setShowChatPopup(false);
   };
 
-  const popupData = PopupData(popupTask);
+  const popupData = getPopupData(popupTask);
+  const collectionPopupData = getCollectionPopupData(isContactType, id);
+  const optionVariables = isContactType
+    ? {
+        filter: {},
+        opts: { limit: 50, offset: 0, order: 'ASC' },
+      }
+    : {
+        filter: {},
+        opts: { limit: 50, offset: 0 },
+      };
+
   const variables = {
     contactId: id,
     ...(popupTask === 'block' ? { input: { status: 'BLOCKED' } } : {}),
@@ -123,7 +154,7 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
           text="Add to Collection"
           icon={<Icon name="add-contact" style={styles.menuIcon} />}
           onPress={() => {
-            console.log('1');
+            openCollectionPopup();
           }}
         />
         <MenuButton
@@ -164,13 +195,14 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
           text="Add contact"
           icon={<Icon name="add-contact" style={styles.menuIcon} />}
           onPress={() => {
-            console.log('1');
+            openCollectionPopup();
           }}
         />
       </View>
     );
   }
 
+  // Todo: These popups need to be searchable
   return (
     <>
       <View style={styles.mainContainer}>
@@ -224,13 +256,26 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
             mutation={isContactType ? START_CONTACT_FLOW : START_COLLECTION_FLOW}
           />
         )}
-        <ChatPopup
-          visible={showChatPopup}
-          onClose={closePopups}
-          popupData={popupData}
-          variables={variables}
-          mutation={mutation}
-        />
+
+        {showChatPopup && (
+          <ChatPopup
+            onClose={closePopups}
+            popupData={popupData}
+            variables={variables}
+            mutation={mutation}
+          />
+        )}
+        {showCollectionPopup && (
+          <CollectionPopup
+            isContactType={isContactType}
+            onClose={closePopups}
+            popupData={collectionPopupData}
+            mutation={isContactType ? ADD_COLLECTIONS_TO_CONTACT : ADD_CONTACTS_TO_COLLECTION}
+            allOptionsQuery={isContactType ? GET_COLLECTIONS_LIST : GET_CONTACTS_NAME}
+            selectedOptionQuery={isContactType ? GET_CONTACT_COLLECTIONS : GET_COLLECTION_CONTACTS}
+            allOptionsVariables={optionVariables}
+          />
+        )}
       </View>
       {sessionTimeLeft}
     </>
