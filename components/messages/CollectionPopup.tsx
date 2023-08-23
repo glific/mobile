@@ -35,7 +35,7 @@ const formatOptions = (
   isContactType: boolean
 ): { id: string; name: string; label: string }[] => {
   return data.map((element: any) => {
-    const id = element.id || element.contact?.id;
+    const id = element.id;
     const contact = element.contact || {};
 
     const name = isContactType
@@ -119,7 +119,7 @@ const CollectionPopup: React.FC<Props> = ({
   };
 
   const formatAllOptions = (data: any) => {
-    const options = formatOptions(isContactType ? data.groups : data.search, isContactType);
+    const options = formatOptions(isContactType ? data.groups : data.contacts, isContactType);
     setAllOptions(options);
   };
 

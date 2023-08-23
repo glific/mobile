@@ -18,7 +18,7 @@ import {
   GET_COLLECTION_CONTACTS,
   GET_CONTACT_COLLECTIONS,
 } from '../../graphql/queries/Collection';
-import { GET_CONTACTS } from '../../graphql/queries/Contact';
+import { GET_CONTACTS_NAME } from '../../graphql/queries/Contact';
 
 import { CLEAR_MESSAGES } from '../../graphql/mutations/Chat';
 import { BLOCK_CONTACT } from '../../graphql/mutations/Contact';
@@ -108,8 +108,7 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
       }
     : {
         filter: {},
-        messageOpts: { limit: 1 },
-        contactOpts: { limit: null, offset: 0 },
+        opts: { limit: 50, offset: 0 },
       };
 
   const variables = {
@@ -203,6 +202,7 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
     );
   }
 
+  // Todo: These popups need to be searchable
   return (
     <>
       <View style={styles.mainContainer}>
@@ -256,6 +256,7 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
             mutation={isContactType ? START_CONTACT_FLOW : START_COLLECTION_FLOW}
           />
         )}
+
         {showChatPopup && (
           <ChatPopup
             onClose={closePopups}
@@ -270,7 +271,7 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
             onClose={closePopups}
             popupData={collectionPopupData}
             mutation={isContactType ? ADD_COLLECTIONS_TO_CONTACT : ADD_CONTACTS_TO_COLLECTION}
-            allOptionsQuery={isContactType ? GET_COLLECTIONS_LIST : GET_CONTACTS}
+            allOptionsQuery={isContactType ? GET_COLLECTIONS_LIST : GET_CONTACTS_NAME}
             selectedOptionQuery={isContactType ? GET_CONTACT_COLLECTIONS : GET_COLLECTION_CONTACTS}
             allOptionsVariables={optionVariables}
           />
