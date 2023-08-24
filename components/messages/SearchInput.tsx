@@ -1,7 +1,7 @@
 import { StyleSheet, TextInput, View } from 'react-native';
 import React from 'react';
-import { Entypo } from '@expo/vector-icons';
-import { COLORS, SCALE, SIZES } from '../../constants';
+
+import { COLORS, SCALE, SIZES, Icon } from '../../constants';
 
 type SearchInputProps = {
   value: string;
@@ -13,12 +13,7 @@ type SearchInputProps = {
 const SearchInput: React.FC<SearchInputProps> = ({ value, handleValue, handleBack }) => {
   return (
     <View style={styles.searchContainer}>
-      <Entypo
-        testID="bsBackIcon"
-        name="chevron-left"
-        style={styles.backIcon}
-        onPress={handleBack}
-      />
+      <Icon testID="bsBackIcon" name="left-arrow" style={styles.backIcon} onPress={handleBack} />
       <View style={styles.searchInput}>
         <TextInput
           testID="bsSearch"
@@ -42,7 +37,7 @@ export default SearchInput;
 const styles = StyleSheet.create({
   backIcon: {
     color: COLORS.black,
-    fontSize: SIZES.f18,
+    fontSize: SIZES.f20,
     padding: SIZES.m4,
   },
   input: {
@@ -57,7 +52,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: SIZES.s60,
     justifyContent: 'space-between',
-    paddingHorizontal: SIZES.m10,
+    paddingHorizontal: SIZES.m8,
   },
   searchInput: {
     backgroundColor: COLORS.lightGray,

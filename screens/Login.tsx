@@ -120,8 +120,8 @@ const Login = ({ navigation }: Props) => {
           placeholder="Password"
           value={enteredPassword}
           onUpdateValue={(text) => updateInputValueHandler('password', text)}
-          secure={showPassword ? false : true}
-          onShowPassword={() => setShowPassword(!showPassword)}
+          secure={!showPassword}
+          onShowPassword={() => setShowPassword((showPassword) => !showPassword)}
           type="password"
         />
         <Pressable

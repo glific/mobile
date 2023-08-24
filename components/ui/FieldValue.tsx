@@ -1,5 +1,5 @@
+import React, { memo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
 import { COLORS, SIZES } from '../../constants';
 
 interface FieldValueProps {
@@ -10,14 +10,14 @@ interface FieldValueProps {
 
 const FieldValue: React.FC<FieldValueProps> = ({ testID, field, value }) => {
   return (
-    <View testID={testID ? testID : field} style={styles.mainContainer}>
+    <View testID={testID ?? field} style={styles.mainContainer}>
       <Text style={styles.fieldText}>{field}</Text>
       <Text style={styles.valueText}>{value}</Text>
     </View>
   );
 };
 
-export default FieldValue;
+export default memo(FieldValue);
 
 const styles = StyleSheet.create({
   fieldText: {

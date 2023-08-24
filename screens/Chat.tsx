@@ -80,7 +80,6 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Contacts'>;
 
 const Chat = ({ navigation, route }: Props) => {
   const { user }: any = useContext(AuthContext);
-  const [contacts, setContacts] = useState<ChatEntry[]>([]);
   const [searchVariable, setSearchVariable] = useState({
     filter: {},
     messageOpts: { limit: 1 },
@@ -91,26 +90,23 @@ const Chat = ({ navigation, route }: Props) => {
 
   const subscriptionVariables = { organizationId: user?.organization?.id };
 
-  const { loading, refetch, fetchMore, subscribeToMore } = useQuery(GET_CONTACTS, {
+  const { data, loading, refetch, fetchMore, subscribeToMore } = useQuery(GET_CONTACTS, {
     fetchPolicy: 'cache-and-network',
     variables: searchVariable,
-    onCompleted(data) {
-      const newContacts: ChatEntry[] = data?.search?.map((element: ContactElement) => {
-        const messagesLength = element.messages?.length || 0;
-        return {
-          id: element.contact?.id,
-          name: element.contact?.name ? element.contact.name : element.contact?.maskedPhone,
-          lastMessageAt: element.contact?.lastMessageAt,
-          lastMessage: messagesLength > 0 ? element.messages[messagesLength - 1]?.body : ' ',
-          isOrgRead: element.contact?.isOrgRead,
-        };
-      });
-
-      setContacts(newContacts);
-    },
     onError(error) {
       console.log(error);
     },
+  });
+
+  const contacts: ChatEntry[] = data?.search?.map((element: ContactElement) => {
+    const messagesLength = element.messages?.length || 0;
+    return {
+      id: element.contact?.id,
+      name: element.contact?.name ? element.contact.name : element.contact?.maskedPhone,
+      lastMessageAt: element.contact?.lastMessageAt,
+      lastMessage: messagesLength > 0 ? element.messages[messagesLength - 1]?.body : ' ',
+      isOrgRead: element.contact?.isOrgRead,
+    };
   });
 
   async function onSearchHandler() {
@@ -200,7 +196,7 @@ const Chat = ({ navigation, route }: Props) => {
         }
         ListEmptyComponent={!loading && <Text style={styles.emptyText}>No contact</Text>}
         stickyHeaderIndices={[0]}
-        stickyHeaderHiddenOnScroll={true}
+        stickyHeaderHiddenOnScroll
         style={styles.mainContainer}
         contentContainerStyle={styles.contentContainer}
         onEndReached={handleLoadMore}

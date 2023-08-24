@@ -6,7 +6,7 @@ class Storage {
     try {
       await AsyncStorage.setItem(key, value);
     } catch (error) {
-      console.error(`Error storing data for key "${key}": ${error}`);
+      console.log(`Error storing data for key "${key}": ${error}`);
     }
   }
 
@@ -17,7 +17,7 @@ class Storage {
         return response;
       });
     } catch (error) {
-      console.error(`Error getting data for key "${key}": ${error}`);
+      console.log(`Error getting data for key "${key}": ${error}`);
       return null;
     }
   }
@@ -27,7 +27,7 @@ class Storage {
     try {
       await AsyncStorage.removeItem(key);
     } catch (error) {
-      console.error(`Error removing data for key "${key}": ${error}`);
+      console.log(`Error removing data for key "${key}": ${error}`);
     }
   }
 }

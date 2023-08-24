@@ -8,8 +8,8 @@ import {
   StyleSheet,
   Pressable,
 } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
-import { COLORS, SIZES } from '../../constants';
+
+import { COLORS, SIZES, Icon } from '../../constants';
 
 type Props = {
   refs: unknown;
@@ -17,7 +17,7 @@ type Props = {
   children: React.ReactNode;
   backgroundColor?: string;
   closeButton?: boolean;
-  sheetStyle?: unknown;
+  sheetStyle?: object;
   draggable?: boolean;
   outSideTouchCancel?: boolean;
 };
@@ -102,11 +102,13 @@ const BottomSheet = ({
         <TouchableOpacity
           style={styles.background}
           activeOpacity={1}
-          onPress={outSideTouchCancel ? close : null}
+          onPress={() => {
+            if (outSideTouchCancel) close();
+          }}
         />
         {closeButton && (
           <Pressable style={styles.closeButton} onPress={close}>
-            <AntDesign testID="close" name="close" style={styles.closeIcon} />
+            <Icon testID="close" name="cross" style={styles.closeIcon} />
           </Pressable>
         )}
         <Animated.View

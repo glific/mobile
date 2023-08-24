@@ -27,11 +27,7 @@ describe('SearchBar', () => {
 
   test('should render Search Bar with filters', async () => {
     const { getByTestId } = customRender(
-      <SearchBar
-        setSearchVariable={setSearchVariableMock}
-        onSearch={onSearchMock}
-        showMenu={true}
-      />,
+      <SearchBar setSearchVariable={setSearchVariableMock} onSearch={onSearchMock} showMenu />,
       SAVED_SEARCH_MOCK
     );
 

@@ -1,22 +1,33 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
-import { Entypo, Ionicons, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 
-import { COLORS, SCALE, SIZES } from '../../constants';
+import { COLORS, SCALE, SIZES, Icon } from '../../constants';
 import { getSessionTimeLeft } from '../../utils/helper';
 import { RootStackParamList } from '../../constants/types';
 import StartFlowPopup from '../messages/StartFlowPopup';
 import ChatPopup from '../messages/ChatPopup';
-
 import {
   START_COLLECTION_FLOW,
   START_CONTACT_FLOW,
   TERMINATE_FLOW,
 } from '../../graphql/mutations/Flows';
+
+import {
+  GET_COLLECTIONS_LIST,
+  GET_COLLECTION_CONTACTS,
+  GET_CONTACT_COLLECTIONS,
+} from '../../graphql/queries/Collection';
+import { GET_CONTACTS_NAME } from '../../graphql/queries/Contact';
+
 import { CLEAR_MESSAGES } from '../../graphql/mutations/Chat';
 import { BLOCK_CONTACT } from '../../graphql/mutations/Contact';
-import { getPopupData } from '../../constants/popupsData';
+import { getCollectionPopupData, getPopupData } from '../../constants/popupsData';
+import CollectionPopup from '../messages/CollectionPopup';
+import {
+  ADD_COLLECTIONS_TO_CONTACT,
+  ADD_CONTACTS_TO_COLLECTION,
+} from '../../graphql/mutations/Contacts';
 
 interface MenuProps {
   icon: JSX.Element;
@@ -41,7 +52,7 @@ const MenuButton: React.FC<MenuProps> = ({ icon, text, onPress }) => {
 
 interface ChatHeaderDataProps {
   conversationType: string;
-  id: number;
+  id: string;
   displayName: string;
   lastMessageAt?: string;
   navigation: NavigationProp<RootStackParamList, 'ChatScreen'>;
@@ -59,30 +70,47 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
 
   const [popupTask, setpopupTask] = useState('');
   const [showChatPopup, setShowChatPopup] = useState(false);
+  const [showCollectionPopup, setShowCollectionPopup] = useState(false);
 
-  const isContactType = conversationType == 'contact';
-
+  const isContactType = conversationType === 'contact';
   const handleMenu = () => {
-    setShowMenu(!showMenu);
+    setShowMenu((showMenu) => !showMenu);
   };
 
   const openFlowModal = () => {
-    setShowMenu(!showMenu);
+    setShowMenu((showMenu) => !showMenu);
     setShowStartFlowModal(true);
+  };
+
+  const openCollectionPopup = () => {
+    setShowMenu(!showMenu);
+    setShowCollectionPopup(true);
   };
 
   const openPopupTaskModal = (task: string) => {
     setpopupTask(task);
-    setShowMenu(!showMenu);
+    setShowMenu((showMenu) => !showMenu);
     setShowChatPopup(true);
   };
 
   const closePopups = () => {
     setShowStartFlowModal(false);
+    setShowCollectionPopup(false);
     setShowChatPopup(false);
   };
 
   const popupData = getPopupData(popupTask);
+  const collectionPopupData = getCollectionPopupData(isContactType, id);
+  const optionVariables = isContactType
+    ? {
+        filter: {},
+        opts: { limit: 50, offset: 0, order: 'ASC' },
+      }
+    : {
+        filter: {},
+        opts: { limit: 50, offset: 0 },
+      };
+
   const variables = {
     contactId: id,
     ...(popupTask === 'block' ? { input: { status: 'BLOCKED' } } : {}),
@@ -117,35 +145,35 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
       <View testID={'contactChatMenu'} style={styles.menuContainer}>
         <MenuButton
           text="Start a flow"
-          icon={<MaterialCommunityIcons name="message-cog" style={styles.menuIcon} />}
+          icon={<Icon name="start-flow" style={styles.menuIcon} />}
           onPress={() => {
             openFlowModal();
           }}
         />
         <MenuButton
           text="Add to Collection"
-          icon={<Ionicons name="person-add-sharp" style={styles.menuIcon} />}
+          icon={<Icon name="add-contact" style={styles.menuIcon} />}
           onPress={() => {
-            console.log('1');
+            openCollectionPopup();
           }}
         />
         <MenuButton
           text="Clear Conversation"
-          icon={<MaterialCommunityIcons name="message-bulleted-off" style={styles.menuIcon} />}
+          icon={<Icon name="clear-conversation" style={styles.menuIcon} />}
           onPress={() => {
             openPopupTaskModal('clear');
           }}
         />
         <MenuButton
           text="Terminate Flows"
-          icon={<MaterialCommunityIcons name="hand-back-right-off" style={styles.menuIcon} />}
+          icon={<Icon name="terminate-flow" style={styles.menuIcon} />}
           onPress={() => {
             openPopupTaskModal('terminate');
           }}
         />
         <MenuButton
           text="Block Contact"
-          icon={<Entypo name="block" style={[styles.menuIcon, { color: COLORS.error100 }]} />}
+          icon={<Icon name="block" style={[styles.menuIcon, { color: COLORS.error100 }]} />}
           onPress={() => {
             openPopupTaskModal('block');
           }}
@@ -158,28 +186,29 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
       <View testID={'collectionChatMenu'} style={styles.menuContainer}>
         <MenuButton
           text="Start a flow"
-          icon={<MaterialCommunityIcons name="message-cog" style={styles.menuIcon} />}
+          icon={<Icon name="start-flow" style={styles.menuIcon} />}
           onPress={() => {
             openFlowModal();
           }}
         />
         <MenuButton
           text="Add contact"
-          icon={<Ionicons name="person-add-sharp" style={styles.menuIcon} />}
+          icon={<Icon name="add-contact" style={styles.menuIcon} />}
           onPress={() => {
-            console.log('1');
+            openCollectionPopup();
           }}
         />
       </View>
     );
   }
 
+  // Todo: These popups need to be searchable
   return (
     <>
       <View style={styles.mainContainer}>
-        <AntDesign
+        <Icon
           testID="backIcon"
-          name="arrowleft"
+          name="arrow-left"
           style={styles.backButton}
           onPress={(): void => navigation.goBack()}
         />
@@ -212,7 +241,7 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
           style={styles.threeDotIconContainer}
           android_ripple={{ borderless: true }}
         >
-          <Entypo name="dots-three-vertical" style={styles.threeDotIcon} />
+          <Icon name="menu-vertical" style={styles.threeDotIcon} />
         </Pressable>
         {showMenu && (
           <>
@@ -227,13 +256,26 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
             mutation={isContactType ? START_CONTACT_FLOW : START_COLLECTION_FLOW}
           />
         )}
-        <ChatPopup
-          visible={showChatPopup}
-          onClose={closePopups}
-          popupData={popupData}
-          variables={variables}
-          mutation={mutation}
-        />
+
+        {showChatPopup && (
+          <ChatPopup
+            onClose={closePopups}
+            popupData={popupData}
+            variables={variables}
+            mutation={mutation}
+          />
+        )}
+        {showCollectionPopup && (
+          <CollectionPopup
+            isContactType={isContactType}
+            onClose={closePopups}
+            popupData={collectionPopupData}
+            mutation={isContactType ? ADD_COLLECTIONS_TO_CONTACT : ADD_CONTACTS_TO_COLLECTION}
+            allOptionsQuery={isContactType ? GET_COLLECTIONS_LIST : GET_CONTACTS_NAME}
+            selectedOptionQuery={isContactType ? GET_CONTACT_COLLECTIONS : GET_COLLECTION_CONTACTS}
+            allOptionsVariables={optionVariables}
+          />
+        )}
       </View>
       {sessionTimeLeft}
     </>
@@ -289,7 +331,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     height: SIZES.s40,
-    paddingHorizontal: SIZES.m10,
+    paddingHorizontal: SIZES.m12,
     width: '100%',
   },
   menuContainer: {
@@ -304,7 +346,7 @@ const styles = StyleSheet.create({
     shadowOffset: { height: 4, width: 0 },
     shadowRadius: 4,
     top: SIZES.s44,
-    width: SCALE(210),
+    width: SCALE(200),
   },
   menuIcon: {
     color: COLORS.primary100,
