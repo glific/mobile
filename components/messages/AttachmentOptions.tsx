@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
-import { Foundation, Ionicons } from '@expo/vector-icons';
+import { FlatList, Pressable, StyleSheet, View } from 'react-native';
 
-import { COLORS, SCALE, SIZES } from '../../constants';
+import { COLORS, Icon, SCALE, SIZES } from '../../constants';
 import AttachmentPopup from './AttachmentPopup';
 
 type MediaType = {
@@ -10,6 +9,40 @@ type MediaType = {
   url: string;
   type: string;
 };
+
+type AttachmentPopup = {
+  testID: string;
+  name: string;
+  icon: string;
+};
+
+const attachmentsType = [
+  {
+    testID: 'attachImage',
+    name: 'image',
+    icon: 'image',
+  },
+  {
+    testID: 'attachDocument',
+    name: 'document',
+    icon: 'file-document',
+  },
+  {
+    testID: 'attachVideo',
+    name: 'video',
+    icon: 'folder-video',
+  },
+  {
+    testID: 'attachAudio',
+    name: 'audio',
+    icon: 'headphone',
+  },
+  {
+    testID: 'attachRecording',
+    name: 'recording',
+    icon: 'microphone',
+  },
+];
 
 interface Props {
   // eslint-disable-next-line no-unused-vars
@@ -32,63 +65,29 @@ const AttachmentOptions = ({ setMedia, onClose }: Props) => {
     setShowPopup(true);
   };
 
+  const renderItem = ({ item }: { item: AttachmentPopup }) => (
+    <View key={item.name} style={[styles.attachmentButton, { marginRight: SIZES.m6 }]}>
+      <Pressable
+        testID={item.testID}
+        style={styles.attachmentButton}
+        onPress={() => handleAttachment(item.name)}
+        android_ripple={{ borderless: false }}
+      >
+        <Icon name={item.icon} style={styles.attachmentIcon} />
+      </Pressable>
+    </View>
+  );
+
   return (
     <>
       <View testID="attachmentsTab" style={styles.attachmentsContainer}>
-        <View style={styles.attachmentInContainer}>
-          <View style={styles.attachmentButton}>
-            <Pressable
-              testID="attachImage"
-              style={styles.attachmentButton}
-              onPress={() => handleAttachment('image')}
-              android_ripple={{ borderless: false }}
-            >
-              <Ionicons name="image-outline" style={styles.attachmentIcon} />
-            </Pressable>
-          </View>
-          <View style={styles.attachmentButton}>
-            <Pressable
-              testID="attachDocument"
-              style={styles.attachmentButton}
-              onPress={() => handleAttachment('document')}
-              android_ripple={{ borderless: false }}
-            >
-              <Ionicons name="document-attach-outline" style={styles.attachmentIcon} />
-            </Pressable>
-          </View>
-          <View style={styles.attachmentButton}>
-            <Pressable
-              testID="attachVideo"
-              style={styles.attachmentButton}
-              onPress={() => handleAttachment('video')}
-              android_ripple={{ borderless: false }}
-            >
-              <Ionicons name="videocam-outline" style={styles.attachmentIcon} />
-            </Pressable>
-          </View>
-        </View>
-        <View style={styles.attachmentInContainer}>
-          <View style={styles.attachmentButton}>
-            <Pressable
-              testID="attachAudio"
-              style={styles.attachmentButton}
-              onPress={() => handleAttachment('audio')}
-              android_ripple={{ borderless: false }}
-            >
-              <Foundation name="sound" style={styles.attachmentIcon} />
-            </Pressable>
-          </View>
-          <View style={styles.attachmentButton}>
-            <Pressable
-              testID="attachRecording"
-              style={styles.attachmentButton}
-              // onPress={() => handleAttachment('recording')}
-              android_ripple={{ borderless: false }}
-            >
-              <Ionicons name="mic-outline" style={styles.attachmentIcon} />
-            </Pressable>
-          </View>
-        </View>
+        <FlatList
+          data={attachmentsType}
+          renderItem={renderItem}
+          numColumns={3}
+          style={styles.attachmentInContainer}
+          contentContainerStyle={styles.attachmentsListContainer}
+        />
       </View>
       <AttachmentPopup
         visible={showPopup}
@@ -115,13 +114,11 @@ const styles = StyleSheet.create({
     width: SCALE(104),
   },
   attachmentIcon: {
-    color: COLORS.primary400,
+    color: COLORS.primary100,
     fontSize: SIZES.m24,
   },
   attachmentInContainer: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
   },
   attachmentsContainer: {
     backgroundColor: COLORS.lightGray,
@@ -130,7 +127,6 @@ const styles = StyleSheet.create({
     borderWidth: SCALE(0.5),
     bottom: SIZES.s60,
     elevation: 3,
-    gap: SIZES.m6,
     marginBottom: SIZES.m16,
     marginHorizontal: SIZES.m10,
     padding: SIZES.m6,
@@ -143,5 +139,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 10,
     width: SCALE(340),
+  },
+  attachmentsListContainer: {
+    rowGap: SIZES.m6,
   },
 });

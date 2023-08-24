@@ -1,12 +1,11 @@
 import React, { RefObject, useState } from 'react';
 import { Pressable, StyleSheet, View, Text, FlatList } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useQuery } from '@apollo/client';
 
 import Loading from '../ui/Loading';
 import SearchInput from './SearchInput';
 import BottomSheet from '../ui/BottomSheet';
-import { COLORS, SCALE, SIZES } from '../../constants';
+import { COLORS, SCALE, SIZES, Icon } from '../../constants';
 import { GET_TEMPLATES } from '../../graphql/queries/Templates';
 
 type TemplateType = {
@@ -47,7 +46,7 @@ const Templates = ({ bsRef, handleSelect, isTemplates = false }: Props) => {
       android_ripple={{ color: COLORS.primary10 }}
       onPress={() => onSelect(item)}
     >
-      <MaterialCommunityIcons name="message-flash-outline" style={styles.messageIcon} />
+      <Icon name={isTemplates ? 'templates' : 'speed-send'} style={styles.messageIcon} />
       <View style={styles.message}>
         <Text style={styles.messageTitle}>{item.label}</Text>
         <Text style={styles.messageText}>{item.body}</Text>
@@ -96,7 +95,7 @@ const styles = StyleSheet.create({
     padding: SIZES.m12,
   },
   messageIcon: {
-    color: COLORS.primary400,
+    color: COLORS.primary100,
     fontSize: SIZES.f18,
   },
   messageText: {

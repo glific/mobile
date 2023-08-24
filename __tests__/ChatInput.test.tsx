@@ -1,7 +1,8 @@
 import React from 'react';
+import axios from 'axios';
 import { fireEvent, waitFor } from '@testing-library/react-native';
 import customRender from '../utils/jestRender';
-import axios from 'axios';
+
 import ChatInput from '../components/messages/ChatInput';
 import {
   GET_INTERACTIVE_MESSAGES_MOCK,

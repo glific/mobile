@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef, memo } from 'react';
 import { Pressable, StyleSheet, Text, View, Animated } from 'react-native';
 
-import { COLORS, SIZES } from '../../constants';
+import { COLORS, SIZES, Icon } from '../../constants';
 import AuthContext from '../../config/AuthContext';
-import { Feather, Ionicons } from '@expo/vector-icons';
 
 const PopupAlert = () => {
   const { alert, setAlert } = useContext(AuthContext);
@@ -57,9 +56,9 @@ const PopupAlert = () => {
           ]}
         >
           {alert.error ? (
-            <Ionicons name="close" style={styles.icon} />
+            <Icon name="cross" style={styles.icon} />
           ) : (
-            <Feather name="check" style={styles.icon} />
+            <Icon name="check" style={styles.icon} />
           )}
         </View>
         <Text style={styles.title}>{alert.title}</Text>
@@ -69,7 +68,7 @@ const PopupAlert = () => {
   );
 };
 
-export default PopupAlert;
+export default memo(PopupAlert);
 
 const styles = StyleSheet.create({
   alertContainer: {
@@ -82,17 +81,17 @@ const styles = StyleSheet.create({
   },
   icon: {
     color: COLORS.white,
-    fontSize: SIZES.s44,
+    fontSize: SIZES.s36,
     includeFontPadding: false,
   },
   iconContainer: {
     alignItems: 'center',
     borderRadius: SIZES.s30,
-    height: SIZES.s60,
+    height: SIZES.s50,
     justifyContent: 'center',
     marginBottom: SIZES.m12,
     marginTop: -SIZES.m30,
-    width: SIZES.s60,
+    width: SIZES.s50,
   },
   mainContainer: {
     alignItems: 'center',

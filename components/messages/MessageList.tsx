@@ -143,11 +143,11 @@ const MessagesList: React.FC<MessageListProps> = ({ conversationType, id }) => {
   }
 
   const handleVideo = () => {
-    setOpenVideo(!openVideo);
+    setOpenVideo((openVideo) => !openVideo);
   };
 
   const handleImage = () => {
-    setOpenImage(!openImage);
+    setOpenImage((openImage) => !openImage);
   };
 
   const handleLoadMore = () => {

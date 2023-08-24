@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { COLORS } from '../../constants';
 
@@ -20,7 +20,7 @@ const Loading: React.FC<LoadingProps> = ({
   );
 };
 
-export default Loading;
+export default memo(Loading);
 
 const styles = StyleSheet.create({
   container: {

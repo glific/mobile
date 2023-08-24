@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
 import { useQuery } from '@apollo/client';
 
-import { COLORS, SCALE, SIZES } from '../../constants';
+import { COLORS, SCALE, SIZES, Icon } from '../../constants';
 import { GET_NOTIFICATIONS_COUNT } from '../../graphql/queries/Notification';
 
 const variables = {
@@ -31,7 +30,7 @@ const HomeHeaderRight = () => {
         style={styles.iconContainer}
         android_ripple={{ borderless: true }}
       >
-        <Ionicons testID="notificationIcon" name="notifications-outline" style={styles.icon} />
+        <Icon testID="notificationIcon" name="notification" style={styles.icon} />
         {notificationCount.toString() !== '0' && (
           <View style={styles.badge}>
             <Text style={styles.badgeText}>{notificationCount}</Text>

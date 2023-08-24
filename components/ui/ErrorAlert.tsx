@@ -1,7 +1,7 @@
-import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { COLORS, SCALE, SIZES } from '../../constants';
+import { StyleSheet, Text, View } from 'react-native';
+
+import { COLORS, SCALE, SIZES, Icon } from '../../constants';
 
 type ErrorAlertProps = {
   message: string;
@@ -10,7 +10,7 @@ type ErrorAlertProps = {
 const ErrorAlert: React.FC<ErrorAlertProps> = ({ message }) => {
   return (
     <View style={styles.errorContainer}>
-      <MaterialCommunityIcons name="close" style={styles.errorIcon} />
+      <Icon name="cross" style={styles.errorIcon} />
       <Text style={styles.errorText}>{message}</Text>
     </View>
   );

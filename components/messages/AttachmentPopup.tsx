@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import { View, Text, Modal, StyleSheet, Pressable } from 'react-native';
 import { useMutation, useQuery } from '@apollo/client';
 import * as DocumentPicker from 'expo-document-picker';
-import { Octicons } from '@expo/vector-icons';
 
 import Input from '../ui/Input';
 import Button from '../ui/Button';
 import Loading from '../ui/Loading';
 import { showToast } from '../../utils/showToast';
 import { UPLOAD_MEDIA } from '../../graphql/mutations/Chat';
-import { COLORS, SCALE, SIZES } from '../../constants/theme';
+import { COLORS, SCALE, SIZES, Icon } from '../../constants';
 import { GET_ATTACHMENT_PERMISSION } from '../../graphql/queries/Account';
 
 type MediaType = {
@@ -141,7 +140,7 @@ const AttachmentPopup: React.FC<AttachmentPopupProps> = ({
                   <Text style={styles.uploadText}>{fileName}</Text>
                 ) : (
                   <>
-                    <Octicons name="upload" style={styles.selectIcon} />
+                    <Icon name="upload" style={styles.selectIcon} />
                     <Text style={styles.uploadText}>Upload File</Text>
                   </>
                 )}
@@ -156,7 +155,7 @@ const AttachmentPopup: React.FC<AttachmentPopupProps> = ({
                   {uploading ? (
                     <Loading size="small" color={COLORS.white} />
                   ) : (
-                    <Octicons name="upload" style={styles.uploadIcon} />
+                    <Icon name="upload" style={styles.uploadIcon} />
                   )}
                 </Pressable>
               )}

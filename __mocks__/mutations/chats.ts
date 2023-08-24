@@ -145,8 +145,23 @@ export const SEND_CONTACT_IMAGE_MESSAGE_MOCK = {
   },
   result: {
     data: {
-      createAndSendMessageToGroup: {
-        success: true,
+      createAndSendMessage: {
+        message: {
+          id: 1,
+          body: 'test image message',
+          media: {
+            id: '123',
+            url: 'http://example.com',
+            caption: 'test image message',
+          },
+          sender: {
+            id: 1,
+          },
+          receiver: {
+            id: 1,
+          },
+        },
+        errors: null,
       },
     },
   },

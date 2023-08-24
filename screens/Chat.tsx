@@ -196,7 +196,7 @@ const Chat = ({ navigation, route }: Props) => {
         }
         ListEmptyComponent={!loading && <Text style={styles.emptyText}>No contact</Text>}
         stickyHeaderIndices={[0]}
-        stickyHeaderHiddenOnScroll={true}
+        stickyHeaderHiddenOnScroll
         style={styles.mainContainer}
         contentContainerStyle={styles.contentContainer}
         onEndReached={handleLoadMore}
