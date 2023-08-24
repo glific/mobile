@@ -204,6 +204,22 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
     );
   }
 
+  const navLocation = isContactType ? 'ContactProfile' : 'CollectionProfile';
+  const navParams = isContactType
+    ? {
+        contact: {
+          id: id,
+          conversationType: conversationType,
+          name: displayName,
+          lastMessageAt: lastMessageAt,
+        },
+      }
+    : {
+        collection: {
+          id: id,
+          name: displayName,
+        },
+      };
   return (
     <>
       <View style={styles.mainContainer}>
@@ -217,17 +233,7 @@ const ChatHeader: React.FC<ChatHeaderDataProps> = ({
           testID="profileButton"
           style={styles.innerContainer}
           android_ripple={{ color: COLORS.primary70 }}
-          disabled={!isContactType}
-          onPress={() =>
-            navigation.navigate('ContactProfile', {
-              contact: {
-                id: id,
-                conversationType: conversationType,
-                name: displayName,
-                lastMessageAt: lastMessageAt,
-              },
-            })
-          }
+          onPress={() => navigation.navigate(navLocation, navParams)}
         >
           <View testID="userProfile" style={styles.avatar}>
             <Text style={styles.avatartext}>{displayName.charAt(0)}</Text>

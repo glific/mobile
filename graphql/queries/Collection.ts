@@ -31,6 +31,7 @@ export const GET_COLLECTION_CONTACTS = gql`
         contacts {
           id
           name
+          phone
         }
       }
     }
@@ -44,6 +45,32 @@ export const GET_CONTACT_COLLECTIONS = gql`
         groups {
           id
           label
+        }
+      }
+    }
+  }
+`;
+
+export const COUNT_COLLECTION_CONTACTS = gql`
+  query countContacts($filter: ContactFilter!) {
+    countContacts(filter: $filter)
+  }
+`;
+
+export const GET_COLLECTION_INFO = gql`
+  query getGroup($id: ID!) {
+    group(id: $id) {
+      group {
+        id
+        label
+        roles {
+          id
+          label
+        }
+        description
+        users {
+          id
+          name
         }
       }
     }

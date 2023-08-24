@@ -25,6 +25,15 @@ export type RootStackParamList = {
       lastMessageAt?: string;
     };
   };
+  CollectionProfile: {
+    collection: {
+      id: string;
+      name: string;
+    };
+  };
+  CollectionContacts: {
+    id: string;
+  };
   ChatScreen: {
     id: string;
     displayName: string;
