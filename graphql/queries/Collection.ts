@@ -76,3 +76,9 @@ export const GET_COLLECTION_INFO = gql`
     }
   }
 `;
+
+export const GET_COLLECTION_MESSAGES_INFO = gql`
+  query groupInfo($id: ID!) {
+    groupInfo(id: $id)
+  }
+`;

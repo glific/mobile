@@ -7,7 +7,11 @@ import { COLORS, SCALE, SIZES } from '../constants';
 import { RootStackParamList } from '../constants/types';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AntDesign } from '@expo/vector-icons';
-import { COUNT_COLLECTION_CONTACTS, GET_COLLECTION_INFO } from '../graphql/queries/Collection';
+import {
+  COUNT_COLLECTION_CONTACTS,
+  GET_COLLECTION_INFO,
+  GET_COLLECTION_MESSAGES_INFO,
+} from '../graphql/queries/Collection';
 import FieldValue from '../components/ui/FieldValue';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CollectionProfile'>;
@@ -15,12 +19,24 @@ interface DescriptionProp {
   description: string;
   users: string[];
 }
+
+interface MessageCountProp {
+  sessionMessages: number;
+  onlyTemplates: number;
+  noMessages: number;
+}
+
 const CollectionProfile = ({ navigation, route }: Props) => {
   const { collection } = route.params;
   const [contactCount, setcontactCount] = useState(0);
   const [collectionInfo, setCollectionInfo] = useState<DescriptionProp>({
     description: '',
     users: [],
+  });
+  const [messages, setMessages] = useState<MessageCountProp>({
+    sessionMessages: 0,
+    onlyTemplates: 0,
+    noMessages: 0,
   });
   const countVariable = {
     filter: {
@@ -31,6 +47,20 @@ const CollectionProfile = ({ navigation, route }: Props) => {
     variables: countVariable,
     onCompleted: (data) => {
       setcontactCount(data.countContacts);
+    },
+  });
+  useQuery(GET_COLLECTION_MESSAGES_INFO, {
+    variables: { id: collection.id },
+    onCompleted: (data) => {
+      const messageData = JSON.parse(data.groupInfo);
+      const onlyTemplates = (messageData.session_and_hsm ?? 0) + (messageData.hsm ?? 0);
+      const noMessages = messageData.none | 0;
+      const sessionMessages = messageData.session_and_hsm | 0;
+      setMessages({
+        sessionMessages,
+        onlyTemplates,
+        noMessages,
+      });
     },
   });
   const { loading } = useQuery(GET_COLLECTION_INFO, {
@@ -84,12 +114,12 @@ const CollectionProfile = ({ navigation, route }: Props) => {
             <Text>Contacts qualified for:{'\n'}</Text>
             <View style={styles.rowContainer}>
               {/*TODO: Use Api to fetch */}
-              <FieldValue field={'Session Messages:'} value={'2'} />
-              <FieldValue field={'Only Templates:'} value={'1'} />
+              <FieldValue field={'Session Messages:'} value={messages.sessionMessages} />
+              <FieldValue field={'Only Templates:'} value={messages.onlyTemplates} />
             </View>
             <View style={styles.rowContainer}>
               {/*TODO: Use Api to fetch */}
-              <FieldValue field={'No Messages:'} value={'0'} />
+              <FieldValue field={'No Messages:'} value={messages.noMessages} />
               <FieldValue
                 field={'Assigned to'}
                 value={
@@ -105,7 +135,6 @@ const CollectionProfile = ({ navigation, route }: Props) => {
             <Pressable
               style={styles.tabButton}
               onPress={() => navigation.navigate('CollectionContacts', { id: collection.id })}
-              // onPress={() => console.log('Fetch Contacts')}
               android_ripple={{ color: COLORS.black005 }}
             >
               <Text style={styles.tabButtonText}>View Contacts</Text>
