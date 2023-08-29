@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { useQuery } from '@apollo/client';
 
@@ -21,21 +21,9 @@ interface ContactProp {
 
 const CollectionContacts = ({ route }: Props) => {
   const { id: collectionId } = route.params;
-  const [contactList, setContactList] = useState<ContactProp[]>([]);
 
-  const { loading } = useQuery(GET_COLLECTION_CONTACTS, {
+  const { data, loading } = useQuery(GET_COLLECTION_CONTACTS, {
     variables: { id: collectionId },
-    nextFetchPolicy: 'network-only',
-    onCompleted: (data) => {
-      const formattedContacts = data.group.group.contacts.map((contact: ContactProp) => {
-        return {
-          id: contact.id,
-          name: contact.name,
-          phone: contact.phone,
-        };
-      });
-      setContactList(formattedContacts);
-    },
     onError: (error) => {
       console.log(error);
     },
@@ -52,16 +40,19 @@ const CollectionContacts = ({ route }: Props) => {
 
   return (
     <>
-      <FlatList
-        accessibilityLabel={'contact-list'}
-        style={styles.mainContainer}
-        data={contactList}
-        ListEmptyComponent={
-          <>{!loading && <Text style={styles.placeholder}>No Contacts in this Colletion</Text>}</>
-        }
-        renderItem={({ item }) => <ContactItem item={item} />}
-      />
-      {loading && <Loading />}
+      {loading ? (
+        <Loading />
+      ) : (
+        <FlatList
+          accessibilityLabel={'contact-list'}
+          style={styles.mainContainer}
+          data={data.group.group.contacts}
+          ListEmptyComponent={
+            <>{!loading && <Text style={styles.placeholder}>No Contacts in this Colletion</Text>}</>
+          }
+          renderItem={({ item }) => <ContactItem item={item} />}
+        />
+      )}
     </>
   );
 };

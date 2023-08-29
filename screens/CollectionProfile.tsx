@@ -113,12 +113,10 @@ const CollectionProfile = ({ navigation, route }: Props) => {
             </View>
             <Text>Contacts qualified for:{'\n'}</Text>
             <View style={styles.rowContainer}>
-              {/*TODO: Use Api to fetch */}
               <FieldValue field={'Session Messages:'} value={messages.sessionMessages} />
               <FieldValue field={'Only Templates:'} value={messages.onlyTemplates} />
             </View>
             <View style={styles.rowContainer}>
-              {/*TODO: Use Api to fetch */}
               <FieldValue field={'No Messages:'} value={messages.noMessages} />
               <FieldValue
                 field={'Assigned to'}
