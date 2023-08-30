@@ -13,7 +13,7 @@ const customRender = (
     token: 'existing_token',
     setToken: jest.fn(),
     org: {
-      url: `https://api.example.${SERVER_URL_SUFFIX}/api`,
+      url: `https://api.example${SERVER_URL_SUFFIX}/api`,
       shortcode: 'example',
       name: 'Example Organization',
     },

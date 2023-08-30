@@ -67,8 +67,8 @@ describe('Server screen', () => {
     });
 
     const responseMock = {
-      url: `https://api.example.${SERVER_URL_SUFFIX}/api`,
-      wsUrl: `wss://api.example.${SERVER_URL_SUFFIX}/socket`,
+      url: `https://api.example${SERVER_URL_SUFFIX}/api`,
+      wsUrl: `wss://api.example${SERVER_URL_SUFFIX}/socket`,
       shortcode: 'example',
       name: 'Example Organization',
     };
@@ -82,7 +82,7 @@ describe('Server screen', () => {
 
     await waitFor(async () => {
       expect(AxiosService.updateServerURL).toHaveBeenCalledWith(
-        `https://api.example.${SERVER_URL_SUFFIX}/api`
+        `https://api.example${SERVER_URL_SUFFIX}/api`
       );
     });
 
