@@ -3,7 +3,8 @@ import { StyleSheet, Text, View, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useQuery } from '@apollo/client';
 
-import { COLORS, SCALE, SIZES, Icon } from '../../constants';
+import formatCount from '../../utils/formatCount';
+import { COLORS, SIZES, Icon } from '../../constants';
 import { GET_NOTIFICATIONS_COUNT } from '../../graphql/queries/Notification';
 
 const variables = {
@@ -33,7 +34,7 @@ const HomeHeaderRight = () => {
         <Icon testID="notificationIcon" name="notification" style={styles.icon} />
         {notificationCount.toString() !== '0' && (
           <View style={styles.badge}>
-            <Text style={styles.badgeText}>{notificationCount}</Text>
+            <Text style={styles.badgeText}>{formatCount(notificationCount)}</Text>
           </View>
         )}
       </Pressable>
@@ -47,13 +48,14 @@ const styles = StyleSheet.create({
   badge: {
     alignItems: 'center',
     backgroundColor: COLORS.error100,
-    borderRadius: SIZES.r10,
-    height: SIZES.s18,
+    borderRadius: SIZES.r20,
     justifyContent: 'center',
+    minHeight: SIZES.s18,
+    minWidth: SIZES.s18,
+    padding: SIZES.m2,
     position: 'absolute',
-    right: -SCALE(3),
-    top: -SCALE(3),
-    width: SIZES.s18,
+    right: -SIZES.m4,
+    top: -SIZES.m6,
   },
   badgeText: {
     color: COLORS.white,

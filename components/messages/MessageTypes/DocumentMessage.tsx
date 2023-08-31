@@ -30,7 +30,9 @@ const DocumentMessage = ({ message, time, isLeft }: Props) => {
           <Text style={[styles.docText, onRight('text', isLeft)]} numberOfLines={1}>
             {message.media.caption}
           </Text>
-          <Text style={[styles.extensionText, onRight('text', isLeft)]}>{media_ext}</Text>
+          <Text numberOfLines={1} style={[styles.extensionText, onRight('text', isLeft)]}>
+            {media_ext}
+          </Text>
         </View>
       </View>
       <MessageTime time={time} isLeft={isLeft} />

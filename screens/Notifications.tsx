@@ -3,12 +3,13 @@ import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useApolloClient, useMutation, useQuery } from '@apollo/client';
 
-import ErrorAlert from '../components/ui/ErrorAlert';
-import NotificationItem from '../components/NotificationItem';
-import { COLORS, SCALE, SIZES } from '../constants/theme';
-import { GET_NOTIFICATIONS, GET_NOTIFICATIONS_COUNT } from '../graphql/queries/Notification';
-import { MARK_NOTIFICATIONS_AS_READ } from '../graphql/mutations/Notification';
 import Loading from '../components/ui/Loading';
+import ErrorAlert from '../components/ui/ErrorAlert';
+import { COLORS, SCALE, SIZES } from '../constants/theme';
+import LoadMoreFooter from '../components/ui/LoadMoreFooter';
+import NotificationItem from '../components/NotificationItem';
+import { MARK_NOTIFICATIONS_AS_READ } from '../graphql/mutations/Notification';
+import { GET_NOTIFICATIONS, GET_NOTIFICATIONS_COUNT } from '../graphql/queries/Notification';
 
 interface Notification {
   entity: string;
@@ -37,6 +38,7 @@ const Notifications: React.FC<NotificationProps> = ({ searchValue }) => {
   const client = useApolloClient();
   const [activeTab, setActiveTab] = useState(Tabs[0]);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [pageNo, setPageNo] = useState(1);
   const [noMoreItems, setNoMoreItems] = useState(false);
 
@@ -78,8 +80,8 @@ const Notifications: React.FC<NotificationProps> = ({ searchValue }) => {
   });
 
   const handleLoadMore = () => {
-    if (loading || noMoreItems) return;
-
+    if (loading || isLoadingMore || noMoreItems) return;
+    setIsLoadingMore(true);
     fetchMore({
       variables: {
         filter: { message: searchValue },
@@ -92,6 +94,7 @@ const Notifications: React.FC<NotificationProps> = ({ searchValue }) => {
         } else {
           if (fetchMoreResult.notifications.length < 10) setNoMoreItems(true);
           setPageNo(pageNo + 1);
+          setIsLoadingMore(false);
           return {
             notifications: [...prev.notifications, ...fetchMoreResult.notifications],
           };
@@ -114,6 +117,7 @@ const Notifications: React.FC<NotificationProps> = ({ searchValue }) => {
         ListEmptyComponent={
           <>{!loading && <Text style={styles.emptyText}>No notification</Text>}</>
         }
+        ListFooterComponent={<LoadMoreFooter loadingMore={isLoadingMore && !noMoreItems} />}
         ListHeaderComponent={
           <View style={styles.navBar}>
             {Tabs.map((tab) => (

@@ -12,6 +12,7 @@ import {
 } from '../../graphql/subscriptions/Chat';
 import AuthContext from '../../config/AuthContext';
 import { getSubscriptionDetails } from '../../utils/subscriptionDetails';
+import LoadMoreFooter from '../ui/LoadMoreFooter';
 
 type MessageListProps = {
   id: number;
@@ -103,6 +104,7 @@ const MessagesList: React.FC<MessageListProps> = ({ conversationType, id }) => {
 
   const [pageNo, setPageNo] = useState(1);
   const [noMoreItems, setNoMoreItems] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   const variables = {
     filter: { id: id, searchGroup: conversationType === 'collection' },
@@ -151,13 +153,13 @@ const MessagesList: React.FC<MessageListProps> = ({ conversationType, id }) => {
   };
 
   const handleLoadMore = () => {
-    if (loading || noMoreItems) return;
-
+    if (loading || isLoadingMore || noMoreItems) return;
+    setIsLoadingMore(true);
     fetchMore({
       variables: {
         filter: variables.filter,
         contactOpts: variables.contactOpts,
-        messageOpts: { limit: 20, offset: pageNo * 20 },
+        messageOpts: { limit: 20, offset: data?.search[0]?.messages?.length },
       },
       updateQuery: (prev, { fetchMoreResult }) => {
         if (!fetchMoreResult?.search[0]?.messages?.length) {
@@ -166,6 +168,7 @@ const MessagesList: React.FC<MessageListProps> = ({ conversationType, id }) => {
         } else {
           if (fetchMoreResult.search[0].messages.length < 20) setNoMoreItems(true);
           setPageNo(pageNo + 1);
+          setIsLoadingMore(false);
           return {
             search: [
               {
@@ -198,10 +201,11 @@ const MessagesList: React.FC<MessageListProps> = ({ conversationType, id }) => {
       renderItem={renderItem}
       initialNumToRender={10}
       ListEmptyComponent={!loading && <Text style={styles.emptyText}>No messages</Text>}
+      ListFooterComponent={<LoadMoreFooter loadingMore={isLoadingMore && !noMoreItems} />}
       inverted
       maxToRenderPerBatch={20}
       onEndReached={handleLoadMore}
-      onEndReachedThreshold={0.1}
+      onEndReachedThreshold={0.2}
     />
   );
 };
