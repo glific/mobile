@@ -8,6 +8,8 @@ import ContactProfile from '../screens/ContactProfile';
 import ConversationFilter from '../screens/ConversationFilter';
 import ContactHistory from '../screens/ContactHistory';
 import ContactInfo from '../screens/ContactInfo';
+import CollectionProfile from '../screens/CollectionProfile';
+import CollectionContacts from '../screens/CollectionContacts';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,6 +27,7 @@ const AppStack = () => {
       <Stack.Screen name="Home" component={AppDrawer} />
       <Stack.Screen name="ChatScreen" component={ChatScreen} />
       <Stack.Screen name="ContactProfile" component={ContactProfile} />
+      <Stack.Screen name="CollectionProfile" component={CollectionProfile} />
       <Stack.Screen
         name="ContactInformation"
         component={ContactInfo}
@@ -49,6 +52,15 @@ const AppStack = () => {
         options={{
           headerShown: true,
           title: 'Conversations Filter',
+          animation: 'slide_from_right',
+        }}
+      />
+      <Stack.Screen
+        name="CollectionContacts"
+        component={CollectionContacts}
+        options={{
+          headerShown: true,
+          title: 'View Contacts',
           animation: 'slide_from_right',
         }}
       />
