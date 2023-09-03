@@ -9,6 +9,7 @@ import InstructionCard from '../components/InstructionCard';
 import AxiosService from '../config/axios';
 import Storage from '../utils/asyncStorage';
 import AuthContext from '../config/AuthContext';
+import { SERVER_URL_SUFFIX } from '../config';
 
 type RootStackParamList = {
   Server: undefined;
@@ -20,7 +21,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Server'>;
 const Server = ({ navigation }: Props) => {
   const { org, setOrg } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
-  const [serverCode, setServerCode] = useState(org && org.shortcode ? org.shortcode : '');
+  const [serverCode, setServerCode] = useState(org?.shortcode ? org.shortcode : '');
   const [errorMessage, setErrorMessage] = useState('');
 
   const serverCodeChanged = (value: string) => {
@@ -29,8 +30,8 @@ const Server = ({ navigation }: Props) => {
   };
 
   const onSubmitHandler = async () => {
-    const orgUrl = `https://api.${serverCode}.tides.coloredcow.com/api`;
-    const wsUrl = `wss://api.${serverCode}.tides.coloredcow.com/socket`;
+    const orgUrl = `https://api.${serverCode}${SERVER_URL_SUFFIX}/api`;
+    const wsUrl = `wss://api.${serverCode}${SERVER_URL_SUFFIX}/socket`;
     if (serverCode.length < 2) {
       setErrorMessage('Please enter valid organization code');
       return;
@@ -76,7 +77,8 @@ const Server = ({ navigation }: Props) => {
           placeholder="shortcode"
         />
         <Text style={styles.previewUrl}>
-          {serverCode ? serverCode : 'shortcode'}.tides.coloredcow.com
+          {serverCode || 'shortcode'}
+          {SERVER_URL_SUFFIX}
         </Text>
         {errorDisplay}
       </View>
