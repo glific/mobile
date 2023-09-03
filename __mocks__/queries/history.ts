@@ -51,7 +51,7 @@ export const GET_CONTACT_HISTORY_MOCK = [
   {
     request: {
       query: GET_CONTACT_HISTORY,
-      variables: { opts: { order: 'ASC', limit: 10, offset: 11 }, filter: { contactId: '2' } },
+      variables: { opts: { order: 'ASC', limit: 10, offset: 10 }, filter: { contactId: '2' } },
     },
     result: {
       data: {

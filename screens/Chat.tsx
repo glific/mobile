@@ -14,6 +14,7 @@ import {
   MESSAGE_RECEIVED_SUBSCRIPTION,
   MESSAGE_SENT_SUBSCRIPTION,
 } from '../graphql/subscriptions/Chat';
+import LoadMoreFooter from '../components/ui/LoadMoreFooter';
 import {
   getSubscriptionDetails,
   recordRequests,
@@ -42,6 +43,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Contacts'>;
 
 const Chat = ({ navigation, route }: Props) => {
   const { user }: any = useContext(AuthContext);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [searchVariable, setSearchVariable] = useState({
     filter: {},
     messageOpts: { limit: 1 },
@@ -183,13 +185,13 @@ const Chat = ({ navigation, route }: Props) => {
   }, [route.params]);
 
   const handleLoadMore = () => {
-    if (loading || noMoreItems) return;
-
+    if (loading || isLoadingMore || noMoreItems) return;
+    setIsLoadingMore(true);
     fetchMore({
       variables: {
         filter: searchVariable.filter,
         messageOpts: searchVariable.messageOpts,
-        contactOpts: { ...searchVariable.contactOpts, offset: pageNo * 10 },
+        contactOpts: { ...searchVariable.contactOpts, offset: contacts.length },
       },
       updateQuery: (prev, { fetchMoreResult }) => {
         if (!fetchMoreResult?.search?.length) {
@@ -198,6 +200,7 @@ const Chat = ({ navigation, route }: Props) => {
         } else {
           if (fetchMoreResult.search.length < 10) setNoMoreItems(true);
           setPageNo(pageNo + 1);
+          setIsLoadingMore(false);
           return {
             search: [...prev.search, ...fetchMoreResult.search],
           };
@@ -233,7 +236,8 @@ const Chat = ({ navigation, route }: Props) => {
             navigation={navigation}
           />
         }
-        ListEmptyComponent={!loading && <Text style={styles.emptyText}>No contact</Text>}
+        ListEmptyComponent={<>{!loading && <Text style={styles.emptyText}>No contact</Text>}</>}
+        ListFooterComponent={<LoadMoreFooter loadingMore={isLoadingMore && !noMoreItems} />}
         stickyHeaderIndices={[0]}
         stickyHeaderHiddenOnScroll
         style={styles.mainContainer}

@@ -6,6 +6,7 @@ import moment from 'moment';
 import { COLORS, SIZES } from '../constants';
 import Loading from '../components/ui/Loading';
 import { GET_CONTACT_HISTORY } from '../graphql/queries/Contact';
+import LoadMoreFooter from '../components/ui/LoadMoreFooter';
 
 type HistoryType = {
   id: string;
@@ -42,6 +43,7 @@ interface Props {
 
 const ContactHistory = ({ route }: Props) => {
   const { id: contactId } = route.params;
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [noMoreItems, setNoMoreItems] = useState(false);
   const [pageNo, setPageNo] = useState(1);
   const historyVariables = {
@@ -64,13 +66,14 @@ const ContactHistory = ({ route }: Props) => {
   });
 
   const handleLoadMore = () => {
-    if (loading || noMoreItems) return;
+    if (loading || isLoadingMore || noMoreItems) return;
+    setIsLoadingMore(true);
     fetchMore({
       variables: {
-        ...historyVariables,
+        filter: historyVariables.filter,
         opts: {
           ...historyVariables.opts,
-          offset: pageNo * 10 + 1,
+          offset: data?.contactHistory.length,
         },
       },
       updateQuery: (prev, { fetchMoreResult }) => {
@@ -81,6 +84,7 @@ const ContactHistory = ({ route }: Props) => {
         }
         if (fetchMoreResult.contactHistory.length < 10) setNoMoreItems(true);
         setPageNo(pageNo + 1);
+        setIsLoadingMore(false);
         // Append new data to the existing data
         return { contactHistory: [...prev.contactHistory, ...fetchMoreResult.contactHistory] };
       },
@@ -106,6 +110,7 @@ const ContactHistory = ({ route }: Props) => {
         ListEmptyComponent={
           <>{!loading && <Text style={styles.placeholder}>No History Available</Text>}</>
         }
+        ListFooterComponent={<LoadMoreFooter loadingMore={isLoadingMore && !noMoreItems} />}
         renderItem={renderItem}
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.1}

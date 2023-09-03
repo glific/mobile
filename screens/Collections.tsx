@@ -9,10 +9,12 @@ import Loading from '../components/ui/Loading';
 import SearchBar from '../components/ui/SearchBar';
 import CollectionCard from '../components/CollectionCard';
 import { GET_COLLECTIONS } from '../graphql/queries/Collection';
+import LoadMoreFooter from '../components/ui/LoadMoreFooter';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Collections'>;
 
 const Collections = ({ navigation }: Props) => {
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [searchVariable, setSearchVariable] = useState({
     filter: { searchGroup: true },
     messageOpts: { limit: 1 },
@@ -44,13 +46,13 @@ const Collections = ({ navigation }: Props) => {
   };
 
   const handleLoadMore = () => {
-    if (loading || noMoreItems) return;
-
+    if (loading || isLoadingMore || noMoreItems) return;
+    setIsLoadingMore(true);
     fetchMore({
       variables: {
         filter: searchVariable.filter,
         messageOpts: searchVariable.messageOpts,
-        contactOpts: { ...searchVariable.contactOpts, offset: pageNo * 10 },
+        contactOpts: { ...searchVariable.contactOpts, offset: collectionsData?.search.length },
       },
       updateQuery: (prev, { fetchMoreResult }) => {
         if (!fetchMoreResult?.search?.length) {
@@ -59,6 +61,7 @@ const Collections = ({ navigation }: Props) => {
         } else {
           if (fetchMoreResult.search.length < 10) setNoMoreItems(true);
           setPageNo(pageNo + 1);
+          setIsLoadingMore(false);
           return {
             search: [...prev.search, ...fetchMoreResult.search],
           };
@@ -94,7 +97,8 @@ const Collections = ({ navigation }: Props) => {
             navigation={navigation}
           />
         }
-        ListEmptyComponent={!loading && <Text style={styles.emptyText}>No collection</Text>}
+        ListEmptyComponent={<>{!loading && <Text style={styles.emptyText}>No collection</Text>}</>}
+        ListFooterComponent={<LoadMoreFooter loadingMore={isLoadingMore && !noMoreItems} />}
         stickyHeaderIndices={[0]}
         stickyHeaderHiddenOnScroll
         style={styles.mainContainer}
