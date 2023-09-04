@@ -9,6 +9,7 @@ import Message, { MessageType } from './Message';
 import {
   MESSAGE_SENT_SUBSCRIPTION,
   MESSAGE_RECEIVED_SUBSCRIPTION,
+  COLLECTION_SENT_SUBSCRIPTION,
 } from '../../graphql/subscriptions/Chat';
 import AuthContext from '../../config/AuthContext';
 import { getSubscriptionDetails } from '../../utils/subscriptionDetails';
@@ -124,19 +125,31 @@ const MessagesList: React.FC<MessageListProps> = ({ conversationType, id }) => {
 
   useEffect(() => {
     if (subscribeToMore) {
-      subscribeToMore({
-        document: MESSAGE_RECEIVED_SUBSCRIPTION,
-        variables: subscriptionVariables,
-        updateQuery: (prev, { subscriptionData }) =>
-          updateConversations(prev, subscriptionData, 'RECEIVED', id),
-      });
+      if (conversationType === 'collection') {
+        // collection sent subscription
+        subscribeToMore({
+          document: COLLECTION_SENT_SUBSCRIPTION,
+          variables: subscriptionVariables,
+          updateQuery: (prev, { subscriptionData }) =>
+            updateConversations(prev, subscriptionData, 'COLLECTION', id),
+        });
+      } else {
+        // contact received subscription
+        subscribeToMore({
+          document: MESSAGE_RECEIVED_SUBSCRIPTION,
+          variables: subscriptionVariables,
+          updateQuery: (prev, { subscriptionData }) =>
+            updateConversations(prev, subscriptionData, 'RECEIVED', id),
+        });
 
-      subscribeToMore({
-        document: MESSAGE_SENT_SUBSCRIPTION,
-        variables: subscriptionVariables,
-        updateQuery: (prev, { subscriptionData }) =>
-          updateConversations(prev, subscriptionData, 'SENT', id),
-      });
+        // contact sent subscription
+        subscribeToMore({
+          document: MESSAGE_SENT_SUBSCRIPTION,
+          variables: subscriptionVariables,
+          updateQuery: (prev, { subscriptionData }) =>
+            updateConversations(prev, subscriptionData, 'SENT', id),
+        });
+      }
     }
   }, [subscribeToMore]);
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import React from 'react';
 import axios from 'axios';
 import { fireEvent, waitFor } from '@testing-library/react-native';
