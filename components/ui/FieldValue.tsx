@@ -5,7 +5,7 @@ import { COLORS, SIZES } from '../../constants';
 interface FieldValueProps {
   testID?: string;
   field: string;
-  value: string;
+  value: string | number;
 }
 
 const FieldValue: React.FC<FieldValueProps> = ({ testID, field, value }) => {

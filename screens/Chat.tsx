@@ -14,50 +14,12 @@ import {
   MESSAGE_RECEIVED_SUBSCRIPTION,
   MESSAGE_SENT_SUBSCRIPTION,
 } from '../graphql/subscriptions/Chat';
-import { getSubscriptionDetails } from '../utils/subscriptionDetails';
 import LoadMoreFooter from '../components/ui/LoadMoreFooter';
-
-const updateContactList = (cachedConversations: any, subscriptionData: any, action: string) => {
-  if (!subscriptionData.data) {
-    return cachedConversations;
-  }
-
-  if (!cachedConversations.search) {
-    return null;
-  }
-
-  const { newMessage, contactId, contact } = getSubscriptionDetails(action, subscriptionData);
-  let conversationIndex = -1;
-
-  cachedConversations.search.forEach((conversation: any, index: number) => {
-    if (conversation.contact.id === contactId) {
-      conversationIndex = index;
-    }
-  });
-
-  const newMessageEntry = {
-    id: newMessage.id,
-    body: newMessage.body,
-  };
-  const newContactEntry = {
-    messages: [newMessageEntry],
-    contact: contact,
-  };
-  const cache = JSON.parse(JSON.stringify(cachedConversations));
-
-  if (conversationIndex > -1) {
-    // Contact exists, move it to index 0
-    const existingConversation = cache.search[conversationIndex];
-    cache.search.splice(conversationIndex, 1);
-    cache.search.unshift(existingConversation);
-    // Update the messages for the moved conversation
-    cache.search[0].messages.push(newMessageEntry);
-  } else {
-    // Add the entry at position 0
-    cache.search.unshift(newContactEntry);
-  }
-  return cache;
-};
+import {
+  getSubscriptionDetails,
+  recordRequests,
+  switchSubscriptionToRefetch,
+} from '../utils/subscriptionDetails';
 
 interface Contact {
   id: string;
@@ -115,6 +77,89 @@ const Chat = ({ navigation, route }: Props) => {
     refetch(searchVariable);
   }
 
+  let refetchTimer: NodeJS.Timeout | null = null;
+  let subscriptionToRefetchSwitchHappened = false;
+
+  const handleSetSearchVariable = (variable: any) => {
+    setPageNo(1);
+    setNoMoreItems(false);
+    setSearchVariable(variable);
+  };
+
+  const handleTiggerRefetch = () => {
+    handleSetSearchVariable({
+      filter: {},
+      messageOpts: { limit: 1 },
+      contactOpts: { limit: 10, offset: 0 },
+    });
+    onSearchHandler();
+  };
+
+  const updateContactList = (cachedConversations: any, subscriptionData: any, action: string) => {
+    if (!subscriptionData.data || subscriptionToRefetchSwitchHappened) {
+      return cachedConversations;
+    }
+
+    if (!cachedConversations.search) {
+      return null;
+    }
+
+    // record all the incoming new conversation requests
+    recordRequests();
+    // determine if we should use subscriptions or refetch the query
+    // if within 5 seconds there are more than equal to 15 new subscriptions
+    // then instead of updating the conversation, it should directly refetch the top 20 conversations
+    if (switchSubscriptionToRefetch() && !subscriptionToRefetchSwitchHappened) {
+      // set the switch flag
+      subscriptionToRefetchSwitchHappened = true;
+
+      if (refetchTimer) {
+        clearTimeout(refetchTimer);
+      }
+
+      refetchTimer = setTimeout(() => {
+        // reset the switch flag
+        subscriptionToRefetchSwitchHappened = false;
+        handleTiggerRefetch();
+      }, 2000);
+
+      return cachedConversations;
+    }
+
+    const { newMessage, contactId, contact } = getSubscriptionDetails(action, subscriptionData);
+    let conversationIndex = -1;
+
+    cachedConversations.search.forEach((conversation: any, index: number) => {
+      if (conversation.contact.id === contactId) {
+        conversationIndex = index;
+      }
+    });
+
+    const newMessageEntry = {
+      id: newMessage.id,
+      body: newMessage.body,
+    };
+
+    const cachedContacts = JSON.parse(JSON.stringify(cachedConversations));
+
+    if (conversationIndex > -1) {
+      // Contact exists, move it to index 0
+      const existingConversation = cachedContacts.search[conversationIndex];
+      cachedContacts.search.splice(conversationIndex, 1);
+      cachedContacts.search.unshift(existingConversation);
+      // Update the messages for the moved conversation
+      cachedContacts.search[0].messages.push(newMessageEntry);
+    } else {
+      const newContactEntry = {
+        messages: [newMessageEntry],
+        contact: contact,
+      };
+      // Add the entry at position 0
+      cachedContacts.search.unshift(newContactEntry);
+    }
+    return cachedContacts;
+  };
+
   useEffect(() => {
     if (subscribeToMore) {
       subscribeToMore({
@@ -131,12 +176,6 @@ const Chat = ({ navigation, route }: Props) => {
       });
     }
   }, [subscribeToMore]);
-
-  const handleSetSearchVariable = (variable: any) => {
-    setPageNo(1);
-    setNoMoreItems(false);
-    setSearchVariable(variable);
-  };
 
   useEffect(() => {
     if (route.params && route.params.name === 'savedSearch') {
