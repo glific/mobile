@@ -3,9 +3,9 @@ import { StyleSheet } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import HomeTabs from './HomeTabs';
-import Help from '../screens/Help';
-import Setting from '../screens/Setting';
-import MyAccount from '../screens/MyAccount';
+// import Help from '../screens/Help';
+// import Setting from '../screens/Setting';
+// import MyAccount from '../screens/MyAccount';
 import Notifications from '../screens/Notifications';
 import CustomDrawer from '../components/navigation/CustomDrawer';
 import HomeHeaderRight from '../components/headers/HomeHeaderRight';
@@ -72,7 +72,7 @@ const AppDrawer = () => {
       >
         {() => <Notifications searchValue={notificationSearch} />}
       </Drawer.Screen>
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="MyAccount"
         component={MyAccount}
         options={{
@@ -99,7 +99,7 @@ const AppDrawer = () => {
             <Icon name="question-mark" style={styles.drawerItemIcon} color={color} />
           ),
         }}
-      />
+      /> */}
     </Drawer.Navigator>
   );
 };

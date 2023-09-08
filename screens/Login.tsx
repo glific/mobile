@@ -124,13 +124,14 @@ const Login = ({ navigation }: Props) => {
           onShowPassword={() => setShowPassword((showPassword) => !showPassword)}
           type="password"
         />
-        <Pressable
+        {/* Todo: Reset password */}
+        {/* <Pressable
           testID="forgotPassword"
           style={styles.forgotPasswordContainer}
           onPress={() => navigation.navigate('ResetPassword')}
         >
           <Text style={styles.textButton}>Forgot password?</Text>
-        </Pressable>
+        </Pressable> */}
         {errorDisplay}
       </View>
       <View style={styles.buttonContainer}>
