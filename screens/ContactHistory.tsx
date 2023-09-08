@@ -5,8 +5,8 @@ import moment from 'moment';
 
 import { COLORS, SIZES } from '../constants';
 import Loading from '../components/ui/Loading';
-import { GET_CONTACT_HISTORY } from '../graphql/queries/Contact';
 import LoadMoreFooter from '../components/ui/LoadMoreFooter';
+import { GET_CONTACT_HISTORY } from '../graphql/queries/Contact';
 
 type HistoryType = {
   id: string;
@@ -45,12 +45,12 @@ const ContactHistory = ({ route }: Props) => {
   const { id: contactId } = route.params;
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [noMoreItems, setNoMoreItems] = useState(false);
-  const [pageNo, setPageNo] = useState(1);
+
   const historyVariables = {
     opts: {
-      order: 'ASC',
       limit: 10,
       offset: 0,
+      order: 'DESC',
     },
     filter: {
       contactId: contactId,
@@ -83,7 +83,6 @@ const ContactHistory = ({ route }: Props) => {
           return prev;
         }
         if (fetchMoreResult.contactHistory.length < 10) setNoMoreItems(true);
-        setPageNo(pageNo + 1);
         setIsLoadingMore(false);
         // Append new data to the existing data
         return { contactHistory: [...prev.contactHistory, ...fetchMoreResult.contactHistory] };
@@ -107,9 +106,7 @@ const ContactHistory = ({ route }: Props) => {
         accessibilityLabel={'history-list'}
         style={styles.mainContainer}
         data={data?.contactHistory}
-        ListEmptyComponent={
-          <>{!loading && <Text style={styles.placeholder}>No History Available</Text>}</>
-        }
+        ListEmptyComponent={<>{!loading && <Text style={styles.placeholder}>No History</Text>}</>}
         ListFooterComponent={<LoadMoreFooter loadingMore={isLoadingMore && !noMoreItems} />}
         renderItem={renderItem}
         onEndReached={handleLoadMore}

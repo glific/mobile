@@ -24,17 +24,32 @@ interface Props {
   allOptionsVariables: object;
 }
 
-interface OptionType {
+type FormattedOptionType = {
   id: string;
   name?: string;
   label?: string;
-}
+};
+
+type GroupOptionType = {
+  id: string;
+  label: string;
+  name: string;
+  maskedPhone: string;
+};
+
+type ContactOptionType = {
+  id: string;
+  contact: {
+    name: string;
+    maskedPhone: string;
+  };
+};
 
 const formatOptions = (
-  data: any,
+  data: GroupOptionType[] | ContactOptionType[],
   isContactType: boolean
-): { id: string; name: string; label: string }[] => {
-  return data.map((element: any) => {
+): FormattedOptionType[] => {
+  return data.map((element: GroupOptionType | ContactOptionType) => {
     const id = element.id;
     const contact = element.contact || {};
 
@@ -61,10 +76,10 @@ const CollectionPopup: React.FC<Props> = ({
   selectedOptionQuery,
   allOptionsVariables,
 }) => {
-  const [allOptions, setAllOptions] = useState<OptionType[]>([]);
-  const [selectedOptions, setSelectedOptions] = useState<OptionType[]>([]);
-  const [deletedOptions, setDeletedOptions] = useState<OptionType[]>([]);
-  const [initialSelected, setInitialSelected] = useState<OptionType[]>([]);
+  const [allOptions, setAllOptions] = useState<FormattedOptionType[]>([]);
+  const [selectedOptions, setSelectedOptions] = useState<FormattedOptionType[]>([]);
+  const [deletedOptions, setDeletedOptions] = useState<FormattedOptionType[]>([]);
+  const [initialSelected, setInitialSelected] = useState<FormattedOptionType[]>([]);
 
   const [AddMutation] = useMutation(mutation, {
     onCompleted() {
@@ -98,7 +113,7 @@ const CollectionPopup: React.FC<Props> = ({
     });
   };
 
-  const handleSelectCollection = (options: OptionType[]) => {
+  const handleSelectCollection = (options: FormattedOptionType[]) => {
     // Identify options that were removed and options that were re-added
     const removedOptions = selectedOptions.filter(
       (selectedOption) => !options.some((newOption) => newOption.id === selectedOption.id)
@@ -118,12 +133,15 @@ const CollectionPopup: React.FC<Props> = ({
     setDeletedOptions([...updatedDeletedOptions, ...removedOptions]);
   };
 
-  const formatAllOptions = (data: any) => {
+  const formatAllOptions = (data: { groups: GroupOptionType[]; contacts: ContactOptionType[] }) => {
     const options = formatOptions(isContactType ? data.groups : data.contacts, isContactType);
     setAllOptions(options);
   };
 
-  const formatSelectedOptions = (data: any) => {
+  const formatSelectedOptions = (data: {
+    group: { group: { contacts: ContactOptionType[] } };
+    contact: { contact: { groups: GroupOptionType[] } };
+  }) => {
     const options = formatOptions(
       isContactType ? data.contact.contact.groups : data.group.group.contacts,
       isContactType

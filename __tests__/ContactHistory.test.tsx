@@ -22,7 +22,7 @@ describe('Contact History', () => {
       GET_EMPTY_HISTORY_MOCK
     );
     await waitFor(() => {
-      expect(getByText('No History Available')).toBeDefined();
+      expect(getByText('No History')).toBeDefined();
     });
   });
 
@@ -42,7 +42,5 @@ describe('Contact History', () => {
     await waitFor(() => {
       expect(getByText('Flow Started: FlowName10')).toBeDefined();
     });
-
-    await waitFor(() => {});
   });
 });

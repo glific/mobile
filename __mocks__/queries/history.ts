@@ -42,7 +42,7 @@ export const GET_CONTACT_HISTORY_MOCK = [
   {
     request: {
       query: GET_CONTACT_HISTORY,
-      variables: { opts: { order: 'ASC', limit: 10, offset: 0 }, filter: { contactId: '2' } },
+      variables: { opts: { order: 'DESC', limit: 10, offset: 0 }, filter: { contactId: '2' } },
     },
     result: {
       data: mockHistory,
@@ -51,7 +51,7 @@ export const GET_CONTACT_HISTORY_MOCK = [
   {
     request: {
       query: GET_CONTACT_HISTORY,
-      variables: { opts: { order: 'ASC', limit: 10, offset: 10 }, filter: { contactId: '2' } },
+      variables: { opts: { order: 'DESC', limit: 10, offset: 10 }, filter: { contactId: '2' } },
     },
     result: {
       data: {
@@ -84,7 +84,7 @@ export const GET_EMPTY_HISTORY_MOCK = [
   {
     request: {
       query: GET_CONTACT_HISTORY,
-      variables: { opts: { order: 'ASC', limit: 10, offset: 0 }, filter: { contactId: '2' } },
+      variables: { opts: { order: 'DESC', limit: 10, offset: 0 }, filter: { contactId: '2' } },
     },
     result: {
       data: { contactHistory: [] },
