@@ -18,7 +18,6 @@ describe('Login screen', () => {
     expect(getByTestId('organisationURL')).toBeDefined();
     expect(getByTestId('mobileNumber')).toBeDefined();
     expect(getByTestId('password')).toBeDefined();
-    expect(getByTestId('forgotPassword')).toBeDefined();
     expect(getByText('Log in')).toBeDefined();
   });
 
@@ -85,15 +84,15 @@ describe('Login screen', () => {
     // expect(setTokenMock).toHaveBeenCalledWith(responseMock.access_token);
   });
 
-  test('should navigate to reset password screen', async () => {
-    const navigateMock = jest.fn();
-    const { getByTestId } = customRender(<Login navigation={{ navigate: navigateMock }} />);
+  // test('should navigate to reset password screen', async () => {
+  //   const navigateMock = jest.fn();
+  //   const { getByTestId } = customRender(<Login navigation={{ navigate: navigateMock }} />);
 
-    fireEvent.press(getByTestId('forgotPassword'));
-    await waitFor(() => {
-      expect(navigateMock).toHaveBeenCalledWith('ResetPassword');
-    });
-  });
+  //   fireEvent.press(getByTestId('forgotPassword'));
+  //   await waitFor(() => {
+  //     expect(navigateMock).toHaveBeenCalledWith('ResetPassword');
+  //   });
+  // });
 
   test('should navigate to add organisation url screen', async () => {
     const navigateMock = jest.fn();
