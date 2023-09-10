@@ -2,7 +2,7 @@
   "expo": {
     "name": "Glific",
     "slug": "glific",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -18,7 +18,7 @@
       "supportsTablet": true,
       "usesIcloudStorage": true,
       "bundleIdentifier": "org.glific.mobile",
-      "buildNumber": "6"
+      "buildNumber": "7"
     },
     "android": {
       "adaptiveIcon": {
@@ -26,7 +26,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "org.glific.mobile",
-      "versionCode": 6
+      "versionCode": 7
     },
     "web": {
       "favicon": "./assets/favicon.png"
