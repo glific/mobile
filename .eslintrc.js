@@ -25,5 +25,6 @@ module.exports = {
     'prettier/prettier': 'error',
     'no-unused-vars': 'warn',
     // Additional rules or overrides can be added here ...
+    '@typescript-eslint/no-explicit-any': ['off'],
   },
 };
