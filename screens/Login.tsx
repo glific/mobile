@@ -167,10 +167,10 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     paddingLeft: SCALE(2),
   },
-  forgotPasswordContainer: {
-    alignSelf: 'flex-end',
-    marginTop: SIZES.m6,
-  },
+  // forgotPasswordContainer: {
+  //   alignSelf: 'flex-end',
+  //   marginTop: SIZES.m6,
+  // },
   headerContainer: {
     backgroundColor: COLORS.primary10,
     borderRadius: SIZES.r10,
